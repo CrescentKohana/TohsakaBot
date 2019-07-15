@@ -1,0 +1,13 @@
+module TohsakaBot
+  module Async
+    Dir["#{File.dirname(__FILE__)}/async/*.rb"].each { |file| require file }
+
+    @async = [RefreshNP, RemindOnTime, RepostCheck, TempRoleNoMore]
+
+    def self.include!
+      @async.each do |event|
+        TohsakaBot::BOT.include!(event)
+      end
+    end
+  end
+end
