@@ -19,11 +19,11 @@ module TohsakaBot
             response = JSON.parse(apijson.read)
             output = response['results'][0]['data']['pixiv_id']
           else
-            event.respond 'URL was incorrect.'
+            event.respond('URL was incorrect.')
             break
           end
         else
-          event.respond 'Upload an image with the command `sauce` or just with an URL `sauce https://website.com/image.png`'
+          event.respond('Upload an image with the command `sauce` or just with an URL `sauce https://website.com/image.png`')
           break
         end
 
@@ -37,8 +37,8 @@ module TohsakaBot
             embed.timestamp = Time.now
 
             embed.image = Discordrb::Webhooks::EmbedImage.new(url: messageurl || @aurl)
-            # embed.thumbnail = Discordrb::Webhooks::EmbedThumbnail.new(url: "https://cdn.discordapp.com/avatars/351163443526631444/9d43fece704ee59c6ca9e4754303e15d.png")
-            # embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: "Rin", icon_url: "https://luukuton.fi/i/2018-06/22_1615-a1fef0.png")
+            # embed.thumbnail = Discordrb::Webhooks::EmbedThumbnail.new(url: "")
+            # embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: "Rin", icon_url: "")
             embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "", icon_url: "")
 
             embed.add_field(name: "**Pixiv.moe**", value: "https://pixiv.moe/illust/#{output}")
@@ -47,7 +47,7 @@ module TohsakaBot
             embed.add_field(name: "**More results**", value: "[here](https://saucenao.com/search.php?output_type=0&dbmask=32&url=#{messageurl})")
             end
         else
-          event.respond 'Upload an image with the command `sauce` or just with an URL `sauce https://website.com/image.png`'
+          event.respond('Upload an image with the command `sauce` or just with an URL `sauce https://website.com/image.png`')
         end
       end
     end

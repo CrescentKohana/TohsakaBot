@@ -61,7 +61,6 @@ module Kernel
   end
 
   def self.delete_temporary_role_db(user_id, role_id)
-    puts "TOIMII VITTU"
     db_read = YAML.load_file('data/temporary_roles.yml')
     db_store = YAML::Store.new('data/temporary_roles.yml')
 

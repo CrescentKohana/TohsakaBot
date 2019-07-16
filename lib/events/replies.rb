@@ -24,7 +24,7 @@ module TohsakaBot
 
             if picked == 'true'
               if value['file'].to_s.empty?
-                event.respond value['reply']
+                event.respond(value['reply'])
               else
                 event.channel.send_file(File.open(value['file']))
               end
