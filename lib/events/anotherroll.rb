@@ -28,17 +28,12 @@ module TohsakaBot
           end
 
           name = BOT.member(event.server, event.user.id).display_name.strip_mass_mentions.sanitize_string
-          # Hardcoded channel for rolls. TODO: Change this.
-          # roll_channel = BOT.channel(516348014990852106)
           Kernel.send_embedded_roll(event, number, name, i)
 
           if number =~ /(\d)\1{3}/ && i == 4
             name = BOT.member(event.server, event.author.id).display_name
-
-            # Adds the Winner role to the user.
-            we_have_a_winner(event)
-
-            event.respond "🎉 @here #{name} HAS GOT QUADS! 🎉"
+            Kernel.give_temporary_role(event, $settings['winner_role'])
+            event.respond("🎉 @here #{name} HAS GOT QUADS! 🎉")
           end
         end
       end

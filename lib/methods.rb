@@ -60,26 +60,45 @@ module Kernel
     end
   end
 
-  def self.we_have_a_winner(event)
+  def self.delete_temporary_role_db(user_id, role_id)
+    puts "TOIMII VITTU"
+    db_read = YAML.load_file('data/temporary_roles.yml')
+    db_store = YAML::Store.new('data/temporary_roles.yml')
 
-    user_id = event.user.id
-    server_id = event.channel.server.id
-    role_id = $settings['winner_role'].to_i
-
-    unless BOT.member(event.server, user_id).role?(role_id)
-
-      Discordrb::API::Server.add_member_role("Bot #{$config['bot_token']}", server_id, user_id, role_id)
-      store = YAML::Store.new('data/temporary_roles.yml')
-
-      store.transaction do
-        i = 1
-        while store.root?(i) do i += 1 end
-        store[i] = { 'time' => Time.now, 'user' => user_id, 'server' => server_id }
-        store.commit
+    db_read.each do |k, v|
+      if role_id == v['role'].to_i && user_id == v['user'].to_i
+        db_store.transaction do
+          db_store.delete(k)
+          db_store.commit
+        end
       end
     end
   end
 
+  def self.give_temporary_role(event, role_id)
+    db_store = YAML::Store.new('data/temporary_roles.yml')
+
+    user_id = event.user.id
+    server_id = event.channel.server.id
+
+    # If the user already has an entry for the role, this deletes it first.
+    delete_temporary_role_db(user_id, role_id)
+
+    # Gives the role to the user unless they have it.
+    unless TohsakaBot::BOT.member(event.server, user_id).role?(role_id)
+      Discordrb::API::Server.add_member_role("Bot #{$config['bot_token']}", server_id, user_id, role_id)
+    end
+
+    # Makes a new entry to the database for the user so that we can delete the role after a set time (default: a week).
+    db_store.transaction do
+      i = 1
+      while db_store.root?(i) do i += 1 end
+      db_store[i] = { 'time' => Time.now, 'user' => user_id, 'server' => server_id, 'role' => role_id }
+      db_store.commit
+    end
+  end
+
+  # TODO: WIP
   def self.delete_previous_bot_msg(sent_msg)
     remove_msg = event.message.await!(timeout: 15)
     if remove_msg.content == $settings['msg_removal_word']

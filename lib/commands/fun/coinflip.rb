@@ -2,8 +2,13 @@ module TohsakaBot
   module Commands
     module Coinflip
       extend Discordrb::Commands::CommandContainer
+
+      # Ratelimit for users. 15 times in a span of 60 seconds (1s delay between each).
+      # TODO: Maybe move these to a single file across all commands?
       bucket :cf, limit: 15, time_span: 60, delay: 1
+
       command(:coinflip,
+              # TODO: Move all command aliases to a single file.
               aliases: %i[coin flip toss kolike kolikko heitähomovoltti flop kkoin],
               description: 'Flip a coin.',
               usage: 'flip <integer>',
@@ -16,18 +21,18 @@ module TohsakaBot
           event.<< 'Sorry but the limit is 100000.'
           break
         end
-        # benchmark = event.respond 'Benchmarking...'
+
+        # Probabilities for the coin toss (%).
         coin = { "Tails:"  => 49, "Heads:" => 49, "The coin landed on its edge:" => 2 }
+        coin_toss = Pickup.new(coin)
 
-        pickup = Pickup.new(coin)
-        picked = pickup.pick(n.to_i)
-        c = picked.uniq.map { |x| [x, picked.count(x)] }.to_h
-
-        if c.any?
+        if n.to_i > 1
+          c = coin_toss.pick(n.to_i).uniq.map { |x| [x, coin_toss.count(x)] }.to_h
           event.<< c.keys[0].to_s + ' ' + c.values[0].to_s + ' ' + c.keys[1].to_s + ' ' + c.values[1].to_s + ' ' + c.keys[2].to_s + ' ' + c.values[2].to_s
         else
-          picked = pickup.pick(1)
-          # Coinmaster manipulation
+          picked = coin_toss.pick(1)
+
+          # Coinmaster manipulation (don't ask)
           if event.author.id.to_i == 73091459573616640
             picked = 'The coin landed on its edge'
           end
@@ -38,25 +43,14 @@ module TohsakaBot
           when 'Heads'
             @result = 'heads'
           when 'The coin landed on its edge'
-            user_id = event.author.id
-            server_id = event.channel.server.id
-            unless BOT.member(event.server, user_id).role?(519978902425305088)
-              Discordrb::API::Server.add_member_role("Bot #{$config['bot_token']}", server_id, user_id, $settings['winner_role'].to_i)
-              store = YAML::Store.new('data/temporary_roles.yml')
-              store.transaction do
-                i = 1
-                while store.root?(i) do i += 1 end
-                store[i] = {"time" => Time.now, "user" => user_id, "server" => server_id}
-                store.commit
-              end
-            end
+            Kernel.give_temporary_role(event, $settings['winner_role'])
           end
-          event.respond picked.chomp(':')
+
+          event.respond(picked.chomp(':'))
           if @result.is_a? String
             event.channel.send_file(File.open("img/#{@result}.png"))
           end
         end
-        # benchmark.edit "Benchmark complete. #{Time.now - event.timestamp} seconds."
       end
     end
   end
