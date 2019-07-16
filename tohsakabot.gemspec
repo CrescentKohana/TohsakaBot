@@ -6,14 +6,12 @@ Gem::Specification.new do |spec|
   spec.name          = "TohsakaBot"
   spec.version       = '1.0'
   spec.authors       = ["Marko Leinikka"]
-  spec.email         = ["youremail@yourdomain.com"]
+  spec.email         = [""]
   spec.summary       = %q{A multipurpose Discord bot.}
-  spec.description   = %q{Longer description of your project.}
-  spec.homepage      = "https://luukuton.fi/tohsakabot/"
+  spec.description   = %q{A multipurpose Discord bot made with Ruby mainly for my own use.}
+  spec.homepage      = ""
   spec.license       = "MIT"
 
   spec.files         = ['lib/bot.rb']
-  spec.executables   = ['bin/NAME']
-  spec.test_files    = ['tests/test_NAME.rb']
   spec.require_paths = ["lib"]
 end
