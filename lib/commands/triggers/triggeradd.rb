@@ -72,7 +72,7 @@ module TohsakaBot
           download_answer_picture(file, userid, modified_trigger_word)
 
         else
-          event.respond 'Tell me the response (5s remaining).'
+          event.respond('Tell me the response (5s remaining).')
           response = event.message.await!(timeout: 5)
 
           if !response.message.attachments.first.nil?
@@ -83,7 +83,7 @@ module TohsakaBot
             write_changes_to_triggers(mod_trg_word: modified_trigger_word, userid: userid, response: response.message.content)
 
           else
-            event.respond 'You took too long!'
+            event.respond('You took too long!')
             break
 
           end

@@ -53,7 +53,7 @@ module TohsakaBot
             embed.url = ""
             embed.description = ""
             embed.timestamp = Time.now
-            embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "Sorted by the ratio of alcohol-% to price (€)")
+            embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'Sorted by the ratio of alcohol-% to price (€)')
 
             embed.add_field(name: ":black_small_square: #{rnd_p[0][1]} (#{rnd_p[0][3]} / #{rnd_p[0][20]}% / #{rnd_p[0][4]}€)", value: "#{al}#{rnd_p[0][0]}")
             embed.add_field(name: ":black_small_square: #{rnd_p[1][1]} (#{rnd_p[1][3]} / #{rnd_p[1][20]}% / #{rnd_p[1][4]}€)", value: "#{al}#{rnd_p[1][0]}")
