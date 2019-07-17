@@ -1,4 +1,4 @@
-
+# TODO: Finish this. At the moment not used. Also clean up other methods too.
 class Trigger_system
 
   @triggers_all = YAML.load_file('data/triggers.yml')

@@ -2,6 +2,7 @@ module TohsakaBot
   module Commands
     Dir["#{File.dirname(__FILE__)}/commands/*/*.rb"].each { |file| require file }
 
+    # All commands listed below are activated and in use.
     @commands = [Eval, Help, Ping, Information, RoleAdd, RoleDel, Summon,
                  RemindMe, Tester, NowPlaying, Alko, Alkolist, Chaos,
                  Coinflip, Reminders, ReminderDel, Reboot,

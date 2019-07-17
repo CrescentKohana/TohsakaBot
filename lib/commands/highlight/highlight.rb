@@ -11,10 +11,7 @@ module TohsakaBot
                      '<(optional, how many backtracked messages) number> ' \
                      "<(optional, Y if only OP's messages) Y/N>",
               rescue: "Something went wrong!\n`%exception%`") do |event, msg_id, num_of_msgs_before, only_op|
-
-
-
-
+        # TODO: Finish this.
       end
     end
   end

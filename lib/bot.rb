@@ -25,7 +25,7 @@ require_relative 'regex.rb'
 
 module TohsakaBot
 
-  # Global variables
+  # Global variables TODO: Clean this mess.
   $config = YAML.load_file('data/config.yml')
   $settings = YAML.load_file('data/settings.yml')
   $url_regexp = Regexp.new $settings["url_regex"].to_regexp(detect: true)
@@ -49,7 +49,6 @@ module TohsakaBot
   Commands.include!
   Events.include!
 
-  # BOT.channel(599382380653838347).send_message("Bot starting...")
   BOT.run(:async)
 
   require_relative 'async.rb'

@@ -6,4 +6,5 @@ A Discord bot written in Ruby with the help of discordrb.
 * Gems specified in Gemfile
 
 ## Usage
-Start the bot by changing to the root folder of the bot and running `bundle exec ruby run.rb`.
+1. Switch to the root folder of the bot and run `bundle install` to install required gems.
+2. Start the bot by running `bundle exec ruby run.rb`.
