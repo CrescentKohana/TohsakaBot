@@ -16,6 +16,9 @@ module TohsakaBot
         #image.format "png"
         #image.write "img/kela_output.png"
 
+
+        # TODO: I'm not sure what to do with this. It's supposed to add a text to the image
+        # but I cannot get the right font size no matter what.
         MiniMagick::Tool::Convert.new do |convert|
           convert << "img/kela.png"
           convert.draw 'text 22,90 "' + msg.join(' ') + '"' #"-annotate" << "0 paska" ##{msg.join(' ')}
