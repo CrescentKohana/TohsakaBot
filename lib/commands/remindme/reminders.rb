@@ -3,7 +3,7 @@ module TohsakaBot
     module Reminders
       extend Discordrb::Commands::CommandContainer
       command(:reminders,
-              aliases: %i[listrem remlist],
+              aliases: %i[listrem remlist rems],
               description: 'Lists reminders.',
               usage: 'reminders <id (sort by id, default is by date)>',
               rescue: "Something went wrong!\n`%exception%`") do |event, sort|

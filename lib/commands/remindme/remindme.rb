@@ -3,7 +3,7 @@ module TohsakaBot
     module RemindMe
       extend Discordrb::Commands::CommandContainer
       command(:remindme,
-              aliases: %i[remadd remind addrem muistuta rem],
+              aliases: %i[remind remadd remind addrem muistuta rem],
               description: 'Reminder.',
               min_args: 1,
               usage: 'remindme <R01y01M01w01d01h01m01s||yyyy-MM-dd_hh:mm:ss> <msg> (R for repeated, >10 minutes)',
@@ -16,9 +16,9 @@ module TohsakaBot
         fmsg = msg.join(' ').strip_mass_mentions.sanitize_string
 
         # Messages #
-        error_reminder_limit = "Sorry, but the the limit for remainders per user is #{$settings['remainder_limit']}! Wait that they expire or remove them with `reminders` & `delreminder <id>`."
-        error_negative = 'The thing is.. time travel is still a little hard for me :( so try not to use negative values. Syntax: Usage: `remindme <01y01M01w01d01h01m01s||yyyy-MM-dd_hh:mm:ss> <msg>`'
-        error_time_travel = 'The thing is.. time travel is still a little hard for me :( so try not to use past dates. Usage: `remindme <01y01M01w01d01h01m01s||yyyy-MM-dd_hh:mm:ss> <msg>`'
+        error_reminder_limit = "Sorry, but the the limit for remainders per user is #{$settings['remainder_limit']}! Wait that they expire or remove them with `reminders` & `delreminder <id(s)>`."
+        error_negative = 'The thing is.. time travel is still a little hard for me :( so try not to use negative values. Syntax: Usage: `remindme <R01y01M01w01d01h01m01s||yyyy-MM-dd_hh:mm:ss> <msg> (R for repeated, >10 minutes)`'
+        error_time_travel = 'The thing is.. time travel is still a little hard for me :( so try not to use past dates. Usage: `remindme <R01y01M01w01d01h01m01s||yyyy-MM-dd_hh:mm:ss> <msg> (R for repeated, >10 minutes)`'
 
         def self.matchtime(time, regex)
           if time.match(regex)
@@ -29,6 +29,7 @@ module TohsakaBot
         def self.userlimit_calc(filepath)
           limit = YAML.load_file(filepath)
           @limit_array = []
+
           limit.each do |key, value|
             uid = value["user"]
             @limit_array << uid.to_i
@@ -40,25 +41,31 @@ module TohsakaBot
         end
 
         def self.store_reminder(time_format, time_confirm, ev, fm, ui, ci, m, r)
-          store = YAML::Store.new('data/reminders.yml')
-          store.transaction do
+          remind_db = YAML::Store.new('data/reminders.yml')
+          repeated_msg = r != "false" ? "repeatedly " : ""
+          # TODO: Convert seconds to a better format.
+          repetition_interval = r != "false" ? " Interval #{r}s." : ""
+
+          remind_db.transaction do
             i = 1
-            while store.root?(i) do i += 1 end
-            store[i] = {"time" => time_format, "message" => "#{fm}", "user" => "#{ui}", "channel" =>"#{ci}", "repeat" =>"#{r}" }
-            store.commit
+            while remind_db.root?(i) do i += 1 end
+            remind_db[i] = {"time" => time_format, "message" => "#{fm}", "user" => "#{ui}", "channel" =>"#{ci}", "repeat" =>"#{r}" }
+            remind_db.commit
           end
+
           if m.empty?
-            ev.respond("I shall remind <@#{ui.to_i}> at `#{time_confirm}`.")
+            ev.respond("I shall #{repeated_msg}remind <@#{ui.to_i}> at `#{time_confirm}`.#{repetition_interval}")
           else
-            ev.respond("I shall remind <@#{ui.to_i}> with #{fm.hide_link_preview} at `#{time_confirm}`.")
+            ev.respond("I shall #{repeated_msg}remind <@#{ui.to_i}> with #{fm.hide_link_preview} at `#{time_confirm}`.#{repetition_interval}")
           end
+
           unless ev.channel.pm?
             ev.message.delete
           end
         end
 
         # If the reminder is to be repeated.
-         if timei[0] != 'R'
+         if timei[0] != 'R' && timei[0] != 'r'
            repeat = 'false'
          else
            repeat = ''
@@ -69,7 +76,7 @@ module TohsakaBot
 
           # Format P(n)Y(n)M(n)W(n)DT(n)H(n)M(n)S
           seconds = matchtime(timei, /([0-9]*)(sec|sek|[sS])/) || 0
-          minutes = matchtime(timei, /([0-9]*)(min|[m])/) || 0 # /[0-9]*(min|[m])/
+          minutes = matchtime(timei, /([0-9]*)(min|[m])/) || 0
           hours = matchtime(timei, /([0-9]*)([hH])/) || 0
           days = matchtime(timei, /([0-9]*)([dD])/) || 0
           weeks = matchtime(timei, /([0-9]*)([wW])/) || 0
@@ -107,6 +114,7 @@ module TohsakaBot
 
           if parsed.seconds.from_now > Time.now && date_regex.match?(parsed.seconds.from_now.to_s)
             userlimit_calc('data/reminders.yml')
+
             if userlimit_check(@limit_array, @userid)
               store_reminder(parsed.seconds.from_now.to_i, parsed.seconds.from_now, event, fmsg, userid, channelid, msg, repeat)
             else
@@ -115,6 +123,7 @@ module TohsakaBot
           else
             event.respond(error_negative)
           end
+
         elsif date_regex.match?("#{timei.gsub('_', ' ')} #{msg}")
           datetime = "#{timei.gsub('_', ' ')}"
 
@@ -128,8 +137,9 @@ module TohsakaBot
           else
             event.respond(error_time_travel)
           end
+
         else
-          event.respond('Usage: `remindme <01y01M01w01d01h01m01s||yyyy-MM-dd_hh:mm:ss> <msg>`')
+          event.respond('Usage: `remindme <R01y01M01w01d01h01m01s||yyyy-MM-dd_hh:mm:ss> <msg> (R for repeated, >10 minutes)`')
         end
       end
     end
