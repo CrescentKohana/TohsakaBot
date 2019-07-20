@@ -11,6 +11,7 @@ module TohsakaBot
               bucket: :commandseal, rate_limit_message: "Your command seals are on cooldown for %time%s!",
               rescue: "Something went wrong!\n`%exception%`") do |e, servant|
 
+        # Prototype of FATE (守護英霊召喚システム・フェイト).
         wh = Discordrb::API::Channel.create_webhook("Bot #{$config['bot_token']}", e.channel.id, "Summoned Servant", nil, "I summon thee!")
         id = JSON.parse(wh)['id']
         token = JSON.parse(wh)['token']

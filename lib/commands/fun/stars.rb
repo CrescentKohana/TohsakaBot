@@ -9,7 +9,7 @@ module TohsakaBot
               min_args: 1,
               rescue: "Something went wrong!\n`%exception%`") do |event, u, *msg|
 
-        #event.message.delete
+        # Not sure why. For memes?
         if u.start_with? /<@!\d*>/
           user_obj = event.message.mentions
           member_obj = BOT.member(event.server, user_obj[0].id).display_name

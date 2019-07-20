@@ -5,6 +5,12 @@ module TohsakaBot
       rate_limiter.bucket :roll, delay: 10
       extend Discordrb::EventContainer
       reaction_add(emoji: '🎲') do |event|
+
+        # TODO: Not sure what to do with this. It works as it should but I'm still getting this error in terminal.
+        # Exception: #<LocalJumpError: break from proc-closure> ✗ ...lib/events/anotherroll.rb:12:in `block in <module:AnotherRoll>'
+        # 'next' does not seem to do what it needs to do (not to execute this command).
+        break if !event.message.author.current_bot? || event.user.bot_account
+
         Discordrb::API::Channel.delete_user_reaction("Bot #{$config['bot_token']}", event.channel.id, event.message.id, '🎲', event.user.id)
         next if rate_limiter.rate_limited?(:roll, event.user)
 
