@@ -8,14 +8,13 @@ module TohsakaBot
           timen = Time.now.to_i
 
           remindb.each do |key, value|
+            time = value["time"].to_i
 
-            time = value["time"]
-
-            if timen >= time.to_i
+            if timen >= time
 
               msg = value["message"]
-              uid = value["user"]
-              cid = value["channel"]
+              uid = value["user"].to_i
+              cid = value["channel"].to_i
               rep = value["repeat"]
               repeated_msg = rep != "false" ? "Repeated r" : "R"
               # days = [1, 2, 3, 4, 5, 6, 7]
@@ -30,9 +29,10 @@ module TohsakaBot
                 #  end
                 # end
 
-                BOT.channel(cid.to_i).send_message("#{repeated_msg}eminder  for <@#{uid.to_i}>!")
+                # Raw API request: Discordrb::API::Channel.create_message("Bot #{$config['bot_token']}", cid, "")
+                BOT.channel(cid).send_message("#{repeated_msg}eminder for <@#{uid}>!")
               else
-                BOT.channel(cid.to_i).send_message("#{repeated_msg}eminder  for <@#{uid.to_i}>: #{msg.hide_link_preview}")
+                BOT.channel(cid).send_message("#{repeated_msg}eminder for <@#{uid}>: #{msg.strip_mass_mentions}")
               end
 
               rstore = YAML::Store.new('data/reminders.yml')
@@ -40,7 +40,7 @@ module TohsakaBot
                 rstore.delete(key)
 
                 if rep != "false"
-                  rstore[key] = {"time" => rep.to_i.seconds.from_now, "message" => "#{msg}", "user" => "#{uid}", "channel" =>"#{cid}", "repeat" =>"#{rep}" }
+                  rstore[key] = {"time" => time.seconds + rep.to_i, "message" => "#{msg}", "user" => "#{uid}", "channel" =>"#{cid}", "repeat" =>"#{rep}" }
                 end
 
                 rstore.commit
