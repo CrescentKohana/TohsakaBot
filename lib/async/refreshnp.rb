@@ -4,6 +4,7 @@ module TohsakaBot
       Thread.new do
         loop do
           playing = $settings['np']
+          # 0 is Playing and anything else is Streaming
           if playing[0] != 0
             BOT.stream(playing[1].to_s, playing[0].to_s)
           else
