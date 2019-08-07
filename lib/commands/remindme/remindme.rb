@@ -3,7 +3,7 @@ module TohsakaBot
     module RemindMe
       extend Discordrb::Commands::CommandContainer
       command(:remindme,
-              aliases: %i[remind remadd remind addrem muistuta rem],
+              aliases: %i[remind reminder remadd remind addrem muistuta muistutus rem],
               description: 'Reminder.',
               min_args: 1,
               usage: 'remindme <R01y01M01w01d01h01m01s||yyyy-MM-dd_hh:mm:ss> <msg> (R for repeated, >10 minutes)',

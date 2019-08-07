@@ -3,7 +3,7 @@ module TohsakaBot
     module ReminderDel
       extend Discordrb::Commands::CommandContainer
       command(:reminderdel,
-              aliases: %i[delreminder dontremindme remrem remdel delrem],
+              aliases: %i[delreminder dontremindme remrem remdel delrem remremind delremind],
               description: 'Deletes an active reminder.',
               usage: 'delreminder <ids separeted by space (integer)>',
               min_args: 1,
