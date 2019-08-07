@@ -16,6 +16,8 @@ module TohsakaBot
           break
         end
 
+        if one.to_i > two.to_i then two,one = one,two end
+
         name = BOT.member(event.server, event.author.id).display_name
         number = rand(one.to_i..two.to_i)
         event.<< '**' + number.to_s + '**  `' + name.strip_mass_mentions.sanitize_string + '`'

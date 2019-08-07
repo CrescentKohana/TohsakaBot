@@ -19,6 +19,12 @@ module TohsakaBot
               repeated_msg = rep != "false" ? "Repeated r" : "R"
               # days = [1, 2, 3, 4, 5, 6, 7]
 
+              @where = if BOT.channel(cid).nil?
+                            BOT.pm_channel(uid)
+                          else
+                            BOT.channel(cid)
+                          end
+
               if msg.to_s.empty?
 
                 # TODO: For repeated reminders. Checks if today is included in the array
@@ -30,9 +36,9 @@ module TohsakaBot
                 # end
 
                 # Raw API request: Discordrb::API::Channel.create_message("Bot #{$config['bot_token']}", cid, "")
-                BOT.channel(cid).send_message("#{repeated_msg}eminder for <@#{uid}>!")
+                @where.send_message("#{repeated_msg}eminder for <@#{uid}>!")
               else
-                BOT.channel(cid).send_message("#{repeated_msg}eminder for <@#{uid}>: #{msg.strip_mass_mentions}")
+                @where.send_message("#{repeated_msg}eminder for <@#{uid}>: #{msg.strip_mass_mentions}")
               end
 
               rstore = YAML::Store.new('data/reminders.yml')
