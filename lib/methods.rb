@@ -1,6 +1,11 @@
 # Methods accessible everywhere.
 module Kernel
 
+  # If the author of the event is a bot, skip the execution of code.
+  def skip_if_bot?
+     if user.current_bot? then return end
+  end
+
   # The zero-width space in between the @ and the word
   # prevents the tagging of everyone (or everyone online).
   def strip_mass_mentions
@@ -74,10 +79,9 @@ module Kernel
     end
   end
 
-  def self.give_temporary_role(event, role_id)
+  def self.give_temporary_role(event, role_id, user_id)
     db_store = YAML::Store.new('data/temporary_roles.yml')
 
-    user_id = event.user.id
     server_id = event.channel.server.id
 
     # If the user already has an entry for the role, this deletes it first.

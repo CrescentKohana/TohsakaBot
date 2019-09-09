@@ -7,7 +7,7 @@ module TohsakaBot
               description: 'Makes the user a winner for a week.',
               usage: 'winner <user>',
               min_args: 1,
-              allowed_roles: [299992716480348160],
+              allowed_roles: [299992716480348160], # Owner Role ID
               rescue: "Something went wrong!\n`%exception%`") do |event, username|
 
         user_id = event.message.mentions[0].id
@@ -18,7 +18,7 @@ module TohsakaBot
           Kernel.delete_temporary_role_db(user_id, role_id)
           event.respond('So a loser then.')
         else
-          Kernel.give_temporary_role(event, role_id)
+          Kernel.give_temporary_role(event, role_id, user_id)
           event.respond('Winner has been selected!')
         end
       end
