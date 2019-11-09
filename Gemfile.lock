@@ -26,13 +26,14 @@ GEM
     cocaine (0.6.0)
       terrapin (= 0.6.0)
     concurrent-ruby (1.1.5)
-    crass (1.0.4)
+    crass (1.0.5)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     event_emitter (0.2.6)
     feedjira (3.0.0)
       loofah (>= 2.2.1)
       sax-machine (>= 1.0)
+    ffi (1.11.1)
     ffi (1.11.1-x64-mingw32)
     ffi (1.11.1-x86-mingw32)
     http-accept (1.7.0)
@@ -41,7 +42,7 @@ GEM
     i18n (1.6.0)
       concurrent-ruby (~> 1.0)
     json (2.2.0)
-    loofah (2.2.3)
+    loofah (2.3.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mime-types (3.2.2)
@@ -53,6 +54,8 @@ GEM
     net (0.3.3)
       activesupport
     netrc (0.11.0)
+    nokogiri (1.10.3)
+      mini_portile2 (~> 2.4.0)
     nokogiri (1.10.3-x64-mingw32)
       mini_portile2 (~> 2.4.0)
     nokogiri (1.10.3-x86-mingw32)
@@ -62,6 +65,11 @@ GEM
     pickup (0.0.11)
     rbnacl (6.0.1)
       ffi
+    rest-client (2.1.0.rc1)
+      http-accept (>= 1.7.0, < 2.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
     rest-client (2.1.0.rc1-x64-mingw32)
       ffi (~> 1.9)
       http-accept (>= 1.7.0, < 2.0)
@@ -103,6 +111,7 @@ GEM
       cocaine (>= 0.5.4)
 
 PLATFORMS
+  ruby
   x64-mingw32
   x86-mingw32
 
