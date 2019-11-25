@@ -10,7 +10,7 @@ module TohsakaBot
 
         triggers = YAML.load_file('data/triggers.yml')
         current_triggers = []
-        output = "`  ID | TRIGGER               | MSG/FILE"
+        output = "`  ID | TRIGGER               | MSG/FILE`\n"
         pos = 0
 
         if all_triggers == "all"

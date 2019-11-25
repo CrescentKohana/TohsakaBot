@@ -22,6 +22,9 @@ module TohsakaBot
           break
         end
 
+        user_id = event.message.author
+        role_id = $settings['winner_role'].to_i
+
         # Probabilities for the coin toss (%).
         coin = { "Tails:"  => 49, "Heads:" => 49, "The coin landed on its edge:" => 2 }
         coin_toss = Pickup.new(coin)
@@ -43,7 +46,7 @@ module TohsakaBot
           when 'Heads'
             @result = 'heads'
           when 'The coin landed on its edge'
-            Kernel.give_temporary_role(event, $settings['winner_role'])
+            Kernel.give_temporary_role(event, role_id, user_id)
           end
 
           event.respond(picked.chomp(':'))

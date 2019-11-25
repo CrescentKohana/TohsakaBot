@@ -15,6 +15,8 @@ module TohsakaBot
         next if rate_limiter.rate_limited?(:roll, event.user)
 
         msg = event.message.content
+        user_id = event.message.author
+        role_id = $settings['winner_role'].to_i
 
         # Checks if the end of the message has
         # one or more zero-width space identifier(s).
@@ -38,7 +40,7 @@ module TohsakaBot
 
           if number =~ /(\d)\1{3}/ && i == 4
             name = BOT.member(event.server, event.author.id).display_name
-            Kernel.give_temporary_role(event, $settings['winner_role'])
+            Kernel.give_temporary_role(event, role_id, user_id)
             event.respond("🎉 @here #{name} HAS GOT QUADS! 🎉")
           end
         end
