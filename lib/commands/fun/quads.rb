@@ -13,6 +13,8 @@ module TohsakaBot
 
         number = rand(0..9999)
         name = BOT.member(event.server, event.author.id).display_name
+        user_id = event.message.author
+        role_id = $settings['winner_role'].to_i
 
         identifier = "\u200B" * 4
         Kernel.send_message_with_reaction(BOT, event.channel.id, '🎲',
@@ -21,7 +23,7 @@ module TohsakaBot
 
         if number =~ /(\d)\1{3}/
           name = BOT.member(event.server, event.author.id).display_name
-          Kernel.give_temporary_role(event, $settings['winner_role'])
+          Kernel.give_temporary_role(event, role_id, user_id)
           event.respond("🎉 @here #{name} HAS GOT QUADS! 🎉")
         end
       end
