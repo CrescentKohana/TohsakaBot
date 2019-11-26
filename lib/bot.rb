@@ -6,6 +6,7 @@ require 'bundler/setup'
 require 'date'
 require 'cgi'
 require 'chronic'
+require 'configatron/core'
 require 'csv'
 require 'discordrb'
 require 'discordrb/webhooks'
@@ -16,22 +17,34 @@ require 'open-uri'
 require 'pickup'
 require 'roo'
 require 'rubygems'
+require 'sinatra'
 require 'to_regexp'
 require 'uri'
 require 'yaml'
 require 'yaml/store'
 
-require_relative 'methods.rb'
-require_relative 'regex.rb'
+require_relative 'methods/kernel_methods'
+# require_relative 'web/base'
 
 module TohsakaBot
+  unless File.exist?('cfg/config.yml')
+    first = FirstTimeSetup()
+    first.create_data_files_and_configs
+  end
 
-  # Global variables TODO: Clean this mess.
-  $config = YAML.load_file('data/config.yml')
-  $settings = YAML.load_file('data/settings.yml')
+  # TODO: Complete this to get rid of the global variables!
+  # Configuration & settings #
+  #CFG = Configatron::RootStore.new
+  #config = YAML.load_file('cfg/config.yml').freeze
+  #settings = YAML.load_file('cfg/settings.yml').freeze
+  #CFG.configure_from_hash(settings.merge(config))
+
+  # Global variables
+  $config = YAML.load_file('cfg/config.yml') # cfg/
+  $settings = YAML.load_file('cfg/settings.yml')
   $url_regexp = Regexp.new $settings["url_regex"].to_regexp(detect: true)
-  $excluded_urls = YAML.load_file('data/excluded_urls.yml')
-  $triggers = YAML.load_file('data/triggers.yml')
+  $excluded_urls = YAML.load_file("data/excluded_urls.yml")
+  $triggers = YAML.load_file("data/triggers.yml")
   $triggers_only = []
   $triggers.each do |key, value|
     $triggers_only << value["trigger"].to_regexp(detect: true)

@@ -26,7 +26,7 @@ module TohsakaBot
         end
 
         #BOT.update_status(:online, @np, twitch_url[0], 0, false, @a_type.to_i)
-        File.open('data/settings.yml', 'w') { |f| f.write $settings.to_yaml }
+        File.open($settings, 'w') { |f| f.write $settings.to_yaml }
         event.respond("Status changed to #{@np.strip_mass_mentions}")
       end
     end

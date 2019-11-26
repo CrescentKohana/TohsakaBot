@@ -34,7 +34,6 @@ module TohsakaBot
           else
             break
           end
-
           name = BOT.member(event.server, event.user.id).display_name.strip_mass_mentions.sanitize_string
           Kernel.send_embedded_roll(event, number, name, i)
 

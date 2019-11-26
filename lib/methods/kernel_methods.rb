@@ -45,6 +45,19 @@ module Kernel
     gsub(url_regex, '<\k<foo>>')
   end
 
+  def user_limit_reached?(database, limit, userid)
+    all = YAML.load_file(database)
+    reminders_amount = 0
+
+    all.each do |k, v|
+      if userid == v["user"].to_i
+        reminders_amount += 1
+      end
+    end
+
+    reminders_amount < limit.to_i
+  end
+
   def self.send_message_with_reaction(bot, cid, emoji, content)
     reply = bot.send_message(cid.to_i, content)
     reply.create_reaction(emoji)
