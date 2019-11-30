@@ -66,17 +66,12 @@ module TohsakaBot
       # Input as natural language (spaces allowed)
       if @time_msg_separatos.any? { |s| long_natural_time.include?(splitter = s)}
         splitted = long_natural_time.split(splitter, 2)
-
-        puts splitter
-        puts splitted
         @datetime = Chronic.parse(splitted[0].gsub(splitter, ''))
         @msg = splitted[1]
         @msg[0] = "" if @msg[0] == " " # Remove an unnecessary space
-
         return 0 if @datetime.nil?
         @datetime.to_i > Time.now.to_i ? 1 : 2 # && DATE_REGEX.match?(datetime.to_s)
-
-        # The input is a duration
+      # The input is a duration
       elsif DURATION_REGEX.match?(@datetime.to_s)
 
         # Format P(n)Y(n)M(n)W(n)DT(n)H(n)M(n)S
@@ -106,26 +101,20 @@ module TohsakaBot
         end
 
         parsed_time = ActiveSupport::Duration.parse(iso8601_time)
-
         if @repeat != 'false'
           @repeat = parsed_time.seconds
           return 5 if parsed_time.seconds.to_i < 600
         end
 
         @datetime = parsed_time.seconds.from_now
-
         @datetime > Time.now && DATE_REGEX.match?(parsed_time.seconds.from_now.to_s) ? 1 : 3
-
-        # Direct ISO 8601 formatted input
+      # Direct ISO 8601 formatted input
       elsif DATE_REGEX.match?("#{@datetime.gsub('_', ' ')} #{@msg}")
-
         @datetime = "#{@datetime.gsub('_', ' ')}"
         Time.parse(@datetime).to_i > Time.now.to_i && DATE_REGEX.match?(@datetime.to_s) ? 1 : 2
-
-        # Input as a natural word (only one)
+      # Input as a natural word (only one)
       else
         @datetime = Chronic.parse(@datetime)
-
         return 0 if @datetime.nil?
         @datetime.to_i > Time.now.to_i ? 1 : 2 # && DATE_REGEX.match?(datetime.to_s)
       end
@@ -140,9 +129,7 @@ module TohsakaBot
     def store_reminder
       reminders_db = YAML::Store.new('data/reminders.yml')
       repeated_msg = @repeat != "false" ? "repeatedly " : ''
-
       repetition_interval = @repeat != "false" ? " `<Interval #{distance_of_time_in_words(@repeat)}>`" : ''
-
       i = 1
       reminders_db.transaction do
         while reminders_db.root?(i) do i += 1 end
