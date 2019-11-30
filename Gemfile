@@ -3,6 +3,7 @@
 source 'https://rubygems.org'
 
 gem 'activesupport'
+gem 'actionview'
 gem 'bigdecimal'
 gem 'chronic'
 gem 'configatron'

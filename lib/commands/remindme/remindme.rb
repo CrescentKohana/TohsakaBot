@@ -38,6 +38,7 @@ module TohsakaBot
   end
 
   class RemindMeCore
+    include ActionView::Helpers::DateHelper
     DURATION_REGEX = /^[ydwhmseckin0-9-]*$/i
     DATE_REGEX = /^[0-9]{4}-(1[0-2]|0[1-9])-(3[0-2]|[1-2][0-9]|0[1-9])\s(2[0-4]|1[0-9]|0[0-9]):(60|[0-5][0-9]):(60|[0-5][0-9])/
     # attr_reader :datetime, :msg, :userid, :channelid, :repeated
@@ -45,26 +46,30 @@ module TohsakaBot
     def initialize(event, time_input, msg)
       @event = event
       @datetime = time_input
-      @msg = msg.join(' ').strip_mass_mentions.sanitize_string || time_input.split(';')[1]
+      @msg = msg.join(' ').strip_mass_mentions.sanitize_string
       @userid = event.message.user.id
       @channelid = event.channel.id
       @repeat = 'false'
+      @time_msg_separatos = %w[; to with]
     end
 
     def convert_datetime
       # If the reminder is to be repeated.
-      if @datetime[0] == 'R' && @datetime[0] == 'r'
+      if @datetime[0] == 'R' || @datetime[0] == 'r'
         @repeat = ''
         @datetime[0] = ''
       end
 
       long_natural_time = @datetime + " " + @msg
+      splitter = ""
 
       # Input as natural language (spaces allowed)
-      if long_natural_time.include? ';'
+      if @time_msg_separatos.any? { |s| long_natural_time.include?(splitter = s)}
+        splitted = long_natural_time.split(splitter, 2)
 
-        splitted = long_natural_time.split(';')
-        @datetime = Chronic.parse(splitted[0].gsub(';', ''))
+        puts splitter
+        puts splitted
+        @datetime = Chronic.parse(splitted[0].gsub(splitter, ''))
         @msg = splitted[1]
         @msg[0] = "" if @msg[0] == " " # Remove an unnecessary space
 
@@ -135,8 +140,8 @@ module TohsakaBot
     def store_reminder
       reminders_db = YAML::Store.new('data/reminders.yml')
       repeated_msg = @repeat != "false" ? "repeatedly " : ''
-      # TODO: Convert seconds to a better format below.
-      repetition_interval = @repeat != "false" ? " Interval #{@repeat}s." : ''
+
+      repetition_interval = @repeat != "false" ? " `<Interval #{distance_of_time_in_words(@repeat)}>`" : ''
 
       i = 1
       reminders_db.transaction do
@@ -150,9 +155,9 @@ module TohsakaBot
       end
 
       if @msg.empty?
-        @event.respond "I shall #{repeated_msg}remind <@#{@userid.to_i}> at `#{@datetime}` `<ID: #{i}>`.#{repetition_interval} "
+        @event.respond "I shall #{repeated_msg}remind <@#{@userid.to_i}> at `#{@datetime}` `<ID #{i}>`#{repetition_interval}. "
       else
-        @event.respond "I shall #{repeated_msg}remind <@#{@userid.to_i}> with #{@msg.hide_link_preview} at `#{@datetime}` `<ID: #{i}>`.#{repetition_interval}"
+        @event.respond "I shall #{repeated_msg}remind <@#{@userid.to_i}> with #{@msg.hide_link_preview} at `#{@datetime}` `<ID #{i}>`#{repetition_interval}."
       end
 
       unless @event.channel.pm?

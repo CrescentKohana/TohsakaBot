@@ -1,6 +1,7 @@
 require 'active_support/core_ext/numeric/time'
 require 'active_support/core_ext/string/filters'
 require 'active_support/time_with_zone'
+require 'action_view'
 require 'bigdecimal'
 require 'bundler/setup'
 require 'date'
