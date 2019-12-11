@@ -15,15 +15,26 @@ module TohsakaBot
               uid = value["user"].to_i
               cid = value["channel"].to_i
               rep = value["repeat"]
-              server_id = BOT.channel(cid).server
               repeated_msg = rep != "false" ? "Repeated r" : "R"
+              @where = BOT.pm_channel(uid)
               # days = [1, 2, 3, 4, 5, 6, 7]
 
-              if BOT.channel(cid).nil? || BOT.profile.on(BOT.server(server_id)).permission?(:send_messages, BOT.channel(server_id))
-                @where =  BOT.pm_channel(uid)
+              if BOT.channel(cid).nil?
+                @where = BOT.pm_channel(uid)
               else
-                @where = BOT.channel(cid)
+                if BOT.channel(cid).pm?
+                  @where = BOT.channel(cid)
+                else
+                  server_id = BOT.channel(cid).server.id
+                  if BOT.profile.on(BOT.server(server_id)).permission?(:send_messages, BOT.channel(cid))
+                    @where = BOT.channel(cid)
+                  else
+                    @where = BOT.pm_channel(uid)
+                  end
+                end
               end
+
+
 
               # Catching the exception if a user has blocked the bot
               # as Discord API has no way to check that naturally
@@ -44,6 +55,7 @@ module TohsakaBot
                   @where.send_message("#{repeated_msg}eminder for <@#{uid}>: #{msg.strip_mass_mentions}")
                 end
               rescue
+                puts "KYS"
                 # The user has blocked the bot.
               end
 
