@@ -5,12 +5,10 @@ module TohsakaBot
         loop do
           remindb = YAML.load_file('data/reminders.yml')
           timen = Time.now.to_i
-
           remindb.each do |key, value|
             time = value["time"].to_i
 
             if timen >= time
-
               msg = value["message"]
               uid = value["user"].to_i
               cid = value["channel"].to_i
@@ -25,8 +23,8 @@ module TohsakaBot
                 if BOT.channel(cid).pm?
                   @where = BOT.channel(cid)
                 else
-                  server_id = BOT.channel(cid).server.id
-                  if BOT.profile.on(BOT.server(server_id)).permission?(:send_messages, BOT.channel(cid))
+                  # If bot has permissions to send messages to this channel.
+                  if BOT.profile.on(BOT.server(BOT.channel(cid).server.id)).permission?(:send_messages, BOT.channel(cid))
                     @where = BOT.channel(cid)
                   else
                     @where = BOT.pm_channel(uid)
@@ -34,13 +32,10 @@ module TohsakaBot
                 end
               end
 
-
-
               # Catching the exception if a user has blocked the bot
               # as Discord API has no way to check that naturally
               begin
                 if msg.to_s.empty?
-
                   # TODO: For repeated reminders. Checks if today is included in the array
                   # which has the days the user wanted to be notified on.
                   # if rep != "false"
@@ -48,7 +43,6 @@ module TohsakaBot
                   #  if days.include? today
                   #  end
                   # end
-
                   # Raw API request: Discordrb::API::Channel.create_message("Bot #{$config['bot_token']}", cid, "")
                   @where.send_message("#{repeated_msg}eminder for <@#{uid}>!")
                 else
@@ -61,11 +55,9 @@ module TohsakaBot
               rstore = YAML::Store.new('data/reminders.yml')
               rstore.transaction do
                 rstore.delete(key)
-
                 if rep != "false"
                   rstore[key] = {"time" => time.seconds + rep.to_i, "message" => "#{msg}", "user" => "#{uid}", "channel" =>"#{cid}", "repeat" =>"#{rep}" }
                 end
-
                 rstore.commit
               end
             end

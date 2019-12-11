@@ -110,8 +110,8 @@ module TohsakaBot
         @datetime > Time.now && DATE_REGEX.match?(parsed_time.seconds.from_now.to_s) ? 1 : 3
       # Direct ISO 8601 formatted input
       elsif DATE_REGEX.match?("#{@datetime.gsub('_', ' ')} #{@msg}")
-        @datetime = "#{@datetime.gsub('_', ' ')}"
-        Time.parse(@datetime).to_i > Time.now.to_i && DATE_REGEX.match?(@datetime.to_s) ? 1 : 2
+        @datetime = Time.parse(@datetime.gsub('_', ' ')).to_i
+        @datetime > Time.now.to_i ? 1 : 2
       # Input as a natural word (only one)
       else
         @datetime = Chronic.parse(@datetime)
@@ -141,12 +141,13 @@ module TohsakaBot
         reminders_db.commit
       end
 
+      # If the date was in the ISO 8601 format, convert it to text for the message.
+      @datetime = @datetime.is_a? Integer ? @datetime = Time.at(@datetime) : @datetime
       if @msg.empty?
         @event.respond "I shall #{repeated_msg}remind <@#{@userid.to_i}> at `#{@datetime}` `<ID #{i}>`#{repetition_interval}. "
       else
         @event.respond "I shall #{repeated_msg}remind <@#{@userid.to_i}> with #{@msg.hide_link_preview} at `#{@datetime}` `<ID #{i}>`#{repetition_interval}."
       end
-
       unless @event.channel.pm?
         @event.message.delete
       end
