@@ -55,7 +55,6 @@ module TohsakaBot
                   @where.send_message("#{repeated_msg}eminder for <@#{uid}>: #{msg.strip_mass_mentions}")
                 end
               rescue
-                puts "KYS"
                 # The user has blocked the bot.
               end
 
