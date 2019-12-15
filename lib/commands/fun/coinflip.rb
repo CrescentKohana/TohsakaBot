@@ -2,11 +2,9 @@ module TohsakaBot
   module Commands
     module Coinflip
       extend Discordrb::Commands::CommandContainer
-
       # Ratelimit for users. 15 times in a span of 60 seconds (1s delay between each).
       # TODO: Maybe move these to a single file across all commands?
       bucket :cf, limit: 15, time_span: 60, delay: 1
-
       command(:coinflip,
               # TODO: Move all command aliases to a single file.
               aliases: %i[coin flip toss kolike kolikko heitähomovoltti flop kkoin],
@@ -22,7 +20,7 @@ module TohsakaBot
           break
         end
 
-        user_id = event.message.author
+        user_id = event.message.author.id
         role_id = $settings['winner_role'].to_i
 
         # Probabilities for the coin toss (%).
@@ -44,8 +42,21 @@ module TohsakaBot
           if picked.chomp(':') == 'The coin landed on its edge'
             Kernel.give_temporary_role(event, role_id, user_id)
           end
+          outcome = picked.chomp(':')
+          case outcome
+          when "Tails"
+            url = "https://cdn.discordapp.com/attachments/351170098754486289/655844541844291584/tails.png"
+          when "Heads"
+            url = "https://cdn.discordapp.com/attachments/351170098754486289/655844590896807966/heads.png"
+          else
+            url = ""
+            outcome = "| " + outcome
+          end
 
-          event.respond(picked.chomp(':'))
+          event.channel.send_embed do |embed|
+            embed.colour = 0xA82727
+            embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: outcome, icon_url: url)
+          end
         end
       end
     end
