@@ -30,7 +30,8 @@ module TohsakaBot
         coin_toss = Pickup.new(coin)
 
         if n.to_i > 1
-          c = coin_toss.pick(n.to_i).uniq.map { |x| [x, coin_toss.count(x)] }.to_h
+          coins = coin_toss.pick(n.to_i)
+          c = coins.uniq.map { |x| [x, coins.count(x)] }.to_h
           event.<< c.keys[0].to_s + ' ' + c.values[0].to_s + ' ' + c.keys[1].to_s + ' ' + c.values[1].to_s + ' ' + c.keys[2].to_s + ' ' + c.values[2].to_s
         else
           picked = coin_toss.pick(1)
@@ -40,19 +41,11 @@ module TohsakaBot
             picked = 'The coin landed on its edge'
           end
 
-          case picked.chomp(':')
-          when 'Tails'
-            @result = 'tails'
-          when 'Heads'
-            @result = 'heads'
-          when 'The coin landed on its edge'
+          if picked.chomp(':') == 'The coin landed on its edge'
             Kernel.give_temporary_role(event, role_id, user_id)
           end
 
           event.respond(picked.chomp(':'))
-          if @result.is_a? String
-            event.channel.send_file(File.open("img/#{@result}.png"))
-          end
         end
       end
     end
