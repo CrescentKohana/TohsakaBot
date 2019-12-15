@@ -142,7 +142,7 @@ module TohsakaBot
       end
 
       # If the date was in the ISO 8601 format, convert it to text for the message.
-      @datetime = @datetime.is_a? Integer ? @datetime = Time.at(@datetime) : @datetime
+      @datetime = @datetime.is_a?(Integer) ? @datetime = Time.at(@datetime) : @datetime
       if @msg.empty?
         @event.respond "I shall #{repeated_msg}remind <@#{@userid.to_i}> at `#{@datetime}` `<ID #{i}>`#{repetition_interval}. "
       else

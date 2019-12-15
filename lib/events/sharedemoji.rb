@@ -15,12 +15,13 @@ module TohsakaBot
         # emoji_names.delete_if { |x| x[-1] != ':' }
 
         until i == emoji_names.count
-          every_emoji << BOT.find_emoji(emoji_names[i].to_s.tr!(':', ''))
+
+            every_emoji << BOT.find_emoji(emoji_names[i].to_s.tr!(':', ''))
+
           i += 1
         end
 
         until j == every_emoji.count || j == 19
-          puts every_emoji
           event.message.create_reaction("#{every_emoji[j].name}:#{every_emoji[j].id}")
           j += 1
         end
