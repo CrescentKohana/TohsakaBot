@@ -4,7 +4,7 @@ module TohsakaBot
 
     # All commands listed below are activated and in use.
     @commands = [Eval, Help, Ping, Information, RoleAdd, RoleDel, Summon,
-                 RemindMe, Tester, NowPlaying, Alko, Alkolist, Chaos,
+                 ReminderAdd, Tester, NowPlaying, Alko, Alkolist, Chaos,
                  Coinflip, Reminders, ReminderDel, Reboot,
                  TriggerAdd, TriggerDel, Triggers, ExclusionUrl,
                  Doubles, Triples, Quads, Stars, Spoiler, EncodeMsg,
