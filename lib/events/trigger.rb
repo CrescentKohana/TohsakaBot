@@ -21,7 +21,7 @@ module TohsakaBot
 
           if match
             chance = v["chance"].to_i
-            c = chance == 0 ? $settings['default_trigger_chance'].to_i : chance.to_i
+            c = chance.to_i == 0 || chance.nil? || chance == '0' ? $settings['default_trigger_chance'].to_i : chance.to_i
             pickup = Pickup.new({"true" => c, "false" => 100 - c})
             picked = pickup.pick(1)
 

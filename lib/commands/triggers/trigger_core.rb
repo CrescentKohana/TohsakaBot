@@ -4,7 +4,7 @@ module TohsakaBot
       @event = event
       @phrase = msg.join(' ')
       @userid = event.message.user.id
-      @parameter, @chance = 0
+      @parameter, @chance = '0'
       @trigger_db = "data/triggers.yml"
       # @full_triggers = YAML.load_file(@trigger_db)
       # @active_triggers = []
@@ -20,8 +20,8 @@ module TohsakaBot
       end
 
       # Remove an unnecessary spaces
-      @phrase[0] = "" if @phrase[0] == " "
-      @phrase[-1] = "" if @phrase[-1] == " "
+      @phrase[0] = '' if @phrase[0] == ' '
+      @phrase[-1] = '' if @phrase[-1] == ' '
 
       # Convert all regex found in the database to a form suitable for Ruby,
       # and pass them in to an array which only contains phareses which can be triggered.
@@ -60,8 +60,8 @@ module TohsakaBot
         o = [('a'..'z'), ('A'..'Z'), (0..9)].map(&:to_a).flatten
         string = (0...8).map { o[rand(o.length)] }.join
         filename = file.filename
-        full_filename = filename.gsub(File.extname(filename), '') + "_" + string + File.extname(filename)
-        IO.copy_stream(open(file.url), "triggers/#{full_filename}")
+        full_filename = filename.gsub(File.extname(filename), '') + '_' + string + File.extname(filename)
+        IO.copy_stream(URI.open(file.url), "triggers/#{full_filename}")
         full_filename
       end
     end
