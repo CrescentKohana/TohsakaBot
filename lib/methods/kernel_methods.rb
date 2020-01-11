@@ -106,7 +106,7 @@ module Kernel
     # Makes a new entry to the database for the user so that we can delete the role after a set time (default: a week).
     db_store.transaction do
       i = 1
-      while db_store.root?(i) do i += 1 end
+      i += 1 while db_store.root?(i)
       db_store[i] = { 'time' => Time.now, 'user' => user_id, 'server' => server_id, 'role' => role_id }
       db_store.commit
     end

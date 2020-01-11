@@ -53,8 +53,8 @@ module TohsakaBot
       i
     end
 
-    def download_response_picture
-      file = @event.message.attachments.first
+    def download_response_picture(response)
+      file = response.message.attachments.first
       if /https:\/\/cdn.discordapp.com.*/.match?(file.url)
         # Add an unique ID at the end of the filename.
         o = [('a'..'z'), ('A'..'Z'), (0..9)].map(&:to_a).flatten

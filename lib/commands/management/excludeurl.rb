@@ -13,7 +13,7 @@ module TohsakaBot
         exclusions = YAML::Store.new('data/excluded_urls.yml')
         exclusions.transaction do
           i = 1
-          while exclusions.root?(i) do i += 1 end
+          i += 1 while exclusions.root?(i)
           exclusions[i] = {"url" => u.to_s}
           exclusions.commit
         end

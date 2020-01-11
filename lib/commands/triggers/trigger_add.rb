@@ -17,16 +17,15 @@ module TohsakaBot
         end
 
         trg = TriggerCore.new(event, msg)
-
         if !event.message.attachments.first.nil?
-          filename = trg.download_response_picture
+          filename = trg.download_response_picture(event)
           id = trg.add_new_trigger(filename: filename)
         else
           event.respond 'Tell me the response (10s remaining).'
           response = event.message.await!(timeout: 10)
           if response
             if !response.message.attachments.first.nil?
-              filename = trg.download_response_picture
+              filename = trg.download_response_picture(response)
               id = trg.add_new_trigger(filename: filename)
             else
               id =  trg.add_new_trigger(response: response.message.content)
