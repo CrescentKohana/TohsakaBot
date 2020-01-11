@@ -48,7 +48,7 @@ module TohsakaBot
   $triggers = YAML.load_file("data/triggers.yml")
   $triggers_only = []
   $triggers.each do |key, value|
-    $triggers_only << value["trigger"].to_regexp(detect: true)
+    $triggers_only << value["phrase"].to_s.to_regexp(detect: true)
   end
 
   # Events and commands used by the bot.

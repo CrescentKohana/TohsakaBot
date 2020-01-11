@@ -12,8 +12,8 @@ module TohsakaBot
         triggers = YAML.load_file('data/triggers.yml')
         i = 0
         triggers.each do |key, value|
-          ids.each do |x|
-            if event.author.id.to_i == value["user"].to_i && key.to_i == ids[i].to_i
+          ids.each do |k|
+            if event.author.id.to_i == value["user"].to_i && key.to_i == k.to_i
               i += 1
               unless value["file"].to_s.empty?
                 File.delete(value["file"].to_s)
@@ -28,7 +28,6 @@ module TohsakaBot
             end
           end
         end
-
         if defined? @check
           event.<< 'Trigger(s) deleted.'
         else
