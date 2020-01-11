@@ -19,9 +19,7 @@ module TohsakaBot
 
             db.transaction do
               i = 1
-              until db.root?(i) != true
-                i += 1
-              end
+              i += 1 while db.root?(i)
               db[i] = {"url" => "#{u}", "time" => ti, "file" => "#{file}", "user" => "#{ui}", "msg_url" =>"#{url_to_msg}" }
               db.commit
             end

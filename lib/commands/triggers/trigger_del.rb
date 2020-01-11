@@ -16,7 +16,7 @@ module TohsakaBot
             if event.author.id.to_i == value["user"].to_i && key.to_i == k.to_i
               i += 1
               unless value["file"].to_s.empty?
-                File.delete(value["file"].to_s)
+                File.delete("triggers/#{value["file"]}")
               end
               rstore = YAML::Store.new('data/triggers.yml')
               rstore.transaction do
