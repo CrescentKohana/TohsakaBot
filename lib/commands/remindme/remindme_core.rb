@@ -1,43 +1,5 @@
 module TohsakaBot
-  module Commands
-    module RemindMe
-      extend Discordrb::Commands::CommandContainer
-      command(:remindme,
-              aliases: %i[remind reminder remadd remind addrem muistuta muistutus rem],
-              description: 'Reminder.',
-              min_args: 1,
-              usage: 'remindme <R〇y〇M〇w〇d〇h〇m〇s||time as natural language||ISO8601 etc.. (if spaces, use ; after the time)> <msg> (R for repeated, >10 minutes)',
-              rescue: "Something went wrong!\n`%exception%`") do |event, time_input, *msg|
-
-        rem = RemindMeCore.new(event, time_input, msg)
-        output = rem.convert_datetime
-        m = 'Usage: `remindme <R〇y〇M〇w〇d〇h〇m〇s||time as natural language||ISO8601 etc.. (if spaces, use ; after the time)> <msg> (R for repeated, >10 minutes)`'
-
-        if user_limit_reached?("data/reminders.yml", $settings["reminder_limit"], event.message.user.id)
-          # user_limit_reached?("#{CFG.bot.data}/reminders.yml", CFG.bot.max_reminders, event.user.id)
-          m = "Sorry, but the the limit for remainders per user is #{$settings['remainder_limit']}! " +
-              "Wait that they expire or remove them with `reminders` & `delreminder <id(s)>`."
-          output = 0
-        end
-
-        case output
-        when 1 # Success!
-          rem.store_reminder
-        when 2 # Past value (or exactly now)
-          m = 'The thing is.. time travel is still a little hard for me :(, so try not to use past dates. ' + m
-        when 3 # Wrong syntax (or negative values)
-          m = 'Wrong syntax or negative values used. ' + m
-        when 4 # Limitation of a Gem
-          m = 'Mixing weeks with other date parts (y, M, d) is not allowed.'
-        when 5 # So no spam
-          m = 'The interval limit for repeated reminders is ten minutes. Reminder aborted.'
-        end
-        event.respond m unless output == 1
-      end
-    end
-  end
-
-  class RemindMeCore
+  class RemindmeCore
     include ActionView::Helpers::DateHelper
     DURATION_REGEX = /^[ydwhmseckin0-9-]*$/i
     DATE_REGEX = /^[0-9]{4}-(1[0-2]|0[1-9])-(3[0-2]|[1-2][0-9]|0[1-9])\s(2[0-4]|1[0-9]|0[0-9]):(60|[0-5][0-9]):(60|[0-5][0-9])/
@@ -71,7 +33,7 @@ module TohsakaBot
         @msg[0] = "" if @msg[0] == " " # Remove an unnecessary space
         return 0 if @datetime.nil?
         @datetime.to_i > Time.now.to_i ? 1 : 2 # && DATE_REGEX.match?(datetime.to_s)
-      # The input is a duration
+        # The input is a duration
       elsif DURATION_REGEX.match?(@datetime.to_s)
 
         # Format P(n)Y(n)M(n)W(n)DT(n)H(n)M(n)S
@@ -108,11 +70,11 @@ module TohsakaBot
 
         @datetime = parsed_time.seconds.from_now
         @datetime > Time.now && DATE_REGEX.match?(parsed_time.seconds.from_now.to_s) ? 1 : 3
-      # Direct ISO 8601 formatted input
+        # Direct ISO 8601 formatted input
       elsif DATE_REGEX.match?("#{@datetime.gsub('_', ' ')} #{@msg}")
         @datetime = Time.parse(@datetime.gsub('_', ' ')).to_i
         @datetime > Time.now.to_i ? 1 : 2
-      # Input as a natural word (only one)
+        # Input as a natural word (only one)
       else
         @datetime = Chronic.parse(@datetime)
         return 0 if @datetime.nil?
