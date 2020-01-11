@@ -11,25 +11,20 @@ module TohsakaBot
 
         remindb = YAML.load_file('data/reminders.yml')
         i = 0
-
         remindb.each do |key, value|
           ids.each do |x|
-
             if event.author.id.to_i == value["user"].to_i && key.to_i == x.to_i
               i += 1
               rstore = YAML::Store.new('data/reminders.yml')
-
               rstore.transaction do
                 rstore.delete(key)
                 rstore.commit
               end
-
               @check = 1
               next
             end
           end
         end
-
         if defined? @check
           event.<< 'Reminder(s) deleted.'
         else

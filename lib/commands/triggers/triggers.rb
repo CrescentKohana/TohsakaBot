@@ -10,7 +10,7 @@ module TohsakaBot
 
         triggers = YAML.load_file('data/triggers.yml')
         current_triggers = []
-        output = "`  ID | TRIGGER               | MSG/FILE`\n"
+        output = "`Modes include Normal, Any and Regex.`\n`  ID | M & % | TRIGGER                        | MSG/FILE`\n"
         pos = 0
 
         if all_triggers == "all"
@@ -22,13 +22,26 @@ module TohsakaBot
         end
 
         sorted = triggers.sort_by { |k| k }
-        sorted.each do |key, value|
-          if (value["user"].to_s =~ author_id) == 0
-            current_triggers << [key, value["trigger"].to_s, value["reply"].to_s, value["file"].to_s, value["user"]]
-            if current_triggers[pos][2].empty?
-              output << "`#{sprintf("%4s", current_triggers[pos][0])} | #{sprintf("%-21s", current_triggers[pos][1][0..15])} | #{current_triggers[pos][3][9..-1][0..40]}`\n"
+        sorted.each do |k, v|
+          if (v["user"].to_s =~ author_id) == 0
+            current_triggers << [k, v["phrase"].to_s, v["reply"].to_s, v["file"].to_s, v["user"], v["chance"], v["mode"]]
+            id = current_triggers[pos][0]
+            phrase = current_triggers[pos][1][0..32]
+            chance = current_triggers[pos][5].to_i == 0 ? $settings['default_trigger_chance'].to_s : current_triggers[pos][5].to_s
+            filename = current_triggers[pos][3][0..20]
+            reply = current_triggers[pos][2][0..16].gsub("\n", '')
+            if current_triggers[pos][6] == 1
+              mode = "A"
+            elsif current_triggers[pos][6] == 2
+              mode = "R"
             else
-              output << "`#{sprintf("%4s", current_triggers[pos][0])} | #{sprintf("%-21s", current_triggers[pos][1][0..15])} | #{current_triggers[pos][2].lines.first.chomp[0..40]}`\n"
+              mode = "N"
+            end
+
+            if current_triggers[pos][2].empty?
+              output << "`#{sprintf("%4s", id)} | #{sprintf("%-5s", mode + " " + chance)} | #{sprintf("%-33s", phrase)} | #{sprintf("%-21s", filename)}`\n"
+            else
+              output << "`#{sprintf("%4s", id)} | #{sprintf("%-5s", mode + " " + chance)} | #{sprintf("%-33s", phrase)} | #{sprintf("%-21s", reply)}`\n"
             end
             pos += 1
           end

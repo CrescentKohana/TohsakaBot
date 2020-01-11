@@ -54,8 +54,7 @@ module Kernel
         reminders_amount += 1
       end
     end
-
-    reminders_amount < limit.to_i
+    reminders_amount > limit.to_i
   end
 
   def self.send_message_with_reaction(bot, cid, emoji, content)
@@ -94,7 +93,6 @@ module Kernel
 
   def self.give_temporary_role(event, role_id, user_id)
     db_store = YAML::Store.new('data/temporary_roles.yml')
-
     server_id = event.channel.server.id
 
     # If the user already has an entry for the role, this deletes it first.

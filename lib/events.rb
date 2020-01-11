@@ -3,7 +3,7 @@ module TohsakaBot
     Dir["#{File.dirname(__FILE__)}/events/*.rb"].each { |file| require file }
 
     # All events listed below are activated and in use.
-    @events = [Replies, TouhouCheck, Log,
+    @events = [Trigger, TouhouCheck, Log,
                Repost, DecodeMsg, SharedEmoji, AnotherRoll]
 
     def self.include!
