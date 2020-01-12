@@ -16,7 +16,13 @@ module TohsakaBot
             break
           end
         else
+          # TODO: This needs to be more robust! Currently to easy to circumvent.
+          supported_file_types = %w[.jpg .png .gif jpeg]
           answer = event.message.attachments.first.url
+          unless supported_file_types.include? answer[-4..-1]
+              event.respond "Only images allowed."
+              break
+          end
         end
 
         CSV::foreach("data/ask_rin_answers.csv", "r", :col_sep => "\t") do |row|
