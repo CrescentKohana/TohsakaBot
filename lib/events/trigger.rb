@@ -5,6 +5,7 @@ module TohsakaBot
       message(containing: $triggers_only) do |event|
         break if event.channel.pm?
 
+        # TODO: Iterate more because of overlapping!
         $triggers = YAML.load_file('data/triggers.yml')
         $triggers.each do |k, v|
           mode = v["mode"].to_i
