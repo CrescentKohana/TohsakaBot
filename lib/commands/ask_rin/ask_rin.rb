@@ -5,8 +5,8 @@ module TohsakaBot
       command(:askrin,
               aliases: %i[ask rin],
               description: 'Ask Rin about something and she will deliver.',
-              min_args: 1,
               usage: 'askrin <question>',
+              min_args: 1,
               rescue: "Something went wrong!\n`%exception%`") do |event, *msg|
 
         msg = msg.join(' ').sanitize_string
@@ -17,16 +17,13 @@ module TohsakaBot
           answer = csv.read.sample[0]
         end
 
+        url = answer =~ URI::regexp ? true : false
         event.channel.send_embed do |embed|
-          # embed.image = Discordrb::Webhooks::EmbedImage.new(url: "https://cdn.discordapp.com/attachments/351170098754486289/648936891890008120/22_1615-a1fef0.png")
+          embed.image = Discordrb::Webhooks::EmbedImage.new(url: answer) if url
           embed.colour = 0x36393F
-          embed.title = ""
-          embed.url = ""
-          embed.description = ""
-          embed.add_field(name: "**#{username}**: ", value: "[#{msg}](https://discordapp.com/channels/#{event.server.id}/#{event.channel.id}/#{event.message.id})")
-          embed.add_field(name: "**Rin** (凛): ", value: "#{answer}")
-          # embed.timestamp = Time.now
-          # embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "", icon_url: "")
+          embed.add_field(name: "**#{username}**: ", value: "[#{msg}](https://discordapp.com/channels/" + "#{event.server.id}/#{event.channel.id}/#{event.message.id})")
+          embed.add_field(name: "**Rin** (凛): ", value: "#{answer}") unless url
+          embed.add_field(name: "**Rin** (凛): ", value: "🖼️") if url
         end
       end
     end

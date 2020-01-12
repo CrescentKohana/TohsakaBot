@@ -7,7 +7,7 @@ module TohsakaBot
                  Coinflip, Reminders, ReminderDel, Reboot,
                  TriggerAdd, TriggerDel, Triggers, ExclusionUrl,
                  Doubles, Triples, Quads, Stars, Spoiler, EncodeMsg,
-                 RegardsKELA, Quickie, GetSauce, Winner, Loser, EmojiList, Number]
+                 RegardsKELA, Quickie, GetSauce, Winner, Loser, EmojiList, Number, AskRin, AnswerAdd]
 
     def self.include!
       @commands.each do |event|
