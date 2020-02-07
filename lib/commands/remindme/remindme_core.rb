@@ -12,7 +12,7 @@ module TohsakaBot
       @userid = event.message.user.id
       @channelid = event.channel.id
       @repeat = 'false'
-      @time_msg_separatos = %w[; to with]
+      @time_msg_separatos = %w[;]
     end
 
     def convert_datetime
