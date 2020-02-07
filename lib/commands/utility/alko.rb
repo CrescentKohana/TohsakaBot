@@ -25,6 +25,7 @@ module TohsakaBot
           csv = CSV.parse(csv_text, :headers => true)
           @match = []
           csv.map do |h|
+            next if h['Nimi'].nil?
             if h['Tyyppi'].is_a?(String)
               if (BigDecimal(h['Hinta']) * 100).to_i <= (iprice.to_f * 100).to_i && h['Tyyppi'].downcase == @output_type
                 @match << h
@@ -34,7 +35,7 @@ module TohsakaBot
 
           if @match.empty?
             m.delete
-            event.respond("Sorry, I couldn't find anything within that budget or the type used was not in my db.")
+            event.respond "Sorry, I couldn't find anything within that budget or the type used was not in my db."
             break
           end
 
@@ -50,8 +51,6 @@ module TohsakaBot
           event.channel.send_embed do |embed|
             embed.title = "Here's something for you to ~~get drunk~~ enjoy"
             embed.colour = 0xA82727
-            embed.url = ""
-            embed.description = ""
             embed.timestamp = Time.now
             embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'Sorted by the ratio of alcohol-% to price (€)')
 
