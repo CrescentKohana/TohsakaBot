@@ -18,8 +18,10 @@ module TohsakaBot
             phrase = '/.*\b' + phrase.to_s + '\b.*/i'
             match = true if (msg =~ phrase.to_regexp(detect: true)) == 0
           elsif mode == 2
+            msg = msg.gsub("<@!#{$config["cli_id"]}>", "").strip
             match = true if (msg =~ phrase.to_regexp(detect: true)) == 0
           else
+            msg = msg.gsub("<@!#{$config["cli_id"]}>", "").strip
             match = true if msg == phrase.to_s
           end
 
