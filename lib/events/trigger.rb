@@ -4,7 +4,8 @@ module TohsakaBot
       extend Discordrb::EventContainer
       rate_limiter = Discordrb::Commands::SimpleRateLimiter.new
       cd_seconds = 90
-      rate_limiter.bucket :always_triggers, delay: cd_seconds, rate_limit_message: '100% triggers on this channel are on a %time% second ratelimitation.'
+      rate_limiter.bucket :always_triggers, delay: cd_seconds
+      # rate_limit_message: '100% triggers on this channel are on a %time% second ratelimitation.'
       message(containing: $triggers_only) do |event|
         break if event.channel.pm?
 
@@ -17,6 +18,7 @@ module TohsakaBot
           match = false
           if mode == 1
             phrase = '/.*\b' + phrase.to_s + '\b.*/i'
+            msg = msg.gsub("<@!#{AUTH.cli_id}>", "").strip
             match = true if (msg =~ phrase.to_regexp(detect: true)) == 0
           elsif mode == 2
             msg = msg.gsub("<@!#{AUTH.cli_id}>", "").strip
@@ -33,7 +35,7 @@ module TohsakaBot
             elsif event.content.include?("<@!#{AUTH.cli_id}>")
               picked = false
               # TODO: Show realtime cooldown
-              event.<< "Calm down! 100% triggers have a  ratelimitation per channel."
+              # event.<< "Calm down! 100% triggers have a ratelimitation per channel."
             else
               chance = v["chance"].to_i
               c = chance.to_i == 0 || chance.nil? || chance == '0' ? CFG.default_trigger_chance.to_i : chance.to_i
