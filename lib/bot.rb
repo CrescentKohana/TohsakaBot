@@ -35,15 +35,13 @@ module TohsakaBot
 
   # TODO: Complete this to get rid of the global variables!
   # Configuration & settings #
-  #CFG = Configatron::RootStore.new
-  #config = YAML.load_file('cfg/config.yml').freeze
-  #settings = YAML.load_file('cfg/settings.yml').freeze
-  #CFG.configure_from_hash(settings.merge(config))
+  AUTH = OpenStruct.new YAML.load_file('cfg/auth.yml')
+  CFG = OpenStruct.new YAML.load_file('cfg/config.yml')
 
   # Global variables
-  $config = YAML.load_file('cfg/config.yml') # cfg/
-  $settings = YAML.load_file('cfg/settings.yml')
-  $url_regexp = Regexp.new $settings["url_regex"].to_regexp(detect: true)
+  $config = YAML.load_file('cfg/auth.yml')
+  $settings = YAML.load_file('cfg/config.yml')
+  $url_regexp = Regexp.new CFG.url_regex.to_regexp(detect: true)
   $excluded_urls = YAML.load_file("data/excluded_urls.yml")
   $triggers = YAML.load_file("data/triggers.yml")
   $triggers_only = []
@@ -55,9 +53,9 @@ module TohsakaBot
   require_relative 'events.rb'
   require_relative 'commands.rb'
 
-  BOT = Discordrb::Commands::CommandBot.new(token: $config["bot_token"],
-                                            client_id: $config["cli_id"],
-                                            prefix: $settings["prefix"],
+  BOT = Discordrb::Commands::CommandBot.new(token: AUTH.bot_token,
+                                            client_id: AUTH.cli_id,
+                                            prefix: CFG.prefix,
                                             advanced_functionality: false,
                                             fancy_log: true)
 
@@ -65,12 +63,9 @@ module TohsakaBot
   Events.include!
 
   BOT.run(:async)
-
   require_relative 'async.rb'
-
   BOT.sync
 
   # @trigger_system = Trigger_system.new
-
-  BOT.set_role_permission($config["owner_id"], 10)
+  BOT.set_role_permission(AUTH.owner_id, 10)
 end

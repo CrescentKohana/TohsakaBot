@@ -3,7 +3,8 @@ module TohsakaBot
     module Trigger
       extend Discordrb::EventContainer
       rate_limiter = Discordrb::Commands::SimpleRateLimiter.new
-      rate_limiter.bucket :always_triggers, delay: 90, rate_limit_message: '100% triggers on this channel are on a %time% second ratelimitation.'
+      cd_seconds = 90
+      rate_limiter.bucket :always_triggers, delay: cd_seconds, rate_limit_message: '100% triggers on this channel are on a %time% second ratelimitation.'
       message(containing: $triggers_only) do |event|
         break if event.channel.pm?
 
@@ -18,23 +19,24 @@ module TohsakaBot
             phrase = '/.*\b' + phrase.to_s + '\b.*/i'
             match = true if (msg =~ phrase.to_regexp(detect: true)) == 0
           elsif mode == 2
-            msg = msg.gsub("<@!#{$config["cli_id"]}>", "").strip
+            msg = msg.gsub("<@!#{AUTH.cli_id}>", "").strip
             match = true if (msg =~ phrase.to_regexp(detect: true)) == 0
           else
-            msg = msg.gsub("<@!#{$config["cli_id"]}>", "").strip
+            msg = msg.gsub("<@!#{AUTH.cli_id}>", "").strip
             match = true if msg == phrase.to_s
           end
 
           if match
-            if event.content.include?("<@!#{$config["cli_id"]}>") && !rate_limiter.rate_limited?(:always_triggers, event.channel)
+            if event.content.include?("<@!#{AUTH.cli_id}>") && !rate_limiter.rate_limited?(:always_triggers, event.channel)
               picked = true
-            elsif event.content.include?("<@!#{$config["cli_id"]}>")
+              cooldown_time = Time.now.to_i
+            elsif event.content.include?("<@!#{AUTH.cli_id}>")
               picked = false
               # TODO: Show realtime cooldown
-              # event.<< 'Calm down! 100% triggers have a 90s ratelimitation per channel.'
+              event.<< "Calm down! 100% triggers have a  ratelimitation per channel."
             else
               chance = v["chance"].to_i
-              c = chance.to_i == 0 || chance.nil? || chance == '0' ? $settings['default_trigger_chance'].to_i : chance.to_i
+              c = chance.to_i == 0 || chance.nil? || chance == '0' ? CFG.default_trigger_chance.to_i : chance.to_i
               pickup = Pickup.new({true => c, false => 100 - c})
               picked = pickup.pick(1)
             end

@@ -43,7 +43,7 @@ module TohsakaBot
                   #  if days.include? today
                   #  end
                   # end
-                  # Raw API request: Discordrb::API::Channel.create_message("Bot #{$config['bot_token']}", cid, "")
+                  # Raw API request: Discordrb::API::Channel.create_message("Bot #{CFG.bot_token}", cid, "")
                   @where.send_message("#{repeated_msg}eminder for <@#{uid}>!")
                 else
                   @where.send_message("#{repeated_msg}eminder for <@#{uid}>: #{msg.strip_mass_mentions}")

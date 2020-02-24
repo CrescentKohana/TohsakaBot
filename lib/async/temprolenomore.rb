@@ -15,7 +15,7 @@ module TohsakaBot
               sid = value['server'].to_i
               rid = value['role'].to_i
 
-              Discordrb::API::Server.remove_member_role("Bot #{$config['bot_token']}", sid, uid, rid)
+              Discordrb::API::Server.remove_member_role("Bot #{CFG.bot_token}", sid, uid, rid)
 
               rstore = YAML::Store.new('data/temporary_roles.yml')
               rstore.transaction do

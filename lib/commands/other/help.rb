@@ -18,7 +18,7 @@ module TohsakaBot
           embed.title = "**COMMANDS & OTHER STUFF**"
           embed.colour = 0xA82727
           embed.url = ""
-          embed.description = "_The prefix for all commands is #{$settings['prefix']}_"
+          embed.description = "_The prefix for all commands is #{CFG.prefix}_"
           embed.timestamp = Time.now
 
           embed.image = Discordrb::Webhooks::EmbedImage.new(url: "https://cdn.discordapp.com/attachments/351170098754486289/648936828212215812/22_1602-4fe170.gif")
@@ -38,7 +38,7 @@ module TohsakaBot
           embed.add_field(name: ":white_small_square: delreminder <ids separeted by space (integer)>", value: "Deletes an active reminder.")
           embed.add_field(name: ":white_small_square: alko <max price in euros (integer)> <type>", value: "Searches alko.fi for something to drink within your budget.")
           embed.add_field(name: ":white_small_square: alkolist", value: "Shows all usable types with the ?alko command.")
-          embed.add_field(name: ":white_small_square: addtrigger <regex: y/n> <trigger word>", value: "Adds a trigger to the bot which actives with the specified word (base chance #{$settings['default_trigger_chance']}%).")
+          embed.add_field(name: ":white_small_square: addtrigger <regex: y/n> <trigger word>", value: "Adds a trigger to the bot which actives with the specified word (base chance #{CFG.default_trigger_chance}%).")
           embed.add_field(name: ":white_small_square: triggers", value: "Checks all of your current triggers.")
           embed.add_field(name: ":white_small_square: deltrigger <ids separeted by space (integer)>", value: "Deletes one trigger.")
           embed.add_field(name: ":white_small_square: summon <servant>", value: "WIP. Servants currently usable: saber, archer, lancer.")

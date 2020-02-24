@@ -23,7 +23,7 @@ module TohsakaBot
                   urls[0].split('/')[-1]
                 end
 
-          url = "https://www.googleapis.com/youtube/v3/videos?part=id%2C+snippet&id=#{vid}&key=#{$config['yt_apikey']}"
+          url = "https://www.googleapis.com/youtube/v3/videos?part=id%2C+snippet&id=#{vid}&key=#{AUTH.yt_apikey}"
           parsed = JSON.parse(Net::HTTP.get(URI(url)))
           unless parsed.any? then break end
 

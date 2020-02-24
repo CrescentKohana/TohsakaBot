@@ -10,7 +10,7 @@ module TohsakaBot
 
         if event.channel.pm?
           uid = event.message.user.id
-          aliases = $settings['channel_aliases']
+          aliases = CFG.channel_aliases
 
           if chan =~ /\d{18}/
             plainmsg = msg.join(' ')
