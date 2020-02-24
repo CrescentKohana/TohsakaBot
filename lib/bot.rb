@@ -1,3 +1,4 @@
+# TODO: Clean requires!
 require 'active_support/core_ext/numeric/time'
 require 'active_support/core_ext/string/filters'
 require 'active_support/time_with_zone'
@@ -33,20 +34,23 @@ module TohsakaBot
     first.create_data_files_and_configs
   end
 
-  # TODO: Complete this to get rid of the global variables!
   # Configuration & settings #
   AUTH = OpenStruct.new YAML.load_file('cfg/auth.yml')
   CFG = OpenStruct.new YAML.load_file('cfg/config.yml')
 
-  # Global variables
-  $config = YAML.load_file('cfg/auth.yml')
-  $settings = YAML.load_file('cfg/config.yml')
+  # Global variables TODO: Get rid of these!
   $url_regexp = Regexp.new CFG.url_regex.to_regexp(detect: true)
   $excluded_urls = YAML.load_file("data/excluded_urls.yml")
   $triggers = YAML.load_file("data/triggers.yml")
   $triggers_only = []
-  $triggers.each do |key, value|
-    $triggers_only << value["phrase"].to_s.to_regexp(detect: true)
+  $triggers.each do |k, v|
+    if value["mode"].to_i == 0
+      $triggers_only << /#{v["phrase"]}/i
+    elsif value["mode"].to_i == 1
+      $triggers_only << /.*\b#{v["phrase"]}\b.*/i
+    else
+      $triggers_only << v["phrase"].to_regexp(detect: true)
+    end
   end
 
   # Events and commands used by the bot.
