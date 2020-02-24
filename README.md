@@ -2,8 +2,8 @@
 A Discord bot written in Ruby, originally made for a private Discord community. The name comes from one of the main heroines of Fate/stay night, Tohsaka Rin.
 
 ## Dependencies
-* Ruby >= 2.4 supported
-* Newest discordrb
+* Ruby >= 2.6 supported
+* Newest discordrb master branch
 * Other gems specified in Gemfile
 
 ## Usage
