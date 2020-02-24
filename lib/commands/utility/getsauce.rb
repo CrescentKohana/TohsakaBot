@@ -11,11 +11,11 @@ module TohsakaBot
 
         if !event.message.attachments.first.nil?
           @aurl = event.message.attachments.first.url
-          response = JSON.parse(open("https://saucenao.com/search.php?output_type=2&dbmask=32&api_key=#{$config['saucenao_apikey']}&url=#{@aurl}").read)
+          response = JSON.parse(open("https://saucenao.com/search.php?output_type=2&dbmask=32&api_key=#{AUTH.saucenao_apikey}&url=#{@aurl}").read)
           output = response['results'][0]['data']['pixiv_id']
         elsif messageurl
           if messageurl =~ $url_regexp
-            apijson = open("http://saucenao.com/search.php?output_type=2&dbmask=32&minsim=60&api_key=#{$config['saucenao_apikey']}&url=#{messageurl}")
+            apijson = open("http://saucenao.com/search.php?output_type=2&dbmask=32&minsim=60&api_key=#{AUTH.saucenao_apikey}&url=#{messageurl}")
             response = JSON.parse(apijson.read)
             output = response['results'][0]['data']['pixiv_id']
           else

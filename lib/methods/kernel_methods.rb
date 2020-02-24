@@ -100,7 +100,7 @@ module Kernel
 
     # Gives the role to the user unless they have it.
     unless TohsakaBot::BOT.member(event.server, user_id).role?(role_id)
-      Discordrb::API::Server.add_member_role("Bot #{$config['bot_token']}", server_id, user_id, role_id)
+      Discordrb::API::Server.add_member_role("Bot #{AUTH.bot_token}", server_id, user_id, role_id)
     end
 
     # Makes a new entry to the database for the user so that we can delete the role after a set time (default: a week).
@@ -115,7 +115,7 @@ module Kernel
   # TODO: WIP
   def self.delete_previous_bot_msg(sent_msg)
     remove_msg = event.message.await!(timeout: 15)
-    if remove_msg.content == $settings['msg_removal_word']
+    if remove_msg.content == CFG.msg_removal_word
       sent_msg.delete
     end
   end

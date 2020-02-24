@@ -27,7 +27,7 @@ module TohsakaBot
             current_triggers << [k, v["phrase"].to_s, v["reply"].to_s, v["file"].to_s, v["user"], v["chance"], v["mode"]]
             id = current_triggers[pos][0]
             phrase = current_triggers[pos][1][0..32]
-            chance = current_triggers[pos][5].to_i == 0 ? $settings['default_trigger_chance'].to_s : current_triggers[pos][5].to_s
+            chance = current_triggers[pos][5].to_i == 0 ? CFG.default_trigger_chance.to_s : current_triggers[pos][5].to_s
             filename = current_triggers[pos][3][0..20]
             reply = current_triggers[pos][2][0..16].gsub("\n", '')
             if current_triggers[pos][6] == 1

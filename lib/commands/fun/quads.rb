@@ -14,7 +14,7 @@ module TohsakaBot
         number = rand(0..9999)
         name = BOT.member(event.server, event.author.id).display_name
         user_id = event.message.author
-        role_id = $settings['winner_role'].to_i
+        role_id = CFG.winner_role.to_i
 
         identifier = "\u200B" * 4
         Kernel.send_message_with_reaction(BOT, event.channel.id, '🎲',

@@ -11,9 +11,9 @@ module TohsakaBot
               rescue: "Something went wrong!\n`%exception%`") do |event, *m|
 
         np = m.join(' ').to_s
-        BOT.game = $settings['np'] = np
-
-        File.open('cfg/settings.yml', 'w') { |f| f.write $settings.to_yaml }
+        cfg = YAML.load_file('cfg/config.yml')
+        BOT.game = cfg['np'] = np
+        File.open('cfg/config.yml', 'w') { |f| f.write cfg.to_yaml }
         event.respond("Status changed to #{np.strip_mass_mentions}")
       end
     end

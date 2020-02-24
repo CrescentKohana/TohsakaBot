@@ -10,8 +10,8 @@ module TohsakaBot
               min_args: 1,
               rescue: "Something went wrong!\n`%exception%`") do |event, *msg|
 
-        if user_limit_reached?("data/triggers.yml", $settings["trigger_limit"], event.message.user.id)
-          event.respond "Sorry, but the the limit for triggers per user is #{$settings["trigger_limit"]}! " +
+        if user_limit_reached?("data/triggers.yml", CFG.trigger_limit, event.message.user.id)
+          event.respond "Sorry, but the the limit for triggers per user is #{CFG.trigger_limit}! " +
                             "They can be removed using `triggers` & `deltrigger <id(s)>`."
           break
         end

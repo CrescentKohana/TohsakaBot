@@ -11,10 +11,10 @@ module TohsakaBot
               rescue: "Something went wrong!\n`%exception%`") do |event, username|
 
         user_id = event.message.mentions[0].id
-        role_id = $settings['winner_role'].to_i
+        role_id = CFG.winner_role
 
         if BOT.member(event.server, user_id).role?(role_id)
-          Discordrb::API::Server.remove_member_role("Bot #{$config['bot_token']}", event.channel.server.id, user_id, role_id)
+          Discordrb::API::Server.remove_member_role("Bot #{AUTH.bot_token}", event.channel.server.id, user_id, role_id)
           Kernel.delete_temporary_role_db(user_id, role_id)
           event.respond('So a loser then.')
         else

@@ -12,7 +12,7 @@ module TohsakaBot
               rescue: "Something went wrong!\n`%exception%`") do |e, servant|
 
         # Prototype of FATE (守護英霊召喚システム・フェイト).
-        wh = Discordrb::API::Channel.create_webhook("Bot #{$config['bot_token']}", e.channel.id, "Summoned Servant", nil, "I summon thee!")
+        wh = Discordrb::API::Channel.create_webhook("Bot #{AUTH.bot_token}", e.channel.id, "Summoned Servant", nil, "I summon thee!")
         id = JSON.parse(wh)['id']
         token = JSON.parse(wh)['token']
         wh = Discordrb::Webhooks::Client.new(id: id, token: token)
@@ -55,7 +55,7 @@ module TohsakaBot
           }
         end
 
-        Discordrb::API::Webhook.delete_webhook("Bot #{$config['bot_token']}", id, "Thy work here is done.")
+        Discordrb::API::Webhook.delete_webhook("Bot #{AUTH.bot_token}", id, "Thy work here is done.")
       end
     end
   end

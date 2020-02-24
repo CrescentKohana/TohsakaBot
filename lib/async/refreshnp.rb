@@ -3,8 +3,8 @@ module TohsakaBot
     module RefreshNP
       Thread.new do
         loop do
-          playing = $settings['np']
-          BOT.game = playing.to_s
+          cfg = YAML.load_file('cfg/config.yml')
+          BOT.game = cfg['np']
           sleep(1800)
         end
       end

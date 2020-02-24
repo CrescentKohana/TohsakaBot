@@ -13,9 +13,9 @@ module TohsakaBot
         output = rem.convert_datetime
         m = 'Usage: `remindme <R〇y〇M〇w〇d〇h〇m〇s||time as natural language||ISO8601 etc.. (if spaces, use ; after the time)> <msg> (R for repeated, >10 minutes)`'
 
-        if user_limit_reached?("data/reminders.yml", $settings["reminder_limit"], event.message.user.id)
+        if user_limit_reached?("data/reminders.yml", CFG.reminder_limit, event.message.user.id)
           # user_limit_reached?("#{CFG.bot.data}/reminders.yml", CFG.bot.max_reminders, event.user.id)
-          m = "Sorry, but the the limit for remainders per user is #{$settings['remainder_limit']}! " +
+          m = "Sorry, but the the limit for remainders per user is #{CFG.remainder_limit}! " +
               "Wait that they expire or remove them with `reminders` & `delreminder <id(s)>`."
           output = 0
         end

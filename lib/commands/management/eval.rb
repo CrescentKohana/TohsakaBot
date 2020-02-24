@@ -8,7 +8,7 @@ module TohsakaBot
               help_available: false,
               rescue: "Something went wrong!\n`%exception%`") do |event, *code|
 
-        break unless event.user.id == $config['owner_id'].to_i
+        break unless event.user.id == AUTH.owner_id.to_i
         begin
           eval code.join(' ')
         rescue => e

@@ -11,12 +11,12 @@ module TohsakaBot
         # 'next' does not seem to do what it needs to do (not to execute this command).
         break if !event.message.author.current_bot? || event.user.bot_account
 
-        Discordrb::API::Channel.delete_user_reaction("Bot #{$config['bot_token']}", event.channel.id, event.message.id, '🎲', event.user.id)
+        Discordrb::API::Channel.delete_user_reaction("Bot #{CFG.bot_token}", event.channel.id, event.message.id, '🎲', event.user.id)
         next if rate_limiter.rate_limited?(:roll, event.user)
 
         msg = event.message.content
         user_id = event.message.author
-        role_id = $settings['winner_role'].to_i
+        role_id = CFG.winner_role.to_i
 
         # Checks if the end of the message has
         # one or more zero-width space identifier(s).
