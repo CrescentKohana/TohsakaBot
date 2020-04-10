@@ -5,7 +5,7 @@ module TohsakaBot
       command(:triggersearch,
               aliases: %i[searchtrigger tsearch ts],
               description: 'Searches triggers.',
-              usage: 'triggersearch --t(rigger) <msg> --a(uthor) <id> --r(esponse) <response>',
+              usage: 'triggersearch --t(rigger) <trigger msg> --a(uthor) <id|mention> --r(esponse) <response msg>',
               min_args: 1,
               rescue: "`%exception%`") do |event, *msg|
 
@@ -19,17 +19,26 @@ module TohsakaBot
         end.parse!(Shellwords.shellsplit(args), into: options)
 
         result = TohsakaBot.trigger_data.full_triggers.select do |k, v|
-          opt_author = options[:author]
 
           if options[:author].nil?
             opt_author = v.user
           elsif !Integer(options[:author], exception: false)
             opt_author = options[:author].gsub(/[^\d]/, '')
+          else
+            opt_author = options[:author]
           end
-          opt_trigger = options[:trigger].nil? ? v.phrase : options[:trigger]
-          opt_response = options[:response].nil? ? v.reply : options[:response]
 
-          v.user.to_i == opt_author.to_i && v.phrase.to_s.include?(opt_trigger.to_s) && v.reply.to_s.include?(opt_response.to_s)
+          if options[:author].nil? && options[:trigger].nil? && options[:response].nil?
+            opt_trigger = args
+            opt_response = args
+
+            v.user.to_i == opt_author.to_i && (v.phrase.to_s.include?(opt_trigger.to_s) || v.reply.to_s.include?(opt_response.to_s))
+          else
+            opt_trigger = options[:trigger].nil? ? v.phrase : options[:trigger]
+            opt_response = options[:response].nil? ? v.reply : options[:response]
+
+            v.user.to_i == opt_author.to_i && v.phrase.to_s.include?(opt_trigger.to_s) && v.reply.to_s.include?(opt_response.to_s)
+          end
         end
 
         result_amount = 0
