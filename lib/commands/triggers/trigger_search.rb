@@ -53,10 +53,6 @@ module TohsakaBot
           result_amount += 1
         end
 
-        if result_amount > 5
-
-        end
-
         where = result_amount > 5 ? event.author.pm : event.channel
 
         if result.any?
