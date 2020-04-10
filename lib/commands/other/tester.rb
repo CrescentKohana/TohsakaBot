@@ -6,11 +6,11 @@ module TohsakaBot
               aliases: %i[test t],
               description: 'Test',
               usage: 'test <msg>',
-              min_args: 1,
-              rescue: "Something went wrong!\n`%exception%`") do |event, *msg|
+              rescue: "Something went wrong!\n`%exception%`") do |event, url|
 
-
-        event.<< msg.join(' ').strip_mass_mentions.sanitize_string.hide_link_preview
+        cfg = YAML.load_file('cfg/config.yml')
+        BOT.game = cfg['np']
+        event.<< url
       end
     end
   end

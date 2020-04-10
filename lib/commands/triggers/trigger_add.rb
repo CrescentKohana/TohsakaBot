@@ -6,7 +6,7 @@ module TohsakaBot
       command(:triggeradd,
               aliases: %i[addtrigger trigger],
               description: 'Adds a trigger.',
-              usage: 'addtrigger <trigger phrase> (--reg enables regex, --any matches the trigger everywhere in the msg)',
+              usage: 'addtrigger <trigger phrase> (--any matches the trigger everywhere in the msg)',
               min_args: 1,
               rescue: "Something went wrong!\n`%exception%`") do |event, *msg|
 
@@ -16,26 +16,26 @@ module TohsakaBot
           break
         end
 
-        trg = TriggerCore.new(event, msg)
+        trg = TriggerSession.new(event, msg)
         if !event.message.attachments.first.nil?
           filename = trg.download_response_picture(event)
           id = trg.add_new_trigger(filename: filename)
         else
-          event.respond 'Tell me the response (10s remaining).'
+          event.respond('Tell me the response (10s remaining).')
           response = event.message.await!(timeout: 10)
           if response
             if !response.message.attachments.first.nil?
               filename = trg.download_response_picture(response)
               id = trg.add_new_trigger(filename: filename)
             else
-              id =  trg.add_new_trigger(response: response.message.content)
+              id = trg.add_new_trigger(response: response.message.content)
             end
           else
             event.respond('You took too long!')
             break
           end
         end
-        event.respond "Trigger added `<ID #{id}>`."
+        event.respond("Trigger added `<ID #{id}>`.")
       end
     end
   end

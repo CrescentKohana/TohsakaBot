@@ -1,0 +1,159 @@
+GIT
+  remote: https://github.com/discordrb/discordrb.git
+  revision: 2c2b50e32c055aa8288b34644346a10696d5efa1
+  specs:
+    discordrb (3.3.0)
+      discordrb-webhooks (~> 3.3.0)
+      ffi (>= 1.9.24)
+      opus-ruby
+      rest-client (>= 2.0.0)
+      websocket-client-simple (>= 0.3.0)
+    discordrb-webhooks (3.3.0)
+      rest-client (>= 2.1.0.rc1)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    actionview (6.0.2.2)
+      activesupport (= 6.0.2.2)
+      builder (~> 3.1)
+      erubi (~> 1.4)
+      rails-dom-testing (~> 2.0)
+      rails-html-sanitizer (~> 1.1, >= 1.2.0)
+    activesupport (6.0.2.2)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      i18n (>= 0.7, < 2)
+      minitest (~> 5.1)
+      tzinfo (~> 1.1)
+      zeitwerk (~> 2.2)
+    bigdecimal (2.0.0)
+    builder (3.2.4)
+    chronic (0.10.2)
+    climate_control (0.2.0)
+    cocaine (0.6.0)
+      terrapin (= 0.6.0)
+    concurrent-ruby (1.1.6)
+    configatron (4.5.1)
+    crass (1.0.6)
+    diff-lcs (1.3)
+    domain_name (0.5.20190701)
+      unf (>= 0.0.5, < 1.0.0)
+    erubi (1.9.0)
+    event_emitter (0.2.6)
+    feedjira (3.1.1)
+      loofah (>= 2.3.1)
+      sax-machine (>= 1.0)
+    ffi (1.12.2-x64-mingw32)
+    http-accept (1.7.0)
+    http-cookie (1.0.3)
+      domain_name (~> 0.5)
+    i18n (1.8.2)
+      concurrent-ruby (~> 1.0)
+    json (2.3.0)
+    loofah (2.4.0)
+      crass (~> 1.0.2)
+      nokogiri (>= 1.5.9)
+    mime-types (3.3.1)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2019.1009)
+    mini_magick (4.10.1)
+    minitest (5.14.0)
+    mustermann (1.1.1)
+      ruby2_keywords (~> 0.0.1)
+    net (0.3.3)
+      activesupport
+    netrc (0.11.0)
+    nokogiri (1.11.0.rc2-x64-mingw32)
+    opus-ruby (1.0.1)
+      ffi
+    pickup (0.0.11)
+    rack (2.2.2)
+    rack-protection (2.0.8.1)
+      rack
+    rails-dom-testing (2.0.3)
+      activesupport (>= 4.2.0)
+      nokogiri (>= 1.6)
+    rails-html-sanitizer (1.3.0)
+      loofah (~> 2.3)
+    rest-client (2.1.0-x64-mingw32)
+      ffi (~> 1.9)
+      http-accept (>= 1.7.0, < 2.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
+    roo (2.8.3)
+      nokogiri (~> 1)
+      rubyzip (>= 1.3.0, < 3.0.0)
+    roo-xls (1.2.0)
+      nokogiri
+      roo (>= 2.0.0, < 3)
+      spreadsheet (> 0.9.0)
+    rspec (3.9.0)
+      rspec-core (~> 3.9.0)
+      rspec-expectations (~> 3.9.0)
+      rspec-mocks (~> 3.9.0)
+    rspec-core (3.9.1)
+      rspec-support (~> 3.9.1)
+    rspec-expectations (3.9.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.9.0)
+    rspec-mocks (3.9.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.9.0)
+    rspec-support (3.9.2)
+    ruby-ole (1.2.12.2)
+    ruby2_keywords (0.0.2)
+    rubyzip (2.3.0)
+    sax-machine (1.3.2)
+    sinatra (2.0.8.1)
+      mustermann (~> 1.0)
+      rack (~> 2.0)
+      rack-protection (= 2.0.8.1)
+      tilt (~> 2.0)
+    spreadsheet (1.2.6)
+      ruby-ole (>= 1.0)
+    terrapin (0.6.0)
+      climate_control (>= 0.0.3, < 1.0)
+    thread_safe (0.3.6)
+    tilt (2.0.10)
+    to_regexp (0.2.1)
+    tzinfo (1.2.7)
+      thread_safe (~> 0.1)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.7-x64-mingw32)
+    websocket (1.2.8)
+    websocket-client-simple (0.3.0)
+      event_emitter
+      websocket
+    youtube-dl.rb (0.3.1.2016.09.11.1)
+      cocaine (>= 0.5.4)
+    zeitwerk (2.3.0)
+
+PLATFORMS
+  x64-mingw32
+
+DEPENDENCIES
+  actionview
+  activesupport
+  bigdecimal
+  chronic
+  configatron
+  discordrb!
+  discordrb-webhooks!
+  feedjira
+  json
+  mini_magick
+  net
+  nokogiri (~> 1.11.pre)
+  pickup
+  roo
+  roo-xls
+  rspec
+  sinatra
+  terrapin
+  to_regexp
+  youtube-dl.rb
+
+BUNDLED WITH
+   2.1.2
