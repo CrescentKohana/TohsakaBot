@@ -31,6 +31,8 @@ module TohsakaBot
           m = 'Mixing weeks with other date parts (y, M, d) is not allowed.'
         when 5 # So no spam
           m = 'The interval limit for repeated reminders is ten minutes. Reminder aborted.'
+        else
+          m = ''
         end
         event.respond m unless output == 1
       end

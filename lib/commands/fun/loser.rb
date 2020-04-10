@@ -14,7 +14,7 @@ module TohsakaBot
         role_id = CFG.loser_role
 
         if BOT.member(event.server, user_id).role?(role_id)
-          Discordrb::API::Server.remove_member_role("Bot #{CFG.bot_token}", event.channel.server.id, user_id, role_id)
+          Discordrb::API::Server.remove_member_role("Bot #{AUTH.bot_token}", event.channel.server.id, user_id, role_id)
           Kernel.delete_temporary_role_db(user_id, role_id)
           event.respond('Ex-retard.')
         else
