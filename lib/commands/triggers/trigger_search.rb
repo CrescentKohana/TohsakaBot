@@ -4,7 +4,7 @@ module TohsakaBot
       extend Discordrb::Commands::CommandContainer
       command(:triggersearch,
               aliases: %i[searchtrigger tsearch ts],
-              description: 'Searches triggers.',
+              description: 'Search triggers.',
               usage: 'triggersearch --t(rigger) <trigger msg> --a(uthor) <id|mention> --r(esponse) <response msg>',
               min_args: 1,
               rescue: "`%exception%`") do |event, *msg|
