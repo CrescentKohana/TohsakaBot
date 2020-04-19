@@ -15,10 +15,9 @@ module TohsakaBot
       # Convert all regex found in the database to a suitable form for Ruby,
       # and pass them in to an array which only contains triggerable phareses.
       @full_triggers.each do |k, v|
-        if v["mode"].to_i == 0
-          @active_triggers << /#{v["phrase"]}/i
-        elsif v["mode"].to_i == 1
-          @active_triggers << /.*\b#{v["phrase"]}\b.*/i
+        if v["mode"].to_i == 0 || v["mode"].to_i == 1
+          # @active_triggers << /#{v["phrase"]}/i
+          @active_triggers << /.*\b#{v["phrase"]}\b.*/
         else
           @active_triggers << v["phrase"].to_regexp(detect: true)
         end
