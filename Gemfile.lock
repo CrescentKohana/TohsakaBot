@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/discordrb/discordrb.git
-  revision: 2c2b50e32c055aa8288b34644346a10696d5efa1
+  revision: 44f93948a812e06b439968c6b072c0d9b749a842
   specs:
     discordrb (3.3.0)
       discordrb-webhooks (~> 3.3.0)
@@ -50,7 +50,7 @@ GEM
     i18n (1.8.2)
       concurrent-ruby (~> 1.0)
     json (2.3.0)
-    loofah (2.4.0)
+    loofah (2.5.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mime-types (3.3.1)

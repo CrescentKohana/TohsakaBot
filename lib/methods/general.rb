@@ -21,6 +21,19 @@ module TohsakaBot
     end
   end
 
+  def self.expire_msg(bot_msgs, user_msg: nil, duration: 60)
+    sleep(duration)
+    user_msg.delete unless user_msg.nil?
+    bot_msgs.each {|m| m.delete}
+    return
+  end
+
+  def self.send_multiple_msgs(content, where)
+    msg_objects = []
+    content.each { |c| msg_objects << where.send_message(c) }
+    msg_objects
+  end
+
   module TriggerPersistence
     def trigger_data
       @trigger_data ||= TriggerData.new("data/triggers.yml")

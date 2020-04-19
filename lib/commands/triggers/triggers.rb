@@ -4,54 +4,33 @@ module TohsakaBot
       extend Discordrb::Commands::CommandContainer
       command(:triggers,
               aliases: %i[listtriggers triggerlist liipaisimet liipaisinlista triggerit],
-              description: "Lists user's triggers. Parameter 'all' lists all triggers.",
-              usage: '',
-              rescue: "Something went wrong!\n`%exception%`") do |event, all_triggers|
+              description: "Lists user's triggers.",
+              usage: 'triggers',
+              rescue: "Something went wrong!\n`%exception%`") do |event|
 
-        triggers = YAML.load_file('data/triggers.yml')
-        current_triggers = []
-        output = "`Modes include Normal, Any and Regex.`\n`  ID | M & % | TRIGGER                        | MSG/FILE`\n"
-        pos = 0
-
-        if all_triggers == "all"
-          author_id = /.*/
-          where = event.author.pm
-        else
-          author_id = event.author.id.to_s.to_regexp(detect: true)
-          where = event.channel
-        end
-
-        sorted = triggers.sort_by { |k| k }
+        result_amount = 0
+        sorted = TohsakaBot.trigger_data.full_triggers.sort_by { |k| k }
+        output = "`Modes include normal (0), any (1) and regex (2).`\n`  ID | M & % | TRIGGER                           | MSG/FILE`\n"
         sorted.each do |k, v|
-          if (v["user"].to_s =~ author_id) == 0
-            current_triggers << [k, v["phrase"].to_s, v["reply"].to_s, v["file"].to_s, v["user"], v["chance"], v["mode"]]
-            id = current_triggers[pos][0]
-            phrase = current_triggers[pos][1][0..32]
-            chance = current_triggers[pos][5].to_i == 0 ? CFG.default_trigger_chance.to_s : current_triggers[pos][5].to_s
-            filename = current_triggers[pos][3][0..20]
-            reply = current_triggers[pos][2][0..16].gsub("\n", '')
-            if current_triggers[pos][6] == 1
-              mode = "A"
-            elsif current_triggers[pos][6] == 2
-              mode = "R"
-            else
-              mode = "N"
-            end
+          if v.user.to_i == event.author.id.to_i
+            chance = v.chance.to_i == 0 ? CFG.default_trigger_chance.to_s : v.chance.to_s
 
-            if current_triggers[pos][2].empty?
-              output << "`#{sprintf("%4s", id)} | #{sprintf("%-5s", mode + " " + chance)} | #{sprintf("%-33s", phrase)} | #{sprintf("%-21s", filename)}`\n"
+            if v.reply.nil?
+              output << "`#{sprintf("%4s", k)} | #{sprintf("%-5s", v.mode.to_s + " " + chance)} | #{sprintf("%-33s", v.phrase.to_s.gsub("\n", '')[0..30])} | #{sprintf("%-21s", v.file[0..20])}`\n"
             else
-              output << "`#{sprintf("%4s", id)} | #{sprintf("%-5s", mode + " " + chance)} | #{sprintf("%-33s", phrase)} | #{sprintf("%-21s", reply)}`\n"
+              output << "`#{sprintf("%4s", k)} | #{sprintf("%-5s", v.mode.to_s + " " + chance)} | #{sprintf("%-33s", v.phrase.to_s.gsub("\n", '')[0..30])} | #{sprintf("%-21s", v.reply.gsub("\n", '')[0..20])}`\n"
             end
-            pos += 1
+            result_amount += 1
           end
         end
 
-        if current_triggers.any?
-          where.split_send "#{output}"
+        msgs = []
+        if result_amount > 0
+          msgs = TohsakaBot.send_multiple_msgs(Discordrb.split_message(output), event.channel)
         else
-          event.<< 'No triggers found.'
+          msgs << event.respond('No triggers found.')
         end
+        TohsakaBot.expire_msg(msgs, user_msg: event.message)
       end
     end
   end

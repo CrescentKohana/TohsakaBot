@@ -8,7 +8,7 @@ module TohsakaBot
       @parameter, @chance = 0
 
       if @phrase.include?("--any")
-        @phrase.match(/(.*)--any.*/)[1]
+        @phrase = @phrase.match(/(.*)--any.*/)[1]
         @parameter = 1
       end
 

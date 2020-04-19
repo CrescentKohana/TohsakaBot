@@ -2,17 +2,16 @@ module TohsakaBot
   module Events
     module TriggerEvent
       extend Discordrb::EventContainer
-      cd_seconds = 60
       rate_limiter = Discordrb::Commands::SimpleRateLimiter.new
-      rate_limiter.bucket :always_triggers, delay: cd_seconds
-      message(containing: TohsakaBot.trigger_data.active_triggers) do |event|
 
+      message(containing: TohsakaBot.trigger_data.active_triggers) do |event|
         mentions = event.message.mentions
         sure_trigger = false
         mentions.each { |user| if user.current_bot? then sure_trigger = true end }
 
         if sure_trigger
-          if rate_limiter.rate_limited?(:always_triggers, event.author)
+          rate_limiter.bucket :sure_triggers, delay: 60
+          if rate_limiter.rate_limited?(:sure_triggers, event.author)
             sure_trigger = false
           end
         end
