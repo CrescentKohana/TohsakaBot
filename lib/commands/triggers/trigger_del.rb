@@ -3,7 +3,7 @@ module TohsakaBot
     module TriggerDel
       extend Discordrb::Commands::CommandContainer
       command(:triggerdel,
-              aliases: %i[deltrigger donttrigger remtrigger triggerrem],
+              aliases: %i[td deltrigger deletetrigger triggerdelete removetrigger triggerremove donttrigger remtrigger triggerrem],
               description: 'Deletes a trigger.',
               usage: 'deltrigger <ids separeted by space (integer)>',
               min_args: 1,
