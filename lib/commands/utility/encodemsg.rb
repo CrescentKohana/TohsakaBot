@@ -5,29 +5,39 @@ module TohsakaBot
       command(:encodemsg,
               aliases: %i[encode 🔒],
               description: 'Encode a message (with ROT13).',
-              usage: 'encode <channel (opt)> <message>',
-              rescue: "Something went wrong!\n`%exception%`") do |event, chan, *msg|
+              usage: 'encode <#channel_name | channel_id (optional)> <message>',
+              min_args: 1,
+              rescue: "Something went wrong!\n`%exception%`") do |event, channel, *msg|
 
         if event.channel.pm?
-          uid = event.message.user.id
+          user_id = event.message.user.id
           aliases = CFG.channel_aliases
+          @pm = false
 
-          if chan =~ /\d{18}/
+          # Channel ID: 18 digits
+          if channel.match(/\d{18}/)
+            @channel_id = channel.to_i
             plainmsg = msg.join(' ')
-            @to_where = 1
-          elsif chan[0] == '#'
-            chan[0] = ''
-            if aliases.key?(chan)
-              chan = aliases[chan].to_i
+
+          # Channel name: hastag and 1-100 non-whitespace characters
+          elsif channel.match(/#\S{1,100}/)
+            channel[0] = ''
+            if aliases.key?(channel)
+              @channel_id = aliases[channel].to_i
             else
-              channels = BOT.find_channel(chan)
-              @to_where = 1
+              @channel_id = BOT.find_channel(channel)
+              unless @channel_id.empty?
+                @channel_id = @channel_id.first.id.to_i
+              else
+                event.<< "The channel was not found. Encoded message: "
+                @pm = true
+              end
             end
             plainmsg = msg.join(' ')
-            @to_where = 1
+          # Private Message
           else
-            plainmsg = chan + ' ' + msg.join(' ')
-            @to_where = 2
+            plainmsg = channel + ' ' + msg.join(' ')
+            @pm = true
           end
 
           encoded_msg = plainmsg.tr('a-zA-Z', 'n-za-mN-ZA-M')
@@ -42,20 +52,13 @@ module TohsakaBot
           #                plainmsg.tr('a-zA-Z', 'n-za-mN-ZA-M')
           #              end
 
-
-          if @to_where == 1
-            cid = if chan.is_a? Integer
-                    chan
-                  else
-                    channels[0].id
-                  end
-
-            # Hardcoded (for the time being) permission check for a specific channel. #server
-            server_id = BOT.channel(cid).server.id
-            if aliases['anime'].to_i == cid && !event.author.on(server_id).role?(411305301036498946)
+          if !@pm
+            # Hardcoded (for the time being) permission check for a specific channel.
+            server_id = BOT.channel(@channel_id).server.id
+            if aliases['anime'].to_i == @channel_id && !event.author.on(server_id).role?(411305301036498946)
               event.<< "You do not have enough permissions to send this to to the weeb kingdom."
             else
-              m = BOT.send_message(cid.to_i, "\u2063<@#{uid.to_i}>: #{encoded_msg}")
+              m = BOT.send_message(@channel_id.to_i, "\u2063<@#{user_id.to_i}>: #{encoded_msg}")
               m.create_reaction('🔓')
             end
 
