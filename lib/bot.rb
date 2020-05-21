@@ -61,6 +61,25 @@ module TohsakaBot
   # Asynchronous threads running in cycles.
   # load_modules(:Async, 'async/*', false)
   require_relative 'async.rb'
+
+  # Terminal tool to send messages through the bot.
+  Thread.new do
+    channel = CFG.default_channel
+
+    unless CFG.default_channel.match(/\d{18}/)
+      puts "No default channel set in 'cfg/config.yml'. " +
+               "Before sending messages through the terminal, set the channel with 'setchan <id>'"
+    end
+
+    while (user_input = gets.strip.split(" "))
+      if user_input[0] == "setchan"
+        channel = user_input[1]
+        puts "Channel set to #{BOT.channel(channel).name} "
+      elsif user_input[0][0] == "." && channel.match(/\d{18}/)
+        BOT.send_message(channel, user_input.join(" ")[1..-1])
+      end
+    end
+  end
   BOT.sync
 
   # @trigger_system = Trigger_system.new
