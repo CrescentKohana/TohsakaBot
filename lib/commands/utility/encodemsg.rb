@@ -26,15 +26,15 @@ module TohsakaBot
               @channel_id = aliases[channel].to_i
             else
               @channel_id = BOT.find_channel(channel)
-              unless @channel_id.empty?
-                @channel_id = @channel_id.first.id.to_i
-              else
+              if @channel_id.empty?
                 event.<< "The channel was not found. Encoded message: "
                 @pm = true
+              else
+                @channel_id = @channel_id.first.id.to_i
               end
             end
             plainmsg = msg.join(' ')
-          # Private Message
+          # Private Messages
           else
             plainmsg = channel + ' ' + msg.join(' ')
             @pm = true
@@ -43,14 +43,14 @@ module TohsakaBot
           encoded_msg = plainmsg.tr('a-zA-Z', 'n-za-mN-ZA-M')
 
           # TODO: Multiple encoding methods.
-          # encoded_msg = case emethod
-          #              when 'rot13'
-          #                plainmsg.tr('a-zA-Z', 'n-za-mN-ZA-M')
-          #              when 'md5'
-          #                plainmsg.tr('perkele', 'saatana')
-          #              else
-          #                plainmsg.tr('a-zA-Z', 'n-za-mN-ZA-M')
-          #              end
+          encoded_msg = case emethod
+                        when 'rot13'
+                          plainmsg.tr('a-zA-Z', 'n-za-mN-ZA-M')
+                        when 'sha512'
+                          Digest::SHA2.new(512).hexdigest(plainmsg)
+                        else
+                          plainmsg.tr('a-zA-Z', 'n-za-mN-ZA-M')
+                        end
 
           if !@pm
             # Hardcoded (for the time being) permission check for a specific channel.

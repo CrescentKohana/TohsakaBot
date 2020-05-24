@@ -5,6 +5,7 @@ require 'active_support/time_with_zone'
 require 'action_view'
 require 'bigdecimal'
 require 'bundler/setup'
+require 'drb/drb'
 require 'date'
 require 'cgi'
 require 'chronic'
@@ -14,18 +15,21 @@ require 'discordrb'
 require 'discordrb/webhooks'
 require 'json'
 require 'net/http'
+require 'mysql2'
 require 'nokogiri'
 require 'open-uri'
 require 'optparse'
 require 'pickup'
 require 'roo'
 require 'rubygems'
+require 'sequel'
 require 'shellwords'
-require 'sinatra'
 require 'to_regexp'
 require 'uri'
 require 'yaml'
 require 'yaml/store'
+
+require_relative 'methods/discordrb_command_override'
 
 module TohsakaBot
   unless File.exist?('cfg/config.yml')
@@ -34,10 +38,10 @@ module TohsakaBot
   end
 
   require_relative 'methods/kernel_methods'
-  require_relative 'methods/general'
-  # require_relative 'web/base'
-  require_relative 'database/trigger_data'
-  # require_relative 'database/database'
+  require_relative 'methods/miscellaneous'
+  require_relative 'data_access/database'
+  require_relative 'data_access/tohsaka_bridge'
+  require_relative 'data_access/trigger_data'
 
   # Configuration & settings #
   AUTH = OpenStruct.new YAML.load_file('cfg/auth.yml')
@@ -80,6 +84,19 @@ module TohsakaBot
       end
     end
   end
+
+  BRIDGE_URI = "druby://localhost:8787"
+  FRONT_OBJECT = TohsakaBridge.new
+  DRb.start_service(BRIDGE_URI, FRONT_OBJECT)
+
+  # Wait for the drb server thread to finish before exiting.
+  DRb.thread.join
+
+  # Database connection
+  Thread.new do
+
+  end
+
   BOT.sync
 
   # @trigger_system = Trigger_system.new

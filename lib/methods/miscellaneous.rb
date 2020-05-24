@@ -33,12 +33,4 @@ module TohsakaBot
     content.each { |c| msg_objects << where.send_message(c) }
     msg_objects
   end
-
-  module TriggerPersistence
-    def trigger_data
-      @trigger_data ||= TriggerData.new("data/triggers.yml")
-    end
-  end
-
-  TohsakaBot.extend TriggerPersistence
 end

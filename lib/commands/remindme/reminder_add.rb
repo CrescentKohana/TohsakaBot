@@ -5,8 +5,9 @@ module TohsakaBot
       command(:remindme,
               aliases: %i[remind reminder remadd remind addrem muistuta muistutus rem],
               description: 'Reminder.',
-              min_args: 1,
               usage: 'remindme <R〇y〇M〇w〇d〇h〇m〇s||time as natural language||ISO8601 etc.. (if spaces, use ; after the time)> <msg> (R for repeated, >10 minutes)',
+              min_args: 1,
+              require_register: true,
               rescue: "Something went wrong!\n`%exception%`") do |event, time_input, *msg|
 
         rem = RemindmeCore.new(event, time_input, msg)

@@ -7,6 +7,7 @@ module TohsakaBot
               description: 'Search triggers.',
               usage: 'triggersearch --t(rigger) <trigger msg> --a(uthor) <id|mention> --r(esponse) <response msg>',
               min_args: 1,
+              require_register: true,
               rescue: "`%exception%`") do |event, *msg|
 
         args = msg.join(' ')
