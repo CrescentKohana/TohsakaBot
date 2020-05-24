@@ -18,4 +18,5 @@ FLUSH privileges;
 ```
 
 2. Switch to the root folder of the bot and run `bundle install` to install required gems.
-3. Start the bot by running `bundle exec ruby run.rb`.
+3. Run the `lib/first_time_setup.rb`.
+4. Start the bot by running `bundle exec ruby run.rb`.

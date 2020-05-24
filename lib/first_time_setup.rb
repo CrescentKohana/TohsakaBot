@@ -40,14 +40,10 @@ module TohsakaBot
 
       File.open("cfg/config.yml", "w") do |f|
         prefix = "?"
-        data_path = "data"
         now_playing = "TohsakaBot"
 
         print "Type in the preferred command prefix (default is ?): "
         prefix = gets unless gets.nil?
-
-        print "Type in the preferred location of data (no / at the end of the path please!): "
-        data_path = gets unless gets.nil?
 
         print "Type in the default channel ID: "
         channel_id = gets
@@ -55,7 +51,6 @@ module TohsakaBot
         f.write("---\n" + "prefix: \"#{prefix}\"\n" +
                     "np: \"#{now_playing}\"" +
                     "default_channel: \"#{channel_id}\"" +
-                    "data_location: \"#{data_path}\"\n" +
                     "remainder_limit: \"50\"\n" +
                     "trigger_limit: \"10\"\n" +
                     "temp_folder: \"tmp\"\n" +
