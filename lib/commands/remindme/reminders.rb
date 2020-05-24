@@ -1,46 +1,47 @@
 module TohsakaBot
   module Commands
     module Reminders
+      extend ActionView::Helpers::DateHelper
       extend Discordrb::Commands::CommandContainer
       command(:reminders,
               aliases: %i[listrem remlist rems],
               description: 'Lists reminders.',
-              usage: 'reminders <id (sort by id, default is by date)>',
-              rescue: "Something went wrong!\n`%exception%`") do |event, sort|
+              usage: 'reminders',
+              require_register: true,
+              rescue: "Something went wrong!\n`%exception%`") do |event|
 
-        remindb = YAML.load_file('data/reminders.yml')
-        active_reminders = []
+        reminders = TohsakaBot.db[:reminders]
+        parsed_reminders = []
+
+        begin
+          user_id = TohsakaBot.get_user_id(event.author.id.to_i).to_i
+          parsed_reminders = reminders.where(:user_id => user_id).order(:datetime)
+        rescue
+          #
+        end
+
         output = "```  ID | WHEN                      | MSG (Repeat)\n===================================================\n"
-        pos = 0
 
-        sorted = if sort.to_s == 'id'
-                   remindb.sort_by { |k| k }
-                 else
-                   remindb.sort_by { |_, v| v['time'].to_i }
-                 end
+        parsed_reminders.each do |r|
+          id = r[:id].to_i
+          datetime = r[:datetime]
+          msg = r[:message]
+          repeat_time = r[:repeat].to_i
 
-        sorted.each do |key, value|
-          if event.author.id.to_i == value['user'].to_i
+          repeat_time = if repeat_time == 0
+                          ''
+                        else
+                          " (#{distance_of_time_in_words(repeat_time)})"
+                        end
 
-            active_reminders << [key, value['message'], value['user'], value['channel'], value['time'], value['repeat']]
-
-            repeat = if active_reminders[pos][5] != 'false'
-                       '(R)'
-                     else
-                       ''
-                     end
-
-            if active_reminders[pos][1].empty?
-
-              output << "#{sprintf("%4s", active_reminders[pos][0])} | #{Time.at(active_reminders[pos][4].to_i)} | No message specified #{repeat}\n"
-            else
-              output << "#{sprintf("%4s", active_reminders[pos][0])} | #{Time.at(active_reminders[pos][4].to_i)} | #{active_reminders[pos][1]} #{repeat}\n"
-            end
-            pos += 1
+          if msg.empty?
+            output << "#{sprintf("%4s", id)} | #{datetime} | No message specified#{repeat_time}\n"
+          else
+            output << "#{sprintf("%4s", id)} | #{datetime} | #{msg}#{repeat_time}\n"
           end
         end
 
-        if active_reminders.any?
+        if parsed_reminders.any?
           "#{output}```"
         else
           event.<< 'No reminders found.'

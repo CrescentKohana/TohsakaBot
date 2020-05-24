@@ -9,16 +9,16 @@ module TohsakaBot
       @event = event
       @datetime = time_input
       @msg = msg.join(' ').strip_mass_mentions.sanitize_string
-      @userid = event.message.user.id
+      @discord_uid = event.message.user.id
       @channelid = event.channel.id
-      @repeat = 'false'
+      @repeat = 0
       @time_msg_separatos = %w[;]
     end
 
     def convert_datetime
       # If the reminder is to be repeated.
       if @datetime[0] == 'R' || @datetime[0] == 'r'
-        @repeat = ''
+        @repeat = 0
         @datetime[0] = ''
       end
 
@@ -64,7 +64,7 @@ module TohsakaBot
         end
 
         parsed_time = ActiveSupport::Duration.parse(iso8601_time)
-        if @repeat != 'false'
+        if @repeat > 0
           @repeat = parsed_time.seconds
           return 5 if parsed_time.seconds.to_i < 600
         end
@@ -92,28 +92,33 @@ module TohsakaBot
     end
 
     def store_reminder
-      reminders_db = YAML::Store.new('data/reminders.yml')
-      repeated_msg = @repeat != "false" ? "repeatedly " : ''
-      repetition_interval = @repeat != "false" ? " `<Interval #{distance_of_time_in_words(@repeat)}>`" : ''
-      i = 1
-      reminders_db.transaction do
-        i += 1 while reminders_db.root?(i)
-        reminders_db[i] = {
-            "time"    => @datetime.to_i,
-            "message" => @msg.to_s,
-            "user"    => @userid.to_s,
-            "channel" => @channelid.to_s,
-            "repeat"  => @repeat.to_s
-        }
-        reminders_db.commit
+      reminders = TohsakaBot.db[:reminders]
+      begin
+        user_id = TohsakaBot.get_user_id(@discord_uid)
+      rescue
+        @event.respond "You aren't registered yet! Please do so by entering the command '?register'."
+        return
       end
+
+      TohsakaBot.db.transaction do
+        @id = reminders.insert(datetime: @datetime,
+                         message: @msg,
+                         user_id: user_id,
+                         channel: @channelid,
+                         repeat: @repeat,
+                         created_at: Time.now,
+                         updated_at: Time.now)
+      end
+
+      repeated_msg = @repeat > 0 ? "repeatedly " : ''
+      repetition_interval = @repeat > 0 ? " `<Interval #{distance_of_time_in_words(@repeat)}>`" : ''
 
       # If the date was in the ISO 8601 format, convert it to text for the message.
       @datetime = @datetime.is_a?(Integer) ? @datetime = Time.at(@datetime) : @datetime
       if @msg.empty?
-        @event.respond "I shall #{repeated_msg}remind <@#{@userid.to_i}> at `#{@datetime}` `<ID #{i}>`#{repetition_interval}. "
+        @event.respond "I shall #{repeated_msg}remind <@#{@discord_uid.to_i}> at `#{@datetime}` `<ID #{@id}>`#{repetition_interval}. "
       else
-        @event.respond "I shall #{repeated_msg}remind <@#{@userid.to_i}> with #{@msg.hide_link_preview} at `#{@datetime}` `<ID #{i}>`#{repetition_interval}."
+        @event.respond "I shall #{repeated_msg}remind <@#{@discord_uid.to_i}> with #{@msg.hide_link_preview} at `#{@datetime}` `<ID #{@id}>`#{repetition_interval}."
       end
       unless @event.channel.pm?
         @event.message.delete

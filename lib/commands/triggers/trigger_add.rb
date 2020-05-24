@@ -8,6 +8,7 @@ module TohsakaBot
               description: 'Adds a trigger.',
               usage: 'addtrigger <trigger phrase> (--any matches the trigger everywhere in the msg)',
               min_args: 1,
+              require_register: true,
               rescue: "Something went wrong!\n`%exception%`") do |event, *msg|
 
         if user_limit_reached?("data/triggers.yml", CFG.trigger_limit, event.message.user.id)

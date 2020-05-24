@@ -6,6 +6,7 @@ module TohsakaBot
               aliases: %i[listtriggers triggerlist liipaisimet liipaisinlista triggerit],
               description: "Lists user's triggers.",
               usage: 'triggers',
+              require_register: true,
               rescue: "Something went wrong!\n`%exception%`") do |event|
 
         result_amount = 0
