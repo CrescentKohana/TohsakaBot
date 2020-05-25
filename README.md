@@ -1,6 +1,8 @@
 # TohsakaBot
 A Discord bot written in Ruby, originally made for a private Discord community. The name comes from one of the main heroines of Fate/stay night, Tohsaka Rin.
 
+Rails web interface for the bot here: [TohsakaWeb](https://github.com/Luukuton/TohsakaWeb).
+
 ## Dependencies
 * Ruby >= 2.6 supported
 * MariaDB / MySQL 
