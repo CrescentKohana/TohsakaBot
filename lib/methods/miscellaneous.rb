@@ -33,4 +33,17 @@ module TohsakaBot
     content.each { |c| msg_objects << where.send_message(c) }
     msg_objects
   end
+
+  # Checks if the user limit is reached for this datatype.
+  # For example, if the user has 50 reminders, and the limit is 50, the method returns true.
+  #
+  # @param [Integer] discord_uid
+  # @param [Integer] limit
+  # @param [Symbol] datatype
+  # @return [Boolean]
+  def self.user_limit_reached?(discord_uid, limit, datatype)
+    user_id = TohsakaBot.get_user_id(discord_uid.to_i).to_i
+    query_result = TohsakaBot.db[datatype]
+    query_result.where(:user_id => user_id).count >= limit.to_i
+  end
 end

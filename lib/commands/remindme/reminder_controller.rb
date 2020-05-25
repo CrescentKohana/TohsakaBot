@@ -1,5 +1,5 @@
 module TohsakaBot
-  class RemindmeCore
+  class ReminderController
     include ActionView::Helpers::DateHelper
     DURATION_REGEX = /^[ydwhmseckin0-9-]*$/i
     DATE_REGEX = /^[0-9]{4}-(1[0-2]|0[1-9])-(3[0-2]|[1-2][0-9]|0[1-9])\s(2[0-4]|1[0-9]|0[0-9]):(60|[0-5][0-9]):(60|[0-5][0-9])/
@@ -31,12 +31,9 @@ module TohsakaBot
         @datetime = Chronic.parse(splitted[0].gsub(splitter, ''))
         @msg = splitted[1]
         @msg[0] = "" if @msg[0] == " " # Remove an unnecessary space
-        return 0 if @datetime.nil?
-        @datetime.to_i > Time.now.to_i ? 1 : 2 # && DATE_REGEX.match?(datetime.to_s)
 
       # The input is a duration (e.g. 5d4h30s)
       elsif DURATION_REGEX.match?(@datetime.to_s)
-
         # Format P(n)Y(n)M(n)W(n)DT(n)H(n)M(n)S
         seconds = match_time(@datetime, /([0-9]*)(sec|sek|[sS])/) || 0
         minutes = match_time(@datetime,      /([0-9]*)(min|[m])/) || 0
@@ -47,47 +44,44 @@ module TohsakaBot
         years   = match_time(@datetime,        /([0-9]*)([yYa])/) || 0
 
         # Because weeks cannot be used at the same time as years, months or days.
-        if weeks.to_i == 0
+        if weeks == 0
           iso8601_time = if "#{hours}#{minutes}#{seconds}".to_s.empty?
                            "P#{years}Y#{months}M#{days}D"
                          else
                            "P#{years}Y#{months}M#{days}DT#{hours}H#{minutes}M#{seconds}S"
                          end
-        elsif weeks.to_i > 0 && years == 0 && months == 0 && days == 0
+        elsif weeks > 0 && years == 0 && months == 0 && days == 0
           iso8601_time = if "#{hours}#{minutes}#{seconds}".to_s.empty?
                            "P#{weeks}W"
                          else
                            "P#{weeks}WT#{hours}H#{minutes}M#{seconds}S"
                          end
         else
-          return 4
+          raise ReminderHandler::WeeksMixedError
         end
 
         parsed_time = ActiveSupport::Duration.parse(iso8601_time)
-        if @repeat > 0
-          @repeat = parsed_time.seconds
-          return 5 if parsed_time.seconds.to_i < 600
-        end
+        raise ReminderHandler::DateTimeSyntaxError if parsed_time.seconds <= 0
 
         @datetime = parsed_time.seconds.from_now
-        @datetime > Time.now && DATE_REGEX.match?(parsed_time.seconds.from_now.to_s) ? 1 : 3
 
       # Direct ISO 8601 formatted input
       elsif DATE_REGEX.match?("#{@datetime.gsub('_', ' ')} #{@msg}")
         @datetime = Time.parse(@datetime.gsub('_', ' ')).to_i
-        @datetime > Time.now.to_i ? 1 : 2
 
       # Input as a natural word (no spaces)
       else
         @datetime = Chronic.parse(@datetime)
-        return 0 if @datetime.nil?
-        @datetime.to_i > Time.now.to_i ? 1 : 2 # && DATE_REGEX.match?(datetime.to_s)
       end
+
+      raise ReminderHandler::DateTimeSyntaxError if !DATE_REGEX.match?(@datetime.to_s) || @datetime.nil?
+      raise ReminderHandler::PastError if @datetime < Time.now
+      ReminderHandler.handle_repeat_limit(@repeat, BOT.channel(@channelid).pm?) if @repeat > 0
     end
 
     def match_time(time, regex)
       if time.match(regex)
-        time.scan(regex)[0][0]
+        time.scan(regex)[0][0].to_i
       end
     end
 
