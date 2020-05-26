@@ -9,45 +9,50 @@ module TohsakaBot
               min_args: 1,
               rescue: "Something went wrong!\n`%exception%`") do |event, *ids|
 
+        discord_uid = event.author.id.to_i
 
-        user = event.author.id.to_i
+        begin
+          user_id = TohsakaBot.get_user_id(discord_uid)
+        rescue
+          event.respond "You aren't registered yet! Please do so by entering the command '?register'."
+          break
+        end
+
         # TODO: Proper permissions.
+        # # no_permission, deleted = [], []
         admin = [73510616697929728, 73086349363650560]
-        no_permission, deleted = [], []
-        i = 0
 
-        TohsakaBot.trigger_data.full_triggers.each do |key, value|
-          ids.each do |k|
+        @check = 0
+        ids.map!(&:to_i)
+        triggers = TohsakaBot.db[:triggers]
 
-            if key.to_i == k.to_i
-              if admin.include?(user.to_i) || user == value["user"].to_i
-
-                i += 1
-                unless value["file"].to_s.empty?
-                  File.delete("triggers/#{value["file"]}")
-                end
-
-                rstore = YAML::Store.new('data/triggers.yml')
-                rstore.transaction do
-                  rstore.delete(key)
-                  rstore.commit
-                end
-                deleted.push(key)
-                next
-
-              else
-                no_permission.push(key)
-              end
-            end
+        if admin.include?(discord_uid)
+          TohsakaBot.db.transaction do
+            @deleted_triggers = triggers.where(:id => ids)
+            @check =  @deleted_triggers.delete
+          end
+        else
+          TohsakaBot.db.transaction do
+            @deleted_triggers = triggers.where(:user_id => user_id, :id => ids)
+            @check = @deleted_triggers.delete
           end
         end
 
-        unless no_permission.empty?
-          event.<< "No permissions to delete these triggers: #{no_permission.join(', ')}"
+        deleted_trigger_ids = @deleted_triggers.select{:id}.map{ |i| i.values}
+        files_to_delete = @deleted_triggers.select{:file}.map{ |f| f.values}
+        unless files_to_delete.nil? || files_to_delete.empty?
+          files_to_delete.each do |f|
+            File.delete("triggers/#{f}")
+          end
         end
 
-        if !deleted.empty?
-          event.<< "Trigger(s) deleted: #{deleted.join(', ')}"
+        #unless no_permission.empty?
+        #  event.<< "No permissions to delete these triggers. "# TODO: #{no_permission.join(', ')}
+        #end
+
+        if @check > 0
+          TohsakaBot.trigger_data.reload_active
+          event.<< "#{@check} trigger(s) deleted:#{deleted_trigger_ids.join(', ')}."
         else
           event.<< 'No triggers were deleted.'
         end

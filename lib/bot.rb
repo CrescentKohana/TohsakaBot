@@ -92,11 +92,6 @@ module TohsakaBot
   # Wait for the drb server thread to finish before exiting.
   DRb.thread.join
 
-  # Database connection
-  Thread.new do
-
-  end
-
   BOT.sync
 
   # @trigger_system = Trigger_system.new

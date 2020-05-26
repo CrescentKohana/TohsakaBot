@@ -19,10 +19,15 @@ module TohsakaBot
           opts.on('--response RESPONSE', String)
         end.parse!(Shellwords.shellsplit(args), into: options)
 
-        result = TohsakaBot.trigger_data.full_triggers.select do |k, v|
+        triggers = TohsakaBot.db[:triggers]
+        result = triggers.where(:server_id => event.server.id.to_i).order(:id).map{ |t| t.values}.select do |t|
+
+          discord_uid = TohsakaBot.get_discord_id(t[4])
+          phrase = t[1]
+          reply = t[2]
 
           if options[:author].nil?
-            opt_author = v.user
+            opt_author = discord_uid
           elsif !Integer(options[:author], exception: false)
             opt_author = options[:author].gsub(/[^\d]/, '')
           else
@@ -33,23 +38,29 @@ module TohsakaBot
             opt_trigger = args
             opt_response = args
 
-            v.user.to_i == opt_author.to_i && (v.phrase.to_s.include?(opt_trigger.to_s) || v.reply.to_s.include?(opt_response.to_s))
+            discord_uid == opt_author && (phrase.include?(opt_trigger.to_s) || reply.to_s.include?(opt_response.to_s))
           else
-            opt_trigger = options[:trigger].nil? ? v.phrase : options[:trigger]
-            opt_response = options[:response].nil? ? v.reply : options[:response]
+            opt_trigger = options[:trigger].nil? ? phrase : options[:trigger]
+            opt_response = options[:response].nil? ? reply : options[:response]
 
-            v.user.to_i == opt_author.to_i && v.phrase.to_s.include?(opt_trigger.to_s) && v.reply.to_s.include?(opt_response.to_s)
+            discord_uid == opt_author && phrase.include?(opt_trigger.to_s) && reply.to_s.include?(opt_response.to_s)
           end
         end
 
         result_amount = 0
-        sorted = result.sort_by { |k| k }
         output = "`Modes include normal (0), any (1) and regex (2).`\n`  ID | M & % | TRIGGER                           | MSG/FILE`\n"
-        sorted.each do |k, v|
-          if v.reply.nil?
-            output << "`#{sprintf("%4s", k)} | #{sprintf("%-5s", v.mode.to_s + " " + v.chance.to_s)} | #{sprintf("%-33s", v.phrase.to_s.gsub("\n", '')[0..30])} | #{sprintf("%-21s", v.file[0..20])}`\n"
+        result.each do |t|
+          id = t[0]
+          phrase = t[1]
+          reply = t[2]
+          file = t[3]
+          chance = t[6]
+          mode = t[7]
+
+          if reply.nil?
+            output << "`#{sprintf("%4s", id)} | #{sprintf("%-5s", mode.to_s + " " + chance.to_s)} | #{sprintf("%-33s", phrase.to_s.gsub("\n", '')[0..30])} | #{sprintf("%-21s", file[0..20])}`\n"
           else
-            output << "`#{sprintf("%4s", k)} | #{sprintf("%-5s", v.mode.to_s + " " + v.chance.to_s)} | #{sprintf("%-33s", v.phrase.to_s.gsub("\n", '')[0..30])} | #{sprintf("%-21s", v.reply.gsub("\n", '')[0..20])}`\n"
+            output << "`#{sprintf("%4s", id)} | #{sprintf("%-5s", mode.to_s + " " + chance.to_s)} | #{sprintf("%-33s", phrase.to_s.gsub("\n", '')[0..30])} | #{sprintf("%-21s", reply.gsub("\n", '')[0..20])}`\n"
           end
           result_amount += 1
         end

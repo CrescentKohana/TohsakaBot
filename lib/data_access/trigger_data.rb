@@ -1,27 +1,29 @@
 module TohsakaBot
   class TriggerData
-    attr_accessor :active_triggers, :full_triggers, :db_path
-    Trigger = Struct.new(:phrase, :reply, :file, :user, :chance, :mode)
-
-    @db_path
-    @full_triggers
+    attr_accessor :active_triggers
+    # @full_triggers
     @active_triggers
+    @triggers
 
-    def initialize(db_path)
-      @db_path = db_path
-      @full_triggers = YAML.load_file(db_path)
-      @active_triggers = []
+    def initialize
+      @triggers = TohsakaBot.db[:triggers]
+      @active_triggers = @triggers.select(:phrase).select{:phrase}.map{ |p| p.values}.flatten
 
       # Convert all regex found in the database to a suitable form for Ruby,
       # and pass them in to an array which only contains triggerable phareses.
-      @full_triggers.each do |k, v|
-        if v["mode"].to_i == 0 || v["mode"].to_i == 1
-          # @active_triggers << /#{v["phrase"]}/i
-          @active_triggers << /.*\b#{v["phrase"]}\b.*/
-        else
-          @active_triggers << v["phrase"].to_regexp(detect: true)
-        end
-      end
+      #@full_triggers.each do |k, v|
+      #  if v["mode"].to_i == 0 || v["mode"].to_i == 1
+      #    # @active_triggers << /#{v["phrase"]}/i
+      #    @active_triggers << /.*\b#{v["phrase"]}\b.*/
+      #  else
+      #    @active_triggers << v["phrase"].to_regexp(detect: true)
+      #  end
+      #end
+    end
+
+    def reload_active
+      @triggers = TohsakaBot.db[:triggers]
+      @active_triggers = @triggers.select(:phrase).select{:phrase}.map{ |p| p.values}.flatten
     end
   end
 end

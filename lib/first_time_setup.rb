@@ -66,7 +66,6 @@ module TohsakaBot
 
       File.open("data/temporary_roles.yml", "w") { |f| f.write("---") } unless File.exist?('data/temporary_roles.yml')
 
-      File.open("data/triggers.yml", "w") { |f| f.write("---") } unless File.exist?('data/triggers.yml')
       puts "Necessary files created!"
     end
 

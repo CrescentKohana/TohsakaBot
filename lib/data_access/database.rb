@@ -37,7 +37,7 @@ module TohsakaBot
 
   module TriggerPersistence
     def trigger_data
-      @trigger_data ||= TriggerData.new("data/triggers.yml")
+      @trigger_data ||= TriggerData.new
     end
   end
 
