@@ -21,17 +21,16 @@ module TohsakaBot
 
         triggers = TohsakaBot.db[:triggers]
         result = triggers.where(:server_id => event.server.id.to_i).order(:id).map{ |t| t.values}.select do |t|
-
-          discord_uid = TohsakaBot.get_discord_id(t[4])
           phrase = t[1]
           reply = t[2]
+          discord_uid = TohsakaBot.get_discord_id(t[4])
 
           if options[:author].nil?
             opt_author = discord_uid
           elsif !Integer(options[:author], exception: false)
-            opt_author = options[:author].gsub(/[^\d]/, '')
+            opt_author = options[:author].gsub(/[^\d]/, '').to_i
           else
-            opt_author = options[:author]
+            opt_author = options[:author].to_i
           end
 
           if options[:author].nil? && options[:trigger].nil? && options[:response].nil?
@@ -57,7 +56,7 @@ module TohsakaBot
           chance = t[6]
           mode = t[7]
 
-          if reply.nil?
+          if reply.nil? || reply.empty?
             output << "`#{sprintf("%4s", id)} | #{sprintf("%-5s", mode.to_s + " " + chance.to_s)} | #{sprintf("%-33s", phrase.to_s.gsub("\n", '')[0..30])} | #{sprintf("%-21s", file[0..20])}`\n"
           else
             output << "`#{sprintf("%4s", id)} | #{sprintf("%-5s", mode.to_s + " " + chance.to_s)} | #{sprintf("%-33s", phrase.to_s.gsub("\n", '')[0..30])} | #{sprintf("%-21s", reply.gsub("\n", '')[0..20])}`\n"
