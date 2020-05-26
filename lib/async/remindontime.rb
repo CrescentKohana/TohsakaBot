@@ -9,19 +9,13 @@ module TohsakaBot
 
           expiring_reminders.each do |r|
             id = r[:id].to_i
-            datetime = r[:datetime].to_i
             msg = r[:message]
             cid = r[:channel].to_i
+            datetime = r[:datetime].to_i
             created_at = r[:created_at]
             updated_at = r[:updated_at]
             user_id = r[:user_id].to_i
-
-            # Legacy
-            if user_id.to_s.size > 16
-              discord_uid = user_id
-            else
-              discord_uid = TohsakaBot.get_discord_id(user_id)
-            end
+            discord_uid = TohsakaBot.get_discord_id(user_id)
 
             repeat_time = r[:repeat].to_i
             repeated_msg = repeat_time > 0 ? "Repeated r" : "R"

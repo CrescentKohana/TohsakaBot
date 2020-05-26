@@ -1,7 +1,7 @@
 module TohsakaBot
   class ReminderController
     include ActionView::Helpers::DateHelper
-    DURATION_REGEX = /^[ydwhmseckin0-9-]*$/i
+    DURATION_REGEX = /^[ydwhmMsSeckin0-9-]*$/i
     DATE_REGEX = /^[0-9]{4}-(1[0-2]|0[1-9])-(3[0-2]|[1-2][0-9]|0[1-9])\s(2[0-4]|1[0-9]|0[0-9]):(60|[0-5][0-9]):(60|[0-5][0-9])/
     # attr_reader :datetime, :msg, :userid, :channelid, :repeated
 
@@ -86,22 +86,17 @@ module TohsakaBot
     end
 
     def store_reminder
-      reminders = TohsakaBot.db[:reminders]
-      begin
-        user_id = TohsakaBot.get_user_id(@discord_uid)
-      rescue
-        @event.respond "You aren't registered yet! Please do so by entering the command '?register'."
-        return
-      end
+      return unless TohsakaBot.registered?(@discord_uid)
 
+      reminders = TohsakaBot.db[:reminders]
       TohsakaBot.db.transaction do
         @id = reminders.insert(datetime: @datetime,
-                         message: @msg,
-                         user_id: user_id,
-                         channel: @channelid,
-                         repeat: @repeat,
-                         created_at: Time.now,
-                         updated_at: Time.now)
+                               message: @msg,
+                               user_id: TohsakaBot.get_user_id(@discord_uid),
+                               channel: @channelid,
+                               repeat: @repeat,
+                               created_at: Time.now,
+                               updated_at: Time.now)
       end
 
       repeated_msg = @repeat > 0 ? "repeatedly " : ''

@@ -3,7 +3,6 @@ module TohsakaBot
     module TriggerEvent
       extend Discordrb::EventContainer
       rate_limiter = Discordrb::Commands::SimpleRateLimiter.new
-
       message(containing: TohsakaBot.trigger_data.active_triggers) do |event|
         mentions = event.message.mentions
         sure_trigger = false
@@ -17,9 +16,11 @@ module TohsakaBot
         end
 
         unless event.channel.pm?
-          TohsakaBot.trigger_data.full_triggers.each do |k, v|
-            mode = v["mode"].to_i
-            phrase = v["phrase"]
+          triggers = TohsakaBot.db[:triggers]
+          server_triggers = triggers.where(:server_id => event.server.id.to_i)
+          server_triggers.each do |t|
+            phrase = t[:phrase]
+            mode = t[:mode].to_i
             msg = event.content
             match = false
 
@@ -39,16 +40,16 @@ module TohsakaBot
               if sure_trigger
                 picked = true
               else
-                chance = v["chance"].to_i
+                chance =  t[:chance].to_i
                 c = chance.to_i == 0 || chance.nil? || chance == '0' ? CFG.default_trigger_chance.to_i : chance.to_i
                 pickup = Pickup.new({true => c, false => 100 - c})
                 picked = pickup.pick(1)
               end
 
               if picked
-                file = v["file"]
+                file = t[:file]
                 if file.to_s.empty?
-                  event.<< v['reply']
+                  event.<< t[:reply]
                 else
                   event.channel.send_file(File.open("triggers/#{file}"))
                 end
