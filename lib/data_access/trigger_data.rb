@@ -25,5 +25,17 @@ module TohsakaBot
       @triggers = TohsakaBot.db[:triggers]
       @active_triggers = @triggers.select(:phrase).select{:phrase}.map{ |p| p.values}.flatten
     end
+
+    # Moves any trigger file not in the database to tmp/deleted_triggers.
+    def clean_trigger_files
+      puts "Cleaning trigger files.."
+      triggers_files = TohsakaBot.db[:triggers].select(:phrase).select{:file}.map{ |p| p.values}.flatten
+      Dir.foreach('triggers/') do |filename|
+        next if filename == '.' or filename == '..'
+        next if triggers_files.include? filename
+        FileUtils.mv("triggers/#{filename}", "tmp/deleted_triggers/#{filename}")
+      end
+      puts "Done cleaning trigger files."
+    end
   end
 end
