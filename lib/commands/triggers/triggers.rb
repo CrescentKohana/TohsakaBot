@@ -12,7 +12,7 @@ module TohsakaBot
         result_amount = 0
         triggers = TohsakaBot.db[:triggers]
         used_id = TohsakaBot.get_user_id(event.author.id)
-        sorted =  triggers.where(:user_id => used_id).order(:id)
+        sorted = triggers.where(:user_id => used_id).order(:id)
 
         output = "`Modes include normal (0), any (1) and regex (2).`\n`  ID | M & % | TRIGGER                           | MSG/FILE`\n"
         sorted.each do |t|
@@ -24,7 +24,6 @@ module TohsakaBot
             output << "`#{sprintf("%4s", t[:id])} | #{sprintf("%-5s", t[:mode].to_s + " " + chance)} | #{sprintf("%-33s", t[:phrase].to_s.gsub("\n", '')[0..30])} | #{sprintf("%-21s", t[:reply].gsub("\n", '')[0..20])}`\n"
           end
           result_amount += 1
-
         end
 
         msgs = []

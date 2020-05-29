@@ -66,6 +66,9 @@ module TohsakaBot
   # load_modules(:Async, 'async/*', false)
   require_relative 'async.rb'
 
+  # Uncomment to clean trigger files not present in the database.
+  # TohsakaBot.trigger_data.clean_trigger_files
+
   # Terminal tool to send messages through the bot.
   Thread.new do
     channel = CFG.default_channel
