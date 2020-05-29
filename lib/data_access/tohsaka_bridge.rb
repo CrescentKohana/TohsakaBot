@@ -4,14 +4,8 @@ module TohsakaBot
       CFG.np
     end
 
-    def save_trigger_file(filename)
-      # Add an unique ID at the end of the filename.
-      o = [('a'..'z'), ('A'..'Z'), (0..9)].map(&:to_a).flatten
-      string = (0...8).map { o[rand(o.length)] }.join
-      new_filename = filename.gsub(File.extname(filename), '') + '_' + string + File.extname(filename)
-
-      FileUtils.mv "#{CFG.web_dir}/public/uploads/#{filename}", "triggers/#{new_filename}"
-      new_filename
+    def save_trigger_file(path, filename)
+      FileUtils.mv path, "triggers/#{filename}"
     end
 
     def channels_user_has_rights_to(discord_uid)
@@ -44,7 +38,20 @@ module TohsakaBot
     end
 
     def get_channel(id)
-      BOT.channel(id)
+      BOT.channel(id.to_i)
+    end
+
+    def get_server(id)
+      BOT.server(id.to_i)
+    end
+
+    def get_def_trigger_chance(mode)
+      default_chance = CFG.default_trigger_chance.to_i
+      if mode.to_i == 0
+        default_chance * 2
+      else
+        default_chance
+      end
     end
 
     # Checks that the member is in same server as the bot.

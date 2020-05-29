@@ -21,9 +21,10 @@ module TohsakaBot
 
         triggers = TohsakaBot.db[:triggers]
         result = triggers.where(:server_id => event.server.id.to_i).order(:id).map{ |t| t.values}.select do |t|
-          phrase = t[1]
-          reply = t[2]
-          discord_uid = TohsakaBot.get_discord_id(t[4])
+          phrase = t[1].to_s
+          reply = t[2].to_s
+          file = t[3].to_s
+          discord_uid = TohsakaBot.get_discord_id(t[4]).to_i
 
           if options[:author].nil?
             opt_author = discord_uid
@@ -33,16 +34,21 @@ module TohsakaBot
             opt_author = options[:author].to_i
           end
 
+          # Queries with the given string as is, if there were no proper arguments
           if options[:author].nil? && options[:trigger].nil? && options[:response].nil?
-            opt_trigger = args
-            opt_response = args
+            opt_trigger = args.to_s
+            opt_response = args.to_s
 
-            discord_uid == opt_author && (phrase.include?(opt_trigger.to_s) || reply.to_s.include?(opt_response.to_s))
+            # if User matches OR Phrase is included OR Reply OR File is included
+            discord_uid == opt_author &&
+                (phrase.include?(opt_trigger) || reply.include?(opt_response) || file.include?(opt_response))
           else
-            opt_trigger = options[:trigger].nil? ? phrase : options[:trigger]
-            opt_response = options[:response].nil? ? reply : options[:response]
+            opt_trigger = options[:trigger] || phrase
+            opt_response = options[:response]  || reply
 
-            discord_uid == opt_author && phrase.include?(opt_trigger.to_s) && reply.to_s.include?(opt_response.to_s)
+            # if User matches AND Phrase is included AND (Reply OR File is included)
+            discord_uid == opt_author &&
+                phrase.include?(opt_trigger) && (reply.include?(opt_response) || file.include?(opt_response))
           end
         end
 
