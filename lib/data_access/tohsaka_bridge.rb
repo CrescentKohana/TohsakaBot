@@ -1,5 +1,9 @@
 module TohsakaBot
   class TohsakaBridge
+    def online?(faking = false)
+      faking ? false : true
+    end
+
     def get_now_playing
       CFG.np
     end
