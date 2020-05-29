@@ -40,8 +40,11 @@ module TohsakaBot
               if sure_trigger
                 picked = true
               else
-                chance =  t[:chance].to_i
-                c = chance.to_i == 0 || chance.nil? || chance == '0' ? CFG.default_trigger_chance.to_i : chance.to_i
+                chance = t[:chance].to_i
+                default_chance = CFG.default_trigger_chance.to_i
+                c = chance == 0 ? default_chance : chance.to_i
+                c *= 2 if chance == default_chance && mode == 0
+
                 pickup = Pickup.new({true => c, false => 100 - c})
                 picked = pickup.pick(1)
               end
