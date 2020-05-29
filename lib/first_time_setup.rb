@@ -19,9 +19,9 @@ module TohsakaBot
         db_password = gets
 
         # TODO: Disable the functionality of YT and SauceNao commands/events if not set.
-        print "Type in an YouTube API key (optional): "
+        print "Type in an YouTube API key (Optional): "
         yt_apikey = gets
-        print "Type in a SauceNao API key (optional): "
+        print "Type in a SauceNao API key (Optional): "
         saucenao_apikey = gets
 
         f.write("# Personal keys, IDs and tokens\n\n" +
@@ -48,13 +48,17 @@ module TohsakaBot
         print "Type in the default channel ID: "
         channel_id = gets
 
+        print "Type in the directory path of TohsakaWeb like /home/rin/www/TohsakaWeb (Note for no trailing slash! / Optional): "
+        web_dir = gets
+
         f.write("---\n" + "prefix: \"#{prefix}\"\n" +
                     "np: \"#{now_playing}\"" +
                     "default_channel: \"#{channel_id}\"" +
+                    "web_dir: \"#{web_dir}\"" +
                     "remainder_limit: \"50\"\n" +
                     "trigger_limit: \"10\"\n" +
                     "temp_folder: \"tmp\"\n" +
-                    "default_trigger_chance: \"2\"\n\n" +
+                    "default_trigger_chance: \"5\"\n\n" +
                     "winner_role: \"0000\"\n\n" +
                     "loser_role: \"0000\"\n\n" +
                     "url_regex: \"2\"\n\n")

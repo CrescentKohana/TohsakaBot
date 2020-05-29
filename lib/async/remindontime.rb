@@ -59,13 +59,15 @@ module TohsakaBot
 
             if repeat_time > 0
               TohsakaBot.db.transaction do
-                reminders.insert(datetime: (datetime + repeat_time.to_i).strftime('%Y-%m-%d %H:%M:%S'),
-                                 message: msg,
-                                 user_id: user_id,
-                                 channel: cid,
-                                 repeat: repeat_time,
-                                 created_at: created_at,
-                                 updated_at: updated_at)
+                reminders
+                    .where(:id => id)
+                    .update(datetime: Time.at(datetime + repeat_time).strftime('%Y-%m-%d %H:%M:%S'),
+                            message: msg,
+                            user_id: user_id,
+                            channel: cid,
+                            repeat: repeat_time,
+                            created_at: created_at,
+                            updated_at: updated_at)
               end
             else
               TohsakaBot.db.transaction do
