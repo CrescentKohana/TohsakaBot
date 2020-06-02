@@ -14,16 +14,20 @@ module TohsakaBot
 
     def channels_user_has_rights_to(discord_uid)
       possible_channels = []
+      user = BOT.user(discord_uid.to_i)
 
       servers_user_is_in(discord_uid).each do |s|
-        user = BOT.user(discord_uid.to_i).on(s)
         s.text_channels.each do |c|
           # TODO: Possible bug in the library: https://github.com/discordrb/discordrb/pull/712
-          if user.permission?(:send_messages, c)
+          if user.on(s).permission?(:send_messages, c)
             possible_channels << c
           end
         end
       end
+
+      # Private Message channel with bot
+      possible_channels << user.pm
+
       possible_channels
     end
 
@@ -41,12 +45,16 @@ module TohsakaBot
       servers
     end
 
-    def get_channel(id)
-      BOT.channel(id.to_i)
+    def get_channel(channel_id)
+      BOT.channel(channel_id.to_i)
     end
 
-    def get_server(id)
-      BOT.server(id.to_i)
+    def get_server(server_id)
+      BOT.server(server_id.to_i)
+    end
+
+    def is_pm?(channel_id)
+      BOT.channel(channel_id.to_i).pm?
     end
 
     def get_def_trigger_chance(mode)
