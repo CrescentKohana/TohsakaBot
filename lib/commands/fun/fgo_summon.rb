@@ -28,16 +28,20 @@ module TohsakaBot
 
         # Chances (source: FGO JP)
         # se: Servant, ce: Craft Essence, ru: Rateup
-        c = {
-            :se_ssr_ru => 0.008, :se_sr_ru => 0.015, :se_r_ru => 0.04,
-            :ce_ssr_ru => 0.028, :ce_sr_ru => 0.04, :ce_r_ru => 0.8,
-            :se_ssr => 0.01, :se_sr => 0.03, :se_r => 0.4,
+        ch = {
+            :se_ssr_ru => 0.008, :se_sr_ru => 0.015,
+            :ce_ssr_ru => 0.028, :ce_sr_ru => 0.04,
+            :se_ssr => 0.01, :se_sr => 0.03
+        }
+
+        ch_verbose = {
+            :se_r_ru => 0.04, :ce_r_ru => 0.8, :se_r => 0.4,
             :ce_ssr => 0.04, :ce_sr => 0.12, :ce_r => 0.40
         }
 
         def self.summon_prob(rolls, chance)
           # Skipping all slow calculations which would return more than 0.9999 probability.
-          return "≈99.99" if (rolls * chance) > 9.09 || rolls >= 1097 # 8.239
+          return "≈99.99" if (rolls * chance) > 8.239 || rolls >= 1097 # 9.09
 
           probability = 0
           (1..rolls).each { |i| probability += TohsakaBot.calc_probability(rolls, i, chance) }
@@ -45,7 +49,8 @@ module TohsakaBot
         end
 
         # Calculate everything to a hash 'c'
-        c.each { |k, v| c[k] = summon_prob(rolls, v) }
+        ch.each { |k, v| ch[k] = summon_prob(rolls, v) }
+        ch_verbose.each { |k, v| ch_verbose[k] = summon_prob(rolls, v) } if verbose
 
         event.send_embed do |e|
           e.title = "**Fate/Grand Order 聖晶石召喚**"
@@ -55,27 +60,27 @@ module TohsakaBot
 
           e.add_field(name: "Chances",
                       value:
-                          "**#{c[:se_ssr_ru]}%** Servant (RUp SSR)\n"\
-                          "**#{c[:se_ssr]}%** Servant (SSR)\n"\
-                          "**#{c[:se_sr_ru]}%** Servant (RUp SR)\n"\
-                          "**#{c[:se_sr]}%** Servant (SR)\n"\
-                          "**#{c[:ce_ssr_ru]}%** CE (RUp SSR)\n"\
-                          "**#{c[:ce_sr_ru]}%** CE (RUp SR)\n") unless verbose
+                          "**#{ch[:se_ssr_ru]}%** Servant (RUp SSR)\n"\
+                          "**#{ch[:se_ssr]}%** Servant (SSR)\n"\
+                          "**#{ch[:se_sr_ru]}%** Servant (RUp SR)\n"\
+                          "**#{ch[:se_sr]}%** Servant (SR)\n"\
+                          "**#{ch[:ce_ssr_ru]}%** CE (RUp SSR)\n"\
+                          "**#{ch[:ce_sr_ru]}%** CE (RUp SR)\n") unless verbose
 
           e.add_field(name: "Chances (verbose)",
                       value:
-                          "**#{c[:se_ssr_ru]}%** Servant (RUp SSR)\n"\
-                          "**#{c[:se_ssr]}%** Servant (SSR)\n"\
-                          "**#{c[:se_sr_ru]}%** Servant (RUp SR)\n"\
-                          "**#{c[:se_sr]}%** Servant (SR)\n"\
-                          "**#{c[:se_r_ru]}%** Servant (RUp R)\n"\
-                          "**#{c[:se_r]}%** Servant (R)\n"\
-                          "**#{c[:ce_ssr_ru]}%** CE (RUp SSR)\n"\
-                          "**#{c[:ce_ssr]}%** CE (SSR)\n"\
-                          "**#{c[:ce_sr_ru]}%** CE (RUp SR)\n"\
-                          "**#{c[:ce_sr]}%** CE (SR)\n"\
-                          "**#{c[:ce_r_ru]}%** CE (RUp R)\n"\
-                          "**#{c[:ce_r]}%** CE (R)\n") if verbose
+                          "**#{ch[:se_ssr_ru]}%** Servant (RUp SSR)\n"\
+                          "**#{ch[:se_ssr]}%** Servant (SSR)\n"\
+                          "**#{ch[:se_sr_ru]}%** Servant (RUp SR)\n"\
+                          "**#{ch[:se_sr]}%** Servant (SR)\n"\
+                          "**#{ch_verbose[:se_r_ru]}%** Servant (RUp R)\n"\
+                          "**#{ch_verbose[:se_r]}%** Servant (R)\n"\
+                          "**#{ch[:ce_ssr_ru]}%** CE (RUp SSR)\n"\
+                          "**#{ch_verbose[:ce_ssr]}%** CE (SSR)\n"\
+                          "**#{ch[:ce_sr_ru]}%** CE (RUp SR)\n"\
+                          "**#{ch_verbose[:ce_sr]}%** CE (SR)\n"\
+                          "**#{ch_verbose[:ce_r_ru]}%** CE (RUp R)\n"\
+                          "**#{ch_verbose[:ce_r]}%** CE (R)\n") if verbose
         end
       end
     end
