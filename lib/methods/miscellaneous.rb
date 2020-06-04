@@ -44,7 +44,12 @@ module TohsakaBot
   # n = total rolls, k = total hits, p = chance to hit
   # (n choose k) * (p^k) * ((1-p)^(n-k))
   def self.calc_probability(n, k, p)
-    ncr(n, k) * (p ** k) * ((1 - p) ** (n - k))
+    # Strange bug where ncr(n, k) * (p ** k) would sometimes give NaN instead of 0.0
+    # is fixed by checking if a step is NaN and converting it into 0.0.
+    # ncr(n, k) * (p ** k) * ((1 - p) ** (n - k))
+    step = (ncr(n, k) * (p ** k))
+    step = 0.0 if step.nan?
+    step * (1 - p) ** (n - k)
   end
 
   # Checks if the user limit is reached for this datatype.
