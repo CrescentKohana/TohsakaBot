@@ -40,7 +40,7 @@ module TohsakaBot
             # Catching the exception if a user has blocked the bot
             # as Discord API has no way to check that naturally
             begin
-              if msg.to_s.empty?
+              if msg.nil? || msg.empty?
                 # TODO: For repeated reminders. Checks if today is included in the array
                 # which has the days the user wanted to be notified on.
                 # if rep != "false"

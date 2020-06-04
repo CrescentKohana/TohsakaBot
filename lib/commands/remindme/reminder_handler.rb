@@ -3,9 +3,11 @@ module TohsakaBot
     class DatetimeError < StandardError; end
     class DateTimeSyntaxError < DatetimeError
       def message
-        "Incorrect datetime syntax.\n`" +
-            "remindme <R〇y〇M〇w〇d〇h〇m〇s||time as natural language||ISO8601 etc.. " +
-            "(if spaces, use ; after the time)> <msg>`"
+        "Incorrect datetime syntax.\n`"\
+        'remindme '\
+        '--d(atetime) <yMwdhms || dd/mm/yyyy hh.mm.ss || natural language> '\
+        '--m(essage) <msg (text)> '\
+        '--r(epeat) <dhm (duration, eg. 2d6h20m)>`'
       end
     end
     class PastError < DatetimeError
@@ -46,6 +48,5 @@ module TohsakaBot
       raise PrivateRepeatIntervalError if interval_seconds.to_i < 600 && is_pm
       raise PublicRepeatIntervalError if interval_seconds.to_i < 43200 && !is_pm
     end
-
   end
 end

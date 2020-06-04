@@ -4,12 +4,38 @@ module TohsakaBot
       extend Discordrb::Commands::CommandContainer
       command(:remindme,
               aliases: %i[remind reminder remadd remind addrem muistuta muistutus rem],
-              description: 'Reminder.',
-              usage: 'remindme <R〇y〇M〇w〇d〇h〇m〇s||time as natural language||ISO8601 etc.. (if spaces, use ; after the time)> <msg> (R for repeated, >10 minutes)',
+              description: 'Sets a reminder.',
+              usage: 'remindme '\
+                      '--d(atetime) <yMwdhms || dd/mm/yyyy hh.mm.ss || natural language> '\
+                      '--m(essage) <msg (text)> '\
+                      '--r(epeat) <dhm (duration, eg. 2d6h20m)>',
               min_args: 1,
-              require_register: true) do |event, time_input, *msg|
+              require_register: true) do |event, *msg|
 
-        rem = ReminderController.new(event, time_input, msg)
+        args = msg.join(' ')
+        options = {}
+        legacy = false
+
+        OptionParser.new do |opts|
+          opts.on('--datetime DATETIME', String)
+          opts.on('--message MESSAGE', String)
+          opts.on('--repeat REPEAT', String)
+        end.parse!(Shellwords.shellsplit(args), into: options)
+
+        datetime = options[:datetime]
+        if datetime.blank? && (!options[:message].blank? || !options[:repeat].blank?)
+          event.respond 'If specifying other options (--m, --r), --d cannot be blank.'
+          break
+        elsif datetime.blank?
+          if args.include? ';'
+            datetime = args.split(';', 2)
+          else
+            datetime = args.split(' ', 2)
+          end
+          legacy = true
+        end
+
+        rem = ReminderController.new(event, datetime, options[:message], options[:repeat], legacy)
         discord_uid = event.message.user.id.to_i
 
         begin
