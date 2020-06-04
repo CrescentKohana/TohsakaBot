@@ -42,7 +42,7 @@ module TohsakaBot
         files_to_delete = @deleted_triggers.select{:file}.map{ |f| f.values}
         unless files_to_delete.nil? || files_to_delete.empty?
           files_to_delete.each do |f|
-            File.delete("triggers/#{f}")
+            File.delete("data/triggers/#{f}")
           end
         end
 

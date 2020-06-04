@@ -26,6 +26,7 @@ module TohsakaBot
           file = t[3].to_s
           discord_uid = TohsakaBot.get_discord_id(t[4]).to_i
 
+          # If no author specified, it's ignored.
           if options[:author].nil?
             opt_author = discord_uid
           elsif !Integer(options[:author], exception: false)
@@ -34,7 +35,7 @@ module TohsakaBot
             opt_author = options[:author].to_i
           end
 
-          # Queries with the given string as is, if there were no proper arguments
+          # Tries to match with the given string as is, if there were no proper arguments.
           if options[:author].nil? && options[:trigger].nil? && options[:response].nil?
             opt_trigger = args.to_s
             opt_response = args.to_s

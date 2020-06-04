@@ -50,7 +50,7 @@ module TohsakaBot
         filename = file.filename
         full_filename = filename.gsub(File.extname(filename), '') + '_' + string + File.extname(filename)
 
-        IO.copy_stream(URI.open(file.url), "triggers/#{full_filename}")
+        IO.copy_stream(URI.open(file.url), "data/triggers/#{full_filename}")
         full_filename
       end
     end

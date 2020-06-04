@@ -9,7 +9,7 @@ module TohsakaBot
     end
 
     def save_trigger_file(path, filename)
-      FileUtils.mv path, "triggers/#{filename}"
+      FileUtils.mv path, "data/triggers/#{filename}"
     end
 
     def channels_user_has_rights_to(discord_uid)
