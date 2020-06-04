@@ -4,42 +4,46 @@ module TohsakaBot
       extend Discordrb::Commands::CommandContainer
       command(:rollprobability,
               aliases: %i[rollchance chanceroll rollp rollc],
-              description: 'Calculates the probability of getting Z correct in X amount of rolls with the chance of Y',
-              usage: 'rollprobability <chance in % (float|int)> <times (int)> <correct times (int)',
-              min_args: 2) do |event, chance, times, correct|
+              description: 'Returns the probability of getting k hits within n amount of rolls with the chance of p.',
+              usage: 'rollprobability <chance in % (float|int)> <rolls (int)> <hits (int, default: 1)>',
+              min_args: 2) do |event, chance, rolls, hits|
 
         chance = chance.to_f / 100
-        times = times.to_i
-        correct = correct.to_i
+        rolls = rolls.to_i
+        hits = hits.to_i || 1
 
-        if chance > 1.0 || times > 1000 || correct > 1000
-          event.<< "Limits for the arguments are 100 (chance), 1000 (times), 1000 (correct)."
+        unless (0..100) === chance || (1..1000) === rolls || (1..1000) === hits
+          event.<< "Limits for the arguments are 0-100 (chance), 1-1000 (times), 1-1000 (correct)."
           break
         end
 
-        if times < correct
+        if rolls < hits
           event.<< "Total times has to be equal or more than correct times."
           break
         end
 
-        # Source for the binomial coefficent "n choose k" below
-        # https://creativecommons.org/licenses/by-sa/3.0/ "Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)"
-        # https://www.programming-idioms.org/idiom/67/binomial-coefficient-n-choose-k/1656/ruby (2020/06/03)
-        def self.ncr(n, k)
-          (1 + n - k..n).inject(:*) / (1..k).inject(:*)
+        # Binomial coefficent "n choose r"
+        # Using Math.gamma as a factorial
+        def self.ncr(n, r)
+          Math.gamma(n+1) / (Math.gamma(r+1) * Math.gamma(n-r+1))
         end
 
-        x = 0
-        i = 0
-        (times - correct).times do
-          x += ncr(times, correct + i)
-          i += 1
+        # n = total rolls, k = total hits, p = chance to hit
+        # (n choose k) * (p^k) * ((1-p)^(n-k))
+        def self.probability(n, k, p)
+          ncr(n, k) * (p ** k) * ((1 - p) ** (n - k))
         end
 
-        probability = ((chance**times) * ((x + ncr(times, times)))) * 100
-        #probability = (1 - ((1 - (chance)) ** times)) * 100 for "one or more"
+        probability_one = probability(rolls, hits, chance)
+        probability_one_or_more = probability_one
 
-        event.<< "The probability of #{correct} or more being correct in #{times} rolls with the chance of #{chance * 100}% is approximately #{probability}%."
+        (hits+1..rolls).each do |i|
+          probability_one_or_more += probability(rolls, i, chance)
+        end
+
+        reply = "The probability of #{hits} or more being correct within #{rolls} rolls" +
+            " with the chance of #{chance * 100}% is approximately #{probability_one_or_more * 100}%."
+        event.respond reply
       end
     end
   end
