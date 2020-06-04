@@ -5,35 +5,33 @@ module TohsakaBot
     DATE_REGEX = /^[0-9]{4}-(1[0-2]|0[1-9])-(3[0-2]|[1-2][0-9]|0[1-9])\s(2[0-4]|1[0-9]|0[0-9]):(60|[0-5][0-9]):(60|[0-5][0-9])/
     # attr_reader :datetime, :msg, :userid, :channelid, :repeated
 
-    def initialize(event, time_input, msg)
+    def initialize(event, time_input, msg, repeat, legacy)
+      if legacy
+        @datetime = time_input[0]
+        @msg = time_input[1].strip_mass_mentions.sanitize_string unless time_input[1].nil?
+      else
+        @datetime = time_input
+        @msg = msg.strip_mass_mentions.sanitize_string unless msg.nil?
+      end
+
       @event = event
-      @datetime = time_input
-      @msg = msg.join(' ').strip_mass_mentions.sanitize_string
       @discord_uid = event.message.user.id
       @channelid = event.channel.id
-      @repeat = 0
-      @time_msg_separatos = %w[;]
+
+      if !repeat.nil?
+        minutes = match_time(repeat, /([0-9]*)(min|[m])/) || 0
+        hours   = match_time(repeat,    /([0-9]*)([hH])/) || 0
+        days    = match_time(repeat,    /([0-9]*)([dD])/) || 0
+
+        @repeat = (minutes * 60) + (hours * 60 * 60) + (days * 24 * 60 * 60)
+      else
+        @repeat = 0
+      end
     end
 
     def convert_datetime
-      # If the reminder is to be repeated.
-      if @datetime[0] == 'R' || @datetime[0] == 'r'
-        @repeat = 0
-        @datetime[0] = ''
-      end
-
-      long_natural_time = @datetime + " " + @msg
-      splitter = ""
-
-      # Input as natural language (spaces allowed)
-      if @time_msg_separatos.any? { |s| long_natural_time.include?(splitter = s)}
-        splitted = long_natural_time.split(splitter, 2)
-        @datetime = Chronic.parse(splitted[0].gsub(splitter, ''))
-        @msg = splitted[1]
-        @msg[0] = "" if @msg[0] == " " # Remove an unnecessary space
-
       # The input is a duration (e.g. 5d4h30s)
-      elsif DURATION_REGEX.match?(@datetime.to_s)
+      if DURATION_REGEX.match?(@datetime.to_s)
         # Format P(n)Y(n)M(n)W(n)DT(n)H(n)M(n)S
         seconds = match_time(@datetime, /([0-9]*)(sec|sek|[sS])/) || 0
         minutes = match_time(@datetime,      /([0-9]*)(min|[m])/) || 0
@@ -45,13 +43,13 @@ module TohsakaBot
 
         # Because weeks cannot be used at the same time as years, months or days.
         if weeks == 0
-          iso8601_time = if "#{hours}#{minutes}#{seconds}".to_s.empty?
+          iso8601_time = if "#{hours}#{minutes}#{seconds}".empty?
                            "P#{years}Y#{months}M#{days}D"
                          else
                            "P#{years}Y#{months}M#{days}DT#{hours}H#{minutes}M#{seconds}S"
                          end
         elsif weeks > 0 && years == 0 && months == 0 && days == 0
-          iso8601_time = if "#{hours}#{minutes}#{seconds}".to_s.empty?
+          iso8601_time = if "#{hours}#{minutes}#{seconds}".empty?
                            "P#{weeks}W"
                          else
                            "P#{weeks}WT#{hours}H#{minutes}M#{seconds}S"
@@ -104,7 +102,7 @@ module TohsakaBot
 
       # If the date was in the ISO 8601 format, convert it to text for the message.
       @datetime = @datetime.is_a?(Integer) ? @datetime = Time.at(@datetime) : @datetime
-      if @msg.empty?
+      if @msg.nil?
         @event.respond "I shall #{repeated_msg}remind <@#{@discord_uid.to_i}> at `#{@datetime}` `<ID #{@id}>`#{repetition_interval}. "
       else
         @event.respond "I shall #{repeated_msg}remind <@#{@discord_uid.to_i}> with #{@msg.hide_link_preview} at `#{@datetime}` `<ID #{@id}>`#{repetition_interval}."

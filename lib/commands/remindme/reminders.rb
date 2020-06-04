@@ -34,7 +34,7 @@ module TohsakaBot
                           " (#{distance_of_time_in_words(repeat_time)})"
                         end
 
-          if msg.empty?
+          if msg.nil?
             output << "#{sprintf("%4s", id)} | #{datetime} | No message specified#{repeat_time}\n"
           else
             output << "#{sprintf("%4s", id)} | #{datetime} | #{msg}#{repeat_time}\n"

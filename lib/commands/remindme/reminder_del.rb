@@ -27,7 +27,7 @@ module TohsakaBot
         end
 
         if @check > 0
-          event.<< "#{@check} reminder(s) deleted."
+          event.<< "#{@check} reminder#{'s' if ids.length > 1} deleted."
         else
           event.<< 'One or more IDs were not found within your list of triggers.'
         end
