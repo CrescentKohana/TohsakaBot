@@ -54,7 +54,7 @@ module TohsakaBot
                 if file.to_s.empty?
                   event.<< t[:reply]
                 else
-                  event.channel.send_file(File.open("triggers/#{file}"))
+                  event.channel.send_file(File.open("data/triggers/#{file}"))
                 end
               else
                 break

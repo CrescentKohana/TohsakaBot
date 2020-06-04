@@ -5,7 +5,7 @@ module TohsakaBot
       command(:fgosummon,
               aliases: %i[fgo summonfgo shoukan 召喚],
               description: 'Returns probabilities of different summons in Fate/Grand Order.',
-              usage: 'fgosummon <currency (SQ, JPY or USD as int; default SQ, otherwise add JPY/USD at the end> <verbose (y/N)>',
+              usage: 'fgosummon <currency (SQ, JPY, USD or R (rolls) as int; default SQ, otherwise add JPY/USD/R at the end> <verbose (y/N)>',
               min_args: 1) do |event, currency, verbose|
 
         currency = currency.scan(/\d+|[A-Za-z]+/)
@@ -20,6 +20,8 @@ module TohsakaBot
             rolls = (currency[0].to_i * ((168.0 / 79.99) / 3)).to_i
           elsif currency[1] == 'JPY'
             rolls = (currency[0].to_i * ((168.0 / 10000) / 3)).to_i
+          elsif currency[1] == 'R'
+            rolls = currency[0].to_i
           else
             event.<< "Accepted currency suffixes: SQ, JPY, USD or no suffix."
             break
@@ -40,8 +42,14 @@ module TohsakaBot
         }
 
         def self.summon_prob(rolls, chance)
-          # Skipping all slow calculations which would return >= 0.99985 probability.
-          return "≈ 99.99" if (rolls * chance) > 9.0909 || rolls >= 1097
+          # Skipping all slow calculations which would basically return >= 0.9999 probability.
+          #
+          # 1-((1-0.008)^1097) ≈ 0.999851 (SSR on rateup)
+          # 1097 * 0.008 = 8.776
+          #
+          # 1-((1-0.01)^877) ≈ 0.999851 (SSR)
+          # 877 * 0.01 = 8.77
+          return "≈ 99.99" if (rolls * chance) > 8.77 || rolls >= 1097
 
           probability = 0
           (1..rolls).each { |i| probability += TohsakaBot.calc_probability(rolls, i, chance).to_f }
@@ -62,9 +70,8 @@ module TohsakaBot
               text: "#{currency[0]}#{currency[1]} | #{rolls} roll#{"s" if rolls > 1} | #{time.real.round(4)}s",
               icon_url: "https://vignette.wikia.nocookie.net/fategrandorder/images/f/ff/Saintquartz.png/revision/latest/"
           )
-          # e.author = Discordrb::Webhooks::EmbedAuthor.new(name: "Rin", icon_url: "")
 
-          e.add_field(name: "Chances (^ rateup)",
+          e.add_field(name: "Chances (^rateup)",
                       value:
                           "```SSR^ #{ch[:se_ssr_ru]}%\n"\
                           "SSR  #{ch[:se_ssr]}%\n"\
@@ -72,7 +79,7 @@ module TohsakaBot
                           "SR   #{ch[:se_sr]}%\n"\
                           "SSR^ #{ch[:ce_ssr_ru]}% (CE)```") unless verbose
 
-          e.add_field(name: "Servant Chances (^ rateup)",
+          e.add_field(name: "Servant Chances (^rateup)",
                       value:
                           "```SSR^ #{ch[:se_ssr_ru]}%\n"\
                           "SSR  #{ch[:se_ssr]}%\n"\
@@ -81,7 +88,7 @@ module TohsakaBot
                           "R^   #{ch_verbose[:se_r_ru]}%\n"\
                           "R    #{ch_verbose[:se_r]}%```") if verbose
 
-          e.add_field(name: "CE Chances (^ rateup)",
+          e.add_field(name: "CE Chances (^rateup)",
                       value:
                           "```SSR^ #{ch[:ce_ssr_ru]}%\n"\
                           "SSR  #{ch_verbose[:ce_ssr]}%\n"\
