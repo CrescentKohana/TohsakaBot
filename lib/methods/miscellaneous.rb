@@ -34,6 +34,19 @@ module TohsakaBot
     msg_objects
   end
 
+  # Source for the binomial coefficent "n choose k" below
+  # https://creativecommons.org/licenses/by-sa/3.0/ "Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)"
+  # https://www.programming-idioms.org/idiom/67/binomial-coefficient-n-choose-k/1656/ruby (2020/06/03)
+  def self.ncr(n, k)
+    (1 + n - k..n).inject(:*) / (1..k).inject(:*)
+  end
+
+  # n = total rolls, k = total hits, p = chance to hit
+  # (n choose k) * (p^k) * ((1-p)^(n-k))
+  def self.calc_probability(n, k, p)
+    ncr(n, k) * (p ** k) * ((1 - p) ** (n - k))
+  end
+
   # Checks if the user limit is reached for this datatype.
   # For example, if the user has 50 reminders, and the limit is 50, the method returns true.
   #

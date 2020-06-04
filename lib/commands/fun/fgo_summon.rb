@@ -35,25 +35,12 @@ module TohsakaBot
             :ce_ssr => 0.04, :ce_sr => 0.12, :ce_r => 0.40
         }
 
-        # Source for the binomial coefficent "n choose k" below
-        # https://creativecommons.org/licenses/by-sa/3.0/ "Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)"
-        # https://www.programming-idioms.org/idiom/67/binomial-coefficient-n-choose-k/1656/ruby (2020/06/03)
-        def self.ncr(n, k)
-          (1 + n - k..n).inject(:*) / (1..k).inject(:*)
-        end
-
-        # n = total rolls, k = total hits, p = chance to hit
-        # (n choose k) * (p^k) * ((1-p)^(n-k))
-        def self.calc_probability(n, k, p)
-          ncr(n, k) * (p ** k) * ((1 - p) ** (n - k))
-        end
-
         def self.summon_prob(rolls, chance)
           # Skipping all slow calculations which would return more than 0.9999 probability.
           return "≈99.99" if (rolls * chance) > 9.09 || rolls >= 1097 # 8.239
 
           probability = 0
-          (1..rolls).each { |i| probability += calc_probability(rolls, i, chance) }
+          (1..rolls).each { |i| probability += TohsakaBot.calc_probability(rolls, i, chance) }
           '%.2f' % (probability * 100).round(2)
         end
 
