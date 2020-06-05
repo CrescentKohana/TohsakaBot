@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Marko Leinikka"]
   spec.email         = [""]
   spec.summary       = %q{A multipurpose Discord bot.}
-  spec.description   = %q{A multipurpose Discord bot made with Ruby mainly for my own use.}
+  spec.description   = %q{A multipurpose Discord bot made with Ruby with a Rails web component: TohsakaWeb.}
   spec.homepage      = ""
-  spec.license       = "MIT"
+  spec.license       = "Zlib"
 
   spec.files         = ['lib/bot.rb']
   spec.require_paths = ["lib"]
