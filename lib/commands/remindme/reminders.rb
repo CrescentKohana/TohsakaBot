@@ -41,11 +41,15 @@ module TohsakaBot
           end
         end
 
+        msgs = []
         if parsed_reminders.any?
-          "#{output}```"
+          msgs << event.respond("#{output}```")
         else
-          event.<< 'No reminders found.'
+          msgs << event.respond('No reminders found.')
         end
+
+        TohsakaBot.expire_msg(msgs, user_msg: event.message)
+        break
       end
     end
   end

@@ -11,19 +11,21 @@ module TohsakaBot
         i = 0
         j = 0
 
-        # TODO: Fix regex for the fucking thing or just somehow delete the working emoji.
+        # TODO: Fix regex for the fucking thing or just somehow delete already working emoji.
         # emoji_names.delete_if { |x| x[-1] != ':' }
 
-        until i == emoji_names.count
+        unless every_emoji.empty?
+          until i == emoji_names.count
 
             every_emoji << BOT.find_emoji(emoji_names[i].to_s.tr!(':', ''))
 
-          i += 1
-        end
+            i += 1
+          end
 
-        until j == every_emoji.count || j == 19
-          event.message.create_reaction("#{every_emoji[j].name}:#{every_emoji[j].id}")
-          j += 1
+          until j == every_emoji.count || j == 19
+            event.message.create_reaction("#{every_emoji[j].name}:#{every_emoji[j].id}")
+            j += 1
+          end
         end
       end
     end

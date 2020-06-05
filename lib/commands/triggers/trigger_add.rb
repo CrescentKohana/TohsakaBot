@@ -6,10 +6,15 @@ module TohsakaBot
       command(:triggeradd,
               aliases: %i[addtrigger trigger],
               description: 'Adds a trigger.',
-              usage: 'addtrigger <trigger phrase> (--any matches the trigger everywhere in the msg)',
+              usage: 'triggeradd '\
+                      '--p(hrase) <msg from which the bot triggers (text)> '\
+                      '--r(eply) <msg which the bot sends (text)> '\
+                      '--m(ode) <N(ormal) | a(ny)>'\
+                      "\n`If **a file is attached** to the command, that'll be used **instead of reply**. "\
+                      "If **a phrase** and **no reply** is given, "\
+                      'the bot will ask for the reply (text|file) after the command.',
               min_args: 1,
-              require_register: true,
-              rescue: "%exception%") do |event, *msg|
+              require_register: true) do |event, *msg|
 
         if TohsakaBot.user_limit_reached?(event.author.id, CFG.trigger_limit, :triggers)
           event.respond "Sorry, but the the limit for triggers per user is #{CFG.trigger_limit}! " +
@@ -17,22 +22,38 @@ module TohsakaBot
           break
         end
 
+        args = msg.join(' ')
+        options = {}
 
-        trg = TriggerController.new(event, msg)
+        OptionParser.new do |opts|
+          opts.on('--phrase PHRASE', String)
+          opts.on('--reply REPLY', String)
+          opts.on('--mode MODE', String)
+        end.parse!(Shellwords.shellsplit(args), into: options)
+
+        phrase = options[:phrase]
+        reply = options[:reply]
+        if phrase.blank? # && (!options[:reply].blank? || !options[:mode].blank? || !event.message.attachments.first.nil?)
+          event.respond '--p(hrase) cannot be blank.'
+          break
+        end
+
+        trg = TriggerController.new(event, phrase, options[:mode])
         if !event.message.attachments.first.nil?
-          filename = trg.download_response_picture(event)
+          filename = trg.download_reply_picture(event)
           id = trg.store_trigger(filename: filename)
-
+        elsif !reply.blank?
+          id = trg.store_trigger(reply: reply)
         else
           event.respond('Tell me the response (10s remaining).')
           response = event.message.await!(timeout: 10)
 
           if response
             if !response.message.attachments.first.nil?
-              filename = trg.download_response_picture(response)
+              filename = trg.download_reply_picture(response)
               id = trg.store_trigger(filename: filename)
             else
-              id = trg.store_trigger(response: response.message.content)
+              id = trg.store_trigger(reply: response.message.content)
             end
           else
             event.respond('You took too long!')

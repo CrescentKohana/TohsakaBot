@@ -1,30 +1,29 @@
 module TohsakaBot
   class TriggerController
-
-    def initialize(event, msg)
+    def initialize(event, phrase, mode)
       @event = event
-      @phrase = msg.join(' ')
+      @phrase = phrase
       @serverid = event.server.id.to_i
       @discord_uid = event.message.user.id.to_i
-      @mode = 0
       @chance = 0
 
-      if @phrase.include?("--any")
-        @phrase = @phrase.match(/(.*)--any.*/)[1]
+      if mode =~ /a.*/s
         @mode = 1
+      else
+        @mode = 0
       end
 
       # Remove an unnecessary spaces
       @phrase.strip!
     end
 
-    def store_trigger(response: "", filename: "")
+    def store_trigger(reply: "", filename: "")
       return unless TohsakaBot.registered?(@discord_uid)
 
       triggers = TohsakaBot.db[:triggers]
       TohsakaBot.db.transaction do
         @id = triggers.insert(phrase: @phrase,
-                              reply: response,
+                              reply: reply,
                               file: filename,
                               user_id: TohsakaBot.get_user_id(@discord_uid),
                               server_id: @serverid,
@@ -40,8 +39,8 @@ module TohsakaBot
       @id
     end
 
-    def download_response_picture(response)
-      file = response.message.attachments.first
+    def download_reply_picture(reply)
+      file = reply.message.attachments.first
       if /https:\/\/cdn.discordapp.com.*/.match?(file.url)
 
         # Add an unique ID at the end of the filename.

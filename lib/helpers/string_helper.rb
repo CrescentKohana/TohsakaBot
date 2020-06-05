@@ -1,4 +1,3 @@
-# Methods accessible everywhere.
 class String
   # The zero-width space in between the @ and the word
   # prevents the tagging of everyone (or everyone online).
