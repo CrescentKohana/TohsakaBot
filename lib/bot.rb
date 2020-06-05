@@ -56,10 +56,6 @@ module TohsakaBot
   AUTH = OpenStruct.new YAML.load_file('cfg/auth.yml')
   CFG = OpenStruct.new YAML.load_file('cfg/config.yml')
 
-  # Global variables TODO: Get rid of these!
-  $url_regexp = Regexp.new CFG.url_regex.to_regexp(detect: true)
-  $excluded_urls = YAML.load_file("data/excluded_urls.yml")
-
   BOT = Discordrb::Commands::CommandBot.new(token: AUTH.bot_token,
                                             client_id: AUTH.cli_id,
                                             prefix: CFG.prefix,
