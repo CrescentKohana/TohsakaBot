@@ -30,16 +30,21 @@ require 'uri'
 require 'yaml'
 require 'yaml/store'
 
-require_relative 'methods/discordrb_command_override'
+require_relative 'gem_overrides/discordrb_command_override'
 
 module TohsakaBot
-  unless File.exist?('cfg/config.yml')
+  unless File.exist?('cfg/auth.yml')
     first = FirstTimeSetup()
     first.create_data_files_and_configs
   end
 
-  require_relative 'methods/kernel_methods'
-  require_relative 'methods/miscellaneous'
+  # Methods
+  require_relative 'helpers/core_helper'
+  require_relative 'helpers/string_helper'
+  require_relative 'helpers/math_helper'
+  require_relative 'helpers/discord_helper'
+
+  # Database and Web
   require_relative 'data_access/database'
   require_relative 'data_access/tohsaka_bridge'
   require_relative 'data_access/trigger_data'
@@ -59,15 +64,15 @@ module TohsakaBot
                                             fancy_log: true)
 
   # Events and commands used by the bot.
-  load_modules(:Commands, 'commands/*/*')
-  load_modules(:Events, 'events/*')
+  TohsakaBot.load_modules(:Commands, 'commands/*/*')
+  TohsakaBot.load_modules(:Events, 'events/*')
 
   BOT.run(:async)
   # Asynchronous threads running in cycles.
   # load_modules(:Async, 'async/*', false)
   require_relative 'async.rb'
 
-  # Uncomment to clean trigger files not present in the database.
+  # Uncomment below to clean trigger files not present in the database.
   # TohsakaBot.trigger_data.clean_trigger_files
 
   # Terminal tool to send messages through the bot.
@@ -75,8 +80,8 @@ module TohsakaBot
     channel = CFG.default_channel
 
     unless CFG.default_channel.match(/\d{18}/)
-      puts "No default channel set in 'cfg/config.yml'. " +
-               "Before sending messages through the terminal, set the channel with 'setchan <id>'"
+      puts "No default channel set in 'cfg/config.yml'. "\
+           "Before sending messages through the terminal, set the channel with 'setchan <id>'"
     end
 
     while (user_input = gets.strip.split(" "))

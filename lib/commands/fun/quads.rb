@@ -17,13 +17,13 @@ module TohsakaBot
         role_id = CFG.winner_role.to_i
 
         identifier = "\u200B" * 4
-        Kernel.send_message_with_reaction(BOT, event.channel.id, '🎲',
+        TohsakaBot.send_message_with_reaction(BOT, event.channel.id, '🎲',
                                           '**' + number.to_s.rjust(4, '0') +
                                           '**  `' + name.strip_mass_mentions.sanitize_string + '`' + identifier)
 
         if number =~ /(\d)\1{3}/
           name = BOT.member(event.server, event.author.id).display_name
-          Kernel.give_temporary_role(event, role_id, user_id)
+          TohsakaBot.give_temporary_role(event, role_id, user_id)
           event.respond("🎉 @here #{name} HAS GOT QUADS! 🎉")
         end
       end

@@ -40,7 +40,7 @@ module TohsakaBot
           end
 
           if picked.chomp(':') == 'The coin landed on its edge'
-            Kernel.give_temporary_role(event, role_id, user_id)
+            TohsakaBot.give_temporary_role(event, role_id, user_id)
           end
           outcome = picked.chomp(':')
           case outcome
