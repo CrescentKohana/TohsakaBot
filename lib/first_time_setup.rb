@@ -64,7 +64,7 @@ module TohsakaBot
                     "url_regex: \"2\"\n\n")
       end
 
-      File.open("data/excluded_urls.yml", "w") { |f| f.write("---") } unless File.exist?('data/excluded_urls.yml')
+      # File.open("data/excluded_urls.yml", "w") { |f| f.write("---") } unless File.exist?('data/excluded_urls.yml')
 
       File.open("data/repost.yml", "w") { |f| f.write("---") } unless File.exist?('data/repost.yml')
 
