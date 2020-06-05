@@ -15,10 +15,10 @@ module TohsakaBot
 
         if BOT.member(event.server, user_id).role?(role_id)
           Discordrb::API::Server.remove_member_role("Bot #{AUTH.bot_token}", event.channel.server.id, user_id, role_id)
-          Kernel.delete_temporary_role_db(user_id, role_id)
+          TohsakaBot.delete_temporary_role_db(user_id, role_id)
           event.respond('So a loser then.')
         else
-          Kernel.give_temporary_role(event, role_id, user_id)
+          TohsakaBot.give_temporary_role(event, role_id, user_id)
           event.respond('Winner has been selected!')
         end
       end

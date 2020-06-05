@@ -8,9 +8,7 @@ module TohsakaBot
               usage: 'test <msg>',
               rescue: "Something went wrong!\n`%exception%`") do |event, url|
 
-        cfg = YAML.load_file('cfg/config.yml')
-        BOT.game = cfg['np']
-        event.<< url
+        event.<< "```huutista```".sanitize_string
       end
     end
   end
