@@ -17,10 +17,12 @@ require 'discordrb/webhooks'
 require 'json'
 require 'net/http'
 require 'mysql2'
-require 'nokogiri'
 require 'open-uri'
 require 'optparse'
 require 'pickup'
+require 'public_suffix'
+require 'redcarpet'
+require 'redcarpet/render_strip'
 require 'roo'
 require 'rubygems'
 require 'sequel'
@@ -102,7 +104,6 @@ module TohsakaBot
   DRb.thread.join
 
   BOT.sync
-
   # @trigger_system = Trigger_system.new
   BOT.set_role_permission(AUTH.owner_id, 10)
 end
