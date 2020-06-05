@@ -5,30 +5,16 @@ module TohsakaBot
       reply.create_reaction(emoji)
     end
 
-    def expire_msg(bot_msgs, user_msg: nil, duration: 60)
-      sleep(duration)
-      user_msg.delete unless user_msg.nil?
-      bot_msgs.each {|m| m.delete}
-    end
-
     def send_multiple_msgs(content, where)
       msg_objects = []
       content.each { |c| msg_objects << where.send_message(c) }
       msg_objects
     end
 
-    def delete_temporary_role_db(user_id, role_id)
-      db_read = YAML.load_file('data/temporary_roles.yml')
-      db_store = YAML::Store.new('data/temporary_roles.yml')
-
-      db_read.each do |k, v|
-        if role_id == v['role'].to_i && user_id == v['user'].to_i
-          db_store.transaction do
-            db_store.delete(k)
-            db_store.commit
-          end
-        end
-      end
+    def expire_msg(bot_msgs, user_msg: nil, duration: 60)
+      sleep(duration)
+      bot_msgs.each {|m| m.delete}
+      user_msg.delete unless user_msg.nil?
     end
 
     def give_temporary_role(event, role_id, user_id)
@@ -49,6 +35,20 @@ module TohsakaBot
         i += 1 while db_store.root?(i)
         db_store[i] = { 'time' => Time.now, 'user' => user_id, 'server' => server_id, 'role' => role_id }
         db_store.commit
+      end
+    end
+
+    def delete_temporary_role_db(user_id, role_id)
+      db_read = YAML.load_file('data/temporary_roles.yml')
+      db_store = YAML::Store.new('data/temporary_roles.yml')
+
+      db_read.each do |k, v|
+        if role_id == v['role'].to_i && user_id == v['user'].to_i
+          db_store.transaction do
+            db_store.delete(k)
+            db_store.commit
+          end
+        end
       end
     end
   end
