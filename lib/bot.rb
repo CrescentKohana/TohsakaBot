@@ -43,6 +43,7 @@ module TohsakaBot
   # Methods
   require_relative 'helpers/core_helper'
   require_relative 'helpers/string_helper'
+  require_relative 'helpers/url_helper'
   require_relative 'helpers/math_helper'
   require_relative 'helpers/discord_helper'
 
