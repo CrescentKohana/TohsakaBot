@@ -1,36 +1,47 @@
-# TODO: Clean requires!
-require 'active_support/core_ext/numeric/time'
-require 'active_support/core_ext/string/filters'
-require 'active_support/time_with_zone'
-require 'action_view'
-require 'bigdecimal'
-require 'benchmark'
 require 'bundler/setup'
-require 'drb/drb'
-require 'date'
-require 'cgi'
-require 'chronic'
-require 'configatron/core'
-require 'csv'
+require 'rubygems'
+
+# Database #
+require 'sequel'
+require 'mysql2'
+
+# Discord #
 require 'discordrb'
 require 'discordrb/webhooks'
+
+# File Management #
+require 'csv'
 require 'json'
-require 'net/http'
-require 'mysql2'
-require 'open-uri'
-require 'optparse'
-require 'pickup'
-require 'public_suffix'
-require 'redcarpet'
-require 'redcarpet/render_strip'
 require 'roo'
-require 'rubygems'
-require 'sequel'
-require 'shellwords'
-require 'to_regexp'
-require 'uri'
 require 'yaml'
 require 'yaml/store'
+
+# Network #
+require 'cgi'
+require 'open-uri'
+require 'net/http'
+require 'public_suffix'
+## Connection with TohsakaWeb ##
+require 'drb/drb'
+
+# Date & Time #
+require 'chronic'
+require 'date'
+require 'action_view' # helpers/date_helper
+require 'active_support/core_ext/numeric/time'
+require 'active_support/time_with_zone'
+
+# Misc #
+require 'benchmark'
+require 'to_regexp'
+## Better command parsing ##
+require 'shellwords'
+require 'optparse'
+## Custom probability for modules like Trigger ##
+require 'pickup'
+## Stripping markdown from strings ##
+require 'redcarpet'
+require 'redcarpet/render_strip'
 
 require_relative 'gem_overrides/discordrb_command_override'
 
@@ -40,14 +51,14 @@ module TohsakaBot
     first.create_data_files_and_configs
   end
 
-  # Methods
+  # Helpers #
   require_relative 'helpers/core_helper'
   require_relative 'helpers/string_helper'
   require_relative 'helpers/url_helper'
   require_relative 'helpers/math_helper'
   require_relative 'helpers/discord_helper'
 
-  # Database and Web
+  # Database and Web #
   require_relative 'data_access/database'
   require_relative 'data_access/tohsaka_bridge'
   require_relative 'data_access/trigger_data'
@@ -56,18 +67,21 @@ module TohsakaBot
   AUTH = OpenStruct.new YAML.load_file('cfg/auth.yml')
   CFG = OpenStruct.new YAML.load_file('cfg/config.yml')
 
+  # Discord Bot #
   BOT = Discordrb::Commands::CommandBot.new(token: AUTH.bot_token,
                                             client_id: AUTH.cli_id,
                                             prefix: CFG.prefix,
                                             advanced_functionality: false,
                                             fancy_log: true)
 
-  # Events and commands used by the bot.
+  # Discord Events and Commands #
   TohsakaBot.load_modules(:Commands, 'commands/*/*')
   TohsakaBot.load_modules(:Events, 'events/*')
 
+  # Asynchronous threads running in cycles #
   BOT.run(:async)
-  # Asynchronous threads running in cycles.
+
+  # TODO: Load async threads dynamically
   # load_modules(:Async, 'async/*', false)
   require_relative 'async.rb'
 
@@ -93,6 +107,7 @@ module TohsakaBot
     end
   end
 
+  # Connection with TohsakaWeb #
   BRIDGE_URI = "druby://localhost:8787"
   FRONT_OBJECT = TohsakaBridge.new
   DRb.start_service(BRIDGE_URI, FRONT_OBJECT)
