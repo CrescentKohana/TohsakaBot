@@ -22,6 +22,46 @@ module TohsakaBot
       end
     end
 
+    def command_parser(event, msg, banner, extra_help = nil, *options)
+      begin
+        args = msg.join(' ')
+        options_output = {}
+
+        OptionParser.new do |parser|
+          parser.banner = banner
+
+          options.each do |o|
+            parser.on(*o)
+          end
+
+          parser.on('-h', '--help', 'Prints help') do
+            event.<< "```"
+            event.<< parser
+            event.<< extra_help
+            event.<< "```"
+            break
+          end
+        end.parse!(Shellwords.shellsplit(args), into: options_output)
+
+      rescue OptionParser::InvalidOption => e
+        event.respond "Tried to use an #{e}."
+        return nil
+      rescue OptionParser::MissingArgument => e
+        event.respond "#{e}."
+        return nil
+      rescue OptionParser::NeedlessArgument => e
+        event.respond "#{e}."
+        return nil
+      rescue OptionParser::ParseError => e
+        event.respond "Error when parsing arguments: #{e}."
+        return nil
+      rescue OptionParser
+        return nil
+      end
+
+      options_output
+    end
+
     def strip_markdown(input)
       return Redcarpet::Markdown.new(Redcarpet::Render::StripDown).render(input).to_s if input.is_a? String
 

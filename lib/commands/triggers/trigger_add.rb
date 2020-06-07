@@ -6,13 +6,7 @@ module TohsakaBot
       command(:triggeradd,
               aliases: %i[addtrigger trigger],
               description: 'Adds a trigger.',
-              usage: 'triggeradd '\
-                      '--p(hrase) <msg from which the bot triggers (text)> '\
-                      '--r(eply) <msg which the bot sends (text)> '\
-                      '--m(ode) <A(ny)> | n(ormal) '\
-                      "\n`If **a file is attached** to the command, that'll be used **instead of reply**. "\
-                      "If **a phrase** and **no reply** is given, "\
-                      'the bot will ask for the reply (text|file) after the command.',
+              usage: "Use 'triggeradd -h|--help' for help.",
               min_args: 1,
               require_register: true) do |event, *msg|
 
@@ -22,28 +16,28 @@ module TohsakaBot
           break
         end
 
-        args = msg.join(' ')
-        options = {}
+        extra_help = "If a file is attached to the command, that'll be used instead of reply. "\
+                     "If a phrase and no reply is given, "\
+                     "the bot will ask for the reply (text|file) after the command."
 
-        begin
-          OptionParser.new do |opts|
-            opts.on('--phrase PHRASE', String)
-            opts.on('--reply REPLY', String)
-            opts.on('--mode MODE', String)
-          end.parse!(Shellwords.shellsplit(args), into: options)
+        options = TohsakaBot.command_parser(
+            event, msg, 'Usage: triggeradd [options]', extra_help,
+            ['-p', '--phrase PHRASE', 'Message from which the bot triggers.', String],
+            ['-r', '--reply REPLY', 'Message which the bot sends.',  String],
+            ['-m', '--mode MODE', 'A(ny) phrase anywhere in the msg || n(ormal) msg has to be a exact match',  String]
+        )
+        break if options.nil?
 
-          phrase = options[:phrase]
-          reply = options[:reply]
-          if phrase.blank?
-            event.respond '--p(hrase) cannot be blank.'
-            break
-          end
-        rescue OptionParser::InvalidOption => e
-          event.respond "Tried to use an #{e}."
+        phrase = options[:phrase]
+        if phrase.nil?
+          event.respond '-p, --phrase is required.'
           break
         end
 
-        trg = TriggerController.new(event, phrase, options[:mode])
+        reply = options[:reply]
+        mode = options[:mode]
+
+        trg = TriggerController.new(event, phrase, mode)
         if !event.message.attachments.first.nil?
           filename = trg.download_reply_picture(event)
           id = trg.store_trigger(filename: filename)

@@ -5,37 +5,30 @@ module TohsakaBot
       command(:remindme,
               aliases: %i[remind reminder remadd remind addrem muistuta muistutus rem],
               description: 'Sets a reminder.',
-              usage: 'remindme '\
-                      '--d(atetime) <yMwdhms || dd/mm/yyyy hh.mm.ss || natural language> '\
-                      '--m(essage) <msg (text)> '\
-                      '--r(epeat) <dhm (duration, eg. 2d6h20m)>',
+              usage: "Use 'remindme -h|--help' for help.",
               min_args: 1,
               require_register: true) do |event, *msg|
 
-        args = msg.join(' ')
-        options = {}
+        options = TohsakaBot.command_parser(
+            event, msg, 'Usage: remindme [options]', '',
+            ['-d', '--datetime DATETIME', 'When to remind. Format: yMwdhms || dd/mm/yyyy hh.mm.ss || natural language', String],
+            ['-m', '--message MESSAGE', 'Message for the reminder.', String],
+            ['-r', '-repeat REPEAT', 'Interval duration for repeated reminders. Format: dhm (eg. 2d6h20m)', String]
+        )
+        break if options.nil?
+
         legacy = false
-
-        begin
-          OptionParser.new do |opts|
-            opts.on('--datetime DATETIME', String)
-            opts.on('--message MESSAGE', String)
-            opts.on('--repeat REPEAT', String)
-          end.parse!(Shellwords.shellsplit(args), into: options)
-        rescue OptionParser::InvalidOption => e
-          event.respond "Tried to use an #{e}."
-          break
-        end
-
         datetime = options[:datetime]
+
         if datetime.blank? && (!options[:message].blank? || !options[:repeat].blank?)
           event.respond 'If specifying other options (--m, --r), --d cannot be blank.'
           break
         elsif datetime.blank?
-          if args.include? ';'
-            datetime = args.split(';', 2)
+          msg = msg.join(' ')
+          if msg.include? ';'
+            datetime = msg.split(';', 2)
           else
-            datetime = args.split(' ', 2)
+            datetime = msg.split(' ', 2)
           end
           legacy = true
         end
