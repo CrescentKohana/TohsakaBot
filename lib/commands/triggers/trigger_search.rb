@@ -13,11 +13,16 @@ module TohsakaBot
         args = msg.join(' ')
         options = {}
 
-        OptionParser.new do |opts|
-          opts.on('--author USER_ID', String)
-          opts.on('--trigger PHRASE', String)
-          opts.on('--response RESPONSE', String)
-        end.parse!(Shellwords.shellsplit(args), into: options)
+        begin
+          OptionParser.new do |opts|
+            opts.on('--author USER_ID', String)
+            opts.on('--trigger PHRASE', String)
+            opts.on('--response RESPONSE', String)
+          end.parse!(Shellwords.shellsplit(args), into: options)
+        rescue OptionParser::InvalidOption => e
+          event.respond "Tried to use an #{e}."
+          break
+        end
 
         triggers = TohsakaBot.db[:triggers]
         result = triggers.where(:server_id => event.server.id.to_i).order(:id).map{ |t| t.values}.select do |t|
