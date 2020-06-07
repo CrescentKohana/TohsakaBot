@@ -9,7 +9,7 @@ module TohsakaBot
               usage: 'triggeradd '\
                       '--p(hrase) <msg from which the bot triggers (text)> '\
                       '--r(eply) <msg which the bot sends (text)> '\
-                      '--m(ode) <N(ormal) | a(ny)>'\
+                      '--m(ode) <A(ny)> | n(ormal) '\
                       "\n`If **a file is attached** to the command, that'll be used **instead of reply**. "\
                       "If **a phrase** and **no reply** is given, "\
                       'the bot will ask for the reply (text|file) after the command.',
@@ -25,16 +25,21 @@ module TohsakaBot
         args = msg.join(' ')
         options = {}
 
-        OptionParser.new do |opts|
-          opts.on('--phrase PHRASE', String)
-          opts.on('--reply REPLY', String)
-          opts.on('--mode MODE', String)
-        end.parse!(Shellwords.shellsplit(args), into: options)
+        begin
+          OptionParser.new do |opts|
+            opts.on('--phrase PHRASE', String)
+            opts.on('--reply REPLY', String)
+            opts.on('--mode MODE', String)
+          end.parse!(Shellwords.shellsplit(args), into: options)
 
-        phrase = options[:phrase]
-        reply = options[:reply]
-        if phrase.blank? # && (!options[:reply].blank? || !options[:mode].blank? || !event.message.attachments.first.nil?)
-          event.respond '--p(hrase) cannot be blank.'
+          phrase = options[:phrase]
+          reply = options[:reply]
+          if phrase.blank?
+            event.respond '--p(hrase) cannot be blank.'
+            break
+          end
+        rescue OptionParser::InvalidOption => e
+          event.respond "Tried to use an #{e}."
           break
         end
 

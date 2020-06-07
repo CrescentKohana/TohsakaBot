@@ -16,11 +16,16 @@ module TohsakaBot
         options = {}
         legacy = false
 
-        OptionParser.new do |opts|
-          opts.on('--datetime DATETIME', String)
-          opts.on('--message MESSAGE', String)
-          opts.on('--repeat REPEAT', String)
-        end.parse!(Shellwords.shellsplit(args), into: options)
+        begin
+          OptionParser.new do |opts|
+            opts.on('--datetime DATETIME', String)
+            opts.on('--message MESSAGE', String)
+            opts.on('--repeat REPEAT', String)
+          end.parse!(Shellwords.shellsplit(args), into: options)
+        rescue OptionParser::InvalidOption => e
+          event.respond "Tried to use an #{e}."
+          break
+        end
 
         datetime = options[:datetime]
         if datetime.blank? && (!options[:message].blank? || !options[:repeat].blank?)

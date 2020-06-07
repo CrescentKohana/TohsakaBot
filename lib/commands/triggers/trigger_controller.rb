@@ -3,15 +3,10 @@ module TohsakaBot
     def initialize(event, phrase, mode)
       @event = event
       @phrase = phrase
-      @serverid = event.server.id.to_i
+      @server_id = event.server.id.to_i
       @discord_uid = event.message.user.id.to_i
       @chance = 0
-
-      if mode =~ /a.*/s
-        @mode = 1
-      else
-        @mode = 0
-      end
+      @mode = (mode =~ /n.*/s) ? 0 : 1
 
       # Remove an unnecessary spaces
       @phrase.strip!
@@ -26,7 +21,7 @@ module TohsakaBot
                               reply: reply,
                               file: filename,
                               user_id: TohsakaBot.get_user_id(@discord_uid),
-                              server_id: @serverid,
+                              server_id: @server_id,
                               chance: @chance,
                               mode: @mode,
                               created_at: Time.now,
@@ -34,7 +29,6 @@ module TohsakaBot
       end
 
       TohsakaBot.trigger_data.reload_active
-
       # Return the id to the user.
       @id
     end

@@ -11,7 +11,7 @@ module TohsakaBot
       msg_objects
     end
 
-    def expire_msg(bot_msgs, user_msg: nil, duration: 60)
+    def expire_msg(bot_msgs, user_msg = nil, duration = 5)
       sleep(duration)
       bot_msgs.each {|m| m.delete}
       user_msg.delete unless user_msg.nil?
