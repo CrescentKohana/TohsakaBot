@@ -5,24 +5,18 @@ module TohsakaBot
       command(:triggersearch,
               aliases: %i[searchtrigger tsearch ts],
               description: 'Search triggers.',
-              usage: 'triggersearch --t(rigger) <trigger msg> --a(uthor) <id|mention> --r(esponse) <response msg>',
+              usage: "Use 'triggersearch -h|--help' for help.",
               min_args: 1,
               require_register: true,
               rescue: "`%exception%`") do |event, *msg|
 
-        args = msg.join(' ')
-        options = {}
-
-        begin
-          OptionParser.new do |opts|
-            opts.on('--author USER_ID', String)
-            opts.on('--trigger PHRASE', String)
-            opts.on('--response RESPONSE', String)
-          end.parse!(Shellwords.shellsplit(args), into: options)
-        rescue OptionParser::InvalidOption => e
-          event.respond "Tried to use an #{e}."
-          break
-        end
+        options = TohsakaBot.command_parser(
+            event, msg, 'Usage: remindme [options]', '',
+            ['-a', '--author USER_ID', 'Creator of the trigger. Format: Discord ID or mention', String],
+            ['-p', '--phrase PHRASE', 'Phrase from which the bot triggers.', String],
+            ['-r', '--reply REPLY', 'Reply to the phrase.', String]
+        )
+        break if options.nil?
 
         triggers = TohsakaBot.db[:triggers]
         result = triggers.where(:server_id => event.server.id.to_i).order(:id).map{ |t| t.values}.select do |t|
@@ -41,20 +35,21 @@ module TohsakaBot
           end
 
           # Tries to match with the given string as is, if there were no proper arguments.
-          if options[:author].nil? && options[:trigger].nil? && options[:response].nil?
-            opt_trigger = args.to_s
-            opt_response = args.to_s
+          if options[:author].nil? && options[:trigger].nil? && options[:reply].nil?
+            msg = msg.join(' ')
+            opt_trigger = msg.to_s
+            opt_reply = msg.to_s
 
             # if User matches OR Phrase is included OR Reply OR File is included
             discord_uid == opt_author &&
-                (phrase.include?(opt_trigger) || reply.include?(opt_response) || file.include?(opt_response))
+                (phrase.include?(opt_trigger) || reply.include?(opt_reply) || file.include?(opt_reply))
           else
             opt_trigger = options[:trigger] || phrase
-            opt_response = options[:response]  || reply
+            opt_reply = options[:reply]  || reply
 
             # if User matches AND Phrase is included AND (Reply OR File is included)
             discord_uid == opt_author &&
-                phrase.include?(opt_trigger) && (reply.include?(opt_response) || file.include?(opt_response))
+                phrase.include?(opt_trigger) && (reply.include?(opt_reply) || file.include?(opt_reply))
           end
         end
 
