@@ -10,7 +10,7 @@ module TohsakaBot
               require_register: true,
               rescue: "Something went wrong!\n`%exception%`") do |event, *ids|
 
-        @check = 0
+        deleted = []
         reminders = TohsakaBot.db[:reminders]
 
         begin
@@ -22,12 +22,12 @@ module TohsakaBot
 
         TohsakaBot.db.transaction do
           ids.each do |id|
-            @check = reminders.where(:user_id => user_id, :id => id.to_i).delete
+            deleted << id if reminders.where(:user_id => user_id, :id => id.to_i).delete > 0
           end
         end
 
-        if @check > 0
-          event.<< "Reminder#{'s' if ids.length > 1} deleted." # TODO: Tell user how many/which IDs were deleted (#{@check})
+        if deleted.size > 0
+          event.<< "Reminder#{'s' if ids.length > 1} deleted: #{deleted.join(', ')}."
         else
           event.<< 'One or more IDs were not found within your list of triggers.'
         end

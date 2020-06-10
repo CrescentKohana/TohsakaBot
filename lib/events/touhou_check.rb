@@ -35,9 +35,9 @@ module TohsakaBot
         if words.any? { |word| @titles[0].downcase.include?(word) || @descriptions[0].downcase.include?(word) }
 
           sent_msg = event.channel.send_file(File.open('img/touhou.jpg'))
-          remove_msg = event.message.await!(timeout: 15)
+          remove_msg = event.message.await!(timeout: 10)
 
-          if remove_msg.content == "tyhmä"
+          if remove_msg.content == "delet"
             sent_msg.delete
           end
         end

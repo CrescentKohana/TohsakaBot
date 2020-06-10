@@ -48,7 +48,7 @@ module TohsakaBot
         help_string = ''
         option_input.each do |o|
           option = o[0].to_s
-          help_string << "`- #{option[0]}"
+          help_string << "`-#{option[0]}"
           help_string << ", --#{option} #{option.capitalize}`"
           help_string << "\n・#{o[1]}\n"
         end

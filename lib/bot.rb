@@ -85,8 +85,8 @@ module TohsakaBot
   # load_modules(:Async, 'async/*', false)
   require_relative 'async.rb'
 
-  # Uncomment below to clean trigger files not present in the database.
-  # TohsakaBot.trigger_data.clean_trigger_files
+  # Cleans trigger files not present in the database.
+  TohsakaBot.trigger_data.clean_trigger_files
 
   # Terminal tool to send messages through the bot.
   Thread.new do
@@ -112,7 +112,7 @@ module TohsakaBot
   FRONT_OBJECT = TohsakaBridge.new
   DRb.start_service(BRIDGE_URI, FRONT_OBJECT)
 
-  # Wait for the drb server thread to finish before exiting.
+  # Waits for the drb server thread to finish before exiting.
   DRb.thread.join
 
   BOT.sync

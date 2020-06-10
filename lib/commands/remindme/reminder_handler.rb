@@ -3,11 +3,7 @@ module TohsakaBot
     class DatetimeError < StandardError; end
     class DateTimeSyntaxError < DatetimeError
       def message
-        "Incorrect datetime syntax.\n`"\
-        'remindme '\
-        '--d(atetime) <yMwdhms || dd/mm/yyyy hh.mm.ss || natural language> '\
-        '--m(essage) <msg (text)> '\
-        '--r(epeat) <dhm (duration, eg. 2d6h20m)>`'
+        "Incorrect datetime syntax. `yMwdhms (eg. 4M2d8h30s) OR yyyy/MM/dd hh.mm.ss OR natural language.`"
       end
     end
     class PastError < DatetimeError

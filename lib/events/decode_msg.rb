@@ -25,7 +25,6 @@ module TohsakaBot
             embed.colour = 0xA82727
             embed.timestamp = event.message.timestamp
             embed.add_field(name: 'Content:', value: decoded)
-            # embed.add_field(name: "<:thonkang:219069250692841473>", value: "are inline fields", inline: true)
           end
         end
       end
