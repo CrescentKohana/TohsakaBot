@@ -22,37 +22,44 @@ module TohsakaBot
         # # no_permission, deleted = [], []
         admin = [73510616697929728, 73086349363650560]
 
-        @check = 0
+        deleted = []
+        file_to_be_deleted = []
         ids.map!(&:to_i)
         triggers = TohsakaBot.db[:triggers]
 
         if admin.include?(discord_uid)
           TohsakaBot.db.transaction do
-            @deleted_triggers = triggers.where(:id => ids)
-            @check =  @deleted_triggers.delete
+            ids.each do |id|
+              file = triggers.where(:id => id.to_i).single_record![:file]
+              if triggers.where(:id => id.to_i).delete > 0
+                deleted << id
+                file_to_be_deleted << file
+              end
+            end
           end
         else
           TohsakaBot.db.transaction do
-            @deleted_triggers = triggers.where(:user_id => user_id, :id => ids)
-            @check = @deleted_triggers.delete
+            ids.each do |id|
+              file = triggers.where(:id => id.to_i).single_record![:file]
+              if triggers.where(:user_id => user_id, :id => id.to_i).delete > 0
+                deleted << id
+                file_to_be_deleted << file
+              end
+            end
           end
         end
 
-        deleted_trigger_ids = @deleted_triggers.select{:id}.map{ |i| i.values}
-        files_to_delete = @deleted_triggers.select{:file}.map{ |f| f.values}
-        unless files_to_delete.nil? || files_to_delete.empty?
-          files_to_delete.each do |f|
-            File.delete("data/triggers/#{f}")
-          end
+        file_to_be_deleted.each do |f|
+          File.delete("data/triggers/#{f}") unless f.blank?
         end
 
         #unless no_permission.empty?
         #  event.<< "No permissions to delete these triggers. "# TODO: #{no_permission.join(', ')}
         #end
 
-        if @check > 0
+        if deleted.size > 0
           TohsakaBot.trigger_data.reload_active
-          event.<< "Trigger#{'s' if ids.length > 1} deleted." #TODO: #{deleted_trigger_ids.join(', ')} #{@check}
+          event.<< "Trigger#{'s' if ids.length > 1} deleted: #{deleted.join(', ')}."
         else
           event.<< 'No triggers were deleted.'
         end

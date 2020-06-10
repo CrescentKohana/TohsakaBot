@@ -9,8 +9,11 @@ module TohsakaBot
               min_args: 1,
               require_register: true) do |event, *msg|
 
-        extra_help = "Alternatively, `remindme <time (if spaces put ; after this)> <msg>` also works.\n"\
-                     "Example: `remindme -d 4M2d8h30s -m Tickets!` will remind you in 4 months, 2 days, 8 hours and 30 seconds for 'Tickets!'."
+        extra_help = "Alternatively, `remindme <time (if spaces put ; after this)> <msg>` also works. Examples follow:\n"\
+                     "・`remindme -d 4M2d8h30s -m Tickets!` will remind you in 4 months, 2 days, 8 hours "\
+                     "and 30 seconds for 'Tickets!'.\n"\
+                     "・`remindme -d 2020/12/22 12:00:00 -m Christmas soon! -r 1y` will remind you about christmas "\
+                     "on 12/22 12:00:00 every year starting with 2020."
 
         options = TohsakaBot.command_parser(
             event, msg, 'Usage: remindme [options]', extra_help,
@@ -32,13 +35,15 @@ module TohsakaBot
           msg = msg.join(' ')
           if msg.include? ';'
             datetime = msg.split(';', 2)
-          else
+          elsif msg.include? ' '
             datetime = msg.split(' ', 2)
+          else
+            datetime = msg, ''
           end
           legacy = true
         end
 
-        datetime = datetime.join(' ')
+        datetime = datetime.join(' ') unless legacy
 
         rem = ReminderController.new(event, datetime, message, repeat, legacy)
         discord_uid = event.message.user.id.to_i

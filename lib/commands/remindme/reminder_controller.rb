@@ -3,7 +3,6 @@ module TohsakaBot
     include ActionView::Helpers::DateHelper
     DURATION_REGEX = /^[ydwhmMsSeckin0-9-]*$/i
     DATE_REGEX = /^[0-9]{4}-(1[0-2]|0[1-9])-(3[0-2]|[1-2][0-9]|0[1-9])\s(2[0-4]|1[0-9]|0[0-9]):(60|[0-5][0-9]):(60|[0-5][0-9])/
-    # attr_reader :datetime, :msg, :userid, :channelid, :repeated
 
     def initialize(event, time_input, msg, repeat, legacy)
       if legacy
@@ -16,7 +15,7 @@ module TohsakaBot
 
       @event = event
       @discord_uid = event.message.user.id
-      @channelid = event.channel.id
+      @channel_id = event.channel.id
 
       if !repeat.nil?
         minutes = match_time(repeat, /([0-9]*)(min|[m])/) || 0
@@ -74,7 +73,7 @@ module TohsakaBot
 
       raise ReminderHandler::DateTimeSyntaxError if !DATE_REGEX.match?(@datetime.to_s) || @datetime.nil?
       raise ReminderHandler::PastError if @datetime < Time.now
-      ReminderHandler.handle_repeat_limit(@repeat, BOT.channel(@channelid).pm?) if @repeat > 0
+      ReminderHandler.handle_repeat_limit(@repeat, BOT.channel(@channel_id).pm?) if @repeat > 0
     end
 
     def match_time(time, regex)
@@ -91,7 +90,7 @@ module TohsakaBot
         @id = reminders.insert(datetime: @datetime,
                                message: @msg,
                                user_id: TohsakaBot.get_user_id(@discord_uid),
-                               channel: @channelid,
+                               channel: @channel_id,
                                repeat: @repeat,
                                created_at: Time.now,
                                updated_at: Time.now)
