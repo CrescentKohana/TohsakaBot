@@ -52,7 +52,7 @@ module TohsakaBot
 
         if @check > 0
           TohsakaBot.trigger_data.reload_active
-          event.<< "#{@check} trigger#{'s' if ids.length > 1} deleted." #TODO: #{deleted_trigger_ids.join(', ')}
+          event.<< "Trigger#{'s' if ids.length > 1} deleted." #TODO: #{deleted_trigger_ids.join(', ')} #{@check}
         else
           event.<< 'No triggers were deleted.'
         end
