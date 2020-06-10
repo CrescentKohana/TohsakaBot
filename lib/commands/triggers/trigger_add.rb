@@ -1,7 +1,6 @@
 module TohsakaBot
   module Commands
     module TriggerAdd
-      # TODO: REFACTOR!
       extend Discordrb::Commands::CommandContainer
       command(:triggeradd,
               aliases: %i[addtrigger trigger],
@@ -22,27 +21,29 @@ module TohsakaBot
 
         options = TohsakaBot.command_parser(
             event, msg, 'Usage: triggeradd [options]', extra_help,
-            ['-p', '--phrase PHRASE', 'Message from which the bot triggers.', String],
-            ['-r', '--reply REPLY', 'Message which the bot sends.',  String],
-            ['-m', '--mode MODE', 'A(ny) phrase anywhere in the msg || n(ormal) msg has to be a exact match',  String]
+            [:phrase, 'Message from which the bot triggers.', :type => :strings],
+            [:reply, 'Message which the bot sends.', :type => :strings],
+            [:mode, 'A(ny) phrase anywhere in the msg || n(ormal) msg has to be a exact match', :type => :string]
         )
         break if options.nil?
 
-        phrase = options[:phrase]
+        phrase = options.phrase.nil? ? nil : options.phrase.join(' ')
         if phrase.nil?
           event.respond '-p, --phrase is required.'
           break
         end
 
-        reply = options[:reply]
-        mode = options[:mode]
+        reply = options.reply.nil? ? nil : options.reply.join(' ')
+        mode = options.mode
 
         trg = TriggerController.new(event, phrase, mode)
         if !event.message.attachments.first.nil?
           filename = trg.download_reply_picture(event)
           id = trg.store_trigger(filename: filename)
+
         elsif !reply.blank?
           id = trg.store_trigger(reply: reply)
+
         else
           event.respond('Tell me the response (10s remaining).')
           response = event.message.await!(timeout: 10)
@@ -54,6 +55,7 @@ module TohsakaBot
             else
               id = trg.store_trigger(reply: response.message.content)
             end
+
           else
             event.respond('You took too long!')
             break
