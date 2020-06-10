@@ -35,8 +35,8 @@ require 'active_support/time_with_zone'
 require 'benchmark'
 require 'to_regexp'
 ## Better command parsing ##
+require 'optimist'
 require 'shellwords'
-require 'optparse'
 ## Custom probability for modules like Trigger ##
 require 'pickup'
 ## Stripping markdown from strings ##

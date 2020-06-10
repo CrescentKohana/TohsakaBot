@@ -12,9 +12,10 @@ module TohsakaBot
     end
 
     def expire_msg(event, bot_msgs, user_msg = nil, duration = 60)
+      return if event.channel.pm?
       sleep(duration)
       bot_msgs.each {|m| m.delete}
-      user_msg.delete unless user_msg.nil? || event.channel.pm?
+      user_msg.delete unless user_msg.nil?
     end
 
     def give_temporary_role(event, role_id, user_id)
