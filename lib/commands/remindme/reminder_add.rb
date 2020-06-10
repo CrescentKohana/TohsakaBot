@@ -11,9 +11,9 @@ module TohsakaBot
 
         options = TohsakaBot.command_parser(
             event, msg, 'Usage: remindme [options]', '',
-            ['-d', '--datetime DATETIME', 'When to remind. Format: yMwdhms || dd/mm/yyyy hh.mm.ss || natural language', String],
+            ['-d', '--datetime DATETIME', 'When to remind. Format: yMwdhms | yyyy/MM/dd hh.mm.ss | natural language', String],
             ['-m', '--message MESSAGE', 'Message for the reminder.', String],
-            ['-r', '-repeat REPEAT', 'Interval duration for repeated reminders. Format: dhm (eg. 2d6h20m)', String]
+            ['-r', '--repeat REPEAT', 'Interval duration for repeated reminders. Format: dhm (eg. 2d6h20m)', String]
         )
         break if options.nil?
 
