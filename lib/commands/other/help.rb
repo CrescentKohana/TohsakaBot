@@ -4,46 +4,51 @@ module TohsakaBot
       extend Discordrb::Commands::CommandContainer
       command(:help,
               aliases: %i[sendhelp],
-              description: 'Help me.',
-              usage: '',
-              rescue: "Something went wrong!\n`%exception%`") do |event, where|
+              description: 'Returns a list of all commands, or help for a specific command.',
+              usage: 'help <command name>') do |event, command_name|
 
-        @sendhelp = if where.to_s == "here"
-                      event.channel
-                    else
-                      event.author.pm
-                    end
+        if command_name
+          command = BOT.commands[command_name.to_sym]
+          if command.is_a?(Discordrb::Commands::CommandAlias)
+            command = command.aliased_command
+            command_name = command.name
+          end
 
-        @sendhelp.send_embed do |embed|
-          embed.title = "**COMMANDS & OTHER STUFF**"
-          embed.colour = 0xA82727
-          embed.url = ""
-          embed.description = "_The prefix for all commands is #{CFG.prefix}_"
-          embed.timestamp = Time.now
+          unless command
+            event.respond "The command `#{command_name}` does not exist."
+            break
+          end
 
-          embed.image = Discordrb::Webhooks::EmbedImage.new(url: "https://cdn.discordapp.com/attachments/351170098754486289/648936828212215812/22_1602-4fe170.gif")
-          embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: "Rin", icon_url: "https://cdn.discordapp.com/attachments/351170098754486289/648936891890008120/22_1615-a1fef0.png")
-          embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "Made with Ruby", icon_url: "https://cdn.discordapp.com/emojis/232899886419410945.png")
+          desc = command.attributes[:description] || ''
+          usage = command.attributes[:usage]
+          parameters = command.attributes[:parameters]
 
-          embed.add_field(name: ":white_small_square: ping", value: "pong.")
-          embed.add_field(name: ":white_small_square: chaos <msg>", value: "cHaOs")
-          embed.add_field(name: ":white_small_square: stars <user> <message>", value: "きらきら")
-          embed.add_field(name: ":white_small_square: encode <channel (id, name or nothing for DM)> <message>", value: "Channels: main, pelit, mökki, opiskelu & anime. Encodes the message with ROT13 and sends it either to the specified channel or to you (ROT13).")
-          # Depreceated because of the native spoiler feature in Discord.
-          # embed.add_field(name: ":white_small_square: spoiler <for what> <message (1016 characters max)>", value: "Adds a reaction to the message with which you can decode it (ROT13).")
-          embed.add_field(name: ":white_small_square: coinflip", value: "Flips a coin. Three different outcomes and multiple aliases for the command.")
-          embed.add_field(name: ":white_small_square: addrole || delrole <role>", value: "Add a role to yourself or remove it.")
-          embed.add_field(name: ":white_small_square: remindme <R〇y〇M〇w〇d〇h〇m〇s | time as natural language | ISO8601 etc.. (if spaces, use ; after the time)> <msg> (R for repeated, >10 minutes)", value: "You can use this to remind yourself when it's time to stop.")
-          embed.add_field(name: ":white_small_square: reminders", value: "Check all of your active reminders.")
-          embed.add_field(name: ":white_small_square: delreminder <ids separeted by space (integer)>", value: "Deletes an active reminder.")
-          embed.add_field(name: ":white_small_square: alko <max price in euros (integer)> <type>", value: "Searches alko.fi for something to drink within your budget.")
-          embed.add_field(name: ":white_small_square: alkolist", value: "Shows all usable types with the ?alko command.")
-          embed.add_field(name: ":white_small_square: addtrigger <regex: y/n> <trigger word>", value: "Adds a trigger to the bot which actives with the specified word (base chance #{CFG.default_trigger_chance}%).")
-          embed.add_field(name: ":white_small_square: triggers", value: "Checks all of your current triggers.")
-          embed.add_field(name: ":white_small_square: deltrigger <ids separeted by space (integer)>", value: "Deletes one trigger.")
-          embed.add_field(name: ":white_small_square: summon <servant>", value: "WIP. Servants currently usable: saber, archer, lancer.")
-          embed.add_field(name: ":black_small_square: **Event triggers**", value: "They consist of ayyy, banaanikissa and a lot more.")
-          #embed.add_field(name: "<:thonkang:219069250692841473>", value: "are inline fields", inline: true)
+          result = "**`#{command_name}`**: #{desc}"
+
+          result += "\nUsage: `#{usage}`" if usage
+
+          if parameters
+            result += "\nParameters:\n```"
+            parameters.each { |p| result += "\n#{p}" }
+            result += '```'
+          end
+
+          aliases = BOT.command_aliases(command_name.to_sym)
+          unless aliases.empty?
+            result += "\nAliases: "
+            result += aliases.map { |a| "`#{a.name}`" }.join(', ')
+          end
+
+          result
+        else
+          available_commands = BOT.commands.values.reject do |c|
+            c.is_a?(Discordrb::Commands::CommandAlias) || !c.attributes[:help_available]
+          end
+
+          "Help for a specific command: `help <command name>`\n**List of commands:**\n" +
+              (available_commands.reduce '' do |memo, c|
+                memo + "`#{c.name}`, "
+              end)[0..-3]
         end
       end
     end
