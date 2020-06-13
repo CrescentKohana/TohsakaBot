@@ -1,7 +1,7 @@
 module TohsakaBot
   module DiscordHelper
-    def send_message_with_reaction(bot, cid, emoji, content)
-      reply = bot.send_message(cid.to_i, content)
+    def send_message_with_reaction(cid, emoji, content)
+      reply = BOT.send_message(cid.to_i, content)
       reply.create_reaction(emoji)
     end
 

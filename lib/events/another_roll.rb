@@ -18,6 +18,9 @@ module TohsakaBot
           # one or more zero-width space identifier(s).
           if msg[-1] == "\u200B"
             case msg
+            when /.*\u200B\u200B\u200B\u200B\u200B/i
+              number = rand(0..99999)
+              i = 5
             when /.*\u200B\u200B\u200B\u200B/i
               number = rand(0..9999)
               i = 4
@@ -47,6 +50,10 @@ module TohsakaBot
               name = BOT.member(event.server, event.author.id).display_name
               TohsakaBot.give_temporary_role(event, role_id, user_id)
               event.respond("🎉 @here #{name} HAS GOT QUADS! 🎉")
+            elsif number.to_s =~ /(\d)\1{4}/ && i == 5
+              name = BOT.member(event.server, event.author.id).display_name
+              TohsakaBot.give_temporary_role(event, role_id, user_id)
+              event.respond("🎉 @here #{name} HAS GOT QUINTS! 🎉")
             end
           end
         end
