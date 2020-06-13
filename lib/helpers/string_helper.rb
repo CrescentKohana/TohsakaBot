@@ -17,6 +17,6 @@ class String
   # Hides the preview in links posted by the bot by adding <link>.
   def hide_link_preview
     # TODO: Add a check if the link already has <> around it
-    gsub(TohsakaBot.url_regex, '<\k<foo>>')
+    gsub(TohsakaBot.url_regex(true), '<\k<capture>>')
   end
 end
