@@ -14,9 +14,11 @@ module TohsakaBot
         name = BOT.member(event.server, event.author.id).display_name
 
         identifier = "\u200B" * 2
-        TohsakaBot.send_message_with_reaction(BOT, event.channel.id, '🎲',
-                                          '**' + number.to_s.rjust(2, '0') +
-                                          '**  `' + name.strip_mass_mentions.sanitize_string + '`' + identifier)
+        TohsakaBot.send_message_with_reaction(
+            event.channel.id,
+            '🎲',
+            "**#{number.to_s.rjust(2, '0')}**  `#{name.strip_mass_mentions.sanitize_string}`#{identifier}"
+        )
       end
     end
   end

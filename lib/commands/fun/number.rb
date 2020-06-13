@@ -12,7 +12,7 @@ module TohsakaBot
               rescue: "Something went wrong!\n`%exception%`") do |event, one, two|
 
         if one.to_i < -100000000 || two.to_i > 100000000
-          event.<< "Don't break the bot."
+          event.<< "Don't break the bot (range is -100000000 - 100000000)."
           break
         end
 
