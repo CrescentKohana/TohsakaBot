@@ -14,7 +14,7 @@ module TohsakaBot
         begin
           user_id = TohsakaBot.get_user_id(discord_uid)
         rescue
-          event.respond "You aren't registered yet! Please do so by entering the command '?register'."
+          event.respond "You aren't registered yet! Please do so by entering the command '#{CFG.prefix}register'."
           break
         end
 
