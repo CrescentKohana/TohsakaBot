@@ -58,7 +58,11 @@ module TohsakaBot
         url_result = twitter_id[0]
       when "reddit.com", "redd.it"
         return nil if path.nil?
-        reddit_id = path.match(/\/r\/\S*\/comments\/(\S{6})(\/\S*|)/i).captures
+        if subdomain == 'i'
+          reddit_id = path.match(/\/(\w{13}).\S*/i).captures
+        else
+          reddit_id = path.match(/\/r\/\S*\/comments\/(\S{6})(\/\S*|)/i).captures
+        end
         return nil if reddit_id.nil?
         type = "reddit"
         url_result = reddit_id[0]

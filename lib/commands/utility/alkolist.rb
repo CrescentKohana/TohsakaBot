@@ -4,7 +4,7 @@ module TohsakaBot
       extend Discordrb::Commands::CommandContainer
       command(:alkolist,
               aliases: %i[alcohollist drinklist],
-              description: 'Lists all the types for ?alko.',
+              description: 'Lists all the types for alko command.',
               usage: '',
               rescue: "Something went wrong!\n`%exception%`") do |event|
 
@@ -15,7 +15,7 @@ module TohsakaBot
           embed.description = ""
           embed.timestamp = Time.now
 
-          embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "?alko <max price in euros (integer)> <type>")
+          embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "alko <max price in euros (integer)> <type>")
 
           embed.add_field(name: "Simple:", value: "oluet, rommit, konjakit, viskit, siiderit, juomasekoitukset, punaviinit, valkoviinit, roseeviinit, alkoholittomat")
           embed.add_field(name: "Advanced:", value: "'jälkiruokaviinit, väkevöidyt ja muut viinit' \n'brandyt, armanjakit ja calvadosit' \n'ginit ja maustetut viinat' \n'liköörit ja katkerot' \n'kuohuviinit & samppanjat' \n'vodkat ja viinat'")
