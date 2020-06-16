@@ -30,20 +30,24 @@ module TohsakaBot
         if admin.include?(discord_uid)
           TohsakaBot.db.transaction do
             ids.each do |id|
-              file = triggers.where(:id => id.to_i).single_record![:file]
-              if triggers.where(:id => id.to_i).delete > 0
-                deleted << id
-                file_to_be_deleted << file
+              file = triggers.where(:id => id.to_i).single_record!
+              unless file.nil?
+                if triggers.where(:id => id.to_i).delete > 0
+                  deleted << id
+                  file_to_be_deleted << file[:file]
+                end
               end
             end
           end
         else
           TohsakaBot.db.transaction do
             ids.each do |id|
-              file = triggers.where(:id => id.to_i).single_record![:file]
-              if triggers.where(:user_id => user_id, :id => id.to_i).delete > 0
-                deleted << id
-                file_to_be_deleted << file
+              file = triggers.where(:id => id.to_i).single_record!
+              unless file.nil?
+                if triggers.where(:user_id => user_id, :id => id.to_i).delete > 0
+                  deleted << id
+                  file_to_be_deleted << file[:file]
+                end
               end
             end
           end
