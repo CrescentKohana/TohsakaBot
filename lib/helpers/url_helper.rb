@@ -66,7 +66,7 @@ module TohsakaBot
         return nil if reddit_id.nil?
         type = "reddit"
         url_result = reddit_id[0]
-      when "twitch.com"
+      when "twitch.tv"
         return nil unless subdomain == "clips"
         twitch_clips_id = path.match(/\/.*(\/|)/i).captures
         return nil if twitch_clips_id.nil?
