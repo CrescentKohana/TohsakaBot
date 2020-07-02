@@ -5,14 +5,19 @@ module TohsakaBot
       command(:triggers,
               aliases: %i[listtriggers triggerlist liipaisimet liipaisinlista triggerit],
               description: "Lists user's triggers.",
-              usage: 'triggers',
+              usage: 'triggers <all>',
               require_register: true,
-              rescue: "%exception%") do |event|
+              rescue: "%exception%") do |event, all|
 
         result_amount = 0
         triggers = TohsakaBot.db[:triggers]
         used_id = TohsakaBot.get_user_id(event.author.id)
-        sorted = triggers.where(:user_id => used_id).order(:id)
+        if all == 'all'
+          sorted = triggers.order(:id)
+        else
+          sorted = triggers.where(:user_id => used_id).order(:id)
+        end
+
 
         output = "`Modes include normal (0), any (1) and regex (2).`\n`  ID | M & % | TRIGGER                           | MSG/FILE`\n"
         sorted.each do |t|
@@ -26,9 +31,11 @@ module TohsakaBot
           result_amount += 1
         end
 
+        where = result_amount > 5 ? event.author.pm : event.channel
+
         msgs = []
         if result_amount > 0
-          msgs = TohsakaBot.send_multiple_msgs(Discordrb.split_message(output), event.channel)
+          msgs = TohsakaBot.send_multiple_msgs(Discordrb.split_message(output), where)
         else
           msgs << event.respond('No triggers found.')
         end

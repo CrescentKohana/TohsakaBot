@@ -11,7 +11,7 @@ module TohsakaBot
               rescue: "`%exception%`") do |event, *msg|
 
         options = TohsakaBot.command_parser(
-            event, msg, 'Usage: remindme [options]', '',
+            event, msg, 'Usage: triggersearch [options]', '',
             [:author, 'Creator of the trigger. Format: Discord ID or mention', :type => :string],
             [:phrase, 'Phrase from which the bot triggers.', :type => :strings],
             [:reply, 'Reply to the phrase.', :type => :strings]
