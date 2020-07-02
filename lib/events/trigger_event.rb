@@ -3,6 +3,7 @@ module TohsakaBot
     module TriggerEvent
       extend Discordrb::EventContainer
       rate_limiter = Discordrb::Commands::SimpleRateLimiter.new
+
       message(containing: TohsakaBot.trigger_data.active_triggers) do |event|
         mentions = event.message.mentions
         sure_trigger = false
@@ -18,25 +19,26 @@ module TohsakaBot
         unless event.channel.pm?
           triggers = TohsakaBot.db[:triggers]
           server_triggers = triggers.where(:server_id => event.server.id.to_i)
+          # Max two triggers per message
+          per_msg_limit = 0
+
           server_triggers.each do |t|
             phrase = t[:phrase]
             mode = t[:mode].to_i
-            msg = event.content
+            msg = event.content.gsub("<@!#{AUTH.cli_id}>", "").strip
             match = false
 
             if mode == 1
               phrase = '/.*\b' + phrase.to_s + '\b.*/i'
-              msg = msg.gsub("<@!#{AUTH.cli_id}>", "").strip
-              match = true if (msg =~ phrase.to_regexp(detect: true)) == 0
-            elsif mode == 2
-              msg = msg.gsub("<@!#{AUTH.cli_id}>", "").strip
-              match = true if (msg =~ phrase.to_regexp(detect: true)) == 0
-            else
-              msg = msg.gsub("<@!#{AUTH.cli_id}>", "").strip
-              match = true if msg == phrase.to_s
+            elsif mode != 2
+              phrase = '/' + phrase.to_s + '/i'
             end
 
+            match = true if (msg =~ phrase.to_regexp(detect: true)) == 0
+
             if match
+              per_msg_limit += 1
+              break if per_msg_limit > 2
               if sure_trigger
                 picked = true
               else
