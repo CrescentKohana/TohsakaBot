@@ -10,7 +10,7 @@ module TohsakaBot
       @active_triggers = @triggers.select(:phrase).select{:phrase}.map{ |p| p.values}.flatten
 
       # Convert all regex found in the database to a suitable form for Ruby,
-      # and pass them in to an array which only contains triggerable phareses.
+      # and pass them in to an array which only contains triggerable phrases.
       #@full_triggers.each do |k, v|
       #  if v["mode"].to_i == 0 || v["mode"].to_i == 1
       #    # @active_triggers << /#{v["phrase"]}/i

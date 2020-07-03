@@ -11,7 +11,7 @@ module TohsakaBot
               bucket: :cf, rate_limit_message: "Calm down! You are ratelimited for %time%s.",
               rescue: "Something went wrong!\n`%exception%`") do |event|
 
-        number = rand(0..9999)
+        number = rand(0..9999).to_s
         name = BOT.member(event.server, event.author.id).display_name
         user_id = event.message.author
         role_id = CFG.winner_role.to_i
@@ -20,10 +20,10 @@ module TohsakaBot
         TohsakaBot.send_message_with_reaction(
             event.channel.id,
             '🎲',
-            "**#{number.to_s.rjust(4, '0')}**  `#{name.strip_mass_mentions.sanitize_string}`#{identifier}"
+            "**#{number.rjust(4, '0')}**  `#{name.strip_mass_mentions.sanitize_string}`#{identifier}"
         )
 
-        if number.to_s =~ /(\d)\1{3}/
+        if /(\d)\1{3}/.match?(number)
           name = BOT.member(event.server, event.author.id).display_name
           TohsakaBot.give_temporary_role(event, role_id, user_id)
           event.respond("🎉 @here #{name} HAS GOT QUADS! 🎉")

@@ -19,16 +19,16 @@ module TohsakaBot
           if msg[-1] == "\u200B"
             case msg
             when /.*\u200B\u200B\u200B\u200B\u200B/i
-              number = rand(0..99999)
+              number = rand(0..99999).to_s
               i = 5
             when /.*\u200B\u200B\u200B\u200B/i
-              number = rand(0..9999)
+              number = rand(0..9999).to_s
               i = 4
             when /.*\u200B\u200B\u200B/i
-              number = rand(0..999)
+              number = rand(0..999).to_s
               i = 3
             when /.*\u200B\u200B/i
-              number = rand(0..99)
+              number = rand(0..99).to_s
               i = 2
             else
               break
@@ -41,16 +41,16 @@ module TohsakaBot
             event.channel.send_embed do |embed|
               embed.colour = 0x36393F
               embed.add_field(
-                  name: "🎲 **#{number.to_s.rjust(i, '0')}**",
+                  name: "🎲 **#{number.rjust(i, '0')}**",
                   value: "[#{name}](https://discordapp.com/channels/#{event.server.id}/#{event.channel.id}/#{event.message.id})"
               )
             end
 
-            if number.to_s =~ /(\d)\1{3}/ && i == 4
+            if /(\d)\1{3}/.match?(number) && i == 4
               name = BOT.member(event.server, event.author.id).display_name
               TohsakaBot.give_temporary_role(event, role_id, user_id)
               event.respond("🎉 @here #{name} HAS GOT QUADS! 🎉")
-            elsif number.to_s =~ /(\d)\1{4}/ && i == 5
+            elsif /(\d)\1{4}/.match?(number) && i == 5
               name = BOT.member(event.server, event.author.id).display_name
               TohsakaBot.give_temporary_role(event, role_id, user_id)
               event.respond("🎉 @here #{name} HAS GOT QUINTS! 🎉")

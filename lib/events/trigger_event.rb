@@ -11,9 +11,7 @@ module TohsakaBot
 
         if sure_trigger
           rate_limiter.bucket :sure_triggers, delay: 60
-          if rate_limiter.rate_limited?(:sure_triggers, event.author)
-            sure_trigger = false
-          end
+          sure_trigger = false if rate_limiter.rate_limited?(:sure_triggers, event.author)
         end
 
         unless event.channel.pm?
@@ -31,12 +29,15 @@ module TohsakaBot
             if mode == 1
               phrase = '/.*\b' + phrase.to_s + '\b.*/i'
             elsif mode != 2
-              phrase = '/' + phrase.to_s + '/i'
+              phrase = "/#{phrase}/i"
             end
 
-            match = true if (msg =~ phrase.to_regexp(detect: true)) == 0
+            regex = phrase.to_regexp(detect: true)
+
+            match = true if regex.match?(msg)
 
             if match
+              puts phrase
               per_msg_limit += 1
               break if per_msg_limit > 2
               if sure_trigger
@@ -45,7 +46,7 @@ module TohsakaBot
                 chance = t[:chance].to_i
                 default_chance = CFG.default_trigger_chance.to_i
                 c = chance == 0 ? default_chance : chance.to_i
-                c *= 2 if chance == default_chance && mode == 0
+                c *= 3 if chance == default_chance && mode == 0
 
                 pickup = Pickup.new({true => c, false => 100 - c})
                 picked = pickup.pick(1)

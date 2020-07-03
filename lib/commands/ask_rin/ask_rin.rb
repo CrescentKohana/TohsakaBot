@@ -17,7 +17,7 @@ module TohsakaBot
           answer = csv.read.sample[0]
         end
 
-        url = answer =~ URI::regexp ? true : false
+        url = URI::regexp.match?(answer) ? true : false
         event.channel.send_embed do |embed|
           embed.image = Discordrb::Webhooks::EmbedImage.new(url: answer) if url
           embed.colour = 0x36393F

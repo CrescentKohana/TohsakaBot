@@ -6,7 +6,7 @@ module TohsakaBot
       @server_id = event.server.id.to_i
       @discord_uid = event.message.user.id.to_i
       @chance = 0
-      @mode = (mode =~ /n.*/s) ? 0 : 1
+      @mode = /e.*/s.match?(mode) ? 0 : 1
 
       # Remove an unnecessary spaces
       @phrase.strip!
