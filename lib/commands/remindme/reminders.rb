@@ -48,7 +48,7 @@ module TohsakaBot
           msgs << event.respond('No reminders found.')
         end
 
-        TohsakaBot.expire_msg(event, msgs, event.message)
+        TohsakaBot.expire_msg(event.channel, msgs, event.message)
         break
       end
     end

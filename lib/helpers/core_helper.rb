@@ -64,7 +64,7 @@ module TohsakaBot
           end
         end
 
-        TohsakaBot.expire_msg(event, [m], event.message)
+        TohsakaBot.expire_msg(event.channel, [m], event.message)
         return nil
       end
 
