@@ -40,7 +40,7 @@ module TohsakaBot
           msgs << event.respond('No triggers found.')
         end
 
-        TohsakaBot.expire_msg(event, msgs, event.message)
+        TohsakaBot.expire_msg(where, msgs, event.message)
         break
       end
     end
