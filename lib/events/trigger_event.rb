@@ -26,12 +26,12 @@ module TohsakaBot
             match = false
 
             if mode == 1
-              phrase = '/.*\b' + phrase.to_s + '\b.*/i'
+              phrase = /.*\b#{phrase}\b.*/i
             elsif mode != 2
-              phrase = "/#{phrase}/i"
+              phrase = /^#{phrase}/i
             end
 
-            regex = phrase.to_regexp(detect: true)
+            regex = Regexp.new phrase
 
             match = true if regex.match?(msg)
 
