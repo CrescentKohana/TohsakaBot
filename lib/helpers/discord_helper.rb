@@ -12,7 +12,7 @@ module TohsakaBot
     end
 
     def expire_msg(event, bot_msgs, user_msg = nil, duration = 60)
-      return if event.channel.pm?
+      return if event.pm?
       sleep(duration)
       bot_msgs.each {|m| m.delete}
       user_msg.delete unless user_msg.nil?

@@ -17,7 +17,6 @@ module TohsakaBot
         unless event.channel.pm?
           triggers = TohsakaBot.db[:triggers]
           server_triggers = triggers.where(:server_id => event.server.id.to_i)
-          # Max two triggers per message
           per_msg_limit = 0
 
           server_triggers.each do |t|
@@ -37,15 +36,16 @@ module TohsakaBot
             match = true if regex.match?(msg)
 
             if match
-              puts phrase
+              # Max two triggers per message
               per_msg_limit += 1
               break if per_msg_limit > 2
+
               if sure_trigger
                 picked = true
               else
                 chance = t[:chance].to_i
-                default_chance = CFG.default_trigger_chance.to_i
-                c = chance == 0 ? default_chance : chance.to_i
+                default_chance = CFG.default_trigger_chance
+                c = chance == 0 ? default_chance : chance
                 c *= 3 if chance == default_chance && mode == 0
 
                 pickup = Pickup.new({true => c, false => 100 - c})
