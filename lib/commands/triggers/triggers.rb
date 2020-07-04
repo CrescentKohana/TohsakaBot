@@ -4,20 +4,18 @@ module TohsakaBot
       extend Discordrb::Commands::CommandContainer
       command(:triggers,
               aliases: %i[listtriggers triggerlist liipaisimet liipaisinlista triggerit],
-              description: "Lists user's triggers.",
-              usage: 'triggers <all>',
-              require_register: true,
-              rescue: "%exception%") do |event, all|
+              description: "Lists user's triggers. All parameter lists all triggers.",
+              usage: 'triggers <all (does not work in PMs)>',
+              require_register: true) do |event, all|
 
         result_amount = 0
         triggers = TohsakaBot.db[:triggers]
         used_id = TohsakaBot.get_user_id(event.author.id)
-        if all == 'all'
+        if all == 'all' && !event.channel.pm?
           sorted = triggers.order(:id)
         else
           sorted = triggers.where(:user_id => used_id).order(:id)
         end
-
 
         output = "`Modes include normal (0), any (1) and regex (2).`\n`  ID | M & % | TRIGGER                           | MSG/FILE`\n"
         sorted.each do |t|

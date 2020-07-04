@@ -24,6 +24,7 @@ module Discordrb::Commands
 
           # Additions
           require_register: attributes[:require_register] || false,
+          enabled_in_pm: attributes[:require_register] || true,
       }
 
       @block = block
@@ -31,10 +32,13 @@ module Discordrb::Commands
 
     def call(event, arguments, chained = false, check_permissions = true)
       if @attributes[:require_register] == true
-        unless TohsakaBot.registered?(event.author.id, event)
-          return
-        end
+        return unless TohsakaBot.registered?(event.author.id, event)
       end
+
+      if @attributes[:enabled_in_pm] == false
+        return if event.channel.pm?
+      end
+
       if arguments.length < @attributes[:min_args]
         response = "Too few arguments for command `#{name}`!"
         response += "\nUsage: `#{@attributes[:usage]}`" if @attributes[:usage]
