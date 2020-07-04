@@ -43,6 +43,7 @@ require 'pickup'
 require 'redcarpet'
 require 'redcarpet/render_strip'
 
+# Override discordrb gem
 require_relative 'gem_overrides/discordrb_command_override'
 
 module TohsakaBot
