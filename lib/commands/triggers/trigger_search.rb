@@ -8,7 +8,7 @@ module TohsakaBot
               usage: "Use 'triggersearch -h|--help' for help.",
               min_args: 1,
               require_register: true,
-              rescue: "`%exception%`") do |event, *msg|
+              enabled_in_pm: false) do |event, *msg|
 
         options = TohsakaBot.command_parser(
             event, msg, 'Usage: triggersearch [options]', '',
@@ -17,7 +17,6 @@ module TohsakaBot
             [:reply, 'Reply to the phrase.', :type => :strings]
         )
         break if options.nil?
-
 
         triggers = TohsakaBot.db[:triggers]
         result = triggers.where(:server_id => event.server.id.to_i).order(:id).map{ |t| t.values}.select do |t|

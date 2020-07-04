@@ -7,7 +7,8 @@ module TohsakaBot
               description: 'Adds a trigger.',
               usage: "Use 'triggeradd -h|--help' for help.",
               min_args: 1,
-              require_register: true) do |event, *msg|
+              require_register: true,
+              enabled_in_pm: false) do |event, *msg|
 
         if TohsakaBot.user_limit_reached?(event.author.id, CFG.trigger_limit, :triggers)
           event.respond "Sorry, but the the limit for triggers per user is #{CFG.trigger_limit}! " +
