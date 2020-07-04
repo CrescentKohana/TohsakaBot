@@ -3,6 +3,8 @@ module TohsakaBot
     def db
       @db ||= Sequel.connect(
           adapter: 'mysql2',
+          charset: 'utf8mb4',
+          collate: 'utf8mb4_unicode_ci',
           host: AUTH.db_url,
           database: AUTH.db_name,
           user: AUTH.db_user,
