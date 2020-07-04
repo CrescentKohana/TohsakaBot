@@ -12,7 +12,7 @@ module TohsakaBot
         triggers = TohsakaBot.db[:triggers]
         used_id = TohsakaBot.get_user_id(event.author.id)
         if all == 'all' && !event.channel.pm?
-          sorted = triggers.order(:id)
+          sorted = triggers.where(:server_id => event.server.id.to_i).order(:id)
         else
           sorted = triggers.where(:user_id => used_id).order(:id)
         end
