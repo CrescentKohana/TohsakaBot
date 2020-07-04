@@ -14,7 +14,7 @@ Rails web interface for the bot here: [TohsakaWeb](https://github.com/Luukuton/T
 2. Use these SQL commands to create user and database for the bot. Remember to change USERNAMEs and PASSWORD. 
 ```
 CREATE USER 'USERNAME'@'localhost' IDENTIFIED BY 'PASSWORD';
-CREATE DATABASE IF NOT EXISTS tohsaka CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+CREATE DATABASE IF NOT EXISTS tohsaka CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 GRANT ALL PRIVILEGES on tohsaka.* to 'USERNAME'@'localhost';
 FLUSH privileges;
 ```
