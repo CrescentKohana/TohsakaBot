@@ -31,11 +31,11 @@ module Discordrb::Commands
     end
 
     def call(event, arguments, chained = false, check_permissions = true)
-      if @attributes[:require_register] == true
+      if @attributes[:require_register]
         return unless TohsakaBot.registered?(event.author.id, event)
       end
 
-      if @attributes[:enabled_in_pm] == false
+      unless @attributes[:enabled_in_pm]
         return if event.channel.pm?
       end
 

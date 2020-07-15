@@ -44,8 +44,10 @@ module TohsakaBot
                 picked = true
               else
                 chance = t[:chance].to_i
-                default_chance = CFG.default_trigger_chance
+                default_chance = CFG.default_trigger_chance.to_i
                 c = chance == 0 ? default_chance : chance
+
+                # Three times the default chance if Exact mode.
                 c *= 3 if chance == default_chance && mode == 0
 
                 pickup = Pickup.new({true => c, false => 100 - c})
