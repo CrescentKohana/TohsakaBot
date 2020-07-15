@@ -24,7 +24,7 @@ module TohsakaBot
       false
     end
 
-    # Not Discord UID
+    # Bot's interval UID (different from Discord UID)
     def get_user_id(discord_uid)
       auths = TohsakaBot.db[:authorizations]
       auths.where(:uid => discord_uid.to_i).first[:user_id].to_i
