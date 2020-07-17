@@ -21,7 +21,7 @@ module TohsakaBot
         event.channel.send_embed do |embed|
           embed.image = Discordrb::Webhooks::EmbedImage.new(url: answer) if url
           embed.colour = 0x36393F
-          embed.add_field(name: "**#{username}**: ", value: "[#{msg}](https://discordapp.com/channels/" + "#{event.server.id}/#{event.channel.id}/#{event.message.id})")
+          embed.add_field(name: "**#{username}**: ", value: "[#{msg}](https://discord.com/channels/" + "#{event.server.id}/#{event.channel.id}/#{event.message.id})")
           embed.add_field(name: "**Rin** (凛): ", value: "#{answer}") unless url
           embed.add_field(name: "**Rin** (凛): ", value: "🖼️") if url
         end

@@ -28,7 +28,7 @@ module TohsakaBot
             if mode == 1
               phrase = /.*\b#{phrase}\b.*/i
             elsif mode != 2
-              phrase = /^#{phrase}/i
+              phrase = /^#{phrase}$/i
             end
 
             regex = Regexp.new phrase
