@@ -63,8 +63,9 @@ module TohsakaBot
           phrase = t[1]
           reply = t[2]
           file = t[3]
-          chance = t[6]
+          chance = t[6].to_i == 0 ? CFG.default_trigger_chance.to_s : t[6]
           mode = t[7]
+          chance *= 3 if mode.to_i == 0
 
           if reply.nil? || reply.empty?
             output << "`#{sprintf("%4s", id)} | #{sprintf("%-5s", mode.to_s + " " + chance.to_s)} | #{sprintf("%-33s", phrase.to_s.gsub("\n", '')[0..30])} | #{sprintf("%-21s", file[0..20])}`\n"

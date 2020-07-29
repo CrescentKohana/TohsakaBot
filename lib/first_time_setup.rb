@@ -24,18 +24,19 @@ module TohsakaBot
         print "Type in a SauceNao API key (Optional): "
         saucenao_apikey = gets
 
-        f.write("# Personal keys, IDs and tokens\n\n" +
-                    "owner_id: \"#{owner_id}\"\n" +
-                    "bot_token: \"#{bot_token}\"\n" +
-                    "cli_id: \"#{cli_id}\"\n" +
-                    "yt_apikey: \"#{yt_apikey}\"\n" +
-                    "saucenao_apikey: \"#{saucenao_apikey}\"\n\n" +
-                    "# Internal auth\n" +
-                    "db_user: \"#{db_user}\"\n" +
-                    "db_password: \"#{db_password}\"\n" +
-                    "db_name: \"tohsaka\"\n" +
-                    "db_url: \"localhost\" \n" +
-                    "# DO NOT SHARE THIS FILE OR ITS CONTENTS WITH ANYONE\n")
+        f.write(
+            "# Personal keys, IDs and tokens\n\n"\
+            "owner_id: \"#{owner_id}\"\n"\
+            "bot_token: \"#{bot_token}\"\n"\
+            "cli_id: \"#{cli_id}\"\n"\
+            "yt_apikey: \"#{yt_apikey}\"\n"\
+            "saucenao_apikey: \"#{saucenao_apikey}\"\n\n"\
+            "# Internal auth\n"\
+            "db_user: \"#{db_user}\"\n"\
+            "db_password: \"#{db_password}\"\n"\
+            "db_name: \"tohsaka\"\n"\
+            "db_url: \"localhost\" \n"\
+            "# DO NOT SHARE THIS FILE OR ITS CONTENTS WITH ANYONE\n")
       end
 
       File.open("cfg/config.yml", "w") do |f|
@@ -51,17 +52,20 @@ module TohsakaBot
         print "Type in the directory path of TohsakaWeb like /home/rin/www/TohsakaWeb (Note for no trailing slash! / Optional): "
         web_dir = gets
 
-        f.write("---\n" + "prefix: \"#{prefix}\"\n" +
-                    "np: \"#{now_playing}\"" +
-                    "default_channel: \"#{channel_id}\"" +
-                    "web_dir: \"#{web_dir}\"" +
-                    "remainder_limit: \"50\"\n" +
-                    "trigger_limit: \"10\"\n" +
-                    "temp_folder: \"tmp\"\n" +
-                    "default_trigger_chance: \"5\"\n\n" +
-                    "winner_role: \"0000\"\n\n" +
-                    "loser_role: \"0000\"\n\n" +
-                    "url_regex: \"2\"\n\n")
+        f.write(
+            "---\n"\
+            "prefix: \"#{prefix}\"\n"\
+            "np: \"#{now_playing}\"\n"\
+            "default_channel: \"#{channel_id}\"\n"\
+            "web_dir: \"#{web_dir}\"\n"\
+            "remainder_limit: \"50\"\n"\
+            "trigger_limit: \"10\"\n"\
+            "temp_folder: \"tmp\"\n"\
+            "default_trigger_chance: \"5\"\n"\
+            "del_trigger:\n"\
+            "- not now rin\n"\
+            "winner_role: \"0000\"\n"\
+            "loser_role: \"0000\"\n")
       end
 
       # File.open("data/excluded_urls.yml", "w") { |f| f.write("---") } unless File.exist?('data/excluded_urls.yml')

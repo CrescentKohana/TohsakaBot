@@ -57,10 +57,24 @@ module TohsakaBot
               if picked
                 file = t[:file]
                 if file.to_s.empty?
-                  event.<< t[:reply]
+                  reply = event.respond t[:reply]
                 else
-                  event.channel.send_file(File.open("data/triggers/#{file}"))
+                  reply = event.channel.send_file(File.open("data/triggers/#{file}"))
                 end
+
+                # A way to remove the trigger response.
+                # Only the one, whose message got triggered, is able to delete the response.
+                # Threading is needed here as otherwise the await! would block any other triggers.
+                Thread.new do
+                  response = event.message.await!(timeout: 10)
+                  if response
+                    if CFG.del_trigger.include? response.content
+                      reply.delete
+                      response.message.delete
+                    end
+                  end
+                end
+
               else
                 break
               end
