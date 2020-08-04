@@ -19,13 +19,13 @@ module TohsakaBot
 
         output = "`Modes include normal (0), any (1) and regex (2).`\n`  ID | M & % | TRIGGER                           | MSG/FILE`\n"
         sorted.each do |t|
-          chance = t[:chance].to_i == 0 ? CFG.default_trigger_chance.to_s : t[:chance].to_s
+          chance = t[:chance].to_i == 0 ? CFG.default_trigger_chance.to_i : t[:chance].to_i
           chance *= 3 if t[:mode].to_i == 0
 
           if t[:reply].nil? || t[:reply].length == 0
-            output << "`#{sprintf("%4s", t[:id])} | #{sprintf("%-5s", t[:mode].to_s + " " + chance)} | #{sprintf("%-33s", t[:phrase].to_s.gsub("\n", '')[0..30])} | #{sprintf("%-21s", t[:file][0..20])}`\n"
+            output << "`#{sprintf("%4s", t[:id])} | #{sprintf("%-5s", t[:mode].to_s + " " + chance.to_i)} | #{sprintf("%-33s", t[:phrase].to_s.gsub("\n", '')[0..30])} | #{sprintf("%-21s", t[:file][0..20])}`\n"
           else
-            output << "`#{sprintf("%4s", t[:id])} | #{sprintf("%-5s", t[:mode].to_s + " " + chance)} | #{sprintf("%-33s", t[:phrase].to_s.gsub("\n", '')[0..30])} | #{sprintf("%-21s", t[:reply].gsub("\n", '')[0..20])}`\n"
+            output << "`#{sprintf("%4s", t[:id])} | #{sprintf("%-5s", t[:mode].to_s + " " + chance.to_i)} | #{sprintf("%-33s", t[:phrase].to_s.gsub("\n", '')[0..30])} | #{sprintf("%-21s", t[:reply].gsub("\n", '')[0..20])}`\n"
           end
           result_amount += 1
         end
