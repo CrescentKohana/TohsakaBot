@@ -7,7 +7,7 @@ module TohsakaBot
 
     def initialize
       @triggers = TohsakaBot.db[:triggers]
-      @active_triggers = @triggers.select(:phrase).select{:phrase}.map{ |p| p.values}.flatten
+      @active_triggers = @triggers.select(:phrase).select{:phrase}.map{ |p| p.values}.flatten.map(&:to_regexp)
 
       # Convert all regex found in the database to a suitable form for Ruby,
       # and pass them in to an array which only contains triggerable phrases.
