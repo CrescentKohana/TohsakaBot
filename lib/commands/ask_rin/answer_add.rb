@@ -6,8 +6,7 @@ module TohsakaBot
               aliases: %i[addanswer adda answer],
               description: 'Adds an answer to the list.',
               usage: 'addanswer <answer (or an embedded image)>',
-              min_args: 1,
-              rescue: "Something went wrong!\n`%exception%`") do |event, *msg|
+              min_args: 1) do |event, *msg|
 
         if event.message.attachments.first.nil?
           if !msg.nil?

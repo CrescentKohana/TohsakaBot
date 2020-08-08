@@ -7,18 +7,11 @@ module TohsakaBot
               description: 'Deletes an active reminder.',
               usage: 'delreminder <ids separeted by space (integer)>',
               min_args: 1,
-              require_register: true,
-              rescue: "Something went wrong!\n`%exception%`") do |event, *ids|
+              require_register: true) do |event, *ids|
 
         deleted = []
         reminders = TohsakaBot.db[:reminders]
-
-        begin
-          user_id = TohsakaBot.get_user_id(event.author.id.to_i)
-        rescue
-          event.respond "You aren't registered yet! Please do so by entering the command '#{CFG.prefix}register'."
-          break
-        end
+        user_id = TohsakaBot.get_user_id(event.author.id.to_i)
 
         TohsakaBot.db.transaction do
           ids.each do |id|
@@ -29,7 +22,7 @@ module TohsakaBot
         if deleted.size > 0
           event.<< "Reminder#{'s' if ids.length > 1} deleted: #{deleted.join(', ')}."
         else
-          event.<< 'One or more IDs were not found within your list of triggers.'
+          event.<< 'One or more IDs were not found within list of your reminders.'
         end
       end
     end

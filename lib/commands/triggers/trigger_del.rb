@@ -7,16 +7,10 @@ module TohsakaBot
               description: 'Deletes a trigger.',
               usage: 'deltrigger <ids separeted by space (integer)>',
               min_args: 1,
-              rescue: "Something went wrong!\n`%exception%`") do |event, *ids|
+              require_register: true) do |event, *ids|
 
         discord_uid = event.author.id.to_i
-
-        begin
-          user_id = TohsakaBot.get_user_id(discord_uid)
-        rescue
-          event.respond "You aren't registered yet! Please do so by entering the command '#{CFG.prefix}register'."
-          break
-        end
+        user_id = TohsakaBot.get_user_id(discord_uid)
 
         # TODO: Proper permissions.
         # # no_permission, deleted = [], []
@@ -65,7 +59,7 @@ module TohsakaBot
           TohsakaBot.trigger_data.reload_active
           event.<< "Trigger#{'s' if ids.length > 1} deleted: #{deleted.join(', ')}."
         else
-          event.<< 'No triggers were deleted.'
+          event.<< 'One or more IDs were not found within list of your triggers.'
         end
       end
     end

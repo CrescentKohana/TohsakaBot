@@ -8,8 +8,7 @@ module TohsakaBot
               quattroil neljä nelosilla nelosil quadseilla quadseil],
               description: 'Quads.',
               usage: '',
-              bucket: :cf, rate_limit_message: "Calm down! You are ratelimited for %time%s.",
-              rescue: "Something went wrong!\n`%exception%`") do |event|
+              bucket: :cf, rate_limit_message: "Calm down! You are ratelimited for %time%s.") do |event|
 
         number = rand(0..9999).to_s
         name = BOT.member(event.server, event.author.id).display_name

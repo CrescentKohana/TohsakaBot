@@ -5,8 +5,7 @@ module TohsakaBot
       command(:ping,
               aliases: %i[marco],
               description: 'Pong.',
-              usage: '',
-              rescue: "Something went wrong!\n`%exception%`") do |event|
+              usage: '') do |event|
 
         event.respond("`Pong! Bot respond time (ping): #{Time.now - event.timestamp}s`")
         m = event.respond("Pong!")

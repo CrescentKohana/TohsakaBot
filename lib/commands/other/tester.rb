@@ -5,8 +5,7 @@ module TohsakaBot
       command(:tester,
               aliases: %i[test t],
               description: 'Test',
-              usage: 'test <msg>',
-              rescue: "Something went wrong!\n`%exception%`") do |event, url|
+              usage: 'test <msg>') do |event, url|
 
         event.<< "```huutista```".sanitize_string
       end

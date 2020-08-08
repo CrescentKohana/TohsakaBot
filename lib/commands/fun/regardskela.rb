@@ -6,8 +6,7 @@ module TohsakaBot
               aliases: %i[kela],
               description: 'Kindly regards Kela.',
               usage: 'kela <message>',
-              min_args: 1,
-              rescue: "Something went wrong!\n`%exception%`") do |event, *msg|
+              min_args: 1) do |event, *msg|
 
         require 'mini_magick'
 

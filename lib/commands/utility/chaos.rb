@@ -6,8 +6,7 @@ module TohsakaBot
               aliases: %i[CHAOS mock MOCK],
               description: 'cHaOs mEsSaGe',
               usage: 'chaos <msg>',
-              min_args: 1,
-              rescue: "Something went wrong!\n`%exception%`") do |event, *msg|
+              min_args: 1) do |event, *msg|
 
         ch_msg = msg.join(' ').strip_mass_mentions.gsub /(?!^)..?/, &:capitalize
         ch_msg[0] = ch_msg[0].downcase

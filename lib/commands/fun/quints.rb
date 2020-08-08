@@ -8,8 +8,7 @@ module TohsakaBot
               pentat quintit vitoset viisi five fives],
               description: 'Quads.',
               usage: '',
-              bucket: :cf, rate_limit_message: "Calm down! You are ratelimited for %time%s.",
-              rescue: "Something went wrong!\n`%exception%`") do |event|
+              bucket: :cf, rate_limit_message: "Calm down! You are ratelimited for %time%s.") do |event|
 
         number = rand(0..99999).to_s
         name = BOT.member(event.server, event.author.id).display_name

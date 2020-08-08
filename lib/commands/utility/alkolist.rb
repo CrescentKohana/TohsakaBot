@@ -5,8 +5,7 @@ module TohsakaBot
       command(:alkolist,
               aliases: %i[alcohollist drinklist],
               description: 'Lists all the types for alko command.',
-              usage: '',
-              rescue: "Something went wrong!\n`%exception%`") do |event|
+              usage: '') do |event|
 
         event.channel.send_embed() do |embed|
           embed.title = "TYPES"

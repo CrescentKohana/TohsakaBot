@@ -1,5 +1,9 @@
 module TohsakaBot
   module DiscordHelper
+    # Discord file upload limits. Bot cannot upload anything larger than 8388119 bytes.
+    UPLOAD_LIMIT = 8388119
+    UPLOAD_LIMIT_NITRO = 52428308
+
     def send_message_with_reaction(cid, emoji, content)
       reply = BOT.send_message(cid.to_i, content)
       reply.create_reaction(emoji)

@@ -6,8 +6,7 @@ module TohsakaBot
               aliases: %i[addrole],
               description: 'Add a role to the user.',
               usage: 'roladd <role>', # <days (all,wdays,wend,mo,tu,we,th,fr,sa,su)> <start-end (15:00-18:00)>
-              min_args: 1,
-              rescue: "Something went wrong!\n`%exception%`") do |event, role|
+              min_args: 1) do |event, role|
 
         if CFG.allowed_roles.include? role.to_s
           found_role = event.server.roles.find { |r| r.name == role }

@@ -6,8 +6,7 @@ module TohsakaBot
               aliases: %i[ask rin],
               description: 'Ask Rin about something and she will deliver.',
               usage: 'askrin <question>',
-              min_args: 1,
-              rescue: "Something went wrong!\n`%exception%`") do |event, *msg|
+              min_args: 1) do |event, *msg|
 
         msg = msg.join(' ').sanitize_string
         username = BOT.member(event.server, event.user.id).display_name.strip_mass_mentions.sanitize_string

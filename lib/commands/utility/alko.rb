@@ -6,8 +6,7 @@ module TohsakaBot
               aliases: %i[drinks alcohol],
               description: 'Alcoholism.',
               usage: 'alko <max price in euros (integer)> <type>',
-              min_args: 2,
-              rescue: "Something went wrong!\n`%exception%`") do |event, iprice, *itype|
+              min_args: 2) do |event, iprice, *itype|
 
         if iprice.to_i <= 200
           m = event.respond('Parsing data...')
