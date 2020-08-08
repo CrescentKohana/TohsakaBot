@@ -25,13 +25,15 @@ module TohsakaBot
             msg = event.content.gsub("<@!#{AUTH.cli_id}>", "").strip
             match = false
 
-            if mode == 1
-              phrase = /.*\b#{phrase}\b.*/i
-            elsif mode != 2
+            if mode == 0
               phrase = /^#{phrase}$/i
+              regex = Regexp.new phrase
+            elsif mode == 1
+              phrase = /.*\b#{phrase}\b.*/i
+              regex = Regexp.new phrase
+            else
+              regex = phrase.to_regexp
             end
-
-            regex = Regexp.new phrase
 
             match = true if regex.match?(msg)
 

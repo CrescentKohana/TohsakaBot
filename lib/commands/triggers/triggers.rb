@@ -17,7 +17,7 @@ module TohsakaBot
           sorted = triggers.where(:user_id => used_id).order(:id)
         end
 
-        output = "`Modes include normal (0), any (1) and regex (2).`\n`  ID | M & % | TRIGGER                           | MSG/FILE`\n"
+        output = "`Modes include exact (0), any (1) and regex (2).`\n`  ID | M & % | TRIGGER                           | MSG/FILE`\n"
         sorted.each do |t|
           chance = t[:chance].to_i == 0 ? CFG.default_trigger_chance.to_i : t[:chance].to_i
           chance *= 3 if t[:mode].to_i == 0

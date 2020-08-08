@@ -57,7 +57,7 @@ module TohsakaBot
         end
 
         result_amount = 0
-        output = "`Modes include normal (0), any (1) and regex (2).`\n`  ID | M & % | TRIGGER                           | MSG/FILE`\n"
+        output = "`Modes include exact (0), any (1) and regex (2).`\n`  ID | M & % | TRIGGER                           | MSG/FILE`\n"
         result.each do |t|
           id = t[0]
           phrase = t[1]
