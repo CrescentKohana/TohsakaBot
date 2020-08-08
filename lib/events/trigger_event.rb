@@ -23,7 +23,6 @@ module TohsakaBot
             phrase = t[:phrase]
             mode = t[:mode].to_i
             msg = event.content.gsub("<@!#{AUTH.cli_id}>", "").strip
-            match = false
 
             if mode == 0
               phrase = /^#{phrase}$/i
@@ -35,9 +34,7 @@ module TohsakaBot
               regex = phrase.to_regexp
             end
 
-            match = true if regex.match?(msg)
-
-            if match
+            if regex.match?(msg)
               # Max two triggers per message
               per_msg_limit += 1
               break if per_msg_limit > 2

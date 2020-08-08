@@ -1,32 +1,31 @@
 module TohsakaBot
   class TriggerData
     attr_accessor :active_triggers
-    # @full_triggers
     @active_triggers
     @triggers
 
     def initialize
-      @triggers = TohsakaBot.db[:triggers]
-      @active_triggers = @triggers.select(:phrase).select{:phrase}.map{ |p| p.values}.flatten.map(&:to_regexp)
-
-      # Convert all regex found in the database to a suitable form for Ruby,
-      # and pass them in to an array which only contains triggerable phrases.
-      #@full_triggers.each do |k, v|
-      #  if v["mode"].to_i == 0 || v["mode"].to_i == 1
-      #    # @active_triggers << /#{v["phrase"]}/i
-      #    @active_triggers << /.*\b#{v["phrase"]}\b.*/
-      #  else
-      #    @active_triggers << v["phrase"].to_regexp(detect: true)
-      #  end
-      #end
+      reload_active
     end
 
+    # Convert all strings queried from the database to regex,
+    # and pass them in to an array which only contains triggerable phrases.
+    #
+    # @return
     def reload_active
       @triggers = TohsakaBot.db[:triggers]
-      @active_triggers = @triggers.select(:phrase).select{:phrase}.map{ |p| p.values}.flatten
+      @active_triggers = @triggers.select(:phrase).select{:phrase}.map{ |p| p.values }.flatten.map { |p|
+        regex = p.to_regexp
+        if regex.nil?
+          "/#{p}/".to_regexp
+        else
+          p.to_regexp
+        end }
     end
 
-    # Moves any trigger file not in the database to tmp/deleted_triggers.
+    # Moves all trigger files not found in the database to tmp/deleted_triggers.
+    #
+    # @return
     def clean_trigger_files
       puts "Cleaning trigger files.."
       triggers_files = TohsakaBot.db[:triggers].select(:phrase).select{:file}.map{ |p| p.values}.flatten
