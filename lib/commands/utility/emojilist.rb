@@ -5,8 +5,7 @@ module TohsakaBot
       command(:emojilist,
               aliases: %i[emoji le],
               description: 'List all the 絵文字 bot has at its disposal.',
-              usage: 'emojis',
-              rescue: "Something went wrong!\n`%exception%`") do |event|
+              usage: 'emojis') do |event|
 
         every_emoji = BOT.emoji
         i = 0

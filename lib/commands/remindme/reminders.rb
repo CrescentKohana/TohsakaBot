@@ -7,8 +7,7 @@ module TohsakaBot
               aliases: %i[listrem remlist rems],
               description: 'Lists reminders.',
               usage: 'reminders',
-              require_register: true,
-              rescue: "Something went wrong!\n`%exception%`") do |event|
+              require_register: true) do |event|
 
         reminders = TohsakaBot.db[:reminders]
         parsed_reminders = []

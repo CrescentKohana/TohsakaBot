@@ -44,6 +44,9 @@ module TohsakaBot
         full_filename = filename.gsub(File.extname(filename), '') + '_' + string + File.extname(filename)
 
         IO.copy_stream(URI.open(file.url), "data/triggers/#{full_filename}")
+
+        return nil if File.size("data/triggers/#{full_filename}") > TohsakaBot::DiscordHelper::UPLOAD_LIMIT
+
         full_filename
       end
     end

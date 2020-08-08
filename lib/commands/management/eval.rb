@@ -5,8 +5,7 @@ module TohsakaBot
       command(:eval,
               aliases: %i[breakstuff],
               description: 'DANGER | 危険です。',
-              help_available: false,
-              rescue: "Something went wrong!\n`%exception%`") do |event, *code|
+              help_available: false) do |event, *code|
 
         break unless event.user.id == AUTH.owner_id.to_i
         begin

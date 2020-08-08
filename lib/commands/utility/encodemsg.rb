@@ -6,8 +6,7 @@ module TohsakaBot
               aliases: %i[encode 🔒],
               description: 'Encode a message (with ROT13).',
               usage: 'encode <#channel_name | channel_id (optional)> <message>',
-              min_args: 1,
-              rescue: "Something went wrong!\n`%exception%`") do |event, channel, *msg|
+              min_args: 1) do |event, channel, *msg|
 
         if event.channel.pm?
           user_id = event.message.user.id

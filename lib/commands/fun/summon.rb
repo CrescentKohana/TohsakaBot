@@ -8,8 +8,7 @@ module TohsakaBot
               description: 'Summon',
               usage: 'remind <servant>',
               min_args: 1,
-              bucket: :commandseal, rate_limit_message: "Your command seals are on cooldown for %time%s!",
-              rescue: "Something went wrong!\n`%exception%`") do |e, servant|
+              bucket: :commandseal, rate_limit_message: "Your command seals are on cooldown for %time%s!") do |e, servant|
 
         # Prototype of FATE (守護英霊召喚システム・フェイト).
         wh = Discordrb::API::Channel.create_webhook("Bot #{AUTH.bot_token}", e.channel.id, "Summoned Servant", nil, "I summon thee!")

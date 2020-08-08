@@ -6,8 +6,7 @@ module TohsakaBot
               aliases: %i[delrole remrole rolerem derole],
               description: 'Delete a role from the user.',
               usage: 'roledel <role>',
-              min_args: 1,
-              rescue: "Something went wrong!\n`%exception%`") do |event, role|
+              min_args: 1) do |event, role|
 
         if CFG.allowed_roles.include? role.to_s
           found_role = event.server.roles.find { |r| r.name == role }

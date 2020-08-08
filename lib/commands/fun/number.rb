@@ -7,8 +7,7 @@ module TohsakaBot
               aliases: %i[numbers num numero single singles singleil singlet singleillä],
               description: 'A random number.',
               usage: 'number <start> <end> (default 0-9)',
-              bucket: :cf, rate_limit_message: "Calm down! You are ratelimited for %time%s.",
-              rescue: "Something went wrong!\n`%exception%`") do |event, one, two|
+              bucket: :cf, rate_limit_message: "Calm down! You are ratelimited for %time%s.") do |event, one, two|
 
         name = BOT.member(event.server, event.author.id).display_name.strip_mass_mentions.sanitize_string
 

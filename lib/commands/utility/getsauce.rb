@@ -6,8 +6,7 @@ module TohsakaBot
       command(:getsauce,
               aliases: %i[saucenao sauce rimg],
               description: 'Finds source for the posted image.',
-              usage: 'sauce <link (or attachment)>',
-              rescue: "Something went wrong!\n`%exception%`") do |event, messageurl|
+              usage: 'sauce <link (or attachment)>') do |event, messageurl|
 
         if !event.message.attachments.first.nil?
           @aurl = event.message.attachments.first.url

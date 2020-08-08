@@ -9,13 +9,13 @@ module TohsakaBot
       File.open("cfg/auth.yml", "w") do |f|
         print "Type in the owner ID (your Discord user ID): "
         owner_id = gets
-        print "Type in the client ID (found in the main category of your app): "
+        print "Type in the client ID (found here https://discord.com/developers/applications in the General Information tab of the app): "
         cli_id = gets
-        print "Type in the bot token (found in the bot category of your app): "
+        print "Type in the bot token (found on the same page in the Bot tab of the app): "
         bot_token = gets
-        print "Type in a the MySQL/MariaDB user name: "
+        print "Type in a the MariaDB/MySQL user name: "
         db_user = gets
-        print "Type in a the MySQL/MariaDB password: "
+        print "Type in a the MariaDB/MySQL password: "
         db_password = gets
 
         # TODO: Disable the functionality of YT and SauceNao commands/events if not set.
@@ -69,16 +69,13 @@ module TohsakaBot
       end
 
       # File.open("data/excluded_urls.yml", "w") { |f| f.write("---") } unless File.exist?('data/excluded_urls.yml')
-
       File.open("data/repost.yml", "w") { |f| f.write("---") } unless File.exist?('data/repost.yml')
-
       File.open("data/temporary_roles.yml", "w") { |f| f.write("---") } unless File.exist?('data/temporary_roles.yml')
 
       puts "Necessary files created!"
     end
 
     def welcome_message
-
     end
   end
 end

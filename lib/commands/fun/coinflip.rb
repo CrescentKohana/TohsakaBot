@@ -11,8 +11,7 @@ module TohsakaBot
               description: 'Flip a coin.',
               usage: 'flip <integer>',
               bucket: :cf,
-              rate_limit_message: "Calm down! You are ratelimited for %time%s.",
-              rescue: "Something went wrong!\n`%exception%`") do |event, n|
+              rate_limit_message: "Calm down! You are ratelimited for %time%s.") do |event, n|
 
         # Let's try to keep the CPU intact while we're at it.
         if n.to_i > 100000
