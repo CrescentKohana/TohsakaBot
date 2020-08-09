@@ -1,9 +1,13 @@
 module TohsakaBot
+  # Handling of trigger data.
   class TriggerData
     attr_accessor :active_triggers
     @active_triggers
     @triggers
 
+    # Loads active triggers to the memory.
+    #
+    # @return [void]
     def initialize
       reload_active
     end
@@ -11,7 +15,7 @@ module TohsakaBot
     # Convert all strings queried from the database to regex,
     # and pass them in to an array which only contains triggerable phrases.
     #
-    # @return
+    # @return [void]
     def reload_active
       @triggers = TohsakaBot.db[:triggers]
       @active_triggers = @triggers.select(:phrase).select{:phrase}.map{ |p| p.values }.flatten.map { |p|
@@ -25,7 +29,7 @@ module TohsakaBot
 
     # Moves all trigger files not found in the database to tmp/deleted_triggers.
     #
-    # @return
+    # @return [void]
     def clean_trigger_files
       puts "Cleaning trigger files.."
       triggers_files = TohsakaBot.db[:triggers].select(:phrase).select{:file}.map{ |p| p.values}.flatten

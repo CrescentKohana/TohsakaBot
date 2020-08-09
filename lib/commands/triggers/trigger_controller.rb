@@ -1,12 +1,12 @@
 module TohsakaBot
   # Controller class class for managing triggers.
-  #
   class TriggerController
     # Stores the trigger to the database and reloads active triggers in bot's memory.
     #
     # @param event [EventContainer] EventContainer for Message event
     # @param phrase [String] phrase to which the bot responses (triggers)
     # @param mode [Integer] trigger mode [exact (0), any (2), regex(3)]
+    # @return [void]
     def initialize(event, phrase, mode)
       @event = event
       @phrase = phrase

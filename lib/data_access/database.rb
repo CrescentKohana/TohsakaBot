@@ -1,5 +1,9 @@
 module TohsakaBot
+  # Database access and methods which are utilizing it.
   module DatabaseAccess
+    # Connection to the database.
+    #
+    # @return [void]
     def db
       @db ||= Sequel.connect(
           adapter: 'mysql2',
@@ -12,6 +16,12 @@ module TohsakaBot
       )
     end
 
+    # Returns true if user is registered (present in the database), false if not.
+    # If event is given and the user is not registered, sends a message which tells to register first.
+    #
+    # @param discord_uid [Integer]
+    # @param event [EventContainer, nil]
+    # @return [Boolean] is user registered?
     def registered?(discord_uid, event = nil)
       if TohsakaBot.get_user_id(discord_uid.to_i).to_i > 0
         return true
@@ -24,13 +34,19 @@ module TohsakaBot
       false
     end
 
-    # Bot's interval UID (different from Discord UID)
+    # Returns bot's internal UID. Not the Discord User ID!
+    #
+    # @param discord_uid [Integer] Discord UID
+    # @return [Integer] internal ID for the user
     def get_user_id(discord_uid)
       auths = TohsakaBot.db[:authorizations]
       auths.where(:uid => discord_uid.to_i).first[:user_id].to_i
     end
 
-    # Discord UID
+    # Returns Discord User ID.
+    #
+    # @param user_id [Integer] internal ID for the user
+    # @return [Integer] Discord UID
     def get_discord_id(user_id)
       auths = TohsakaBot.db[:authorizations]
       auths.where(:user_id => user_id.to_i).first[:uid].to_i
@@ -39,10 +55,10 @@ module TohsakaBot
     # Checks if the user limit is reached for this datatype.
     # For example, if the user has 50 reminders, and the limit is 50, the method returns true.
     #
-    # @param [Integer] discord_uid
-    # @param [Integer] limit
-    # @param [Symbol] datatype
-    # @return [Boolean]
+    # @param discord_uid [Integer]
+    # @param limit [Integer] per user limit
+    # @param datatype [Symbol] limit for what (:triggers, :reminders)
+    # @return [Boolean] is user limit reached?
     def user_limit_reached?(discord_uid, limit, datatype)
       user_id = TohsakaBot.get_user_id(discord_uid.to_i).to_i
       query_result = TohsakaBot.db[datatype]
@@ -50,6 +66,11 @@ module TohsakaBot
     end
   end
 
+  # Access to active triggers anywhere in the bot.
+  # @example Access active triggers.
+  #   TohsakaBot.trigger_data.active_triggers
+  #
+  # @return [TriggerData] triggers
   module TriggerPersistence
     def trigger_data
       @trigger_data ||= TriggerData.new
