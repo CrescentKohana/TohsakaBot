@@ -11,8 +11,8 @@ module TohsakaBot
               enabled_in_pm: false) do |event, *msg|
 
         if TohsakaBot.user_limit_reached?(event.author.id, CFG.trigger_limit, :triggers)
-          event.respond "Sorry, but the the limit for triggers per user is #{CFG.trigger_limit}! " +
-                            "They can be removed using `triggers` & `deltrigger <id(s)>`."
+          event.respond "The the maximum amount of triggers a user can have is #{CFG.trigger_limit}. " +
+                            "They can be removed using `deltrigger <id(s separated by space)>`."
           break
         end
 
