@@ -23,8 +23,8 @@ module Discordrb::Commands
           aliases: attributes[:aliases] || [],
 
           # Additions
-          require_register: attributes[:require_register] || false,
-          enabled_in_pm: attributes[:require_register] || true,
+          require_register: attributes[:require_register].nil? ? false : attributes[:require_register],
+          enabled_in_pm: attributes[:enabled_in_pm].nil? ? true : attributes[:enabled_in_pm],
       }
 
       @block = block
