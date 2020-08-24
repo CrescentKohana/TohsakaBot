@@ -29,5 +29,5 @@ Tests can be performed with `rspec` command.
 ## Dependencies
 * Ruby >= 2.6 supported
 * MariaDB / MySQL 
-* Gems specified in Gemfile
+* Gems specified in Gemfile (installed by `bundle install`)
   * Latest [discordrb](https://github.com/discordrb/discordrb) @ master branch
