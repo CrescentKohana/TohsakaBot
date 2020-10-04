@@ -15,8 +15,7 @@ module TohsakaBot
         end
 
         unless event.channel.pm?
-          triggers = TohsakaBot.db[:triggers]
-          server_triggers = triggers.where(:server_id => event.server.id.to_i)
+          server_triggers = TohsakaBot.trigger_data.triggers.where(:server_id => event.server.id.to_i)
           per_msg_limit = 0
 
           server_triggers.each do |t|
