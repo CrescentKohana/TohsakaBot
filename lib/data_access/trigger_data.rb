@@ -1,7 +1,7 @@
 module TohsakaBot
   # Handling of trigger data.
   class TriggerData
-    attr_accessor :active_triggers
+    attr_accessor :active_triggers, :triggers
     @active_triggers
     @triggers
 
