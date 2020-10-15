@@ -48,8 +48,8 @@ require_relative 'gem_overrides/discordrb_command_override'
 
 module TohsakaBot
   unless File.exist?('cfg/auth.yml')
-    first = FirstTimeSetup()
-    first.create_data_files_and_configs
+    setup = FirstTimeSetup.new
+    setup.create_data_files_and_configs
   end
 
   # Helpers #
