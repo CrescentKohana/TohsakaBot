@@ -12,6 +12,10 @@ module TohsakaBot
       FileUtils.mv path, "data/triggers/#{filename}"
     end
 
+    def reload_triggers
+      TohsakaBot.trigger_data.reload_active
+    end
+
     def channels_user_has_rights_to(discord_uid)
       possible_channels = []
       user = BOT.user(discord_uid.to_i)
