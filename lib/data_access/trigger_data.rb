@@ -34,7 +34,7 @@ module TohsakaBot
       puts "Cleaning trigger files.."
       triggers_files = TohsakaBot.db[:triggers].select(:phrase).select{:file}.map{ |p| p.values}.flatten
       Dir.foreach('data/triggers/') do |filename|
-        next if filename == '.' or filename == '..' or filename == 'touhou.jpg'
+        next if filename == '.' or filename == '..' or filename == '.keep'
         next if triggers_files.include? filename
         FileUtils.mv("data/triggers/#{filename}", "tmp/deleted_triggers/#{filename}")
       end

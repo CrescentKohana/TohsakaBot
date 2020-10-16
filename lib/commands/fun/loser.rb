@@ -7,7 +7,7 @@ module TohsakaBot
               description: 'Makes the user a loser for a week.',
               usage: 'loser <user>',
               min_args: 1,
-              allowed_roles: [299992716480348160]) do |event, username|
+              permission_level: 750) do |event, username|
 
         user_id = event.message.mentions[0].id
         role_id = CFG.loser_role

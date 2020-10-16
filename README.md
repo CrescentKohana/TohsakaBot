@@ -17,6 +17,10 @@ FLUSH privileges;
 4. Switch to the root folder of the bot and run `bundle install` to install required gems.
 5. Run the `lib/first_time_setup.rb`.
 6. Start the bot by running `bundle exec ruby run.rb`.
+7. Bot can be invited to a server with the following URL (**remember to change the CLIENT_ID**): 
+```
+https://discordapp.com/oauth2/authorize?client_id=CLIENT_ID&scope=bot&permissions=335924288
+```
 
 ## Documentation with YARD
 YARD files can be generated with: `yard` command.
