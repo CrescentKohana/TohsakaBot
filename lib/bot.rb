@@ -76,6 +76,8 @@ module TohsakaBot
                                             advanced_functionality: false,
                                             fancy_log: true)
 
+  BOT.set_user_permission(AUTH.owner_id.to_i, 1000)
+
   # Discord Events and Commands #
   TohsakaBot.load_modules(:Commands, 'commands/*/*')
   TohsakaBot.load_modules(:Events, 'events/*')
@@ -116,8 +118,6 @@ module TohsakaBot
 
   # Waits for the drb server thread to finish before exiting.
   DRb.thread.join
-
   BOT.sync
   # @trigger_system = Trigger_system.new
-  BOT.set_user_permission(AUTH.owner_id, 1000)
 end
