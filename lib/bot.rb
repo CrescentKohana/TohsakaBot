@@ -118,5 +118,5 @@ module TohsakaBot
 
   BOT.sync
   # @trigger_system = Trigger_system.new
-  BOT.set_role_permission(AUTH.owner_id, 10)
+  BOT.set_user_permission(AUTH.owner_id, 1000)
 end
