@@ -1,10 +1,10 @@
+require 'io/console'
 module TohsakaBot
   class FirstTimeSetup
     def initialize
     end
 
     def create_data_files_and_configs
-      # TODO: Make sure that they work with a clean install!
       puts "Creating files..."
       File.open("cfg/auth.yml", "w") do |f|
         print "Type in the owner ID (your Discord user ID): "
@@ -12,17 +12,18 @@ module TohsakaBot
         print "Type in the client ID (found here https://discord.com/developers/applications in the General Information tab of the app): "
         cli_id = gets
         print "Type in the bot token (found on the same page in the Bot tab of the app): "
-        bot_token = gets
-        print "Type in a the MariaDB/MySQL user name: "
+        bot_token = STDIN.noecho(&:gets).chomp
+
+        print "\nType in a the MariaDB/MySQL username: "
         db_user = gets
         print "Type in a the MariaDB/MySQL password: "
-        db_password = gets
+        db_password = STDIN.noecho(&:gets).chomp
 
         # TODO: Disable the functionality of YT and SauceNao commands/events if not set.
-        print "Type in an YouTube API key (Optional): "
-        yt_apikey = gets
-        print "Type in a SauceNao API key (Optional): "
-        saucenao_apikey = gets
+        print "\nType in an YouTube API key (Optional): "
+        yt_apikey = STDIN.noecho(&:gets).chomp
+        print "\nType in a SauceNao API key (Optional): "
+        saucenao_apikey = STDIN.noecho(&:gets).chomp
 
         f.write(
             "# Personal keys, IDs and tokens\n\n"\
@@ -49,7 +50,7 @@ module TohsakaBot
         print "Type in the default channel ID: "
         channel_id = gets
 
-        print "Type in the directory path of TohsakaWeb like /home/rin/www/TohsakaWeb (Note for no trailing slash! / Optional): "
+        print "Type in the directory path of TohsakaWeb like /home/rin/www/TohsakaWeb (Optional, note for no trailing slash!): "
         web_dir = gets
 
         f.write(
@@ -58,24 +59,29 @@ module TohsakaBot
             "np: \"#{now_playing}\"\n"\
             "default_channel: \"#{channel_id}\"\n"\
             "web_dir: \"#{web_dir}\"\n"\
-            "remainder_limit: \"50\"\n"\
+            "remainder_limit: \"100\"\n"\
             "trigger_limit: \"10\"\n"\
             "temp_folder: \"tmp\"\n"\
             "default_trigger_chance: \"5\"\n"\
             "del_trigger:\n"\
             "- not now rin\n"\
+            "- no\n"\
             "winner_role: \"0000\"\n"\
             "loser_role: \"0000\"\n")
       end
 
       # File.open("data/excluded_urls.yml", "w") { |f| f.write("---") } unless File.exist?('data/excluded_urls.yml')
       File.open("data/repost.yml", "w") { |f| f.write("---") } unless File.exist?('data/repost.yml')
-      File.open("data/temporary_roles.yml", "w") { |f| f.write("---") } unless File.exist?('data/temporary_roles.yml')
+      File.open("data/temporary_roles.yml", "w") { |f| f.write("--- {}") } unless File.exist?('data/temporary_roles.yml')
 
-      puts "Necessary files created!"
+      Dir.mkdir("data/triggers") unless File.directory?('data/triggers')
+
+      puts "Necessary directories and files created!"
     end
 
     def welcome_message
     end
   end
+  setup = FirstTimeSetup.new
+  setup.create_data_files_and_configs
 end
