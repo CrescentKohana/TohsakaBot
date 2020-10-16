@@ -82,6 +82,4 @@ module TohsakaBot
     def welcome_message
     end
   end
-  setup = FirstTimeSetup.new
-  setup.create_data_files_and_configs
 end
