@@ -31,7 +31,7 @@ module TohsakaBot
 
     class UserLimitReachedError
       def message
-        "You've reached the limit for remainders (#{CFG.remainder_limit}). " +
+        "You've reached the limit for reminders (#{CFG.reminder_limit}). " +
             "Wait for them to expire, or delete them with `delreminder <id(s)>`."
       end
     end
