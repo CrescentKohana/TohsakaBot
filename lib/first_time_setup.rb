@@ -59,7 +59,7 @@ module TohsakaBot
             "np: \"#{now_playing}\"\n"\
             "default_channel: \"#{channel_id}\"\n"\
             "web_dir: \"#{web_dir}\"\n"\
-            "remainder_limit: \"100\"\n"\
+            "reminder_limit: \"100\"\n"\
             "trigger_limit: \"10\"\n"\
             "temp_folder: \"tmp\"\n"\
             "default_trigger_chance: \"5\"\n"\
