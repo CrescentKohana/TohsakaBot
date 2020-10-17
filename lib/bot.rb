@@ -60,10 +60,11 @@ module TohsakaBot
   require_relative 'helpers/math_helper'
   require_relative 'helpers/discord_helper'
 
-  # Database and Web #
+  # Database, Web and Permissions #
   require_relative 'data_access/database'
   require_relative 'data_access/tohsaka_bridge'
   require_relative 'data_access/trigger_data'
+  require_relative 'data_access/permissions'
 
   # Configuration & settings #
   AUTH = OpenStruct.new YAML.load_file('cfg/auth.yml')
@@ -76,6 +77,8 @@ module TohsakaBot
                                             advanced_functionality: false,
                                             fancy_log: true)
 
+  # Sets permissions, 1000 being the highest
+  TohsakaBot.set_permissions
   BOT.set_user_permission(AUTH.owner_id.to_i, 1000)
 
   # Discord Events and Commands #
