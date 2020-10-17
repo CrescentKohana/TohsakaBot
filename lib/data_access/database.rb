@@ -37,19 +37,21 @@ module TohsakaBot
     # Returns bot's internal UID. Not the Discord User ID!
     #
     # @param discord_uid [Integer] Discord UID
-    # @return [Integer] internal ID for the user
+    # @return [Integer, nil] internal ID for the user
     def get_user_id(discord_uid)
-      auths = TohsakaBot.db[:authorizations]
-      auths.where(:uid => discord_uid.to_i).first[:user_id].to_i
+      user = TohsakaBot.db[:authorizations][uid:discord_uid.to_i]
+      return user[:user_id] unless user.nil?
+      nil
     end
 
     # Returns Discord User ID.
     #
     # @param user_id [Integer] internal ID for the user
-    # @return [Integer] Discord UID
+    # @return [Integer, nil] Discord UID
     def get_discord_id(user_id)
-      auths = TohsakaBot.db[:authorizations]
-      auths.where(:user_id => user_id.to_i).first[:uid].to_i
+      user = TohsakaBot.db[:authorizations][user_id:user_id.to_i]
+      return user[:uid] unless user.nil?
+      nil
     end
 
     # Checks if the user limit is reached for this datatype.

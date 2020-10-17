@@ -27,4 +27,3 @@ gem 'terrapin'
 gem 'to_regexp'
 gem 'yard'
 gem 'youtube-dl.rb'
-

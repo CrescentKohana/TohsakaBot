@@ -17,11 +17,11 @@ DROP TABLE IF EXISTS `ar_internal_metadata`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ar_internal_metadata` (
-  `key` varchar(255) NOT NULL,
-  `value` varchar(255) DEFAULT NULL,
-  `created_at` datetime(6) NOT NULL,
-  `updated_at` datetime(6) NOT NULL,
-  PRIMARY KEY (`key`)
+                                        `key` varchar(255) NOT NULL,
+                                        `value` varchar(255) DEFAULT NULL,
+                                        `created_at` datetime(6) NOT NULL,
+                                        `updated_at` datetime(6) NOT NULL,
+                                        PRIMARY KEY (`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -33,15 +33,15 @@ DROP TABLE IF EXISTS `authorizations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `authorizations` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `provider` varchar(255) NOT NULL,
-  `uid` bigint(20) NOT NULL,
-  `user_id` bigint(20) NOT NULL,
-  `created_at` datetime(6) NOT NULL,
-  `updated_at` datetime(6) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `index_authorizations_on_uid` (`uid`),
-  KEY `index_authorizations_on_user_id` (`user_id`)
+                                  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+                                  `provider` varchar(255) NOT NULL,
+                                  `uid` bigint(20) NOT NULL,
+                                  `user_id` bigint(20) NOT NULL,
+                                  `created_at` datetime(6) NOT NULL,
+                                  `updated_at` datetime(6) NOT NULL,
+                                  PRIMARY KEY (`id`),
+                                  KEY `index_authorizations_on_uid` (`uid`),
+                                  KEY `index_authorizations_on_user_id` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -53,16 +53,16 @@ DROP TABLE IF EXISTS `reminders`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `reminders` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `datetime` datetime NOT NULL,
-  `message` text DEFAULT NULL,
-  `user_id` bigint(20) NOT NULL,
-  `channel` bigint(20) DEFAULT NULL,
-  `repeat` bigint(20) DEFAULT 0,
-  `created_at` datetime(6) NOT NULL,
-  `updated_at` datetime(6) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=412 DEFAULT CHARSET=utf8mb4;
+                             `id` bigint(20) NOT NULL AUTO_INCREMENT,
+                             `datetime` datetime NOT NULL,
+                             `message` text DEFAULT NULL,
+                             `user_id` bigint(20) NOT NULL,
+                             `channel` bigint(20) DEFAULT NULL,
+                             `repeat` bigint(20) DEFAULT 0,
+                             `created_at` datetime(6) NOT NULL,
+                             `updated_at` datetime(6) NOT NULL,
+                             PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=413 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,8 +73,8 @@ DROP TABLE IF EXISTS `schema_migrations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `schema_migrations` (
-  `version` varchar(255) NOT NULL,
-  PRIMARY KEY (`version`)
+                                     `version` varchar(255) NOT NULL,
+                                     PRIMARY KEY (`version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -86,18 +86,18 @@ DROP TABLE IF EXISTS `triggers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `triggers` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `phrase` text NOT NULL,
-  `reply` text DEFAULT NULL,
-  `file` text DEFAULT NULL,
-  `user_id` bigint(20) NOT NULL,
-  `server_id` bigint(20) NOT NULL,
-  `chance` int(11) DEFAULT 0,
-  `mode` int(11) DEFAULT 0,
-  `created_at` datetime(6) NOT NULL,
-  `updated_at` datetime(6) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=392 DEFAULT CHARSET=utf8mb4;
+                            `id` bigint(20) NOT NULL AUTO_INCREMENT,
+                            `phrase` text NOT NULL,
+                            `reply` text DEFAULT NULL,
+                            `file` text DEFAULT NULL,
+                            `user_id` bigint(20) NOT NULL,
+                            `server_id` bigint(20) NOT NULL,
+                            `chance` int(11) DEFAULT 0,
+                            `mode` int(11) DEFAULT 0,
+                            `created_at` datetime(6) NOT NULL,
+                            `updated_at` datetime(6) NOT NULL,
+                            PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=395 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -108,15 +108,16 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `discriminator` int(11) DEFAULT NULL,
-  `avatar` varchar(255) DEFAULT NULL,
-  `locale` varchar(255) DEFAULT NULL,
-  `created_at` datetime(6) NOT NULL,
-  `updated_at` datetime(6) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `index_users_on_name` (`name`)
+                         `id` bigint(20) NOT NULL AUTO_INCREMENT,
+                         `name` varchar(255) NOT NULL,
+                         `discriminator` int(11) DEFAULT NULL,
+                         `avatar` varchar(255) DEFAULT NULL,
+                         `locale` varchar(255) DEFAULT NULL,
+                         `permissions` int(11) DEFAULT NULL,
+                         `created_at` datetime(6) NOT NULL,
+                         `updated_at` datetime(6) NOT NULL,
+                         PRIMARY KEY (`id`),
+                         KEY `index_users_on_name` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
