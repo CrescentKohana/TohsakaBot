@@ -6,6 +6,7 @@ module TohsakaBot
 
     def create_data_files_and_configs
       puts "Creating files..."
+      Dir.mkdir("cfg") unless File.directory?("cfg")
       File.open("cfg/auth.yml", "w") do |f|
         print "Type in the owner ID (your Discord user ID): "
         owner_id = gets
@@ -71,10 +72,10 @@ module TohsakaBot
       end
 
       # File.open("data/excluded_urls.yml", "w") { |f| f.write("---") } unless File.exist?('data/excluded_urls.yml')
-      File.open("data/repost.yml", "w") { |f| f.write("---") } unless File.exist?('data/repost.yml')
-      File.open("data/temporary_roles.yml", "w") { |f| f.write("--- {}") } unless File.exist?('data/temporary_roles.yml')
+      File.open("data/repost.yml", "w") { |f| f.write("---") } unless File.exist?("data/repost.yml")
+      File.open("data/temporary_roles.yml", "w") { |f| f.write("--- {}") } unless File.exist?("data/temporary_roles.yml")
 
-      Dir.mkdir("data/triggers") unless File.directory?('data/triggers')
+      Dir.mkdir("data/triggers") unless File.directory?("data/triggers")
 
       puts "Necessary directories and files created!"
     end

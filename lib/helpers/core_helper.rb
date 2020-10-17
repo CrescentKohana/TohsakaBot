@@ -1,7 +1,7 @@
 module TohsakaBot
   module CoreHelper
     def load_modules(klass, path, discord = true, clear = false)
-      modules = JSON.parse(File.read('cfg/bot_state.json')).transform_keys(&:to_sym)
+      modules = JSON.parse(File.read('data/persistent/bot_state.json')).transform_keys(&:to_sym)
 
       if clear
         BOT.clear!

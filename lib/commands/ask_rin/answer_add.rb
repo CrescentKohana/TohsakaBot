@@ -25,14 +25,14 @@ module TohsakaBot
           end
         end
 
-        CSV::foreach("data/ask_rin_answers.csv", "r", :col_sep => "\t") do |row|
+        CSV::foreach("data/persistent/ask_rin_answers.csv", "r", :col_sep => "\t") do |row|
           if answer.include?(row[1])
             event.respond "Answer already exists. Aborting."
             break
           end
         end
 
-        CSV.open("data/ask_rin_answers.csv", "a", :col_sep => "\t") do |csv|
+        CSV.open("data/persistent/ask_rin_answers.csv", "a", :col_sep => "\t") do |csv|
           csv << [answer, event.user.id]
         end
         event.respond "Answer added."

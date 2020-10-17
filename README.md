@@ -15,7 +15,7 @@ Rails web interface for the bot here: [TohsakaWeb](https://github.com/Luukuton/T
     ```
 4. Switch to the root folder of the bot and run the following command to populate the database with tables:
    ```
-   mysql -u USERNAME -p tohsaka < cfg/structure.sql
+   mysql -u USERNAME -p tohsaka < structure.sql
    ``` 
 5. Run `bundle install` to install required gems.
 6. Start the bot by running `bundle exec ruby run.rb`.
