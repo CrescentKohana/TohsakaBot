@@ -49,7 +49,7 @@ module TohsakaBot
     #
     # @param reply [EventContainer] EventContainer for Message event
     # @return [String, nil] final filename with UUID
-    def download_reply_picture(reply)
+    def self.download_reply_picture(reply)
       file = reply.message.attachments.first
       if /https:\/\/cdn.discordapp.com.*/.match?(file.url)
 
