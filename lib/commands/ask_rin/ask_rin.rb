@@ -12,7 +12,7 @@ module TohsakaBot
         username = BOT.member(event.server, event.user.id).display_name.strip_mass_mentions.sanitize_string
         answer = ' '
 
-        CSV.open("data/persistent/ask_rin_answers.csv", "r", :col_sep => "\t") do |csv|
+        CSV.open("data/ask_rin_answers.csv", "r", :col_sep => "\t") do |csv|
           answer = csv.read.sample[0]
         end
 

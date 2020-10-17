@@ -71,6 +71,16 @@ module TohsakaBot
             "loser_role: \"0000\"\n")
       end
 
+      File.open("data/ask_rin_answers.csv", "w") do |f|
+        f.write(
+            "Yes.\t0\n"\
+            "No.\t0\n"\
+            "I don't know.\t0\n"\
+            "Not sure.\t0\n"\
+            "Impossible!\t0\n"\
+            "No.\t0\n")
+      end
+
       # File.open("data/excluded_urls.yml", "w") { |f| f.write("---") } unless File.exist?('data/excluded_urls.yml')
       File.open("data/repost.yml", "w") { |f| f.write("---") } unless File.exist?("data/repost.yml")
       File.open("data/temporary_roles.yml", "w") { |f| f.write("--- {}") } unless File.exist?("data/temporary_roles.yml")
@@ -78,9 +88,6 @@ module TohsakaBot
       Dir.mkdir("data/triggers") unless File.directory?("data/triggers")
 
       puts "Necessary directories and files created!"
-    end
-
-    def welcome_message
     end
   end
 end
