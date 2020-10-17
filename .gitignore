@@ -1,3 +1,14 @@
+# Development
+.idea
 .yardoc
 doc
 lib/deprecated
+
+# Bot specific
+cfg/
+tmp/
+
+# Ignore everything inside data except persistent and img directories
+data/*
+!data/persistent/
+!data/img/

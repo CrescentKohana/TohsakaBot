@@ -3,7 +3,7 @@ module TohsakaBot
     module TriggerMod
       extend Discordrb::Commands::CommandContainer
       command(:triggermod,
-              aliases: %i[triggermod triggermodify modtrigger modifytrigger edittrigger triggeredit],
+              aliases: %i[triggermod tm triggermodify modtrigger modifytrigger edittrigger triggeredit modtriger],
               description: 'Edits a trigger.',
               usage: "Use 'triggermod -h|--help' for help.",
               min_args: 1,
@@ -28,6 +28,7 @@ module TohsakaBot
 
         if options.id.nil?
           event.respond("Specify a trigger ID to edit")
+          break
         end
 
         triggers = TohsakaBot.db[:triggers]
@@ -48,7 +49,7 @@ module TohsakaBot
           break
         elsif !options.file.nil? and !options.reply.nil?
           event.respond("Cannot edit both file and reply at the same time.")
-          break;
+          break
         end
 
         phrase = options.phrase.nil? ? nil : options.phrase.join(' ')
@@ -92,7 +93,7 @@ module TohsakaBot
             response = event.message.await!(timeout: 10)
 
             if response
-              if !response.message.attachments.first.nil?
+              unless response.message.attachments.first.nil?
                 filename = TriggerController.download_reply_picture(response)
                 if filename.nil?
                   event.respond('File too large. Max: ~8MiB or 8388119 bytes.')

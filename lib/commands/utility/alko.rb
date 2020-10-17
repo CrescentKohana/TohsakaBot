@@ -10,7 +10,7 @@ module TohsakaBot
 
         m = event.respond('Parsing data...')
         if price.to_i <= 500
-          aliases = YAML.load(File.read('data/aliases.yml'))
+          aliases = YAML.load(File.read('data/persistent/alko_aliases.yml'))
           aliases.keys.each do |k|
             aliases[k].each do |v|
               if v == type.join(' ').to_s.downcase
