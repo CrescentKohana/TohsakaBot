@@ -40,7 +40,7 @@ module TohsakaBot
 
         trg = TriggerController.new(event, phrase, mode)
         if !event.message.attachments.first.nil?
-          filename = trg.download_reply_picture(event)
+          filename = TriggerController.download_reply_picture(event)
           if filename.nil?
             event.respond('File too large. Max: ~8MiB or 8388119 bytes.')
             break
@@ -56,7 +56,7 @@ module TohsakaBot
 
           if response
             if !response.message.attachments.first.nil?
-              filename = trg.download_reply_picture(response)
+              filename = TriggerController.download_reply_picture(response)
               if filename.nil?
                 event.respond('File too large. Max: ~8MiB or 8388119 bytes.')
                 break
