@@ -7,7 +7,7 @@ module TohsakaBot
               description: 'Now playing status.',
               usage: 'np <twitch url for streaming status> <status>',
               min_args: 1,
-              permission_level: 750) do |event, *m|
+              permission_level: 500) do |event, *m|
 
         np = m.join(' ').to_s
         cfg = YAML.load_file('cfg/config.yml')
