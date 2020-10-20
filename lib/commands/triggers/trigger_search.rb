@@ -12,6 +12,7 @@ module TohsakaBot
 
         options = TohsakaBot.command_parser(
             event, msg, 'Usage: triggersearch [options]', '',
+            [:id, 'ID of the trigger. Ignores other options when used.', :type => :integer],
             [:author, 'Creator of the trigger. Format: Discord ID or mention', :type => :string],
             [:phrase, 'Phrase from which the bot triggers.', :type => :strings],
             [:reply, 'Reply to the phrase.', :type => :strings]
@@ -20,44 +21,49 @@ module TohsakaBot
 
         triggers = TohsakaBot.db[:triggers]
         result = triggers.where(:server_id => event.server.id.to_i).order(:id).map{ |t| t.values}.select do |t|
+          id = t[0].to_i
           phrase = t[1].to_s
           reply = t[2].to_s
           file = t[3].to_s
           discord_uid = TohsakaBot.get_discord_id(t[4]).to_i
 
-          # If no author specified, it's ignored.
-          if options.author.nil?
-            opt_author = discord_uid
-          elsif !Integer(options.author, exception: false)
-            opt_author = options.author.gsub(/[^\d]/, '').to_i
+          if options.id.nil?
+            # If no author specified, it's ignored.
+            if options.author.nil?
+              opt_author = discord_uid
+            elsif !Integer(options.author, exception: false)
+              opt_author = options.author.gsub(/[^\d]/, '').to_i
+            else
+              opt_author = options.author.to_i
+            end
+
+            # Tries to match with the given string as is, if there were no proper arguments.
+            if options.author.nil? && options.phrase.nil? && options.reply.nil?
+
+              message = msg.join(' ')
+              opt_phrase = message
+              opt_reply = message
+
+              # if User matches OR Phrase is included OR Reply OR File is included
+              discord_uid == opt_author &&
+                  (phrase.include?(opt_phrase) || reply.include?(opt_reply) || file.include?(opt_reply))
+            else
+              opt_phrase = options.phrase.nil? ? nil : options.phrase.join(' ')
+              opt_reply = options.reply.nil? ? nil : options.reply.join(' ')
+              opt_phrase = opt_phrase || phrase
+              opt_reply = opt_reply || reply
+
+              # if User matches AND Phrase is included AND (Reply OR File is included)
+              discord_uid == opt_author &&
+                  phrase.include?(opt_phrase) && (reply.include?(opt_reply) || file.include?(opt_reply))
+            end
           else
-            opt_author = options.author.to_i
-          end
-
-          # Tries to match with the given string as is, if there were no proper arguments.
-          if options.author.nil? && options.phrase.nil? && options.reply.nil?
-
-            message = msg.join(' ')
-            opt_phrase = message
-            opt_reply = message
-
-            # if User matches OR Phrase is included OR Reply OR File is included
-            discord_uid == opt_author &&
-                (phrase.include?(opt_phrase) || reply.include?(opt_reply) || file.include?(opt_reply))
-          else
-            opt_phrase = options.phrase.nil? ? nil : options.phrase.join(' ')
-            opt_reply = options.reply.nil? ? nil : options.reply.join(' ')
-            opt_phrase = opt_phrase || phrase
-            opt_reply = opt_reply || reply
-
-            # if User matches AND Phrase is included AND (Reply OR File is included)
-            discord_uid == opt_author &&
-                phrase.include?(opt_phrase) && (reply.include?(opt_reply) || file.include?(opt_reply))
+            options.id == id
           end
         end
 
         result_amount = 0
-        output = "`Modes include exact (0), any (1) and regex (2).`\n`  ID | M & % | TRIGGER                           | MSG/FILE`\n"
+        output = "`Modes: exact (0), any (1) and regex (2)`\n`  ID | M & % | TRIGGER                           | MSG/FILE`\n"
         result.each do |t|
           id = t[0]
           phrase = t[1]
