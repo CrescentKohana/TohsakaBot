@@ -72,6 +72,7 @@ module TohsakaBot
           end
         end
 
+        TohsakaBot.trigger_data.reload_active
         event.respond("Trigger added `<ID #{id}>`.")
       end
     end

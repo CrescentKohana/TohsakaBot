@@ -4,22 +4,23 @@ A Discord bot written in Ruby, originally made for a private Discord community. 
 Rails web interface for the bot here: [TohsakaWeb](https://github.com/Luukuton/TohsakaWeb).
 
 ## Installation & Running
-1. Make sure dependencies below are all met.
-2. Install Ruby and MariaDB
-3. Use these SQL commands to create user and database for the bot. Remember to change USERNAMEs and PASSWORD. 
+1. Enable Privileged Gateway Intents here: `https://discord.com/developers/applications/<id>/bot`
+2. Make sure dependencies below are all met.
+3. Install Ruby and MariaDB
+4. Use these SQL commands to create user and database for the bot. Remember to change USERNAMEs and PASSWORD. 
     ```
     CREATE USER 'USERNAME'@'localhost' IDENTIFIED BY 'PASSWORD';
     CREATE DATABASE IF NOT EXISTS tohsaka CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
     GRANT ALL PRIVILEGES on tohsaka.* to 'USERNAME'@'localhost';
     FLUSH privileges;
     ```
-4. Switch to the root folder of the bot and run the following command to populate the database with tables:
+5. Switch to the root folder of the bot and run the following command to populate the database with tables:
    ```
    mysql -u USERNAME -p tohsaka < structure.sql
    ``` 
-5. Run `bundle install` to install required gems.
-6. Start the bot by running `bundle exec ruby run.rb`.
-7. Bot can be invited to a server with the following URL (**remember to change the CLIENT_ID**): 
+6. Run `bundle install` to install required gems.
+7. Start the bot by running `bundle exec ruby run.rb`.
+8. Bot can be invited to a server with the following URL (**remember to change the CLIENT_ID**): 
     ```
     https://discordapp.com/oauth2/authorize?client_id=CLIENT_ID&scope=bot&permissions=335924288
     ```

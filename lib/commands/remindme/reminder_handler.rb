@@ -13,26 +13,26 @@ module TohsakaBot
     end
     class WeeksMixedError < DatetimeError
       def message
-        "Mixing weeks with other date parts (y, M, d) is not allowed."
+        "Mixing weeks with other date parts (y, M, d) is not possible."
       end
     end
 
     class RepeatIntervalError < StandardError; end
     class PrivateRepeatIntervalError < RepeatIntervalError
       def message
-        "The interval limit for repeated reminders in PMs is 10 minutes. Reminder aborted."
+        "The minimum possible interval for repeated reminders in PMs is 10 minutes. Reminder aborted."
       end
     end
     class PublicRepeatIntervalError < RepeatIntervalError
       def message
-        "The interval limit for repeated reminders in public channels is 12 hours. Reminder aborted."
+        "The minimum possible interval for repeated reminders in public channels is 12 hours. Reminder aborted."
       end
     end
 
     class UserLimitReachedError
       def message
-        "You've reached the limit for reminders (#{CFG.reminder_limit}). " +
-            "Wait for them to expire, or delete them with `delreminder <id(s)>`."
+        "You've reached the max limit for reminders (#{CFG.reminder_limit}). " +
+            "Wait for them to expire, or delete some with `delreminder <id(s)>`."
       end
     end
 

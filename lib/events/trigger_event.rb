@@ -4,7 +4,8 @@ module TohsakaBot
       extend Discordrb::EventContainer
       rate_limiter = Discordrb::Commands::SimpleRateLimiter.new
 
-      message(containing: TohsakaBot.trigger_data.active_triggers) do |event|
+      message do |event|
+        next if Regexp.union(TohsakaBot.trigger_data.trigger_phrases) == event.content
         # Private messages disabled
         next if event.channel.pm?
 
@@ -54,7 +55,7 @@ module TohsakaBot
           c = chance == 0 ? default_chance : chance
 
           # Three times the default chance if Exact mode.
-          c *= 3 if chance == default_chance && mode == 0
+          c *= 3 if chance == default_chance && chosen_trigger[:mode] == 0
 
           pickup = Pickup.new({true => c, false => 100 - c})
           picked = pickup.pick(1)
