@@ -69,8 +69,8 @@ module TohsakaBot
   end
 
   # Access to active triggers anywhere in the bot.
-  # @example Access active triggers.
-  #   TohsakaBot.trigger_data.active_triggers
+  # @example Access trigger phrases.
+  #   TohsakaBot.trigger_data.trigger_phrases
   #
   # @return [TriggerData] triggers
   module TriggerPersistence

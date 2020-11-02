@@ -110,14 +110,12 @@ module TohsakaBot
           end
         end
 
-        event.respond("Trigger modified `<ID #{options.id}>`.")
-
         TohsakaBot.db.transaction do
           triggers.where(:id => options.id.to_i).update(trigger)
         end
 
         TohsakaBot.trigger_data.reload_active
-        break
+        event.respond("Trigger modified `<ID #{options.id}>`.")
       end
     end
   end

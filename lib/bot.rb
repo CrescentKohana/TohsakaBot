@@ -97,7 +97,7 @@ module TohsakaBot
 
   # Terminal tool to send messages through the bot.
   Thread.new do
-    channel = CFG.default_channel
+    channel = CFG.default_channel.to_i
 
     unless CFG.default_channel.match(/\d{18}/)
       puts "No default channel set in 'cfg/config.yml'. "\
@@ -106,7 +106,7 @@ module TohsakaBot
 
     while (user_input = gets.strip.split(" "))
       if user_input[0] == "setchan"
-        channel = user_input[1]
+        channel = user_input[1].to_i
         puts "Channel set to #{BOT.channel(channel).name} "
       elsif user_input[0][0] == "." && channel.match(/\d{18}/)
         BOT.send_message(channel, user_input.join(" ")[1..-1])

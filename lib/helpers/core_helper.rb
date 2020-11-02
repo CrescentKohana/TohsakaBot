@@ -3,12 +3,11 @@ module TohsakaBot
     def load_modules(klass, path, discord = true, clear = false)
       modules = JSON.parse(File.read('data/persistent/bot_state.json')).transform_keys(&:to_sym)
 
-      if clear
-        BOT.clear!
-        if klass == :Async
-          modules[klass].each do |k|
-            Thread.kill(k.to_s.downcase)
-          end
+      BOT.clear! if clear
+
+      if clear && klass == :Async
+        modules[klass].each do |k|
+          Thread.kill(k.to_s.downcase)
         end
       end
 
@@ -17,7 +16,7 @@ module TohsakaBot
       if discord
         modules[klass].each do |k|
           symbol_to_class = TohsakaBot.const_get("#{klass}::#{k}")
-          TohsakaBot::BOT.include!(symbol_to_class)
+          BOT.include!(symbol_to_class)
         end
       end
     end

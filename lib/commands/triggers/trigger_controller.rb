@@ -40,7 +40,6 @@ module TohsakaBot
                               updated_at: Time.now)
       end
 
-      TohsakaBot.trigger_data.reload_active
       # Return the created id to the user.
       @id
     end
