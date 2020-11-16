@@ -26,21 +26,6 @@ module TohsakaBot
         else
           p.to_regexp
         end }
-
-      #if reload_events
-      #TohsakaBot::BOT.clear!
-        #load "#{File.dirname(__FILE__)}/../events/trigger_event.rb"
-        #BOT.include!(TohsakaBot.const_get("Events::TriggerEvent"))
-        #TohsakaBot.load_modules(:Events, 'events/*/*', true, true)
-
-      #modules = JSON.parse(File.read('data/persistent/bot_state.json')).transform_keys(&:to_sym)
-      # Dir["#{File.dirname(__FILE__)}/../events/*/*.rb"].each { |file| load file }
-
-      #modules[:Events].each do |k|
-      #  symbol_to_class = TohsakaBot.const_get("Events::#{k}")
-      #   BOT.include!(symbol_to_class)
-      #  end
-      #end
     end
 
     # Moves all trigger files not found in the database to tmp/deleted_triggers.
