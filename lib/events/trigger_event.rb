@@ -38,6 +38,11 @@ module TohsakaBot
           end
 
           if regex.match?(msg)
+            if mode == 0
+              matching_triggers.clear
+              matching_triggers << t
+              break
+            end
             matching_triggers << t
           end
         end

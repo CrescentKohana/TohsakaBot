@@ -5,6 +5,13 @@ module TohsakaBot
     DATE_REGEX = /^[0-9]{4}-(1[0-2]|0[1-9])-(3[0-2]|[1-2][0-9]|0[1-9])\s(2[0-4]|1[0-9]|0[0-9]):(60|[0-5][0-9]):(60|[0-5][0-9])/
 
     def initialize(event, time_input, msg, repeat, legacy)
+      # TODO: Fix this when there's one unmatched quote in the reminder message
+      # tjoo toi option parser ei tykkää tost ja ei pääse koko logiikka ees tonne legacy hommaan asti
+      # mies rescuee ton ja heittää legacy koodin hoidettavaks
+      # ?remindme 15h6m35s CAN'T DO THIS!
+      # <ArgumentError: Unmatched double quote: "15h6m35s CAN'T DO THIS">
+      # 2020-11-02 21:53:24.801 ct-322  ✗ lib/helpers/core_helper.rb:27:in `command_parser'
+      # 2020-11-02 21:53:24.801 ct-322  ✗ lib/commands/remindme/reminder_add.rb:18:in `block in <module:ReminderAdd>'
       if legacy
         @datetime = time_input[0]
         @msg = time_input[1].strip_mass_mentions.sanitize_string unless time_input[1].nil?
@@ -104,7 +111,7 @@ module TohsakaBot
       if @msg.nil?
         @event.respond "I shall #{repeated_msg}remind <@#{@discord_uid.to_i}> at `#{@datetime}` `<ID #{@id}>`#{repetition_interval}. "
       else
-        @event.respond "I shall #{repeated_msg}remind <@#{@discord_uid.to_i}> with #{@msg.hide_link_preview} at `#{@datetime}` `<ID #{@id}>`#{repetition_interval}."
+        @event.respond "I shall #{repeated_msg}remind <@#{@discord_uid.to_i}> with #{@msg.strip.hide_link_preview} at `#{@datetime}` `<ID #{@id}>`#{repetition_interval}."
       end
       unless @event.channel.pm?
         @event.message.delete
