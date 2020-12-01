@@ -45,10 +45,10 @@ module TohsakaBot
             event.respond('File too large. Max: ~8MiB or 8388119 bytes.')
             break
           end
-          id = trg.store_trigger(filename: filename)
+          reply = trg.store_trigger(filename: filename)
 
         elsif !reply.blank?
-          id = trg.store_trigger(reply: reply)
+          reply = trg.store_trigger(reply: reply)
 
         else
           event.respond('Tell me the response (10s remaining).')
@@ -61,9 +61,9 @@ module TohsakaBot
                 event.respond('File too large. Max: ~8MiB or 8388119 bytes.')
                 break
               end
-              id = trg.store_trigger(filename: filename)
+              reply = trg.store_trigger(filename: filename)
             else
-              id = trg.store_trigger(reply: response.message.content)
+              reply = trg.store_trigger(reply: response.message.content)
             end
 
           else
@@ -72,8 +72,7 @@ module TohsakaBot
           end
         end
 
-        TohsakaBot.trigger_data.reload_active
-        event.respond("Trigger added `<ID #{id}>`.")
+        event.respond(reply)
       end
     end
   end

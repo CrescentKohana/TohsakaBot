@@ -23,9 +23,15 @@ module TohsakaBot
     #
     # @param reply [String] reply to the trigger
     # @param filename [String] filename of the reply file to the trigger
-    # @return [Integer] ID of the trigger in the database
+    # @return [String] Message to the user
     def store_trigger(reply: "", filename: "")
       return unless TohsakaBot.registered?(@discord_uid)
+
+      if @mode == 0
+        if TohsakaBot.db[:triggers].where(:phrase => @phrase).select.first
+          return "Exact trigger with the phrase `#{@phrase}` already exists! Choose another phrase or use 'any' mode."
+        end
+      end
 
       triggers = TohsakaBot.db[:triggers]
       TohsakaBot.db.transaction do
@@ -40,8 +46,29 @@ module TohsakaBot
                               updated_at: Time.now)
       end
 
-      # Return the created id to the user.
-      @id
+      TohsakaBot.trigger_data.reload_active
+      "Trigger added `<ID #{@id}>`."
+    end
+
+    # Updates the trigger in the database and reloads active triggers in bot's memory.
+    #
+    # @param trigger Database object
+    # @param Trigger database
+    # @return [String] Message to the user
+    def self.update_trigger(trigger)
+      triggers = TohsakaBot.db[:triggers]
+      if trigger[:mode] == 0
+        if triggers.where(:phrase => trigger[:phrase]).select.first
+          return "Exact trigger with the phrase `#{trigger[:phrase]}` already exists! Choose another phrase or change the mode to 'any'."
+        end
+      end
+
+      TohsakaBot.db.transaction do
+        triggers.where(:id => trigger[:id].to_i).update(trigger)
+      end
+
+      TohsakaBot.trigger_data.reload_active
+      "Trigger modified `<ID #{trigger[:id]}>`."
     end
 
     # Downloads the file associated with the trigger. Returns nil if filesize more than Discord's bot limit.
