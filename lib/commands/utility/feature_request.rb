@@ -3,7 +3,7 @@ module TohsakaBot
     module FeatureRequest
       extend Discordrb::Commands::CommandContainer
       command(:featurerequest,
-              aliases: %i[requestfeature],
+              aliases: %i[requestfeature fr],
               description: 'Takes an idea and saves it to file.',
               usage: "Use 'triggeradd <feature or idea>",
               min_args: 1,
