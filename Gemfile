@@ -6,6 +6,7 @@ gem 'actionview'
 gem 'bigdecimal'
 gem 'chronic'
 gem 'configatron'
+gem "http"
 gem 'mini_magick'
 gem 'mysql2'
 gem 'feedjira'
@@ -31,4 +32,4 @@ gem 'youtube-dl.rb'
 # end
 
 # Latest release of discordrb
-gem 'discordrb', github: 'swarley/discordrb', branch: 'next'
+gem 'discordrb', github: 'shardlab/discordrb', branch: 'main'

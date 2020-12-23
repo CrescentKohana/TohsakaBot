@@ -45,7 +45,8 @@
     "EmojiList",
     "Number",
     "AskRin",
-    "AnswerAdd"
+    "AnswerAdd",
+    "IcecubeMachine"
   ],
   "Events":[
     "TriggerEvent",
