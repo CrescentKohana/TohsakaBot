@@ -21,6 +21,7 @@ require 'cgi'
 require 'open-uri'
 require 'net/http'
 require 'public_suffix'
+require 'http'
 ## Connection with TohsakaWeb ##
 require 'drb/drb'
 
@@ -44,7 +45,10 @@ require 'redcarpet'
 require 'redcarpet/render_strip'
 
 # Override discordrb gem
+# require_relative 'gem_overrides/bot_override'
 require_relative 'gem_overrides/discordrb_command_override'
+# require_relative 'gem_overrides/channels_override'
+# require_relative 'gem_overrides/container_override'
 
 module TohsakaBot
   unless File.exist?('cfg/auth.yml')
@@ -83,7 +87,43 @@ module TohsakaBot
 
   # Discord Events and Commands #
   TohsakaBot.load_modules(:Commands, 'commands/*/*')
-  TohsakaBot.load_modules(:Events, 'events/*')
+  TohsakaBot.load_modules(:Events, 'events/*/*')
+
+  # Test Slash commands #
+  # url = "https://discord.com/api/v8/applications/#{AUTH.cli_id}/commands"
+  # payload = {
+  #   "name": "huut",
+  #   "description": "huutikset sulle",
+  #   "options": [
+  #     {
+  #       "name": "huut",
+  #       "description": "The type of huut",
+  #       "type": 3,
+  #       "required": true,
+  #       "choices": [
+  #         {
+  #           "name": "Huutis",
+  #           "value": "yes"
+  #         },
+  #         {
+  #           "name": "Kuiskis",
+  #           "value": "yes"
+  #         },
+  #         {
+  #           "name": "Nauris",
+  #           "value": "yes"
+  #         }
+  #       ]
+  #     }
+  #   ]
+  # }
+  #
+  # # For authorization, you can use either your bot token
+  # headers = {
+  #   "Authorization": "Bot #{AUTH.bot_token}"
+  # }
+  #
+  # puts HTTP.post(url, json: payload, headers: headers)
 
   # Asynchronous threads running in cycles #
   BOT.run(:async)
@@ -101,11 +141,11 @@ module TohsakaBot
 
     unless CFG.default_channel.match(/\d{18}/)
       puts "No default channel set in 'cfg/config.yml'. "\
-           "Before sending messages through the terminal, set the channel with 'setchan <id>'"
+           "Before sending messages through the terminal, set the channel with 'setch <id>'"
     end
 
     while (user_input = gets.strip.split(" "))
-      if user_input[0] == "setchan"
+      if user_input[0] == "setch"
         channel = user_input[1].to_i
         puts "Channel set to #{BOT.channel(channel).name} "
       elsif user_input[0][0] == "." && channel.match(/\d{18}/)
