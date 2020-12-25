@@ -46,7 +46,8 @@
     "Number",
     "AskRin",
     "AnswerAdd",
-    "IcecubeMachine"
+    "IcecubeMachine",
+    "MessagePrune"
   ],
   "Events":[
     "TriggerEvent",
@@ -54,6 +55,7 @@
     "RepostOverseer",
     "DecodeMsg",
     "SharedEmoji",
-    "AnotherRoll"
+    "AnotherRoll",
+    "HighlightReaction"
   ]
 }
