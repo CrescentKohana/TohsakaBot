@@ -70,21 +70,35 @@ module TohsakaBot
     end
 
     def send_highlight
+      # If the user id deleted: it's Discordrb::User, not Discordrb::Member
+      author_name = (@message.author.is_a? Discordrb::User) ? @message.author.username : @message.author.display_name
+
       content = @message.content
       attachment_names = @message.attachments.map { |a| a.filename }.join("\n")
 
-      main_attachment = "-"
-      main_attachment = @message.attachments[0].url unless @message.attachments.empty?
-      is_image = %w[.jpg .png .jpeg .JPG .PNG .JPEG .gif].include?(File.extname(main_attachment))
-      # is_video = %w[.mp4 .webm].include?(File.extname(main_attachment))
+      is_image = false
+
+      unless @message.attachments.empty?
+        main_attachment = @message.attachments[0]
+
+        is_image = %w[.jpg .png .jpeg .JPG .PNG .JPEG .gif].include?(File.extname(main_attachment.filename))
+        is_video = %w[.mp4 .webm .mov].include?(File.extname(main_attachment.filename))
+        is_audio = %w[.wav .flac .ogg .mp3].include?(File.extname(main_attachment.filename))
+
+        if main_attachment.size < TohsakaBot::DiscordHelper::UPLOAD_LIMIT && (is_video || is_audio)
+          filename = temp_download_file(main_attachment)
+          @highlight_channel.send_file(File.open("tmp/#{filename}"), spoiler: main_attachment.spoiler?)
+          File.delete("tmp/#{filename}")
+        end
+      end
 
       sent_msg = @highlight_channel.send_embed do |embed|
         embed.colour = 0xA82727
         embed.timestamp = @message.timestamp
 
-        embed.image = Discordrb::Webhooks::EmbedImage.new(url: main_attachment) if is_image
+        embed.image = Discordrb::Webhooks::EmbedImage.new(url: main_attachment.url) if is_image
 
-        embed.add_field(name: "Message", value: content) unless content.blank?
+        embed.add_field(name: "Message", value: content.truncate(1024)) unless content.blank?
         embed.add_field(name: "Files", value: attachment_names) if @message.attachments.length > 1 || (@message.attachments.length == 1 && !is_image)
         embed.add_field(
           name: "→",
@@ -92,34 +106,22 @@ module TohsakaBot
         )
 
         embed.footer = Discordrb::Webhooks::EmbedFooter.new(
-          text: @message.author.display_name,
+          text: author_name,
           icon_url: @message.author.avatar_url
         )
       end
 
-      ### Webhook version ###
-      # wh = Discordrb::API::Channel.create_webhook("Bot #{AUTH.bot_token}", @highlight_channel.id.to_i, "Highlight", @message.author.avatar_url, "Custom msg pin")
-      # #wh = BOT.channel(@highlight_channel.id.to_i).create_webhook("Highlight", @message.author.avatar_url)
-      # wh = Discordrb::Webhooks::Client.new(id: JSON.parse(wh)['id'], token: JSON.parse(wh)['token'])
-      #
-      # sent_msg = wh.execute do |msg|
-      #   msg.username =  @message.author.display_name
-      #   msg.avatar_url = @message.author.avatar_url
-      #
-      #   msg.content = content unless content.blank?
-      #
-      #   msg.add_embed do |embed|
-      #     embed.colour = 0xFDFDFD
-      #     embed.timestamp = @message.timestamp
-      #     embed.image = Discordrb::Webhooks::EmbedImage.new(url: main_attachment) if is_image
-      #     embed.add_field(name: "Files", value: attachment_names) if @message.attachments.length > 1 || (@message.attachments.length == 1 && !is_image)
-      #     embed.add_field(name: "→",
-      #                     value: "[Original](https://discord.com/channels/#{@server_id}/#{@channel_id}/#{@message.id}) in <##{@channel_id}>")
-      #     embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: @message.author.display_name)
-      #   end
-      # end
-
       sent_msg.id
+    end
+
+    def temp_download_file(attachment)
+      if /https:\/\/cdn.discordapp.com.*/.match?(attachment.url)
+
+        filename = attachment.filename
+        IO.copy_stream(URI.open(attachment.url), "tmp/#{filename}")
+
+        filename
+      end
     end
   end
 end

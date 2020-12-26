@@ -35,6 +35,7 @@ require 'active_support/time_with_zone'
 # Misc #
 require 'benchmark'
 require 'to_regexp'
+require 'active_support/core_ext/string/filters'
 ## Better command parsing ##
 require 'optimist'
 require 'shellwords'
