@@ -15,11 +15,12 @@ module TohsakaBot
         end
 
         pinned_messages = channel.pins
-        pinned_messages.reverse if !order.nil? && order == "oldest"
+        pinned_messages.reverse! if !order.nil? && order == "oldest"
 
         msg = event.respond("Converting...")
 
         pinned_messages.each do |m|
+          next unless TohsakaBot.db[:highlights].where(:msg_id => m.id.to_i).empty?
           highlight_core = HighlightCore.new(m, channel.server.id.to_i, channel.id.to_i)
           highlight_core.store_highlight(highlight_core.send_highlight)
           sleep(2)
