@@ -2,12 +2,12 @@ module TohsakaBot
   module Commands
     module IcecubeMachine
       extend Discordrb::Commands::CommandContainer
-      bucket :cf, limit: 1, time_span: 60, delay: 1
+      bucket :icecube, limit: 1, time_span: 60, delay: 1
       command(:icecubes,
               aliases: %i[🧊 icecubemachine icecubes icecube ic jääpalakone jääpala jääpalat],
               description: 'Timer by simulating melting icecubes.',
               usage: "Use 'icecube <how many (<= 300)> <[D]iscord | [u]nicode>",
-              bucket: :cf,
+              bucket: :icecube,
               rate_limit_message: "No cubes for you! Wait %time%s.") do |event, icecube_count, type|
 
         event.message.delete

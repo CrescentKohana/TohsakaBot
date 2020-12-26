@@ -45,11 +45,14 @@ module TohsakaBot
         prefix = "?"
         now_playing = "TohsakaBot"
 
-        print "Type in the preferred command prefix (default is ?): "
+        print "Type in the preferred command prefix (default ?): "
         prefix = gets unless gets.nil?
 
         print "Type in the default channel ID: "
-        channel_id = gets
+        default_channel = gets
+
+        print "Type in the highlight channel ID: "
+        highlight_channel = gets
 
         print "Type in the directory path of TohsakaWeb like /home/rin/www/TohsakaWeb (Optional, note for no trailing slash!): "
         web_dir = gets
@@ -58,7 +61,8 @@ module TohsakaBot
             "---\n"\
             "prefix: \"#{prefix}\"\n"\
             "np: \"#{now_playing}\"\n"\
-            "default_channel: \"#{channel_id}\"\n"\
+            "default_channel: \"#{default_channel}\"\n"\
+            "highlight_channel: \"#{highlight_channel}\"\n"\
             "web_dir: \"#{web_dir}\"\n"\
             "reminder_limit: \"100\"\n"\
             "trigger_limit: \"10\"\n"\

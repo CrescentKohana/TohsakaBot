@@ -3,6 +3,8 @@ module TohsakaBot
     module RepostOverseer
       extend Discordrb::EventContainer
       message(content: TohsakaBot.url_regex) do |event|
+        next if event.channel.pm?
+
         time, discord_uid, msg_uri = TohsakaBot.url_match(event)
 
         unless time.nil?

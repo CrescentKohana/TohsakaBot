@@ -47,7 +47,8 @@
     "AskRin",
     "AnswerAdd",
     "IcecubeMachine",
-    "MessagePrune"
+    "MessagePrune",
+    "ConvertPins"
   ],
   "Events":[
     "TriggerEvent",
@@ -56,6 +57,7 @@
     "DecodeMsg",
     "SharedEmoji",
     "AnotherRoll",
-    "HighlightReaction"
+    "HighlightReaction",
+    "HighlightDelete"
   ]
 }
