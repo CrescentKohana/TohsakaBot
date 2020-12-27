@@ -46,6 +46,30 @@ CREATE TABLE `authorizations` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `highlights`
+--
+
+DROP TABLE IF EXISTS `highlights`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `highlights` (
+                              `id` bigint(20) NOT NULL AUTO_INCREMENT,
+                              `content` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+                              `attachments` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+                              `author_id` bigint(20) NOT NULL,
+                              `timestamp` datetime NOT NULL,
+                              `msg_id` bigint(20) NOT NULL,
+                              `channel` bigint(20) NOT NULL,
+                              `server` bigint(20) NOT NULL,
+                              `created_at` datetime(6) NOT NULL,
+                              `updated_at` datetime(6) NOT NULL,
+                              `highlight_msg_id` bigint(20) NOT NULL,
+                              `deleted` tinyint(1) NOT NULL,
+                              PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=320 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `reminders`
 --
 
@@ -62,7 +86,7 @@ CREATE TABLE `reminders` (
                              `created_at` datetime(6) NOT NULL,
                              `updated_at` datetime(6) NOT NULL,
                              PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=413 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=527 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -97,7 +121,7 @@ CREATE TABLE `triggers` (
                             `created_at` datetime(6) NOT NULL,
                             `updated_at` datetime(6) NOT NULL,
                             PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=395 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=495 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
