@@ -17,10 +17,12 @@ module TohsakaBot
           sorted = triggers.where(:user_id => used_id).order(:id)
         end
 
-        output = "`Modes: exact (0), any (1) and regex (2)`\n`  ID | M & % | TRIGGER                           | MSG/FILE`\n"
+        header = "`Modes: exact (0), any (1) and regex (2). "
+        output = "`  ID | M & % | TRIGGER                           | MSG/FILE`\n"
         sorted.each do |t|
           chance = t[:chance].to_i == 0 ? CFG.default_trigger_chance.to_i : t[:chance].to_i
           chance *= 3 if t[:mode].to_i == 0
+          chance = 100 if chance > 100
 
           if t[:reply].nil? || t[:reply].length == 0
             output << "`#{sprintf("%4s", t[:id])} | #{sprintf("%-5s", t[:mode].to_s + " " + chance.to_s)} | #{sprintf("%-33s", t[:phrase].to_s.gsub("\n", '')[0..30])} | #{sprintf("%-21s", t[:file][0..20])}`\n"
@@ -34,7 +36,9 @@ module TohsakaBot
 
         msgs = []
         if result_amount > 0
-          msgs = TohsakaBot.send_multiple_msgs(Discordrb.split_message(output), where)
+          header << "#{result_amount} trigger(s) found.`\n"
+          header << output
+          msgs = TohsakaBot.send_multiple_msgs(Discordrb.split_message(header), where)
         else
           msgs << event.respond('No triggers found.')
         end
