@@ -63,7 +63,8 @@ module TohsakaBot
         end
 
         result_amount = 0
-        output = "`Modes: exact (0), any (1) and regex (2)`\n`  ID | M & % | TRIGGER                           | MSG/FILE`\n"
+        header = "`Modes: exact (0), any (1) and regex (2). "
+        output = "`  ID | M & % | TRIGGER                           | MSG/FILE`\n"
         result.each do |t|
           id = t[0]
           phrase = t[1]
@@ -72,6 +73,7 @@ module TohsakaBot
           chance = t[6].to_i == 0 ? CFG.default_trigger_chance.to_i : t[6].to_i
           mode = t[7].to_i
           chance *= 3 if mode == 0
+          chance = 100 if chance > 100
 
           if reply.nil? || reply.empty?
             output << "`#{sprintf("%4s", id)} | #{sprintf("%-5s", mode.to_s + " " + chance.to_s)} | #{sprintf("%-33s", phrase.to_s.gsub("\n", '')[0..30])} | #{sprintf("%-21s", file[0..20])}`\n"
@@ -84,7 +86,9 @@ module TohsakaBot
         where = result_amount > 5 ? event.author.pm : event.channel
 
         if result.any?
-          where.split_send "#{output}"
+          header << "#{result_amount} trigger(s) found.`\n"
+          header << output
+          where.split_send "#{header}"
         else
           event.<< 'No triggers found.'
         end

@@ -42,7 +42,7 @@ CREATE TABLE `authorizations` (
                                   PRIMARY KEY (`id`),
                                   KEY `index_authorizations_on_uid` (`uid`),
                                   KEY `index_authorizations_on_user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -66,7 +66,7 @@ CREATE TABLE `highlights` (
                               `highlight_msg_id` bigint(20) NOT NULL,
                               `deleted` tinyint(1) NOT NULL,
                               PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=320 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -86,7 +86,7 @@ CREATE TABLE `reminders` (
                              `created_at` datetime(6) NOT NULL,
                              `updated_at` datetime(6) NOT NULL,
                              PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=527 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -121,7 +121,7 @@ CREATE TABLE `triggers` (
                             `created_at` datetime(6) NOT NULL,
                             `updated_at` datetime(6) NOT NULL,
                             PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=495 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -142,7 +142,7 @@ CREATE TABLE `users` (
                          `updated_at` datetime(6) NOT NULL,
                          PRIMARY KEY (`id`),
                          KEY `index_users_on_name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

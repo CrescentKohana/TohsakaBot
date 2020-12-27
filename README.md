@@ -34,7 +34,7 @@ They can be viewed by opening `doc/_index.html` in a browser.
 Tests can be performed with `rspec` command.
 
 ## Dependencies
-* Ruby >= 2.6 supported
+* Ruby >= 2.7 supported
 * MariaDB / MySQL 
 * Gems specified in Gemfile (installed by `bundle install`)
-  * Latest [discordrb](https://github.com/discordrb/discordrb) @ master branch
+  * Latest [discordrb](https://github.com/shardlab/discordrb) @ master branch
