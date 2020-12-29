@@ -108,7 +108,7 @@ module TohsakaBot
 
       # If the date was in the ISO 8601 format, convert it to text for the message.
       @datetime = @datetime.is_a?(Integer) ? @datetime = Time.at(@datetime) : @datetime
-      if @msg.nil?
+      if @msg.blank?
         @event.respond "I shall #{repeated_msg}remind <@#{@discord_uid.to_i}> at `#{@datetime}` `<ID #{@id}>`#{repetition_interval}. "
       else
         @event.respond "I shall #{repeated_msg}remind <@#{@discord_uid.to_i}> with #{@msg.strip.hide_link_preview} at `#{@datetime}` `<ID #{@id}>`#{repetition_interval}."
