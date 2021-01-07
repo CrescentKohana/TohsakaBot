@@ -29,6 +29,8 @@ module TohsakaBot
     def url_parse(url)
       parsed = URI.parse(url)
 
+      return nil if parsed.host.nil?
+
       domain = PublicSuffix.domain(parsed.host)
       subdomain = PublicSuffix.parse(parsed.host).trd
       path = parsed.path
@@ -73,7 +75,7 @@ module TohsakaBot
         type = "twitch"
         url_result = twitch_clips_id[0]
       else
-        # Normal whole URL
+        # Just the URL, no parsing
         type = 'url'
         url_result = url
       end
@@ -86,15 +88,12 @@ module TohsakaBot
       db = YAML.load_file('data/repost.yml')
 
       if !urls.nil? && db
-        db.each do |k, v|
-          next if v['user'].to_i == event.author.id.to_i
-
-          urls.each do |url|
-            type, url_result = TohsakaBot.url_parse(url)
-            return nil if type.nil?
-            if v['url'] == url_result && v['type'] == type
-              return v['time'].to_i, v['user'].to_i, v['msg_uri']
-            end
+        urls.each do |url|
+          type, url_result = TohsakaBot.url_parse(url)
+          next if type.nil?
+          db.each do |k, v|
+            next if v['user'].to_i == event.author.id.to_i
+            return v['time'].to_i, v['user'].to_i, v['msg_uri'] if v['url'] == url_result && v['type'] == type
           end
         end
         nil
