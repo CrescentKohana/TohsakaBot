@@ -1,0 +1,43 @@
+module TohsakaBot
+  module Commands
+    module FindFeatureRequests
+      extend Discordrb::Commands::CommandContainer
+      command(:findfeaturerequests,
+              aliases: %i[findfrs findfr findfeaturerequest ffr requests frs],
+              description: 'Finds and lists feature requests based on given tags.',
+              usage: "Use 'fr <tags (new, indev, done, wontdo, all)>'",
+              min_args: 1,
+              require_register: true,
+              enabled_in_pm: false) do |event, *tags|
+
+        result_amount = 0
+        header = "`  ID | CREATED    | BY                               | TAGS `\n"
+        output = ""
+
+        requests = YAML.load(File.read('data/feature_requests.yml'))
+        if requests
+          requests.each do |id, r|
+            if tags.any? { |tag| r["tags"].include? tag } || tags.include?("all")
+              result_amount += 1
+              datetime = Time.at(r["time"]).to_s.split(' ')[0]
+              username = BOT.member(event.server, r["user"]).display_name
+              output << "`#{sprintf("%4s", id)} | #{datetime} | #{sprintf("%-32s", username)} | #{r["tags"]}`\n `REQ:` #{r["request"]}\n"
+            end
+          end
+        end
+
+        where = result_amount > 5 ? event.author.pm : event.channel
+        msgs = []
+        if result_amount > 0
+          header << output
+          msgs = TohsakaBot.send_multiple_msgs(Discordrb.split_message(header), where)
+        else
+          msgs << event.respond('No requests found.')
+        end
+
+        TohsakaBot.expire_msg(where, msgs, event.message)
+        break
+      end
+    end
+  end
+end

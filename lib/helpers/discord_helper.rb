@@ -4,6 +4,32 @@ module TohsakaBot
     UPLOAD_LIMIT = 8388119
     UPLOAD_LIMIT_NITRO = 52428308
 
+    attr_accessor :typing_channels
+
+    @typing_channels
+
+    def manage_typing(channel, duration)
+      if @typing_channels.nil?
+        @typing_channels = Hash.new
+      end
+
+      puts @typing_channels[channel]
+
+      if @typing_channels[channel]
+        puts "sad"
+        @typing_channels.delete(channel)
+        return
+      end
+
+      if Integer(duration, exception: false).nil?
+        duration = nil
+      else
+        duration *= 60
+      end
+
+      @typing_channels[channel] = duration
+    end
+
     def send_message_with_reaction(cid, emoji, content)
       reply = BOT.send_message(cid.to_i, content)
       reply.create_reaction(emoji)
@@ -60,4 +86,3 @@ module TohsakaBot
 
   TohsakaBot.extend DiscordHelper
 end
-

@@ -3,7 +3,7 @@ module TohsakaBot
     module TriggerMod
       extend Discordrb::Commands::CommandContainer
       command(:triggermod,
-              aliases: %i[triggermod tm triggermodify modtrigger modifytrigger edittrigger triggeredit modtriger],
+              aliases: %i[?trigermod tm triggermodify modtrigger modifytrigger edittrigger triggeredit modtriger],
               description: 'Edits a trigger.',
               usage: "Use 'triggermod -h|--help' for help.",
               min_args: 1,
