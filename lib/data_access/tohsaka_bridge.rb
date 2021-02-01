@@ -49,6 +49,12 @@ module TohsakaBot
       servers
     end
 
+    def get_user(user_discord_id)
+      user = BOT.user(user_discord_id.to_i)
+      user if user.is_a? Discordrb::User
+      nil
+    end
+
     def get_channel(channel_id)
       BOT.channel(channel_id.to_i)
     end

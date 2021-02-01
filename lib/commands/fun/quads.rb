@@ -5,7 +5,7 @@ module TohsakaBot
       bucket :cf, limit: 15, time_span: 60, delay: 1
       command(:quads,
               aliases: %i[quads quad quadeil quadeilla quattroilla
-              quattroil neljä nelosilla nelosil quadseilla quadseil],
+              quattroil neljä nelosilla nelosil quadseilla quadseil tetra tetras tetroil tetroilla],
               description: 'Quads.',
               usage: '',
               bucket: :cf, rate_limit_message: "Calm down! You are ratelimited for %time%s.") do |event|

@@ -3,15 +3,15 @@ module TohsakaBot
     module FeatureRequest
       extend Discordrb::Commands::CommandContainer
       command(:featurerequest,
-              aliases: %i[requestfeature fr],
-              description: 'Takes an idea and saves it to file.',
-              usage: "Use 'triggeradd <feature or idea>",
+              aliases: %i[requestfeature fr request],
+              description: 'Takes an idea and saves it.',
+              usage: "Use 'fr <feature or idea>'",
               min_args: 1,
               require_register: true,
               enabled_in_pm: false) do |event, *msg|
 
         if TohsakaBot.user_limit_reached?(event.author.id, 1000, :triggers)
-          event.respond "The the maximum amount of feature requests a user can have is 1000. "
+          event.respond "The maximum amount of feature requests a user can have is 1000. "
           break
         end
 
@@ -20,18 +20,19 @@ module TohsakaBot
         request = msg.join(' ').strip
 
         db = YAML::Store.new('data/feature_requests.yml')
+        i = 1
         db.transaction do
-          i = 1
           i += 1 while db.root?(i)
           db[i] = {
-              "user" => discord_uid,
-              "time" => time,
-              "request" => request
+            "tag" => "new",
+            "user" => discord_uid,
+            "time" => time,
+            "request" => request
           }
           db.commit
         end
 
-        event.respond("Request saved.")
+        event.respond("Request saved `<ID: #{i}>`.")
       end
     end
   end

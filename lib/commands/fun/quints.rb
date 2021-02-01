@@ -6,7 +6,7 @@ module TohsakaBot
       command(:quints,
               aliases: %i[pentas penta quint quinteil quinteilla pentoil pentoilla
               pentat quintit vitoset viisi five fives],
-              description: 'Quads.',
+              description: 'Quints.',
               usage: '',
               bucket: :cf, rate_limit_message: "Calm down! You are ratelimited for %time%s.") do |event|
 
@@ -22,7 +22,7 @@ module TohsakaBot
             "**#{number.rjust(5, '0')}**  `#{name.strip_mass_mentions.sanitize_string}`#{identifier}"
         )
 
-        if /(\d)\1{3}/.match?(number)
+        if /(\d)\1{4}/.match?(number)
           name = BOT.member(event.server, event.author.id).display_name
           TohsakaBot.give_temporary_role(event, role_id, user_id)
           event.respond("🎉 @here #{name} HAS GOT QUINTS! 🎉")
