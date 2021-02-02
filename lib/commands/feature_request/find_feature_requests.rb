@@ -13,15 +13,16 @@ module TohsakaBot
         result_amount = 0
         header = "`  ID | CREATED    | BY                               | TAGS `\n"
         output = ""
-
         requests = YAML.load(File.read('data/feature_requests.yml'))
+
         if requests
-          requests.each do |id, r|
+          sorted = requests.sort
+          sorted.each do |id, r|
             if tags.any? { |tag| r["tags"].include? tag } || tags.include?("all")
               result_amount += 1
               datetime = Time.at(r["time"]).to_s.split(' ')[0]
               username = BOT.member(event.server, r["user"]).display_name
-              output << "`#{sprintf("%4s", id)} | #{datetime} | #{sprintf("%-32s", username)} | #{r["tags"]}`\n `REQ:` #{r["request"]}\n"
+              output << "`#{sprintf("%4s", id)} | #{datetime} | #{sprintf("%-32s", username)} | #{r["tags"]}`\n`\t\tREQ:` #{r["request"]}\n"
             end
           end
         end

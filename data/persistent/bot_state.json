@@ -1,5 +1,5 @@
 {
-  "Async": [
+  "Async":[
     "RefreshNP",
     "RemindOnTime",
     "URLCleaner",
@@ -10,6 +10,8 @@
   "Commands":[
     "Help",
     "FeatureRequest",
+    "FindFeatureRequests",
+    "TagFeatureRequest",
     "FGOSummon",
     "RollProbability",
     "Register",
@@ -51,9 +53,7 @@
     "MessagePrune",
     "ConvertPins",
     "Typing",
-    "ListRoles",
-    "FindFeatureRequests",
-    "TagFeatureRequest"
+    "ListRoles"
   ],
   "Events":[
     "TriggerEvent",
@@ -63,6 +63,7 @@
     "SharedEmoji",
     "AnotherRoll",
     "HighlightReaction",
-    "HighlightDelete"
+    "HighlightDelete",
+    "AlsoRemindme"
   ]
 }

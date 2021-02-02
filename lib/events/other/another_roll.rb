@@ -11,7 +11,7 @@ module TohsakaBot
           next if rate_limiter.rate_limited?(:roll, event.user)
 
           msg = event.message.content
-          user_id = event.message.author
+          user_id = event.user.id.to_i
           role_id = CFG.winner_role.to_i
 
           # Checks if the end of the message has
@@ -33,7 +33,7 @@ module TohsakaBot
             else
               break
             end
-            name = BOT.member(event.server, event.user.id).display_name.strip_mass_mentions.sanitize_string
+            name = BOT.member(event.server, user_id).display_name.strip_mass_mentions.sanitize_string
 
             # Sends an embedded message with the rolled number and
             # the name of the user who rolled combined
