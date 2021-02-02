@@ -109,13 +109,44 @@ module TohsakaBot
       # If the date was in the ISO 8601 format, convert it to text for the message.
       @datetime = @datetime.is_a?(Integer) ? @datetime = Time.at(@datetime) : @datetime
       if @msg.blank?
-        @event.respond "I shall #{repeated_msg}remind <@#{@discord_uid.to_i}> at `#{@datetime}` `<ID #{@id}>`#{repetition_interval}. "
+        TohsakaBot.send_message_with_reaction(
+          @event.channel.id,
+          '🔔',
+          "I shall #{repeated_msg}remind <@#{@discord_uid.to_i}> at `#{@datetime}` `<ID #{@id}>`#{repetition_interval}."
+        )
       else
-        @event.respond "I shall #{repeated_msg}remind <@#{@discord_uid.to_i}> with #{@msg.strip.hide_link_preview} at `#{@datetime}` `<ID #{@id}>`#{repetition_interval}."
+        TohsakaBot.send_message_with_reaction(
+          @event.channel.id,
+          '🔔',
+          "I shall #{repeated_msg}remind <@#{@discord_uid.to_i}> with #{@msg.strip.hide_link_preview} at `#{@datetime}` `<ID #{@id}>`#{repetition_interval}."
+        )
       end
       unless @event.channel.pm?
         @event.message.delete
       end
+    end
+
+    def self.copy_reminder(reminder_id, discord_uid)
+      discord_uid = discord_uid.to_i
+      reminder_id = reminder_id.to_i
+      return unless TohsakaBot.registered?(discord_uid)
+
+      reminders = TohsakaBot.db[:reminders]
+      reminder = reminders.where(:id => reminder_id.to_i).single_record!
+      id = nil
+      unless reminder.nil?
+        TohsakaBot.db.transaction do
+          id = reminders.insert(datetime: reminder[:datetime],
+                                message:  reminder[:message],
+                                user_id: TohsakaBot.get_user_id(discord_uid),
+                                channel: reminder[:channel],
+                                repeat: reminder[:repeat],
+                                parent: reminder_id,
+                                created_at: Time.now,
+                                updated_at: Time.now)
+        end
+      end
+      id
     end
   end
 end
