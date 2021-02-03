@@ -132,7 +132,7 @@ module TohsakaBot
       return unless TohsakaBot.registered?(discord_uid)
 
       reminders = TohsakaBot.db[:reminders]
-      reminder = reminders.where(:id => reminder_id.to_i).single_record!
+      reminder = reminders.where(:id => reminder_id.to_i).single_record
       id = nil
       unless reminder.nil?
         TohsakaBot.db.transaction do
@@ -147,6 +147,19 @@ module TohsakaBot
         end
       end
       id
+    end
+
+    def self.copy_already_exists?(reminder_id, discord_uid)
+      discord_uid = discord_uid.to_i
+      reminder_id = reminder_id.to_i
+
+      reminders = TohsakaBot.db[:reminders]
+
+      return !reminders.where(:parent => reminder_id.to_i, :user_id => TohsakaBot.get_user_id(discord_uid)).single_record.nil?
+    end
+
+    def self.get_reminder(id)
+      return TohsakaBot.db[:reminders].where(:id => id.to_i).single_record
     end
   end
 end

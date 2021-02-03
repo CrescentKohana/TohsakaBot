@@ -24,7 +24,7 @@ module TohsakaBot
         db.transaction do
           i += 1 while db.root?(i)
           db[i] = {
-            "tag" => "new",
+            "tags" => "new",
             "user" => discord_uid,
             "time" => time,
             "request" => request
