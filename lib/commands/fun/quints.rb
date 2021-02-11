@@ -13,7 +13,7 @@ module TohsakaBot
         number = rand(0..99999).to_s
         name = BOT.member(event.server, event.author.id).display_name
         user_id = event.message.author
-        role_id = CFG.winner_role.to_i
+        role_id = CFG.lord_role.to_i
 
         identifier = "\u200B" * 5
         TohsakaBot.send_message_with_reaction(
@@ -24,7 +24,7 @@ module TohsakaBot
 
         if /(\d)\1{4}/.match?(number)
           name = BOT.member(event.server, event.author.id).display_name
-          TohsakaBot.give_temporary_role(event, role_id, user_id)
+          TohsakaBot.give_temporary_role(event, role_id, user_id, 7, "Quints")
           event.respond("🎉 @here #{name} HAS GOT QUINTS! 🎉")
         end
       end

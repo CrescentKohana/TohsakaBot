@@ -12,7 +12,7 @@ module TohsakaBot
 
           msg = event.message.content
           user_id = event.user.id.to_i
-          role_id = CFG.winner_role.to_i
+          role_id = CFG.lord_role.to_i
 
           # Checks if the end of the message has
           # one or more zero-width space identifier(s).
@@ -48,11 +48,11 @@ module TohsakaBot
 
             if /(\d)\1{3}/.match?(number) && i == 4
               name = BOT.member(event.server, event.author.id).display_name
-              TohsakaBot.give_temporary_role(event, role_id, user_id)
+              TohsakaBot.give_temporary_role(event, role_id, user_id, 7, "Quads")
               event.respond("🎉 @here #{name} HAS GOT QUADS! 🎉")
             elsif /(\d)\1{4}/.match?(number) && i == 5
               name = BOT.member(event.server, event.author.id).display_name
-              TohsakaBot.give_temporary_role(event, role_id, user_id)
+              TohsakaBot.give_temporary_role(event, role_id, user_id, 7, "Quints")
               event.respond("🎉 @here #{name} HAS GOT QUINTS! 🎉")
             end
           end
