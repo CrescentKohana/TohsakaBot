@@ -64,6 +64,7 @@
     "AnotherRoll",
     "HighlightReaction",
     "HighlightDelete",
-    "AlsoRemindme"
+    "AlsoRemindme",
+    "MessageIDCheck"
   ]
 }

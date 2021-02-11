@@ -15,7 +15,7 @@ class String
   #
   # @return [String] sanitized message
   def sanitize_string
-    tr('`', '´')
+    tr('`', '\`')
   end
 
   # Hides the preview in links posted by the bot by adding <> around the link.
