@@ -57,6 +57,12 @@ module TohsakaBot
         print "Type in the directory path of TohsakaWeb like /home/rin/www/TohsakaWeb (Optional, note for no trailing slash!): "
         web_dir = gets
 
+        print "Type in the ID of the lord role (basically, given to the users as a reward when they win in something): "
+        lord_role = gets
+
+        print "Type in the ID of the fool role (basically, given to the users as a reward when they lose in something): "
+        fool_role = gets
+
         f.write(
             "---\n"\
             "prefix: \"#{prefix}\"\n"\
@@ -71,8 +77,8 @@ module TohsakaBot
             "del_trigger:\n"\
             "- not now rin\n"\
             "- no\n"\
-            "winner_role: \"0000\"\n"\
-            "loser_role: \"0000\"\n")
+            "lord_role: #{lord_role}\n"\
+            "fool_role: #{fool_role}\n")
       end
 
       File.open("data/ask_rin_answers.csv", "w") do |f|

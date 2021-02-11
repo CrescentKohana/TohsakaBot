@@ -20,6 +20,7 @@
     "Information",
     "RoleAdd",
     "RoleDel",
+    "ListRoles",
     "Summon",
     "ReminderAdd",
     "Tester",
@@ -43,8 +44,9 @@
     "EncodeMsg",
     "Quickie",
     "GetSauce",
-    "Winner",
-    "Loser",
+    "Lord",
+    "Fool",
+    "TrophyRoles",
     "EmojiList",
     "Number",
     "AskRin",
@@ -52,8 +54,7 @@
     "IcecubeMachine",
     "MessagePrune",
     "ConvertPins",
-    "Typing",
-    "ListRoles"
+    "Typing"
   ],
   "Events":[
     "TriggerEvent",

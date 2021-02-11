@@ -48,7 +48,7 @@ module TohsakaBot
       user_msg.delete unless user_msg.nil?
     end
 
-    def give_temporary_role(event, role_id, user_id)
+    def give_temporary_role(event, role_id, user_id, duration, reason)
       db_store = YAML::Store.new('data/temporary_roles.yml')
       server_id = event.channel.server.id
 
@@ -60,11 +60,23 @@ module TohsakaBot
         Discordrb::API::Server.add_member_role("Bot #{AUTH.bot_token}", server_id, user_id, role_id)
       end
 
+      duration = Integer(duration, exception: false)
+      duration = 7 if days.nil? || !duration.between?(1, 365)
+
+      reason = reason.join(' ').sanitize_string
+
       # Makes a new entry to the database for the user so that we can delete the role after a set time (default: a week).
       db_store.transaction do
         i = 1
         i += 1 while db_store.root?(i)
-        db_store[i] = { 'time' => Time.now, 'user' => user_id, 'server' => server_id, 'role' => role_id }
+        db_store[i] = {
+          'time' => Time.now,
+          'duration' => duration,
+          'reason' => reason,
+          'user' => user_id,
+          'server' => server_id,
+          'role' => role_id
+        }
         db_store.commit
       end
     end

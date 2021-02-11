@@ -20,7 +20,7 @@ module TohsakaBot
         end
 
         user_id = event.message.author.id
-        role_id = CFG.winner_role
+        role_id = CFG.lord_role.to_i
 
         # Probabilities for the coin toss (%).
         coin = { "Tails:"  => 49, "Heads:" => 49, "The coin landed on its edge:" => 2 }
@@ -33,13 +33,8 @@ module TohsakaBot
         else
           picked = coin_toss.pick(1)
 
-          # Coinmaster manipulation (don't ask)
-          if event.author.id.to_i == 73091459573616640
-            picked = 'The coin landed on its edge'
-          end
-
           if picked.chomp(':') == 'The coin landed on its edge'
-            TohsakaBot.give_temporary_role(event, role_id, user_id)
+            TohsakaBot.give_temporary_role(event, role_id, user_id, 1, "Flipped a coin on its edge")
           end
           outcome = picked.chomp(':')
           case outcome
