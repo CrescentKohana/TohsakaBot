@@ -2,7 +2,7 @@ module TohsakaBot
   module Commands
     module IcecubeMachine
       extend Discordrb::Commands::CommandContainer
-      bucket :icecube, limit: 1, time_span: 60, delay: 1
+      bucket :icecube, limit: 1, time_span: 10, delay: 1
       command(:icecubes,
               aliases: %i[🧊 icecubemachine icecubes icecube ic jääpalakone jääpala jääpalat],
               description: 'Timer by simulating melting icecubes.',
@@ -21,7 +21,7 @@ module TohsakaBot
           break
         end
 
-        icecube_count = 300 if icecube_count > 300
+        icecube_count = 900 if icecube_count > 900
 
         if icecube_count > 100 || (!type.nil? && (type.downcase == "unicode" || type.downcase == "u"))
           cube = "\\🧊"
@@ -59,9 +59,29 @@ module TohsakaBot
           ice_msg.edit(cube_array.join.to_str)
         end
 
-        sleep(60)
-        timer_msg.delete
+
+        while cube_array.include? water do
+          iterations += 1
+          cube_array.collect! { |e|
+            if e == water
+              (Random.new.rand(1..10) > 5) ? "" : e
+            else
+              e
+            end
+          }
+
+          vaporized = cube_array.length > 0 ? cube_array.length - cube_array.count { |e| e == water } : icecube_count
+
+          sleep(10)
+          timer_msg.edit("\n`#{icecube_count}/#{icecube_count} 🧊 melted and #{vaporized}/#{icecube_count} 💧 vaporized in #{10 * iterations}s ⏲ #{event.author.display_name}`")
+          if vaporized != cube_array.length
+            ice_msg.edit(cube_array.join.to_str)
+          end
+        end
+
         ice_msg.delete
+        sleep(120)
+        timer_msg.delete
         break
       end
     end

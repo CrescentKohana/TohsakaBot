@@ -22,10 +22,10 @@ module TohsakaBot
             9 => 'Enneas',
             10 => 'Decas'
           }
-          doubles_as_well = event.message.content.match(/^get.*|tupl.*/i)
+
           name = BOT.member(event.server, event.message.author.id).display_name.strip_mass_mentions.sanitize_string
 
-          if (3...10) === length || (doubles_as_well && (2...10) === length)
+          if (4...10) === length || (event.message.content.match(/^get.*|tupl.*|tripl.*/i) && (2...10) === length)
             event.channel.send_embed do |embed|
               embed.colour = 0x36393F
               embed.add_field(
@@ -36,7 +36,7 @@ module TohsakaBot
             next
           end
 
-          if doubles_as_well
+          if length > 10
             event.channel.send_embed do |embed|
               embed.colour = 0x36393F
               embed.add_field(
