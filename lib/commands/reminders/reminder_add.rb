@@ -45,7 +45,7 @@ module TohsakaBot
 
         datetime = datetime.join(' ') unless legacy
 
-        rem = ReminderController.new(event, datetime, message, repeat, legacy)
+        rem = ReminderController.new(event, datetime, message, repeat, event.channel.id.to_i, nil, legacy)
         discord_uid = event.message.user.id.to_i
 
         begin

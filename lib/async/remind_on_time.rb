@@ -10,8 +10,9 @@ module TohsakaBot
           expiring_reminders.each do |r|
             id = r[:id].to_i
             msg = r[:message]
-            cid = r[:channel].to_i
+            channel_id = r[:channel]
             datetime = r[:datetime].to_i
+            parent = r[:parent]
             created_at = r[:created_at]
             updated_at = r[:updated_at]
             user_id = r[:user_id].to_i
@@ -20,17 +21,24 @@ module TohsakaBot
             repeat_time = r[:repeat].to_i
             repeated_msg = repeat_time > 0 ? "Repeated r" : "R"
 
+            # TODO: copied reminders in the same message if possible
+            # if !parent.nil? && !reminders.where(:id => parent.to_i).nil?
+            #
+            # end
+
             @where = BOT.pm_channel(discord_uid)
 
-            if BOT.channel(cid).nil?
+            if channel_id.nil?
+              @where = BOT.pm_channel(discord_uid)
+            elsif BOT.channel(channel_id).nil?
               @where = BOT.pm_channel(discord_uid)
             else
-              if BOT.channel(cid).pm?
-                @where = BOT.channel(cid)
+              if BOT.channel(channel_id).pm?
+                @where = BOT.channel(channel_id)
               else
                 # If bot has permissions to send messages to this channel.
-                if BOT.profile.on(BOT.server(BOT.channel(cid).server.id)).permission?(:send_messages, BOT.channel(cid))
-                  @where = BOT.channel(cid)
+                if BOT.profile.on(BOT.server(BOT.channel(channel_id).server.id)).permission?(:send_messages, BOT.channel(channel_id))
+                  @where = BOT.channel(channel_id)
                 else
                   @where = BOT.pm_channel(discord_uid)
                 end
@@ -64,7 +72,7 @@ module TohsakaBot
                     .update(datetime: Time.at(datetime + repeat_time).strftime('%Y-%m-%d %H:%M:%S'),
                             message: msg,
                             user_id: user_id,
-                            channel: cid,
+                            channel: channel_id,
                             repeat: repeat_time,
                             created_at: created_at,
                             updated_at: updated_at)

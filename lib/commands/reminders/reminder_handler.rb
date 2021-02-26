@@ -16,6 +16,11 @@ module TohsakaBot
         "Mixing weeks with other date parts (y, M, d) is not possible."
       end
     end
+    class MaxTimeError < DatetimeError
+      def message
+        "Reminders do not work after the end of the world (year 9999)."
+      end
+    end
 
     class RepeatIntervalError < StandardError; end
     class PrivateRepeatIntervalError < RepeatIntervalError

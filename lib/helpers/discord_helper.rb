@@ -94,6 +94,39 @@ module TohsakaBot
         end
       end
     end
+
+    def allowed_channels(discord_uid)
+      possible_channels = []
+      user = BOT.user(discord_uid.to_i)
+
+      user_servers(discord_uid).each do |s|
+        s.text_channels.each do |c|
+          # TODO: Possible bug in the library: https://github.com/discordrb/discordrb/pull/712
+          if user.on(s).permission?(:send_messages, c)
+            possible_channels << c
+          end
+        end
+      end
+
+      # Private Message channel with bot
+      possible_channels << user.pm
+
+      possible_channels
+    end
+
+    def user_servers(discord_uid)
+      servers = []
+
+      BOT.servers.values.each do |s|
+        s.non_bot_members.each do |m|
+          if m.id.to_i == discord_uid.to_i
+            servers << s
+            break
+          end
+        end
+      end
+      servers
+    end
   end
 
   TohsakaBot.extend DiscordHelper

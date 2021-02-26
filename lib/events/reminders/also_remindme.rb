@@ -5,6 +5,8 @@ module TohsakaBot
       rate_limiter.bucket :remindme, delay: 5
       extend Discordrb::EventContainer
       reaction_add(emoji: '🔔') do |event|
+        next if event.channel.pm?
+
         user_id = event.user.id.to_i
         msg = event.message.content
 
