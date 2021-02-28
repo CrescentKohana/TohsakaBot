@@ -85,8 +85,8 @@ module TohsakaBot
 
         where = result_amount > 5 ? event.author.pm : event.channel
 
-        if result.any?
-          header << "#{result_amount} trigger(s) found.`\n"
+        if result_amount > 0
+          header << "#{result_amount} trigger#{'s' if result.length > 1} found.`\n"
           header << output
           where.split_send "#{header}"
         else

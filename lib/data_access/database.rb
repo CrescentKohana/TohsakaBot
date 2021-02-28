@@ -40,7 +40,7 @@ module TohsakaBot
     # @return [Integer, nil] internal ID for the user
     def get_user_id(discord_uid)
       user = TohsakaBot.db[:authorizations][uid:discord_uid.to_i]
-      return user[:user_id] unless user.nil?
+      return user[:user_id].to_i unless user.nil?
       nil
     end
 
@@ -50,7 +50,7 @@ module TohsakaBot
     # @return [Integer, nil] Discord UID
     def get_discord_id(user_id)
       user = TohsakaBot.db[:authorizations][user_id:user_id.to_i]
-      return user[:uid] unless user.nil?
+      return user[:uid].to_i unless user.nil?
       nil
     end
 

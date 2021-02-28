@@ -36,7 +36,7 @@ module TohsakaBot
 
         msgs = []
         if result_amount > 0
-          header << "#{result_amount} trigger(s) found.`\n"
+          header << "#{result_amount} trigger#{'s' if result_amount > 1} found.`\n"
           header << output
           msgs = TohsakaBot.send_multiple_msgs(Discordrb.split_message(header), where)
         else

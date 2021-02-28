@@ -16,7 +16,6 @@ module TohsakaBot
       puts @typing_channels[channel]
 
       if @typing_channels[channel]
-        puts "sad"
         @typing_channels.delete(channel)
         return
       end
@@ -101,7 +100,6 @@ module TohsakaBot
 
       user_servers(discord_uid).each do |s|
         s.text_channels.each do |c|
-          # TODO: Possible bug in the library: https://github.com/discordrb/discordrb/pull/712
           if user.on(s).permission?(:send_messages, c)
             possible_channels << c
           end

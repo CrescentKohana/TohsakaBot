@@ -55,7 +55,8 @@
     "IcecubeMachine",
     "MessagePrune",
     "ConvertPins",
-    "Typing"
+    "Typing",
+    "EditPermissions"
   ],
   "Events":[
     "TriggerEvent",

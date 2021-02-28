@@ -5,7 +5,7 @@ module TohsakaBot
     #
     # @param event [EventContainer] EventContainer for Message event
     # @param phrase [String] phrase to which the bot responses (triggers)
-    # @param mode [Integer] trigger mode [exact (0), any (2), regex(3)]
+    # @param mode [Integer] trigger mode [exact (0), any (1), regex (2)]
     # @return [void]
     def initialize(event, phrase, mode)
       @event = event
@@ -13,7 +13,14 @@ module TohsakaBot
       @server_id = event.server.id.to_i
       @discord_uid = event.message.user.id.to_i
       @chance = 0
-      @mode = /e.*/s.match?(mode) ? 0 : 1
+
+      if /e.*/s.match?(mode)
+        @mode = 0
+      elsif /r.*/s.match?(mode) && TohsakaBot.permission?(@discord_uid, 100)
+        @mode = 2
+      else
+        @mode = 1
+      end
 
       # Remove an unnecessary spaces
       @phrase.strip!

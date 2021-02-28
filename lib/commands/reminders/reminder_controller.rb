@@ -22,7 +22,7 @@ module TohsakaBot
 
       @event = event
       @discord_uid = event.message.user.id
-      @channel_id = channel_id
+      @channel_id = channel_id.to_i
 
       if !repeat.nil?
         minutes = match_time(repeat, /([0-9]*)(min|[m])/) || 0
