@@ -10,6 +10,21 @@ module TohsakaBot
       end
     end
 
+    # Sets user's permission level (0-1000)
+    #
+    # @param discord_id [Integer] discord user id
+    # @param level [Integer] permission level (0-1000)
+    # @return [nil] if failed
+    def set_permission(discord_id, level)
+      user_id = get_user_id(discord_id.to_i)
+
+      return nil if !(0..1000).include?(level.to_i) || user_id.nil?
+
+      TohsakaBot.db.transaction do
+        TohsakaBot.db[:users].where(:id => user_id.to_i).update(permissions: level.to_i)
+      end
+    end
+
     # Returns Discord user IDs of everyone whose permission level is equal or more than specified.
     #
     # @param level [Integer] permission level
@@ -25,6 +40,17 @@ module TohsakaBot
 
       return discord_user_ids unless discord_user_ids.empty?
       nil
+    end
+
+    # Returns true if user is at the level of permissions specified or higher
+    #
+    # @param discord_id [Integer] discord user id
+    # @param level [Integer] permission level
+    # @return [Boolean] permission or not
+    def permission?(discord_id, level)
+      users_with_permissions = TohsakaBot.get_users_at_perm_level(level)
+      return false if users_with_permissions.nil?
+      users_with_permissions.include?(discord_id)
     end
   end
 

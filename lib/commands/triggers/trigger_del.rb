@@ -12,14 +12,14 @@ module TohsakaBot
         discord_uid = event.author.id.to_i
         user_id = TohsakaBot.get_user_id(discord_uid)
 
-        trigger_control_perm_users = TohsakaBot.get_users_at_perm_level(500)
+        trigger_control_permission = TohsakaBot.permission?(discord_uid, 500)
 
         deleted = []
         file_to_be_deleted = []
         ids.map!(&:to_i)
         triggers = TohsakaBot.db[:triggers]
 
-        if trigger_control_perm_users.include?(discord_uid)
+        if trigger_control_permission
           TohsakaBot.db.transaction do
             ids.each do |id|
               file = triggers.where(:id => id.to_i).single_record!

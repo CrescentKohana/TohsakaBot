@@ -10,8 +10,8 @@ module TohsakaBot
               require_register: true,
               enabled_in_pm: false) do |event, *msg|
 
-        trigger_control_perm_users = TohsakaBot.get_users_at_perm_level(500)
         discord_uid = event.author.id.to_i
+        trigger_control_permisson = TohsakaBot.permission?(discord_uid, 500)
 
         extra_help = "Example: `triggermod -i 420 -p new trigger -r new response -c 100`"
 
@@ -39,7 +39,7 @@ module TohsakaBot
           break
         end
 
-        if trigger[:user_id] != TohsakaBot.get_user_id(discord_uid) and !trigger_control_perm_users.include?(discord_uid)
+        if trigger[:user_id] != TohsakaBot.get_user_id(discord_uid) and !trigger_control_permisson
           event.respond("No permissions to edit this trigger")
           break
         end
@@ -69,7 +69,7 @@ module TohsakaBot
           trigger[:file] = nil
         end
 
-        if not options.chance.nil? and trigger_control_perm_users.include?(discord_uid)
+        if not options.chance.nil? and trigger_control_permisson
           chance = options.chance
           if chance >= 0 and chance <= 100
             trigger[:chance] = chance

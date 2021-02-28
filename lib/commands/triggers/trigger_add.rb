@@ -25,7 +25,7 @@ module TohsakaBot
             event, msg, 'Usage: triggeradd [options]', extra_help,
             [:phrase, 'Message from which the bot triggers.', :type => :strings],
             [:reply, 'Message which the bot sends.', :type => :strings],
-            [:mode, 'A(ny) <anywhere in the msg> || e(xact) <has to be an exact match>', :type => :string]
+            [:mode, 'A(ny) <anywhere in the msg> || e(xact) <has to be an exact match> || r(egex)', :type => :string]
         )
         break if options.nil?
 

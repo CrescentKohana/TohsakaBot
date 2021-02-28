@@ -45,11 +45,10 @@ module TohsakaBot
 
         datetime = datetime.join(' ') unless legacy
 
-        rem = ReminderController.new(event, datetime, message, repeat, event.channel.id.to_i, nil, legacy)
-        discord_uid = event.message.user.id.to_i
+        rem = ReminderController.new(event, datetime, message, repeat, event.channel.id, nil, legacy)
 
         begin
-          ReminderHandler.handle_user_limit(discord_uid)
+          ReminderHandler.handle_user_limit(event.message.user.id.to_i)
         rescue ReminderHandler::UserLimitReachedError => e
           event.respond e.message
           break
