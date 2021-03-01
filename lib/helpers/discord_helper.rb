@@ -13,8 +13,6 @@ module TohsakaBot
         @typing_channels = Hash.new
       end
 
-      puts @typing_channels[channel]
-
       if @typing_channels[channel]
         @typing_channels.delete(channel)
         return

@@ -34,8 +34,14 @@ module TohsakaBot
             phrase = /.*\b#{phrase}\b.*/i
             regex = Regexp.new phrase
           else
-            regex = phrase.to_regexp
+            if phrase.match(/\/.*\/.*/)
+              regex = phrase.to_regexp
+            else
+              regex = "/#{phrase}/".to_regexp
+            end
           end
+
+          next if regex.nil?
 
           if regex.match?(msg)
             if mode == 0

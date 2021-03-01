@@ -1,8 +1,6 @@
 module TohsakaBot
   module Events
     module AlsoRemindme
-      rate_limiter = Discordrb::Commands::SimpleRateLimiter.new
-      rate_limiter.bucket :remindme, delay: 5
       extend Discordrb::EventContainer
       reaction_add(emoji: '🔔') do |event|
         next if event.channel.pm?
@@ -13,7 +11,7 @@ module TohsakaBot
         reminder_id = msg.match(/`<ID (\d*)>`/).captures.first.to_i
 
         next if !event.message.author.current_bot? || event.user.bot_account || !TohsakaBot.registered?(user_id)
-        next if rate_limiter.rate_limited?(:remindme, event.user)
+        next if user_id == ReminderController.get_reminder(reminder_id).nil?
         next if user_id == TohsakaBot.get_discord_id(ReminderController.get_reminder(reminder_id)[:user_id])
         next if ReminderController.copy_already_exists?(reminder_id, user_id)
 
