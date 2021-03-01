@@ -5,7 +5,7 @@ module TohsakaBot
       command(:editpermissions,
               aliases: %i[editperm editpermissions],
               description: "Edits given user's permission level.",
-              usage: "listroles <'all' or 'server' to list all the roles in this server>",
+              usage: "editpermissions <discord uid> <level (0-1000)>",
               min_args: 2,
               permission_level: 1000) do |event, discord_uid, level|
 
