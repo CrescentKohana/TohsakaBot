@@ -29,7 +29,7 @@ module TohsakaBot
         if n.to_i > 1
           coins = coin_toss.pick(n.to_i)
           c = coins.uniq.map { |x| [x, coins.count(x)] }.to_h
-          event.<< "#{c.keys[0].to_s} #{c.values[0].to_s} #{c.keys[1].to_s} #{c.values[1].to_s} #{c.keys[2].to_s} #{c.values[2].to_s}"
+          event.<< "#{c.keys[0]} #{c.values[0]} #{c.keys[1]} #{c.values[1]} #{c.keys[2]} #{c.values[2]}"
         else
           picked = coin_toss.pick(1)
 

@@ -70,6 +70,7 @@
     "HighlightReaction",
     "HighlightDelete",
     "AlsoRemindme",
-    "MessageIDCheck"
+    "MessageIDCheck",
+    "Squads"
   ]
 }
