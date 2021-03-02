@@ -10,6 +10,7 @@ module TohsakaBot
 
         # Hard coded to allow ONLY the owner to have access.
         break unless event.user.id == AUTH.owner_id.to_i
+
         begin
           eval code.join(' ')
         rescue => e

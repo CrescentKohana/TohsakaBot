@@ -12,14 +12,16 @@ module TohsakaBot
             msg = r[:message]
             channel_id = r[:channel]
             datetime = r[:datetime].to_i
-            parent = r[:parent]
+            # parent = r[:parent]
             created_at = r[:created_at]
             updated_at = r[:updated_at]
             user_id = r[:user_id].to_i
             discord_uid = TohsakaBot.get_discord_id(user_id)
 
+            next if discord_uid.nil?
+
             repeat_time = r[:repeat].to_i
-            repeated_msg = repeat_time > 0 ? "Repeated r" : "R"
+            repeated_msg = repeat_time.positive? ? 'Repeated r' : 'R'
 
             # TODO: copied reminders in the same message if possible
             # if !parent.nil? && !reminders.where(:id => parent.to_i).nil?
@@ -62,24 +64,26 @@ module TohsakaBot
                 @where.send_message("#{repeated_msg}eminder for <@#{discord_uid}>: #{msg.strip_mass_mentions}")
               end
             rescue
-              # The user has blocked the bot.
+              # Ignored
+              # as the user has blocked the bot.
             end
 
-            if repeat_time > 0
+            if repeat_time.positive?
               TohsakaBot.db.transaction do
                 reminders
-                    .where(:id => id)
-                    .update(datetime: Time.at(datetime + repeat_time).strftime('%Y-%m-%d %H:%M:%S'),
-                            message: msg,
-                            user_id: user_id,
-                            channel: channel_id,
-                            repeat: repeat_time,
-                            created_at: created_at,
-                            updated_at: updated_at)
+                  .where(id: id)
+                  .update(datetime: Time.at(datetime + repeat_time).strftime('%Y-%m-%d %H:%M:%S'),
+                          message: msg,
+                          user_id: user_id,
+                          channel: channel_id,
+                          repeat: repeat_time,
+                          created_at: created_at,
+                          updated_at: updated_at
+                  )
               end
             else
               TohsakaBot.db.transaction do
-                reminders.where(:id => id).delete
+                reminders.where(id: id).delete
               end
             end
           end

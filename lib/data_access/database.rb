@@ -79,5 +79,11 @@ module TohsakaBot
     end
   end
 
-  TohsakaBot.extend DatabaseAccess, TriggerPersistence
+  module MsgQueuePersistence
+    def queue_cache
+      @queue_cache ||= MsgQueueCache.new
+    end
+  end
+
+  TohsakaBot.extend DatabaseAccess, TriggerPersistence, MsgQueuePersistence
 end

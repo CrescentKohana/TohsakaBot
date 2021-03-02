@@ -11,7 +11,7 @@ module TohsakaBot
               description: 'Flip a coin.',
               usage: 'flip <integer>',
               bucket: :cf,
-              rate_limit_message: "Calm down! You are ratelimited for %time%s.") do |event, n|
+              rate_limit_message: 'Calm down! You are ratelimited for %time%s.') do |event, n|
 
         # Let's try to keep the CPU intact while we're at it.
         if n.to_i > 100000
@@ -23,28 +23,28 @@ module TohsakaBot
         role_id = CFG.lord_role.to_i
 
         # Probabilities for the coin toss (%).
-        coin = { "Tails:"  => 49, "Heads:" => 49, "The coin landed on its edge:" => 2 }
+        coin = { 'Tails:'  => 49, 'Heads:' => 49, 'The coin landed on its edge:' => 2 }
         coin_toss = Pickup.new(coin)
 
         if n.to_i > 1
           coins = coin_toss.pick(n.to_i)
           c = coins.uniq.map { |x| [x, coins.count(x)] }.to_h
-          event.<< c.keys[0].to_s + ' ' + c.values[0].to_s + ' ' + c.keys[1].to_s + ' ' + c.values[1].to_s + ' ' + c.keys[2].to_s + ' ' + c.values[2].to_s
+          event.<< "#{c.keys[0].to_s} #{c.values[0].to_s} #{c.keys[1].to_s} #{c.values[1].to_s} #{c.keys[2].to_s} #{c.values[2].to_s}"
         else
           picked = coin_toss.pick(1)
 
           if picked.chomp(':') == 'The coin landed on its edge'
-            TohsakaBot.give_temporary_role(event, role_id, user_id, 1, "Flipped a coin on its edge")
+            TohsakaBot.give_temporary_role(event, role_id, user_id, 1, 'Flipped a coin on its edge')
           end
           outcome = picked.chomp(':')
           case outcome
-          when "Tails"
-            url = "https://cdn.discordapp.com/attachments/351170098754486289/655844541844291584/tails.png"
-          when "Heads"
-            url = "https://cdn.discordapp.com/attachments/351170098754486289/655844590896807966/heads.png"
+          when 'Tails'
+            url = 'https://cdn.discordapp.com/attachments/351170098754486289/655844541844291584/tails.png'
+          when 'Heads'
+            url = 'https://cdn.discordapp.com/attachments/351170098754486289/655844590896807966/heads.png'
           else
-            url = ""
-            outcome = "| " + outcome
+            url = ''
+            outcome = "| #{outcome}"
           end
 
           event.channel.send_embed do |embed|

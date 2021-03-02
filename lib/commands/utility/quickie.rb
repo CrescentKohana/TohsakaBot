@@ -5,17 +5,14 @@ module TohsakaBot
       command(:quickie,
               aliases: %i[snapchat sc qm],
               description: 'A quick message which is deleted after n seconds.',
-              usage: 'quickie <1-10 (seconds, integer)> <message>',
-              min_args: 1) do |event, s, *msg|
+              usage: 'quickie <1-10 (seconds, integer, default 5)> <message>') do |event, s, *_msg|
 
-        case s.to_i
-        when 1..10
+        if (1..10).include? s.to_i
           sleep(s.to_i)
-          event.message.delete
         else
-          sleep(10)
-          event.message.delete
+          sleep(5)
         end
+        event.message.delete
       end
     end
   end

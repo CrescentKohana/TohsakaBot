@@ -12,7 +12,7 @@ module TohsakaBot
           if !msg.nil?
             answer = msg.join(' ').gsub("\t", '').sanitize_string
           else
-            event.respond "Message or an embbedded image is required."
+            event.respond 'Message or an embbedded image is required.'
             break
           end
         else
@@ -20,22 +20,22 @@ module TohsakaBot
           supported_file_types = %w[.jpg .png .gif jpeg]
           answer = event.message.attachments.first.url
           unless supported_file_types.include? answer[-4..-1]
-              event.respond "Only images allowed."
-              break
-          end
-        end
-
-        CSV::foreach("data/ask_rin_answers.csv", "r", :col_sep => "\t") do |row|
-          if answer.include?(row[1])
-            event.respond "Answer already exists. Aborting."
+            event.respond 'Only images allowed.'
             break
           end
         end
 
-        CSV.open("data/ask_rin_answers.csv", "a", :col_sep => "\t") do |csv|
+        CSV.foreach('data/ask_rin_answers.csv', 'r', col_sep: "\t") do |row|
+          if answer.include?(row[1])
+            event.respond 'Answer already exists. Aborting.'
+            break
+          end
+        end
+
+        CSV.open('data/ask_rin_answers.csv', 'a', col_sep: "\t") do |csv|
           csv << [answer, event.user.id]
         end
-        event.respond "Answer added."
+        event.respond 'Answer added.'
       end
     end
   end

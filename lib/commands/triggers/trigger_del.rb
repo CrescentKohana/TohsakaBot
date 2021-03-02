@@ -22,24 +22,24 @@ module TohsakaBot
         if trigger_control_permission
           TohsakaBot.db.transaction do
             ids.each do |id|
-              file = triggers.where(:id => id.to_i).single_record!
-              unless file.nil?
-                if triggers.where(:id => id.to_i).delete > 0
-                  deleted << id
-                  file_to_be_deleted << file[:file]
-                end
+              file = triggers.where(id: id.to_i).single_record!
+              next if file.nil?
+
+              if triggers.where(id: id.to_i).delete.positive?
+                deleted << id
+                file_to_be_deleted << file[:file]
               end
             end
           end
         else
           TohsakaBot.db.transaction do
             ids.each do |id|
-              file = triggers.where(:id => id.to_i).single_record!
-              unless file.nil?
-                if triggers.where(:user_id => user_id, :id => id.to_i).delete > 0
-                  deleted << id
-                  file_to_be_deleted << file[:file]
-                end
+              file = triggers.where(id: id.to_i).single_record!
+              next if file.nil?
+
+              if triggers.where(user_id: user_id, id: id.to_i).delete.positive?
+                deleted << id
+                file_to_be_deleted << file[:file]
               end
             end
           end
@@ -49,11 +49,11 @@ module TohsakaBot
           File.delete("data/triggers/#{f}") unless f.blank?
         end
 
-        #unless no_permission.empty?
-        #  event.<< "No permissions to delete these triggers. "# TODO: #{no_permission.join(', ')}
-        #end
+        # unless no_permission.empty?
+        #   event.<< "No permissions to delete these triggers. "# TODO: #{no_permission.join(', ')}
+        # end
 
-        if deleted.size > 0
+        if deleted.size.positive?
           TohsakaBot.trigger_data.reload_active
           event.<< "Trigger#{'s' if ids.length > 1} deleted: #{deleted.join(', ')}."
         else

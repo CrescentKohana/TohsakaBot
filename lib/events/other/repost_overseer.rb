@@ -14,7 +14,7 @@ module TohsakaBot
           event.channel.send_embed do |embed|
             embed.colour = 0x36393F
             # embed.url = ""
-            embed.add_field(name: "**WANHA**", value: "[#{user_obj.username}](https://discord.com/channels/#{msg_uri})")
+            embed.add_field(name: '**WANHA**', value: "[#{user_obj.username}](https://discord.com/channels/#{msg_uri})")
             embed.timestamp = time
           end
         end

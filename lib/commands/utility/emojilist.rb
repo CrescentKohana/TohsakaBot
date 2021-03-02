@@ -19,7 +19,7 @@ module TohsakaBot
           i += 1
         end
 
-        event.<< '```' + emoji_names.join(' ') + '```' # .join(' ')
+        event.<< "```#{emoji_names.join(' ')}```"
       end
     end
   end

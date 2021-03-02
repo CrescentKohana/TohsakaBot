@@ -11,7 +11,7 @@ module TohsakaBot
               enabled_in_pm: false) do |event, *msg|
 
         if TohsakaBot.user_limit_reached?(event.author.id, 1000, :triggers)
-          event.respond "The maximum amount of feature requests a user can have is 1000. "
+          event.respond 'The maximum amount of feature requests a user can have is 1000. '
           break
         end
 
@@ -24,10 +24,10 @@ module TohsakaBot
         db.transaction do
           i += 1 while db.root?(i)
           db[i] = {
-            "tags" => "new",
-            "user" => discord_uid,
-            "time" => time,
-            "request" => request
+            'tags' => 'new',
+            'user' => discord_uid,
+            'time' => time,
+            'request' => request
           }
           db.commit
         end

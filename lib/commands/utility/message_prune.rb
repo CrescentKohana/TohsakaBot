@@ -11,7 +11,7 @@ module TohsakaBot
           event.channel.prune(amount.to_i)
           break
         else
-          event.respond("The amount of messages has to be between 2 and 100.")
+          event.respond('The amount of messages has to be between 2 and 100.')
         end
       end
     end

@@ -11,21 +11,21 @@ module TohsakaBot
               enabled_in_pm: false) do |event, *msg|
 
         if TohsakaBot.user_limit_reached?(event.author.id, CFG.trigger_limit, :triggers)
-          event.respond "The the maximum amount of triggers a user can have is #{CFG.trigger_limit}. " +
-                            "They can be removed using `deltrigger <id(s separated by space)>`."
+          event.respond "The the maximum amount of triggers a user can have is #{CFG.trigger_limit}. "\
+                        'They can be removed using `deltrigger <id(s separated by space)>`.'
           break
         end
 
         extra_help = "If a file is attached to the command, that'll be used instead of reply. "\
-                     "If a phrase and no reply is given, "\
-                     "the bot will ask for the reply (text|file) after the command. "\
-                     "Example: `triggeradd -p msg from which the bot triggers -m exact` with an image embedded as a reply."
+                     'If a phrase and no reply is given, '\
+                     'the bot will ask for the reply (text|file) after the command. '\
+                     'Example: `triggeradd -p msg from which the bot triggers -m exact` with an image embedded as a reply.'
 
         options = TohsakaBot.command_parser(
-            event, msg, 'Usage: triggeradd [options]', extra_help,
-            [:phrase, 'Message from which the bot triggers.', :type => :strings],
-            [:reply, 'Message which the bot sends.', :type => :strings],
-            [:mode, 'A(ny) <anywhere in the msg> || e(xact) <has to be an exact match> || r(egex)', :type => :string]
+          event, msg, 'Usage: triggeradd [options]', extra_help,
+          [:phrase, 'Message from which the bot triggers.', {type: :strings}],
+          [:reply, 'Message which the bot sends.', {type: :strings}],
+          [:mode, 'A(ny) <anywhere in the msg> || e(xact) <has to be an exact match> || r(egex)', {type: :string}]
         )
         break if options.nil?
 

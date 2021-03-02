@@ -1,17 +1,15 @@
 module TohsakaBot
   module DiscordHelper
     # Discord file upload limits. Bot cannot upload anything larger than 8388119 bytes.
-    UPLOAD_LIMIT = 8388119
-    UPLOAD_LIMIT_NITRO = 52428308
+    UPLOAD_LIMIT = 8_388_119
+    UPLOAD_LIMIT_NITRO = 52_428_308
 
     attr_accessor :typing_channels
 
     @typing_channels
 
     def manage_typing(channel, duration)
-      if @typing_channels.nil?
-        @typing_channels = Hash.new
-      end
+      @typing_channels = {} if @typing_channels.nil?
 
       if @typing_channels[channel]
         @typing_channels.delete(channel)
@@ -40,9 +38,10 @@ module TohsakaBot
 
     def expire_msg(event, bot_msgs, user_msg = nil, duration = 120)
       return if event.pm?
+
       sleep(duration)
-      bot_msgs.each {|m| m.delete}
-      user_msg.delete unless user_msg.nil?
+      bot_msgs.each(&:delete)
+      user_msg&.delete
     end
 
     def give_temporary_role(event, role_id, user_id, duration, reason)
@@ -83,11 +82,11 @@ module TohsakaBot
       db_store = YAML::Store.new('data/temporary_roles.yml')
 
       db_read.each do |k, v|
-        if role_id == v['role'].to_i && user_id == v['user'].to_i
-          db_store.transaction do
-            db_store.delete(k)
-            db_store.commit
-          end
+        next unless role_id == v['role'].to_i && user_id == v['user'].to_i
+
+        db_store.transaction do
+          db_store.delete(k)
+          db_store.commit
         end
       end
     end
@@ -98,9 +97,7 @@ module TohsakaBot
 
       user_servers(discord_uid).each do |s|
         s.text_channels.each do |c|
-          if user.on(s).permission?(:send_messages, c)
-            possible_channels << c
-          end
+          possible_channels << c if user.on(s).permission?(:send_messages, c)
         end
       end
 
@@ -113,7 +110,7 @@ module TohsakaBot
     def user_servers(discord_uid)
       servers = []
 
-      BOT.servers.values.each do |s|
+      BOT.servers.each_value do |s|
         s.non_bot_members.each do |m|
           if m.id.to_i == discord_uid.to_i
             servers << s

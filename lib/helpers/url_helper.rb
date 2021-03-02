@@ -37,42 +37,54 @@ module TohsakaBot
 
       query = parsed.query
       return nil if query.nil? && path.nil?
-      parameters = query.nil? ?  nil : CGI.parse(query)
+
+      parameters = query.nil? ? nil : CGI.parse(query)
 
       case domain
-      when "youtube.com"
+      when 'youtube.com'
         return nil if parameters.nil?
+
         youtube_id = parameters['v']
         return nil if youtube_id.nil?
-        type = "youtube"
+
+        type = 'youtube'
         url_result = parameters['v'][0]
-      when "youtu.be"
+      when 'youtu.be'
         return nil if path.nil?
-        youtube_id = path.match(/\/(\S{11})(\/|)/i).captures
+
+        youtube_id = path.match(%r{/(\S{11})(/|)}i).captures
         return nil if youtube_id.nil?
-        type = "youtube"
+
+        type = 'youtube'
         url_result = youtube_id[0]
-      when "twitter.com"
+      when 'twitter.com'
         return nil if path.nil?
-        twitter_id = path.match(/\/\S*\/status\/(\d*)/i).captures
+
+        twitter_id = path.match(%r{/\S*/status/(\d*)}i).captures
         return nil if twitter_id.nil?
-        type = "twitter"
+
+        type = 'twitter'
         url_result = twitter_id[0]
-      when "reddit.com", "redd.it"
+      when 'reddit.com', 'redd.it'
         return nil if path.nil?
-        if subdomain == 'i'
-          reddit_id = path.match(/\/(\w{13}).\S*/i).captures
-        else
-          reddit_id = path.match(/\/r\/\S*\/comments\/(\S{6})(\/\S*|)/i).captures
-        end
+
+        reddit_id = if subdomain == 'i'
+                      path.match(%r{/(\w{13}).\S*}i).captures 
+                    else
+                      path.match(%r{/r/\S*/comments/(\S{6})(/\S*|)}i).captures
+                    end
+
         return nil if reddit_id.nil?
-        type = "reddit"
+
+        type = 'reddit'
         url_result = reddit_id[0]
-      when "twitch.tv"
-        return nil unless subdomain == "clips"
-        twitch_clips_id = path.match(/\/(.*)/i).captures
+      when 'twitch.tv'
+        return nil unless subdomain == 'clips'
+
+        twitch_clips_id = path.match(%r{/(.*)}i).captures
         return nil if twitch_clips_id.nil?
-        type = "twitch"
+
+        type = 'twitch'
         url_result = twitch_clips_id[0]
       else
         # Just the URL, no parsing
@@ -87,17 +99,18 @@ module TohsakaBot
       urls = URI.extract(strip_markdown(event.message.content))
       db = YAML.load_file('data/repost.yml')
 
-      if !urls.nil? && db
-        urls.each do |url|
-          type, url_result = TohsakaBot.url_parse(url)
-          next if type.nil?
-          db.each do |k, v|
-            next if v['user'].to_i == event.author.id.to_i
-            return v['time'].to_i, v['user'].to_i, v['msg_uri'] if v['url'] == url_result && v['type'] == type
-          end
+      return unless !urls.nil? && db
+
+      urls.each do |url|
+        type, url_result = TohsakaBot.url_parse(url)
+        next if type.nil?
+
+        db.each do |_k, v|
+          next if v['user'].to_i == event.author.id.to_i
+          return v['time'].to_i, v['user'].to_i, v['msg_uri'] if v['url'] == url_result && v['type'] == type
         end
-        nil
       end
+      nil
     end
   end
 

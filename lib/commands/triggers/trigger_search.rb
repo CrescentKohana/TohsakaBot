@@ -11,16 +11,16 @@ module TohsakaBot
               enabled_in_pm: false) do |event, *msg|
 
         options = TohsakaBot.command_parser(
-            event, msg, 'Usage: triggersearch [options]', '',
-            [:id, 'ID of the trigger. Ignores other options when used.', :type => :integer],
-            [:author, 'Creator of the trigger. Format: Discord ID or mention', :type => :string],
-            [:phrase, 'Phrase from which the bot triggers.', :type => :strings],
-            [:reply, 'Reply to the phrase.', :type => :strings]
+          event, msg, 'Usage: triggersearch [options]', '',
+          [:id, 'ID of the trigger. Ignores other options when used.', { type: :integer }],
+          [:author, 'Creator of the trigger. Format: Discord ID or mention', { type: :string }],
+          [:phrase, 'Phrase from which the bot triggers.', { type: :strings }],
+          [:reply, 'Reply to the phrase.', { type: :strings }]
         )
         break if options.nil?
 
         triggers = TohsakaBot.db[:triggers]
-        result = triggers.where(:server_id => event.server.id.to_i).order(:id).map{ |t| t.values}.select do |t|
+        result = triggers.where(server_id: event.server.id.to_i).order(:id).map(&:values).select do |t|
           id = t[0].to_i
           phrase = t[1].to_s
           reply = t[2].to_s
@@ -29,13 +29,13 @@ module TohsakaBot
 
           if options.id.nil?
             # If no author specified, it's ignored.
-            if options.author.nil?
-              opt_author = discord_uid
-            elsif !Integer(options.author, exception: false)
-              opt_author = options.author.gsub(/[^\d]/, '').to_i
-            else
-              opt_author = options.author.to_i
-            end
+            opt_author = if options.author.nil?
+                           discord_uid
+                         elsif !Integer(options.author, exception: false) 
+                           options.author.gsub(/[^\d]/, '').to_i
+                         else
+                           options.author.to_i
+                         end
 
             # Tries to match with the given string as is, if there were no proper arguments.
             if options.author.nil? && options.phrase.nil? && options.reply.nil?
@@ -46,7 +46,7 @@ module TohsakaBot
 
               # if User matches OR Phrase is included OR Reply OR File is included
               discord_uid == opt_author &&
-                  (phrase.include?(opt_phrase) || reply.include?(opt_reply) || file.include?(opt_reply))
+                (phrase.include?(opt_phrase) || reply.include?(opt_reply) || file.include?(opt_reply))
             else
               opt_phrase = options.phrase.nil? ? nil : options.phrase.join(' ')
               opt_reply = options.reply.nil? ? nil : options.reply.join(' ')
@@ -55,7 +55,7 @@ module TohsakaBot
 
               # if User matches AND Phrase is included AND (Reply OR File is included)
               discord_uid == opt_author &&
-                  phrase.include?(opt_phrase) && (reply.include?(opt_reply) || file.include?(opt_reply))
+                phrase.include?(opt_phrase) && (reply.include?(opt_reply) || file.include?(opt_reply))
             end
           else
             options.id == id
@@ -63,32 +63,32 @@ module TohsakaBot
         end
 
         result_amount = 0
-        header = "`Modes: exact (0), any (1) and regex (2). "
+        header = '`Modes: exact (0), any (1) and regex (2). '
         output = "`  ID | M & % | TRIGGER                           | MSG/FILE`\n"
         result.each do |t|
           id = t[0]
           phrase = t[1]
           reply = t[2]
           file = t[3]
-          chance = t[6].to_i == 0 ? CFG.default_trigger_chance.to_i : t[6].to_i
+          chance = t[6].to_i.zero? ? CFG.default_trigger_chance.to_i : t[6].to_i
           mode = t[7].to_i
-          chance *= 3 if mode == 0
+          chance *= 3 if mode.zero?
           chance = 100 if chance > 100
 
           if reply.nil? || reply.empty?
-            output << "`#{sprintf("%4s", id)} | #{sprintf("%-5s", mode.to_s + " " + chance.to_s)} | #{sprintf("%-33s", phrase.to_s.gsub("\n", '')[0..30])} | #{sprintf("%-21s", file[0..20])}`\n"
+            output << "`#{format('%4s', id)} | #{format('%-5s', "#{mode.to_s} #{chance.to_s}")} | #{format('%-33s', phrase.to_s.gsub("\n", '')[0..30])} | #{format('%-21s', file[0..20])}`\n"
           else
-            output << "`#{sprintf("%4s", id)} | #{sprintf("%-5s", mode.to_s + " " + chance.to_s)} | #{sprintf("%-33s", phrase.to_s.gsub("\n", '')[0..30])} | #{sprintf("%-21s", reply.gsub("\n", '')[0..20])}`\n"
+            output << "`#{format('%4s', id)} | #{format('%-5s', "#{mode.to_s} #{chance.to_s}")} | #{format('%-33s', phrase.to_s.gsub("\n", '')[0..30])} | #{format('%-21s', reply.gsub("\n", '')[0..20])}`\n"
           end
           result_amount += 1
         end
 
         where = result_amount > 5 ? event.author.pm : event.channel
 
-        if result_amount > 0
+        if result_amount.positive?
           header << "#{result_amount} trigger#{'s' if result.length > 1} found.`\n"
           header << output
-          where.split_send "#{header}"
+          where.split_send header.to_s
         else
           event.<< 'No triggers found.'
         end

@@ -10,8 +10,8 @@ module TohsakaBot
 
         result_amount = 0
         header = "`  ID | EXPIRES    | ROLE: USER                                       `\n"
-        output = ""
-        roles = YAML.load(File.read('data/temporary_roles.yml'))
+        output = ''
+        roles = YAML.safe_load(File.read('data/temporary_roles.yml'))
 
         time_now = Time.now.to_i
 
@@ -19,21 +19,21 @@ module TohsakaBot
           sorted = roles.sort
           sorted.each do |id, r|
 
-            expires =  r['time'].to_i + (r['duration'] * 24 * 60 * 60)
+            expires = r['time'].to_i + (r['duration'] * 24 * 60 * 60)
             role_name = BOT.server(r['server'].to_i).role(r['role'].to_i).name
 
-            if time_now < expires || filter == 'server' || filter == 'all'
-              result_amount += 1
-              datetime = Time.at(expires).to_s.to_s.split(' ')[0]
-              username = BOT.member(event.server, r['user']).display_name
-              output << "`#{sprintf("%4s", id)} | #{datetime} | #{role_name}: #{sprintf("%-32s", username)}`\n`\t\tREASON:` #{r['reason']}\n"
-            end
+            next unless time_now < expires || filter == 'server' || filter == 'all'
+
+            result_amount += 1
+            datetime = Time.at(expires).to_s.to_s.split(' ')[0]
+            username = BOT.member(event.server, r['user']).display_name
+            output << "`#{format('%4s', id)} | #{datetime} | #{role_name}: #{format('%-32s', username)}`\n`\t\tREASON:` #{r['reason']}\n"
           end
         end
 
         where = result_amount > 5 ? event.author.pm : event.channel
         msgs = []
-        if result_amount > 0
+        if result_amount.positive?
           header << output
           msgs = TohsakaBot.send_multiple_msgs(Discordrb.split_message(header), where)
         else

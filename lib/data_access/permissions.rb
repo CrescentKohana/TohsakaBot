@@ -39,6 +39,7 @@ module TohsakaBot
       end
 
       return discord_user_ids unless discord_user_ids.empty?
+
       nil
     end
 
@@ -50,6 +51,7 @@ module TohsakaBot
     def permission?(discord_id, level)
       users_with_permissions = TohsakaBot.get_users_at_perm_level(level)
       return false if users_with_permissions.nil?
+
       users_with_permissions.include?(discord_id)
     end
   end

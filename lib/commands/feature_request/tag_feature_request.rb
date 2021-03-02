@@ -15,8 +15,8 @@ module TohsakaBot
         if requests[id.to_i].nil?
           event.<< "No feature request with an ID of `#{id}` found."
         else
-          requests[id.to_i]["tags"] = tags.join(' ')
-          File.open('data/feature_requests.yml','w') do |h|
+          requests[id.to_i]['tags'] = tags.join(' ')
+          File.open('data/feature_requests.yml', 'w') do |h|
             h.write requests.to_yaml
           end
           event.<< "Feature request `#{id}` updated!"

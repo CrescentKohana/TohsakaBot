@@ -16,7 +16,7 @@ module TohsakaBot
           user_id = TohsakaBot.get_user_id(event.author.id.to_i).to_i
           parsed_reminders = reminders.where(:user_id => user_id).order(:datetime)
         rescue
-          #
+          # Ignored
         end
 
         output = "```  ID | WHEN                      | MSG (Repeat)\n===================================================\n"
@@ -27,25 +27,25 @@ module TohsakaBot
           msg = r[:message]
           repeat_time = r[:repeat].to_i
 
-          repeat_time = if repeat_time == 0
+          repeat_time = if repeat_time.zero?
                           ''
                         else
                           " (#{distance_of_time_in_words(repeat_time)})"
                         end
 
-          if msg.nil?
-            output << "#{sprintf("%4s", id)} | #{datetime} | No message specified#{repeat_time}\n"
-          else
-            output << "#{sprintf("%4s", id)} | #{datetime} | #{msg}#{repeat_time}\n"
-          end
+          output << if msg.nil?
+                      "#{format('%4s', id)} | #{datetime} | No message specified#{repeat_time}\n"
+                    else
+                      "#{format('%4s', id)} | #{datetime} | #{msg}#{repeat_time}\n"
+                    end
         end
 
         msgs = []
-        if parsed_reminders.any?
-          msgs << event.respond("#{output}```")
-        else
-          msgs << event.respond('No reminders found.')
-        end
+        msgs << if parsed_reminders.any?
+                  event.respond("#{output}```")
+                else
+                  event.respond('No reminders found.')
+                end
 
         TohsakaBot.expire_msg(event.channel, msgs, event.message)
         break

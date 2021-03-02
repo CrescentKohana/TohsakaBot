@@ -11,23 +11,23 @@ module TohsakaBot
         result_amount = 0
         triggers = TohsakaBot.db[:triggers]
         used_id = TohsakaBot.get_user_id(event.author.id)
-        if all == 'all' && !event.channel.pm?
-          sorted = triggers.where(:server_id => event.server.id.to_i).order(:id)
-        else
-          sorted = triggers.where(:user_id => used_id).order(:id)
-        end
+        sorted = if all == 'all' && !event.channel.pm?
+                   triggers.where(server_id: event.server.id.to_i).order(:id)
+                 else
+                   triggers.where(user_id: used_id).order(:id)
+                 end
 
-        header = "`Modes: exact (0), any (1) and regex (2). "
+        header = '`Modes: exact (0), any (1) and regex (2). '
         output = "`  ID | M & % | TRIGGER                           | MSG/FILE`\n"
         sorted.each do |t|
-          chance = t[:chance].to_i == 0 ? CFG.default_trigger_chance.to_i : t[:chance].to_i
-          chance *= 3 if t[:mode].to_i == 0
+          chance = t[:chance].to_i.zero? ? CFG.default_trigger_chance.to_i : t[:chance].to_i
+          chance *= 3 if t[:mode].to_i.zero?
           chance = 100 if chance > 100
 
-          if t[:reply].nil? || t[:reply].length == 0
-            output << "`#{sprintf("%4s", t[:id])} | #{sprintf("%-5s", t[:mode].to_s + " " + chance.to_s)} | #{sprintf("%-33s", t[:phrase].to_s.gsub("\n", '')[0..30])} | #{sprintf("%-21s", t[:file][0..20])}`\n"
+          if t[:reply].nil? || t[:reply].length.zero?
+            output << "`#{format('%4s', t[:id])} | #{format('%-5s', "#{t[:mode]} #{chance}")} | #{format('%-33s', t[:phrase].to_s.gsub("\n", '')[0..30])} | #{format('%-21s', t[:file][0..20])}`\n"
           else
-            output << "`#{sprintf("%4s", t[:id])} | #{sprintf("%-5s", t[:mode].to_s + " " + chance.to_s)} | #{sprintf("%-33s", t[:phrase].to_s.gsub("\n", '')[0..30])} | #{sprintf("%-21s", t[:reply].gsub("\n", '')[0..20])}`\n"
+            output << "`#{format('%4s', t[:id])} | #{format('%-5s', "#{t[:mode]} #{chance}")} | #{format('%-33s', t[:phrase].to_s.gsub("\n", '')[0..30])} | #{format('%-21s', t[:reply].gsub("\n", '')[0..20])}`\n"
           end
           result_amount += 1
         end
@@ -35,7 +35,7 @@ module TohsakaBot
         where = result_amount > 5 ? event.author.pm : event.channel
 
         msgs = []
-        if result_amount > 0
+        if result_amount.positive?
           header << "#{result_amount} trigger#{'s' if result_amount > 1} found.`\n"
           header << output
           msgs = TohsakaBot.send_multiple_msgs(Discordrb.split_message(header), where)

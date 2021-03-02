@@ -8,25 +8,26 @@ module TohsakaBot
               usage: 'convertpins <Newest|oldest (starting point)> <channel_id (if empty, current channel will be used)> ',
               permission_level: 1000) do |event, order, channel_id|
 
-        if channel_id.nil?
-          channel = event.channel
-        else
-          channel = BOT.channel(channel_id.to_i)
-        end
+        channel = if channel_id.nil?
+                    event.channel
+                  else
+                    BOT.channel(channel_id.to_i)
+                  end
 
         pinned_messages = channel.pins
-        pinned_messages.reverse! if !order.nil? && order == "oldest"
+        pinned_messages.reverse! if !order.nil? && order == 'oldest'
 
-        msg = event.respond("Converting...")
+        msg = event.respond('Converting...')
 
         pinned_messages.each do |m|
-          next unless TohsakaBot.db[:highlights].where(:msg_id => m.id.to_i).empty?
+          next unless TohsakaBot.db[:highlights].where(msg_id: m.id.to_i).empty?
+
           highlight_core = HighlightCore.new(m, channel.server.id.to_i, channel.id.to_i)
           highlight_core.store_highlight(highlight_core.send_highlight)
           sleep(2)
         end
 
-        msg.edit("Done!")
+        msg.edit('Done!')
         break
       end
     end
