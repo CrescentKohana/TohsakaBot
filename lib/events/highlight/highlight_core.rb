@@ -13,7 +13,7 @@ module TohsakaBot
       @db = TohsakaBot.db[:highlights]
 
       @message = message
-      @attachments = message.attachments.map { |a| a.url }.join("\t")
+      @attachments = message.attachments.map(&:url).join("\t")
 
       @server_id = server_id.to_i
       @channel_id = channel_id.to_i
@@ -30,17 +30,18 @@ module TohsakaBot
       # true if authorized
       is_authorized = reacted_users.to_set.intersect?(authorized_users.to_set)
 
-      return false unless @db.where(:msg_id => @message.id, :deleted => false).empty?
-      return false if !@db.where(:msg_id => @message.id, :deleted => true).empty? && !is_authorized
+      return false unless @db.where(msg_id: @message.id, deleted: false).empty?
+      return false if !@db.where(msg_id: @message.id, deleted: true).empty? && !is_authorized
+
       reacted_users.length >= 3 || is_authorized
     end
 
     def serialize_attachments(attachments)
-      attachments.join"\t"
+      attachments.join "\t"
     end
 
     def store_highlight(highlight_msg_id)
-      @db.where(:highlight_msg_id => highlight_msg_id).delete
+      @db.where(highlight_msg_id: highlight_msg_id).delete
 
       TohsakaBot.db.transaction do
         @db.insert(content: @message.content,
@@ -61,20 +62,20 @@ module TohsakaBot
       db = TohsakaBot.db[:highlights]
       id = id.to_i
       if force
-        db.where(:highlight_msg_id => id).delete
+        db.where(highlight_msg_id: id).delete
       else
-        highlight = db.where(:highlight_msg_id => id).first
+        highlight = db.where(highlight_msg_id: id).first
         highlight[:deleted] = true
-        db.where(:highlight_msg_id => id).update(highlight)
+        db.where(highlight_msg_id: id).update(highlight)
       end
     end
 
     def send_highlight
       # If the user id deleted: it's Discordrb::User, not Discordrb::Member
-      author_name = (@message.author.is_a? Discordrb::User) ? @message.author.username : @message.author.display_name
+      author_name = @message.author.is_a? Discordrb::User ? @message.author.username : @message.author.display_name
 
       content = @message.content
-      attachment_names = @message.attachments.map { |a| a.filename }.join("\n")
+      attachment_names = @message.attachments.map(&:filename).join("\n")
 
       is_image = false
 
@@ -98,10 +99,10 @@ module TohsakaBot
 
         embed.image = Discordrb::Webhooks::EmbedImage.new(url: main_attachment.url) if is_image
 
-        embed.add_field(name: "Message", value: content.truncate(1024)) unless content.blank?
-        embed.add_field(name: "Files", value: attachment_names) if @message.attachments.length > 1 || (@message.attachments.length == 1 && !is_image)
+        embed.add_field(name: 'Message', value: content.truncate(1024)) unless content.blank?
+        embed.add_field(name: 'Files', value: attachment_names) if @message.attachments.length > 1 || (@message.attachments.length == 1 && !is_image)
         embed.add_field(
-          name: "→",
+          name: '→',
           value: "[Link to original](https://discord.com/channels/#{@server_id}/#{@channel_id}/#{@message.id}) in <##{@channel_id}>"
         )
 
@@ -115,13 +116,11 @@ module TohsakaBot
     end
 
     def temp_download_file(attachment)
-      if /https:\/\/cdn.discordapp.com.*/.match?(attachment.url)
+      return unless %r{https://cdn.discordapp.com.*}.match?(attachment.url)
 
-        filename = attachment.filename
-        IO.copy_stream(URI.open(attachment.url), "tmp/#{filename}")
-
-        filename
-      end
+      filename = attachment.filename
+      IO.copy_stream(URI.open(attachment.url), "tmp/#{filename}")
+      filename
     end
   end
 end

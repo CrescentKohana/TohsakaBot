@@ -14,16 +14,17 @@ module TohsakaBot
           rolls += rolls / 10
           currency << 'SQ'
         else
-          if currency[1] == 'SQ'
+          case currency[1]
+          when 'SQ'
             rolls = (currency[0].to_i / 3).to_i
-          elsif currency[1] == 'USD'
+          when 'USD'
             rolls = (currency[0].to_i * ((168.0 / 79.99) / 3)).to_i
-          elsif currency[1] == 'JPY'
-            rolls = (currency[0].to_i * ((168.0 / 10000) / 3)).to_i
-          elsif currency[1] == 'R'
+          when 'JPY'
+            rolls = (currency[0].to_i * ((168.0 / 10_000) / 3)).to_i
+          when 'R'
             rolls = currency[0].to_i
           else
-            event.<< "Accepted currency suffixes: SQ, JPY, USD or no suffix."
+            event.<< 'Accepted currency suffixes: SQ, JPY, USD or no suffix.'
             break
           end
         end
@@ -31,14 +32,14 @@ module TohsakaBot
         # Chances (source: FGO JP)
         # se: servant, ce: Craft Essence, ru: Rateup
         ch = {
-            :se_ssr_ru => 0.008, :se_sr_ru => 0.015,
-            :ce_ssr_ru => 0.028, :ce_sr_ru => 0.04,
-            :se_ssr => 0.01, :se_sr => 0.03
+          se_ssr_ru: 0.008, se_sr_ru: 0.015,
+          ce_ssr_ru: 0.028, ce_sr_ru: 0.04,
+          se_ssr: 0.01, se_sr: 0.03
         }
 
         ch_verbose = {
-            :se_r_ru => 0.04, :ce_r_ru => 0.08, :se_r => 0.4,
-            :ce_ssr => 0.04, :ce_sr => 0.12, :ce_r => 0.40
+          se_r_ru: 0.04, ce_r_ru: 0.08, se_r: 0.4,
+          ce_ssr: 0.04, ce_sr: 0.12, ce_r: 0.40
         }
 
         def self.summon_prob(rolls, chance)
@@ -49,11 +50,11 @@ module TohsakaBot
           #
           # 1-((1-0.01)^877) ≈ 0.999851 (SSR)
           # 877 * 0.01 = 8.77
-          return "≈ 99.99" if (rolls * chance) > 8.77 || rolls >= 1097
+          return '≈ 99.99' if (rolls * chance) > 8.77 || rolls >= 1097
 
           probability = 0
           (1..rolls).each { |i| probability += TohsakaBot.calc_probability(rolls, i, chance).to_f }
-          "≈ " + ('%.2f' % (probability * 100).round(2)).to_s
+          "≈ #{('%.2f' % (probability * 100).round(2))}"
         end
 
         # Calculate everything to a hash 'c'
@@ -63,15 +64,15 @@ module TohsakaBot
         }
 
         event.send_embed do |e|
-          e.title = "Fate/Grand Order 召喚"
+          e.title = 'Fate/Grand Order 召喚'
           e.colour = 0x032046
-          e.description = "Verbose" if verbose
+          e.description = 'Verbose' if verbose
           e.footer = Discordrb::Webhooks::EmbedFooter.new(
-              text: "#{currency[0]}#{currency[1]} | #{rolls} roll#{"s" if rolls > 1} | #{time.real.round(4)}s",
-              icon_url: "https://vignette.wikia.nocookie.net/fategrandorder/images/f/ff/Saintquartz.png/revision/latest/"
+            text: "#{currency[0]}#{currency[1]} | #{rolls} roll#{"s" if rolls > 1} | #{time.real.round(4)}s",
+            icon_url: 'https://vignette.wikia.nocookie.net/fategrandorder/images/f/ff/Saintquartz.png/revision/latest/'
           )
 
-          e.add_field(name: "Chances (^rateup)",
+          e.add_field(name: 'Chances (^rateup)',
                       value:
                           "```SSR^ #{ch[:se_ssr_ru]}%\n"\
                           "SSR  #{ch[:se_ssr]}%\n"\
@@ -79,7 +80,7 @@ module TohsakaBot
                           "SR   #{ch[:se_sr]}%\n"\
                           "SSR^ #{ch[:ce_ssr_ru]}% (CE)```") unless verbose
 
-          e.add_field(name: "Servant Chances (^rateup)",
+          e.add_field(name: 'Servant Chances (^rateup)',
                       value:
                           "```SSR^ #{ch[:se_ssr_ru]}%\n"\
                           "SSR  #{ch[:se_ssr]}%\n"\
@@ -88,7 +89,7 @@ module TohsakaBot
                           "R^   #{ch_verbose[:se_r_ru]}%\n"\
                           "R    #{ch_verbose[:se_r]}%```") if verbose
 
-          e.add_field(name: "CE Chances (^rateup)",
+          e.add_field(name: 'CE Chances (^rateup)',
                       value:
                           "```SSR^ #{ch[:ce_ssr_ru]}%\n"\
                           "SSR  #{ch_verbose[:ce_ssr]}%\n"\

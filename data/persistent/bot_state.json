@@ -5,7 +5,9 @@
     "URLCleaner",
     "TempRoleNoMore",
     "LoadAlko",
-    "TypingChannels"
+    "TypingChannels",
+    "MsgQueue",
+    "DailyNeko"
   ],
   "Commands":[
     "Help",
@@ -21,7 +23,6 @@
     "RoleAdd",
     "RoleDel",
     "ListRoles",
-    "Summon",
     "ReminderAdd",
     "Tester",
     "NowPlaying",
@@ -56,7 +57,8 @@
     "MessagePrune",
     "ConvertPins",
     "Typing",
-    "EditPermissions"
+    "EditPermissions",
+    "Neko"
   ],
   "Events":[
     "TriggerEvent",

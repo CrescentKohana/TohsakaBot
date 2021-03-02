@@ -10,8 +10,7 @@ class String
   end
 
   # Prevents escaping strings in bot commands
-  # and such with '`' (code tag) characters by replacing them with '´'.
-  # Idea by roni.
+  # and such with '`' (code tag) characters by escaping them
   #
   # @return [String] sanitized message
   def sanitize_string

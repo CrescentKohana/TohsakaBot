@@ -12,45 +12,45 @@ module TohsakaBot
         # Posts the trigger at 100% probability if bot is also mentioned in the message.
         sure_trigger = false
         mentions = event.message.mentions
-        mentions.each { |user| if user.current_bot? then sure_trigger = true end }
+        mentions.each { |user| sure_trigger = true if user.current_bot? }
 
         if sure_trigger
           rate_limiter.bucket :sure_triggers, delay: 60
           sure_trigger = false if rate_limiter.rate_limited?(:sure_triggers, event.author)
         end
 
-        server_triggers = TohsakaBot.trigger_data.triggers.where(:server_id => event.server.id.to_i)
+        server_triggers = TohsakaBot.trigger_data.triggers.where(server_id: event.server.id.to_i)
         matching_triggers = []
 
         server_triggers.each do |t|
           phrase = t[:phrase]
           mode = t[:mode].to_i
-          msg = event.content.gsub("<@!#{AUTH.cli_id}>", "").strip
+          msg = event.content.gsub("<@!#{AUTH.cli_id}>", '').strip
 
-          if mode == 0
+          if mode.zero?
             phrase = /^#{phrase}$/i
             regex = Regexp.new phrase
           elsif mode == 1
             phrase = /.*\b#{phrase}\b.*/i
             regex = Regexp.new phrase
           else
-            if phrase.match(/\/.*\/.*/)
-              regex = phrase.to_regexp
-            else
-              regex = "/#{phrase}/".to_regexp
-            end
+            regex = if phrase.match(%r{/.*/.*})
+                      phrase.to_regexp
+                    else 
+                      "/#{phrase}/".to_regexp
+                    end
           end
 
           next if regex.nil?
 
-          if regex.match?(msg)
-            if mode == 0
-              matching_triggers.clear
-              matching_triggers << t
-              break
-            end
+          next unless regex.match?(msg)
+
+          if mode.zero?
+            matching_triggers.clear
             matching_triggers << t
+            break
           end
+          matching_triggers << t
         end
 
         # No matching triggers
@@ -63,12 +63,12 @@ module TohsakaBot
         else
           chance = chosen_trigger[:chance].to_i
           default_chance = CFG.default_trigger_chance.to_i
-          c = chance == 0 ? default_chance : chance
+          c = chance.zero? ? default_chance : chance
 
           # Three times the default chance if Exact mode.
-          c *= 3 if chance == default_chance && chosen_trigger[:mode] == 0
+          c *= 3 if chance == default_chance && (chosen_trigger[:mode]).zero?
 
-          pickup = Pickup.new({true => c, false => 100 - c})
+          pickup = Pickup.new({ true => c, false => 100 - c })
           picked = pickup.pick(1)
         end
 
@@ -76,22 +76,20 @@ module TohsakaBot
         next unless picked
 
         file = chosen_trigger[:file]
-        if file.to_s.empty?
-          reply = event.respond chosen_trigger[:reply]
-        else
-          reply = event.channel.send_file(File.open("data/triggers/#{file}"))
-        end
+        reply = if file.to_s.empty?
+                  event.respond chosen_trigger[:reply]
+                else
+                  event.channel.send_file(File.open("data/triggers/#{file}"))
+                end
 
         # A way to remove the trigger response.
         # Only the one, whose message got triggered, is able to delete the response.
         # Threading is needed here as otherwise the await! would block any other triggers.
         Thread.new do
           response = event.message.await!(timeout: 10)
-          if response
-            if CFG.del_trigger.include? response.content
-              reply.delete
-              response.message.delete
-            end
+          if response && (CFG.del_trigger.include? response.content)
+            reply.delete
+            response.message.delete
           end
         end
       end

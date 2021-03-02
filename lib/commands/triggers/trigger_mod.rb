@@ -13,49 +13,49 @@ module TohsakaBot
         discord_uid = event.author.id.to_i
         trigger_control_permisson = TohsakaBot.permission?(discord_uid, 500)
 
-        extra_help = "Example: `triggermod -i 420 -p new trigger -r new response -c 100`"
+        extra_help = 'Example: `triggermod -i 420 -p new trigger -r new response -c 100`'
 
         options = TohsakaBot.command_parser(
-            event, msg, 'Usage: triggermod [-i id] [-p triggering phrase] [-r new reply] [-f new file] [-m new mode] [-c new chance]', extra_help,
-            [:id, 'Trigger id to edit', :type=> :string],
-            [:phrase, 'Edit the phrase the bot triggers on.', :type => :strings],
-            [:reply, 'Edit the text the bot responds with.', :type => :strings],
+            event, msg,
+            'Usage: triggermod [-i id] [-p triggering phrase] [-r new reply] [-f new file] [-m new mode] [-c new chance]',
+            extra_help,
+            [:id, 'Trigger id to edit', {type: :string}],
+            [:phrase, 'Edit the phrase the bot triggers on.', {type: :strings}],
+            [:reply, 'Edit the text the bot responds with.', {type: :strings}],
             [:file, 'Edit the file the bot responds with.'],
-            [:mode, 'Edit the trigger mode. See `triggeradd --help` for more details.', :type => :string],
-            [:chance, 'Edit the chance of this trigger triggering [admin only; integer between 0 and 100]', :type => :integer]
+            [:mode, 'Edit the trigger mode. See `triggeradd --help` for more details.', {type: :string}],
+            [:chance, 'Edit the chance of this trigger triggering [admin only; integer between 0 and 100]', {type: :integer}]
         )
         break if options.nil?
 
         if options.id.nil?
-          event.respond("Specify a trigger ID to edit")
+          event.respond('Specify a trigger ID to edit')
           break
         end
 
         triggers = TohsakaBot.db[:triggers]
-        trigger = triggers.where(:id => options.id.to_i).single_record!
+        trigger = triggers.where(id: options.id.to_i).single_record!
 
         if trigger.nil?
-          event.respond("Could not find trigger with that ID")
+          event.respond('Could not find trigger with that ID')
           break
         end
 
-        if trigger[:user_id] != TohsakaBot.get_user_id(discord_uid) and !trigger_control_permisson
-          event.respond("No permissions to edit this trigger")
+        if (trigger[:user_id] != TohsakaBot.get_user_id(discord_uid)) && !trigger_control_permisson
+          event.respond('No permissions to edit this trigger')
           break
         end
 
-        if options.phrase.nil? and options.reply.nil? and options.mode.nil? and options.file.nil? and options.chance.nil?
-          event.respond("Specify an action")
+        if options.phrase.nil? && options.reply.nil? && options.mode.nil? && options.file.nil? && options.chance.nil?
+          event.respond('Specify an action')
           break
-        elsif !options.file.nil? and !options.reply.nil?
-          event.respond("Cannot edit both file and reply at the same time.")
+        elsif !options.file.nil? && !options.reply.nil?
+          event.respond('Cannot edit both file and reply at the same time.')
           break
         end
 
         phrase = options.phrase.nil? ? nil : options.phrase.join(' ')
-        unless phrase.nil?
-          trigger[:phrase] = phrase
-        end
+        trigger[:phrase] = phrase unless phrase.nil?
 
         unless options.mode.nil?
           trigger[:mode] = /e.*/s.match?(options.mode) ? 0 : 1
@@ -69,11 +69,9 @@ module TohsakaBot
           trigger[:file] = nil
         end
 
-        if not options.chance.nil? and trigger_control_permisson
+        if !options.chance.nil? && trigger_control_permisson
           chance = options.chance
-          if chance >= 0 and chance <= 100
-            trigger[:chance] = chance
-          end
+          trigger[:chance] = chance if (chance >= 0) && (chance <= 100)
         end
 
         unless options.file.nil?

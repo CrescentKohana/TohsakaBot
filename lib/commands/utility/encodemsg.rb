@@ -14,19 +14,20 @@ module TohsakaBot
           @pm = false
 
           # Channel ID: 18 digits
-          if channel.match(/\d{18}/)
+          case channel
+          when /\d{18}/
             @channel_id = channel.to_i
             plainmsg = msg.join(' ')
 
           # Channel name: hastag and 1-100 non-whitespace characters
-          elsif channel.match(/#\S{1,100}/)
+          when /#\S{1,100}/
             channel[0] = ''
             if aliases.key?(channel)
               @channel_id = aliases[channel].to_i
             else
               @channel_id = BOT.find_channel(channel)
               if @channel_id.empty?
-                event.<< "The channel was not found. Encoded message: "
+                event.<< 'The channel was not found. Encoded message: '
                 @pm = true
               else
                 @channel_id = @channel_id.first.id.to_i
@@ -35,11 +36,9 @@ module TohsakaBot
             plainmsg = msg.join(' ')
           # Private Messages
           else
-            plainmsg = channel + ' ' + msg.join(' ')
+            plainmsg = "#{channel} #{msg.join(' ')}"
             @pm = true
           end
-
-          encoded_msg = plainmsg.tr('a-zA-Z', 'n-za-mN-ZA-M')
 
           # TODO: Multiple encoding methods.
           encoded_msg = case emethod
@@ -55,14 +54,14 @@ module TohsakaBot
             # Hardcoded (for the time being) permission check for a specific channel.
             server_id = BOT.channel(@channel_id).server.id
             if aliases['anime'].to_i == @channel_id && !event.author.on(server_id).role?(411305301036498946)
-              event.<< "You do not have enough permissions to send this to to the weeb kingdom."
+              event.<< 'You do not have enough permissions to send this to to the weeb kingdom.'
             else
               m = BOT.send_message(@channel_id.to_i, "\u2063<@#{user_id.to_i}>: #{encoded_msg}")
               m.create_reaction('🔓')
             end
 
           else
-            event.<< "\u2063" + encoded_msg
+            event.<< "⁣#{encoded_msg}"
           end
         else
           event.send_temporary_message('This command only works in DMs!', 5)

@@ -10,16 +10,16 @@ module TohsakaBot
         users = TohsakaBot.db[:users]
         auths = TohsakaBot.db[:authorizations]
 
-        if !auths.where(:uid => author.id).empty?
+        if !auths.where(uid: author.id).empty?
           event.<< "You've already been registered!"
         else
           TohsakaBot.db.transaction do
             user_id = users.insert(name: author.name,
-                                discriminator: author.discriminator,
-                                avatar: author.avatar_id,
-                                locale: "",
-                                created_at: Time.now,
-                                updated_at: Time.now)
+                                   discriminator: author.discriminator,
+                                   avatar: author.avatar_id,
+                                   locale: '',
+                                   created_at: Time.now,
+                                   updated_at: Time.now)
 
             auths.insert(provider: 'discord',
                          uid: author.id,

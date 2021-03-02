@@ -13,11 +13,11 @@ module TohsakaBot
 
       Dir["#{File.dirname(__FILE__)}/../#{path}.rb"].each { |file| load file }
 
-      if discord
-        modules[klass].each do |k|
-          symbol_to_class = TohsakaBot.const_get("#{klass}::#{k}")
-          BOT.include!(symbol_to_class)
-        end
+      return unless discord
+
+      modules[klass].each do |k|
+        symbol_to_class = TohsakaBot.const_get("#{klass}::#{k}")
+        BOT.include!(symbol_to_class)
       end
     end
 
@@ -53,13 +53,13 @@ module TohsakaBot
         end
 
         if old_help
-          respond = "```#{banner}\n" + help_string + "\n" + extra_help + "```"
+          respond = "```#{banner}\n#{help_string}\n#{extra_help}```"
           m = event.respond respond
         else
           m = event.send_embed do |embed|
             embed.colour = 0xA82727
-            embed.add_field(name: "#{banner}", value: "#{help_string}")
-            embed.add_field(name: "Extra", value: "#{extra_help}") unless extra_help.blank?
+            embed.add_field(name: banner.to_s, value: help_string.to_s)
+            embed.add_field(name: "Extra", value: extra_help.to_s) unless extra_help.blank?
           end
         end
 

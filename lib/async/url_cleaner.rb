@@ -9,12 +9,12 @@ module TohsakaBot
 
           unless db.nil? || db == false
             db.each do |k, v|
-              if time_now >= v["time"].to_i + 72*60*60
-                rstore = YAML::Store.new('data/repost.yml')
-                rstore.transaction do
-                  rstore.delete(k)
-                  rstore.commit
-                end
+              next unless time_now >= v['time'].to_i + (72 * 60 * 60)
+
+              rstore = YAML::Store.new('data/repost.yml')
+              rstore.transaction do
+                rstore.delete(k)
+                rstore.commit
               end
             end
           end

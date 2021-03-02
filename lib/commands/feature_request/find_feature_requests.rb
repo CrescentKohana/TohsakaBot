@@ -12,24 +12,24 @@ module TohsakaBot
 
         result_amount = 0
         header = "`  ID | CREATED    | BY                               | TAGS `\n"
-        output = ""
-        requests = YAML.load(File.read('data/feature_requests.yml'))
+        output = ''
+        requests = YAML.safe_load(File.read('data/feature_requests.yml'))
 
         if requests
           sorted = requests.sort
           sorted.each do |id, r|
-            if tags.any? { |tag| r["tags"].include? tag } || tags.include?("all")
-              result_amount += 1
-              datetime = Time.at(r["time"]).to_s.split(' ')[0]
-              username = BOT.user(r["user"]).name
-              output << "`#{sprintf("%4s", id)} | #{datetime} | #{sprintf("%-32s", username)} | #{r["tags"]}`\n`\t\tREQ:` #{r["request"]}\n"
-            end
+            next unless tags.any? { |tag| r['tags'].include? tag } || tags.include?('all')
+
+            result_amount += 1
+            datetime = Time.at(r['time']).to_s.split(' ')[0]
+            username = BOT.user(r['user']).name
+            output << "`#{format('%4s', id)} | #{datetime} | #{format('%-32s', username)} | #{r['tags']}`\n`\t\tREQ:` #{r['request']}\n"
           end
         end
 
         where = result_amount > 5 ? event.author.pm : event.channel
         msgs = []
-        if result_amount > 0
+        if result_amount.positive?
           header << output
           msgs = TohsakaBot.send_multiple_msgs(Discordrb.split_message(header), where)
         else

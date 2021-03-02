@@ -6,7 +6,12 @@ module TohsakaBot
       extend Discordrb::EventContainer
       reaction_add(emoji: '🎲') do |event|
         unless !event.message.author.current_bot? || event.user.bot_account
-          Discordrb::API::Channel.delete_user_reaction("Bot #{AUTH.bot_token}", event.channel.id, event.message.id, '🎲', event.user.id)
+          Discordrb::API::Channel.delete_user_reaction(
+            "Bot #{AUTH.bot_token}",
+            event.channel.id, event.message.id,
+            '🎲',
+            event.user.id
+          )
 
           next if rate_limiter.rate_limited?(:roll, event.user)
 
@@ -19,7 +24,7 @@ module TohsakaBot
           if msg[-1] == "\u200B"
             case msg
             when /.*\u200B\u200B\u200B\u200B\u200B/i
-              number = rand(0..99999).to_s
+              number = rand(0..99_999).to_s
               i = 5
             when /.*\u200B\u200B\u200B\u200B/i
               number = rand(0..9999).to_s
@@ -41,8 +46,8 @@ module TohsakaBot
             event.channel.send_embed do |embed|
               embed.colour = 0x36393F
               embed.add_field(
-                  name: "🎲 **#{number.rjust(i, '0')}**",
-                  value: "[#{name}](https://discord.com/channels/#{event.server.id}/#{event.channel.id}/#{event.message.id})"
+                name: "🎲 **#{number.rjust(i, '0')}**",
+                value: "[#{name}](https://discord.com/channels/#{event.server.id}/#{event.channel.id}/#{event.message.id})"
               )
             end
 

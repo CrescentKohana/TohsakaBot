@@ -16,10 +16,10 @@ module TohsakaBot
             break
           else
             Discordrb::API::Server.remove_member_role("Bot #{AUTH.bot_token}", event.channel.server.id, event.message.user.id, found_role.id)
-            event.respond("Role deleted.")
+            event.respond('Role deleted.')
           end
         else
-          event.respond("The role you requested was not found in the list of usabled roles.")
+          event.respond('The role you requested was not found in the list of usabled roles.')
         end
       end
     end

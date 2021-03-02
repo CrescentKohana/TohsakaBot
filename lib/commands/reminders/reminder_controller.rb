@@ -4,7 +4,7 @@ module TohsakaBot
     DURATION_REGEX = /^[ydwhmMsSeckin0-9-]*$/i
     DATE_REGEX = /^[0-9]{4}-(1[0-2]|0[1-9])-(3[0-2]|[1-2][0-9]|0[1-9])\s(2[0-4]|1[0-9]|0[0-9]):(60|[0-5][0-9]):(60|[0-5][0-9])/
 
-    def initialize(event, datetime = nil, msg = nil, repeat = nil, channel_id = nil, id, legacy)
+    def initialize(event, id, legacy, datetime = nil, msg = nil, repeat = nil, channel_id = nil)
       # TODO: Fix this when there's one unmatched quote in the reminder message
       # tjoo toi option parser ei tykkää tost ja ei pääse koko logiikka ees tonne legacy hommaan asti
       # mies rescuee ton ja heittää legacy koodin hoidettavaks
@@ -39,25 +39,26 @@ module TohsakaBot
 
     def convert_datetime
       return if @datetime.nil?
+
       # The input is a duration (e.g. 5d4h30s)
       if DURATION_REGEX.match?(@datetime.to_s)
         # Format P(n)Y(n)M(n)W(n)DT(n)H(n)M(n)S
         seconds = match_time(@datetime, /([0-9]*)(sec|sek|[sS])/) || 0
-        minutes = match_time(@datetime,      /([0-9]*)(min|[m])/) || 0
-        hours   = match_time(@datetime,         /([0-9]*)([hH])/) || 0
-        days    = match_time(@datetime,         /([0-9]*)([dD])/) || 0
-        weeks   = match_time(@datetime,         /([0-9]*)([wW])/) || 0
-        months  = match_time(@datetime,          /([0-9]*)([M])/) || 0
-        years   = match_time(@datetime,        /([0-9]*)([yYa])/) || 0
+        minutes = match_time(@datetime, /([0-9]*)(min|[m])/) || 0
+        hours   = match_time(@datetime, /([0-9]*)([hH])/) || 0
+        days    = match_time(@datetime, /([0-9]*)([dD])/) || 0
+        weeks   = match_time(@datetime, /([0-9]*)([wW])/) || 0
+        months  = match_time(@datetime, /([0-9]*)([M])/) || 0
+        years   = match_time(@datetime, /([0-9]*)([yYa])/) || 0
 
         # Because weeks cannot be used at the same time as years, months or days.
-        if weeks == 0
+        if weeks.zero?
           iso8601_time = if "#{hours}#{minutes}#{seconds}".empty?
                            "P#{years}Y#{months}M#{days}D"
                          else
                            "P#{years}Y#{months}M#{days}DT#{hours}H#{minutes}M#{seconds}S"
                          end
-        elsif weeks > 0 && years == 0 && months == 0 && days == 0
+        elsif weeks.positive? && years.zero? && months.zero? && days.zero?
           iso8601_time = if "#{hours}#{minutes}#{seconds}".empty?
                            "P#{weeks}W"
                          else
@@ -84,13 +85,12 @@ module TohsakaBot
       raise ReminderHandler::MaxTimeError if @datetime.year > 9999
       raise ReminderHandler::DateTimeSyntaxError if !DATE_REGEX.match?(@datetime.to_s) || @datetime.nil?
       raise ReminderHandler::PastError if @datetime < Time.now
-      ReminderHandler.handle_repeat_limit(@repeat, BOT.channel(@channel_id).pm?) if @repeat > 0
+
+      ReminderHandler.handle_repeat_limit(@repeat, BOT.channel(@channel_id).pm?) if @repeat.positive?
     end
 
     def match_time(time, regex)
-      if time.match(regex)
-        time.scan(regex)[0][0].to_i
-      end
+      time.scan(regex)[0][0].to_i if time.match(regex)
     end
 
     def store_reminder
@@ -109,16 +109,17 @@ module TohsakaBot
         )
       end
 
-      repeated_msg = @repeat > 0 ? "repeatedly " : ''
-      repetition_interval = @repeat > 0 ? " `<Interval #{distance_of_time_in_words(@repeat)}>`" : ''
+      repeated_msg = @repeat.positive? ? 'repeatedly ' : ''
+      repetition_interval = @repeat.positive? ? " `<Interval #{distance_of_time_in_words(@repeat)}>`" : ''
 
       send_confirmation(repeated_msg, repetition_interval, false)
     end
 
     def update_reminder
       return unless TohsakaBot.registered?(@discord_uid)
+
       reminders = TohsakaBot.db[:reminders]
-      reminder = reminders.where(:id => @id.to_i).single_record!
+      reminder = reminders.where(id: @id.to_i).single_record!
 
       if @datetime.nil?
         @datetime = reminder[:datetime]
@@ -142,11 +143,11 @@ module TohsakaBot
       end
 
       TohsakaBot.db.transaction do
-        reminders.where(:id => @id.to_i).update(reminder)
+        reminders.where(id: @id.to_i).update(reminder)
       end
 
-      repeated_msg = @repeat > 0 ? "repeatedly " : ''
-      repetition_interval = @repeat > 0 ? " `<Interval #{distance_of_time_in_words(@repeat)}>`" : ''
+      repeated_msg = @repeat.positive? ? 'repeatedly ' : ''
+      repetition_interval = @repeat.positive? ? " `<Interval #{distance_of_time_in_words(@repeat)}>`" : ''
 
       send_confirmation(repeated_msg, repetition_interval, true)
     end
@@ -155,7 +156,7 @@ module TohsakaBot
       # If the date was in the ISO 8601 format, convert it to text for the message.
       @datetime = @datetime.is_a?(Integer) ? @datetime = Time.at(@datetime) : @datetime
 
-      msg_beginning = mod ? "Modified reminder for" : "I shall"
+      msg_beginning = mod ? 'Modified reminder for' : 'I shall'
       if @msg.blank?
         TohsakaBot.send_message_with_reaction(
           @event.channel.id,
@@ -169,9 +170,7 @@ module TohsakaBot
           "#{msg_beginning} #{repeated_msg}remind <@#{@discord_uid.to_i}> with #{@msg.strip.hide_link_preview} at `#{@datetime}` `<ID #{@id}>`#{repetition_interval}."
         )
       end
-      unless @event.channel.pm?
-        @event.message.delete
-      end
+      @event.message.delete unless @event.channel.pm?
     end
 
     def self.copy_reminder(reminder_id, discord_uid)
@@ -180,12 +179,12 @@ module TohsakaBot
       return unless TohsakaBot.registered?(discord_uid)
 
       reminders = TohsakaBot.db[:reminders]
-      reminder = reminders.where(:id => reminder_id.to_i).single_record
+      reminder = reminders.where(id: reminder_id.to_i).single_record
       id = nil
       unless reminder.nil?
         TohsakaBot.db.transaction do
           id = reminders.insert(datetime: reminder[:datetime],
-                                message:  reminder[:message],
+                                message: reminder[:message],
                                 user_id: TohsakaBot.get_user_id(discord_uid),
                                 channel: reminder[:channel],
                                 repeat: reminder[:repeat],
@@ -203,11 +202,11 @@ module TohsakaBot
 
       reminders = TohsakaBot.db[:reminders]
 
-      return !reminders.where(:parent => reminder_id.to_i, :user_id => TohsakaBot.get_user_id(discord_uid)).single_record.nil?
+      !reminders.where(parent: reminder_id.to_i, user_id: TohsakaBot.get_user_id(discord_uid)).single_record.nil?
     end
 
     def self.get_reminder(id)
-      return TohsakaBot.db[:reminders].where(:id => id.to_i).single_record
+      TohsakaBot.db[:reminders].where(id: id.to_i).single_record
     end
   end
 end

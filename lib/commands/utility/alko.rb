@@ -2,17 +2,17 @@ module TohsakaBot
   module Commands
     module Alko
       extend Discordrb::Commands::CommandContainer
-      max_budget = 500.freeze # in euros
+      MAX_BUDGET = 500 # in euros
       command(:alko,
               aliases: %i[drinks alcohol],
               description: 'Recommends drinks from Alko (a Finnish alcohol store) based on budget and type.',
-              usage: "alko <max price in euros (integer, <= #{max_budget}€)> <type>",
+              usage: "alko <max price in euros (integer, <= #{MAX_BUDGET}€)> <type>",
               min_args: 2) do |event, price, *type|
 
         m = event.respond('Parsing data...')
-        if price.to_i <= max_budget
-          aliases = YAML.load(File.read('data/persistent/alko_aliases.yml'))
-          aliases.keys.each do |k|
+        if price.to_i <= MAX_BUDGET
+          aliases = YAML.safe_load(File.read('data/persistent/alko_aliases.yml'))
+          aliases.each_key do |k|
             aliases[k].each do |v|
               if v == type.join(' ').to_s.downcase
                 @output_type = k
@@ -22,13 +22,13 @@ module TohsakaBot
 
           matched = []
           csv_text = File.read('data/alko.csv')
-          csv = CSV.parse(csv_text, :headers => true)
+          csv = CSV.parse(csv_text, headers: true)
           csv.map do |h|
             next if h['Nimi'].nil?
-            if h['Tyyppi'].is_a?(String)
-              if (BigDecimal(h['Hinta'], 0) * 100).to_i <= (price.to_f * 100).to_i && h['Tyyppi'].downcase == @output_type
-                matched << h
-              end
+            next unless h['Tyyppi'].is_a?(String)
+
+            if (BigDecimal(h['Hinta'], 0) * 100).to_i <= (price.to_f * 100).to_i && h['Tyyppi'].downcase == @output_type
+              matched << h
             end
           end
 
@@ -43,7 +43,7 @@ module TohsakaBot
             random_recommendations << matched.sample(6).slice!(i)
           end
 
-          alko_url = "https://www.alko.fi/tuotteet/"
+          alko_url = 'https://www.alko.fi/tuotteet/'
 
           sorted = random_recommendations.sort { |a, b| (BigDecimal(a[4], 0).to_i * 100) <=> (BigDecimal(b[4], 0).to_i * 100) }
           event.channel.send_embed do |embed|
@@ -66,7 +66,7 @@ module TohsakaBot
           m.edit "Data parsed in #{(Time.now - event.timestamp).truncate(2)}s"
         else
           m.delete
-          event.respond("The maximum budget is #{max_budget} euros.")
+          event.respond("The maximum budget is #{MAX_BUDGET} euros.")
         end
       end
     end

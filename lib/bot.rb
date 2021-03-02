@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'bundler/setup'
 require 'rubygems'
 
@@ -33,6 +35,8 @@ require 'active_support/core_ext/numeric/time'
 require 'active_support/time_with_zone'
 
 # Misc #
+require 'nekos'
+require 'digest/sha1'
 require 'benchmark'
 require 'to_regexp'
 require 'active_support/core_ext/string/filters'
@@ -51,6 +55,7 @@ require_relative 'gem_overrides/discordrb_command_override'
 # require_relative 'gem_overrides/channels_override'
 # require_relative 'gem_overrides/container_override'
 
+# Main module of the bot
 module TohsakaBot
   unless File.exist?('cfg/auth.yml')
     require_relative 'first_time_setup'
@@ -64,11 +69,13 @@ module TohsakaBot
   require_relative 'helpers/url_helper'
   require_relative 'helpers/math_helper'
   require_relative 'helpers/discord_helper'
+  require_relative 'helpers/nekos_helper'
 
   # Database, Web and Permissions #
   require_relative 'data_access/database'
   require_relative 'data_access/tohsaka_bridge'
   require_relative 'data_access/trigger_data'
+  require_relative 'data_access/msg_queue_cache'
   require_relative 'data_access/permissions'
 
   # Configuration & settings #
@@ -131,7 +138,7 @@ module TohsakaBot
 
   # TODO: Load async threads dynamically
   # load_modules(:Async, 'async/*', false)
-  require_relative 'async.rb'
+  require_relative 'async'
 
   # Cleans trigger files not present in the database.
   TohsakaBot.trigger_data.clean_trigger_files
@@ -145,18 +152,18 @@ module TohsakaBot
            "Before sending messages through the terminal, set the channel with 'setch <id>'"
     end
 
-    while (user_input = gets.strip.split(" "))
-      if user_input[0] == "setch"
+    while (user_input = gets.strip.split(' '))
+      if user_input[0] == 'setch'
         channel = user_input[1].to_i
         puts "Channel set to #{BOT.channel(channel).name} "
-      elsif user_input[0][0] == "." && channel.match(/\d{18}/)
-        BOT.send_message(channel, user_input.join(" ")[1..-1])
+      elsif user_input[0][0] == '.' && channel.match(/\d{18}/)
+        BOT.send_message(channel, user_input.join(' ')[1..-1])
       end
     end
   end
 
   # Connection with TohsakaWeb #
-  BRIDGE_URI = "druby://localhost:8787"
+  BRIDGE_URI = 'druby://localhost:8787'.freeze
   FRONT_OBJECT = TohsakaBridge.new
   DRb.start_service(BRIDGE_URI, FRONT_OBJECT)
 

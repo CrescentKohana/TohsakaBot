@@ -5,7 +5,7 @@ module TohsakaBot
       command(:editpermissions,
               aliases: %i[editperm editpermissions],
               description: "Edits given user's permission level.",
-              usage: "editpermissions <discord uid> <level (0-1000)>",
+              usage: 'editpermissions <discord uid> <level (0-1000)>',
               min_args: 2,
               permission_level: 1000) do |event, discord_uid, level|
 
@@ -21,7 +21,7 @@ module TohsakaBot
         end
 
         if user.nil?
-          event.respond("Permission level range: 0 - 1000.")
+          event.respond('Permission level range: 0 - 1000.')
           break
         end
 

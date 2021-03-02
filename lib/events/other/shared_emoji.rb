@@ -2,16 +2,16 @@ module TohsakaBot
   module Events
     module SharedEmoji
       extend Discordrb::EventContainer
-      message(content: /.*\:\w*\:\D*/) do |event|
+      message(content: /.*:\w*:\D*/) do |event|
 
-        just_emoji = /\:\w*\:/
+        just_emoji = /:\w*:/
         # dead_emoji = /\:\w*\:\D/
         emoji_names = event.message.content.scan(just_emoji)
         every_emoji = []
         i = 0
         j = 0
 
-        # TODO: Fix regex for the fucking thing or just somehow delete already working emoji.
+        # TODO: Fix regex or somehow delete all already working emoji.
         # emoji_names.delete_if { |x| x[-1] != ':' }
 
         unless every_emoji.empty?

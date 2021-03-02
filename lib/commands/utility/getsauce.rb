@@ -27,24 +27,25 @@ module TohsakaBot
         end
 
         if !output.nil?
-          # event.respond "The most accurate result: https://pixiv.moe/illust/#{output} \nMore results here: https://saucenao.com/search.php?output_type=0&dbmask=32&url=#{messageurl}"
+          # event.respond "The most accurate result: https://pixiv.moe/illust/#{output} 
+          # \nMore results here: https://saucenao.com/search.php?output_type=0&dbmask=32&url=#{messageurl}"
           event.channel.send_embed do |embed|
-            embed.title = "Results:"
+            embed.title = 'Results:'
             embed.colour = 0xA82727
-            embed.url = ""
-            embed.description = "Something."
+            embed.url = ''
+            embed.description = 'Something.'
             embed.timestamp = Time.now
 
             embed.image = Discordrb::Webhooks::EmbedImage.new(url: messageurl || @aurl)
             # embed.thumbnail = Discordrb::Webhooks::EmbedThumbnail.new(url: "")
             # embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: "Rin", icon_url: "")
-            embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "", icon_url: "")
+            embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: '', icon_url: '')
 
-            embed.add_field(name: "**Pixiv.moe**", value: "https://pixiv.moe/illust/#{output}")
-            embed.add_field(name: "**Pixiv**", value: "https://www.pixiv.net/member_illust.php?mode=medium&illust_id=#{output}")
-            embed.add_field(name: "**Website X**", value: "URL")
-            embed.add_field(name: "**More results**", value: "[here](https://saucenao.com/search.php?output_type=0&dbmask=32&url=#{messageurl})")
-            end
+            embed.add_field(name: '**Pixiv.moe**', value: "https://pixiv.moe/illust/#{output}")
+            embed.add_field(name: '**Pixiv**', value: "https://www.pixiv.net/member_illust.php?mode=medium&illust_id=#{output}")
+            embed.add_field(name: '**Website X**', value: 'URL')
+            embed.add_field(name: '**More results**', value: "[here](https://saucenao.com/search.php?output_type=0&dbmask=32&url=#{messageurl})")
+          end
         else
           event.respond('Upload an image with the command `sauce` or just with an URL `sauce https://website.com/image.png`')
         end
