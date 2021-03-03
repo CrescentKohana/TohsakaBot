@@ -4,7 +4,7 @@ module TohsakaBot
       extend Discordrb::Commands::CommandContainer
       bucket :cf, limit: 15, time_span: 60, delay: 1
       command(:quads,
-              aliases: %i[quads quad quadeil quadeilla quattroilla
+              aliases: %i[quads quad quadeil quadeilla quattroilla quattrot quattroilla
                           quattroil neljä nelosilla nelosil quadseilla quadseil tetra tetras tetroil tetroilla],
               description: 'Quads.',
               usage: '',
