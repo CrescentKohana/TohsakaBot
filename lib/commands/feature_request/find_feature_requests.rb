@@ -5,10 +5,9 @@ module TohsakaBot
       command(:findfeaturerequests,
               aliases: %i[findfrs findfr findfeaturerequest ffr requests frs],
               description: 'Finds and lists feature requests based on given tags.',
-              usage: "Use 'fr <tags (new, indev, done, wontdo, all)>'",
+              usage: "Use 'ffr <tags (new, indev, done, wontdo, all)>'",
               min_args: 1,
-              require_register: true,
-              enabled_in_pm: false) do |event, *tags|
+              require_register: true) do |event, *tags|
 
         result_amount = 0
         header = "`  ID | CREATED    | BY                               | TAGS `\n"
@@ -22,7 +21,7 @@ module TohsakaBot
 
             result_amount += 1
             datetime = Time.at(r['time']).to_s.split(' ')[0]
-            username = BOT.user(r['user']).name
+            username = BOT.user(r['user']).username
             output << "`#{format('%4s', id)} | #{datetime} | #{format('%-32s', username)} | #{r['tags']}`\n`\t\tREQ:` #{r['request']}\n"
           end
         end

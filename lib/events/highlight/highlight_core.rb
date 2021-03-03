@@ -71,8 +71,12 @@ module TohsakaBot
     end
 
     def send_highlight
-      # If the user id deleted: it's Discordrb::User, not Discordrb::Member
-      author_name = @message.author.is_a? Discordrb::User ? @message.author.username : @message.author.display_name
+      # If user is deleted: it's Discordrb::User, not Discordrb::Member
+      author_name = if @message.author.is_a?(Discordrb::User)
+                      @message.author.username
+                    else
+                      @message.author.display_name
+                    end
 
       content = @message.content
       attachment_names = @message.attachments.map(&:filename).join("\n")
