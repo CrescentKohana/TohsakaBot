@@ -37,6 +37,7 @@
     "TriggerMod",
     "TriggerDel",
     "TriggerSearch",
+    "TriggerDetails",
     "Triggers",
     "Doubles",
     "Triples",

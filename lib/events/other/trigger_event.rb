@@ -82,6 +82,23 @@ module TohsakaBot
                   event.channel.send_file(File.open("data/triggers/#{file}"))
                 end
 
+        # Incrementing trigger stats
+        if sure_trigger
+          TohsakaBot.db.transaction do
+            TohsakaBot.db[:triggers].where(id: chosen_trigger[:id]).update(
+              occurences: chosen_trigger[:occurences] + 1,
+              last_triggered: Time.now
+            )
+          end
+        else
+          TohsakaBot.db.transaction do
+            TohsakaBot.db[:triggers].where(id: chosen_trigger[:id]).update(
+              calls: chosen_trigger[:calls] + 1 ,
+              last_triggered: Time.now
+            )
+          end
+        end
+
         # A way to remove the trigger response.
         # Only the one, whose message got triggered, is able to delete the response.
         # Threading is needed here as otherwise the await! would block any other triggers.
