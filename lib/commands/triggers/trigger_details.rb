@@ -13,6 +13,9 @@ module TohsakaBot
         unless Integer(id, exception: false).nil?
           trigger = TohsakaBot.db[:triggers].where(id: id.to_i).single_record!
           unless trigger.nil?
+            server = BOT.server(trigger[:server_id].to_i).name
+            chance = TohsakaBot.trigger_data.parse_chance(trigger[:chance], trigger[:mode])
+            last_triggered = !trigger[:last_triggered].nil? ? trigger[:last_triggered] : ""
             mode = case trigger[:mode]
                    when 2
                      "Regex"
@@ -24,13 +27,17 @@ module TohsakaBot
 
             event.channel.send_embed do |e|
               e.colour = 0xA82727
-              e.add_field(name: "Phrase <ID: #{id}>", value: "#{trigger[:phrase]}")
-              e.add_field(name: 'Reply', value: trigger[:reply].to_s) unless trigger[:reply].empty?
-              e.add_field(name: 'File', value: "[Link](https://rin.luukuton.fi/td/#{trigger[:file]})") unless trigger[:file].empty?
-              e.add_field(name: 'Mode / Chance', value: "#{mode} / #{trigger[:chance]} %")
-              e.add_field(name: 'Occurences + Calls', value: "#{trigger[:occurences]} + #{trigger[:calls]}")
-
-              e.footer = Discordrb::Webhooks::EmbedFooter.new(text: "Last trigger: #{trigger[:last_triggered]}", icon_url: '')
+              e.add_field(name: "ID: #{id} by [redacted]", value: "on **#{server}**")
+              e.add_field(name: "Phrase", value: "#{trigger[:phrase]}")
+              unless trigger[:reply].nil? || trigger[:reply].empty?
+                e.add_field(name: 'Reply', value: trigger[:reply].to_s)
+              end
+              unless trigger[:file].nil? || trigger[:file].empty
+                e.add_field(name: 'File', value: "[Link](https://rin.luukuton.fi/td/#{trigger[:file]})")
+              end
+              e.add_field(name: 'Mode / Chance', value: "#{mode} / #{chance} %")
+              e.add_field(name: 'Occurrences + Calls', value: "#{trigger[:occurences]} + #{trigger[:calls]}")
+              e.footer = Discordrb::Webhooks::EmbedFooter.new(text: "Last triggered: #{last_triggered}")
             end
             break
           end
