@@ -4,9 +4,10 @@ module TohsakaBot
       Thread.new do
         loop do
           role_db = YAML.load_file('data/temporary_roles.yml')
+          next if role_db.nil? || !role_db
+
           time_now = Time.now.to_i
           to_be_removed = {}
-
           role_db.each do |_k, v|
             user_id = v['user'].to_i
             role_id = v['role'].to_i

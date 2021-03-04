@@ -1,6 +1,6 @@
 module TohsakaBot
   module Events
-    module Squads
+    module SquadsHelper
       extend Discordrb::EventContainer
       roles = JSON.parse(File.read('data/persistent/squads.json')).map { |r| /.*<@&#{r[1]["role_id"]}>.*/ }
       message(content: roles) do |event|
