@@ -25,7 +25,7 @@ module TohsakaBot
             "Bot #{AUTH.bot_token}", event.channel.id, event.message.id, "✅", false, false
           )).reject { |m| m["bot"] || m["id"].to_i == author_id }.map { |m| "<@!#{m["id"]}>" }
 
-          reaction_count = reactions[0]["✅"].to_i - 1
+          reaction_count = reactions[0]["✅"].to_i
           reaction_count -= 1 if members.include? "<@!#{author_id}>"
           next unless role_mentions.key?(roles[role]["role_id"]) && reaction_count >= roles[role]["group_size"]
 

@@ -7,22 +7,16 @@ module TohsakaBot
           next if role_db.nil? || !role_db
 
           time_now = Time.now.to_i
-          to_be_removed = {}
           role_db.each do |_k, v|
             user_id = v['user'].to_i
             role_id = v['role'].to_i
 
-            if time_now >= v['time'].to_i + (v['duration'] * 24 * 60 * 60)
-              server_id = v['server'].to_i
+            next unless time_now >= v['time'].to_i + (v['duration'] * 24 * 60 * 60)
+            next if v.nil?
 
-              to_be_removed[[user_id, role_id]] = server_id unless (to_be_removed[{ user_id => role_id }]).zero?
-            else
-              to_be_removed[[user_id, role_id]] = 0
-            end
-          end
-
-          to_be_removed.each do |k, v|
-            Discordrb::API::Server.remove_member_role("Bot #{AUTH.bot_token}", v, k[0], k[1]) unless v.zero?
+            Discordrb::API::Server.remove_member_role(
+              "Bot #{AUTH.bot_token}", v['server'].to_i, user_id, role_id
+            )
           end
           sleep(60)
         end
