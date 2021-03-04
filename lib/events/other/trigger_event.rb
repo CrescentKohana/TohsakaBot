@@ -61,14 +61,9 @@ module TohsakaBot
         if sure_trigger
           picked = true
         else
-          chance = chosen_trigger[:chance].to_i
-          default_chance = CFG.default_trigger_chance.to_i
-          c = chance.zero? ? default_chance : chance
+          chance = TohsakaBot.trigger_data.parse_chance(chosen_trigger[:chance], chosen_trigger[:mode])
 
-          # Three times the default chance if Exact mode.
-          c *= 3 if chance == default_chance && (chosen_trigger[:mode]).zero?
-
-          pickup = Pickup.new({ true => c, false => 100 - c })
+          pickup = Pickup.new({ true => chance, false => 100 - chance })
           picked = pickup.pick(1)
         end
 
@@ -86,14 +81,14 @@ module TohsakaBot
         if sure_trigger
           TohsakaBot.db.transaction do
             TohsakaBot.db[:triggers].where(id: chosen_trigger[:id]).update(
-              occurences: chosen_trigger[:occurences] + 1,
+              calls: chosen_trigger[:calls] + 1,
               last_triggered: Time.now
             )
           end
         else
           TohsakaBot.db.transaction do
             TohsakaBot.db[:triggers].where(id: chosen_trigger[:id]).update(
-              calls: chosen_trigger[:calls] + 1 ,
+              occurences: chosen_trigger[:occurences] + 1,
               last_triggered: Time.now
             )
           end

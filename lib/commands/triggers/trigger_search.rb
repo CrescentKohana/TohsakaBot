@@ -70,10 +70,8 @@ module TohsakaBot
           phrase = t[1]
           reply = t[2]
           file = t[3]
-          chance = t[6].to_i.zero? ? CFG.default_trigger_chance.to_i : t[6].to_i
           mode = t[7].to_i
-          chance *= 3 if mode.zero?
-          chance = 100 if chance > 100
+          chance = TohsakaBot.trigger_data.parse_chance(t[:chance], t[:mode])
 
           if reply.nil? || reply.empty?
             output << "`#{format('%4s', id)} | #{format('%-5s', "#{mode.to_s} #{chance.to_s}")} | #{format('%-33s', phrase.to_s.gsub("\n", '')[0..30])} | #{format('%-21s', file[0..20])}`\n"
