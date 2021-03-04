@@ -71,6 +71,7 @@
     "HighlightDelete",
     "AlsoRemindme",
     "MessageIDCheck",
-    "Squads"
+    "Squads",
+    "SquadsHelper"
   ]
 }

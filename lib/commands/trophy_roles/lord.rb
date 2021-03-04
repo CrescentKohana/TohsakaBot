@@ -13,7 +13,7 @@ module TohsakaBot
 
         TohsakaBot.give_temporary_role(event, role_id, user_id, days, reason)
         event.respond(
-          "#{event.message.mentions[0].display_name} has been selected as a lord for #{days} day#{"s" if days > 1}."
+          "#{event.message.mentions[0].display_name} has been decided to be a lord for #{days} day#{"s" if days > 1}."
         )
       end
     end

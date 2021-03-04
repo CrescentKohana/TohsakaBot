@@ -3,6 +3,15 @@ module TohsakaBot
     module Squads
       extend Discordrb::EventContainer
       reaction_add(emoji: "✅") do |event|
+        next if event.channel.pm? || event.user.bot_account
+
+        if event.user.id == event.message.author.id
+          Discordrb::API::Channel.delete_user_reaction(
+            "Bot #{AUTH.bot_token}", event.channel.id, event.message.id, "✅", event.message.author.id
+          )
+          next
+        end
+
         roles = JSON.parse(File.read("data/persistent/squads.json"))
         role_mentions = {}
         event.message.role_mentions.each do |rm|
