@@ -5,11 +5,12 @@ module TohsakaBot
       command(:triggerdetails,
               aliases: %i[triggerdetail triggerdetail showtrigger triggerinfo infotrigger tinfo],
               description: 'Shows details about triggers.',
-              usage: "Use 'triggerdetails <id>",
+              usage: "Use 'triggerdetails <id> <verbose>",
               min_args: 1,
               require_register: true,
-              enabled_in_pm: false) do |event, id|
+              enabled_in_pm: false) do |event, id, verbose|
 
+        verbose = verbose.nil? ? false : true
         unless Integer(id, exception: false).nil?
           trigger = TohsakaBot.db[:triggers].where(id: id.to_i).single_record!
           unless trigger.nil?
@@ -32,11 +33,13 @@ module TohsakaBot
               unless trigger[:reply].nil? || trigger[:reply].empty?
                 e.add_field(name: 'Reply', value: trigger[:reply].to_s)
               end
-              unless trigger[:file].nil? || trigger[:file].empty
+              unless trigger[:file].nil? || trigger[:file].empty?
                 e.add_field(name: 'File', value: "[Link](https://rin.luukuton.fi/td/#{trigger[:file]})")
               end
               e.add_field(name: 'Mode / Chance', value: "#{mode} / #{chance} %")
               e.add_field(name: 'Occurrences + Calls', value: "#{trigger[:occurences]} + #{trigger[:calls]}")
+              e.add_field(name: 'Created At', value: trigger[:created_at].to_s) if verbose
+              e.add_field(name: 'Updated At', value: trigger[:updated_at].to_s) if verbose
               e.footer = Discordrb::Webhooks::EmbedFooter.new(text: "Last triggered: #{last_triggered}")
             end
             break
