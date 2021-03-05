@@ -14,7 +14,7 @@ module TohsakaBot
 
         begin
           user_id = TohsakaBot.get_user_id(event.author.id.to_i).to_i
-          parsed_reminders = reminders.where(:user_id => user_id).order(:datetime)
+          parsed_reminders = reminders.where(user_id: user_id).order(:datetime)
         rescue
           # Ignored
         end
