@@ -8,44 +8,42 @@ module TohsakaBot
         id = event.message.id
         first, second = /(\d)(\1*$)/.match(id.to_s).captures
         capture = first.to_s + second.to_s
-        length = capture.length
+        @length = capture.length
+        @msg = event.message.content
+        next unless @length > 1
 
-        if length > 1
+        def self.check_pair(min_length, naming)
+          @length >= min_length && @msg.match(/^get.*|#{naming}.*/i)
+        end
+
+        name = BOT.member(event.server, event.message.author.id).display_name.strip_mass_mentions.sanitize_string
+
+        if @length > 10
+          reply = "What in the wörld did you just get? 🆔 **#{capture}**"
+        else
           map = {
-            2 => 'Doubles',
-            3 => 'Triples',
-            4 => 'Quads',
-            5 => 'Pentas',
-            6 => 'Hexas',
-            7 => 'Heptas',
-            8 => 'Octas',
-            9 => 'Enneas',
-            10 => 'Decas'
+            2 => '貳 Doubles',
+            3 => '参 Triples',
+            4 => '肆 Quadruples',
+            5 => '伍 Quintuples',
+            6 => '陸 Sextuples',
+            7 => '漆 Septuples',
+            8 => '捌 Octuples',
+            9 => '玖 Nonuples',
+            10 => '拾 Decuples'
           }
 
-          name = BOT.member(event.server, event.message.author.id).display_name.strip_mass_mentions.sanitize_string
+          next unless @length >= 5 || check_pair(2, "dubs") || check_pair(3, "trips") || check_pair(4, "quads")
 
-          if (4...10) === length || (event.message.content.match(/^get.*|tupl.*|tripl.*/i) && (2...10) === length)
-            event.channel.send_embed do |embed|
-              embed.colour = 0x36393F
-              embed.add_field(
-                name: "#{map[length]}! 🆔 **#{capture}**",
-                value: "[#{name}](https://discord.com/channels/#{event.server.id}/#{event.channel.id}/#{event.message.id})"
-              )
-            end
-            next
-          end
+          reply = "#{map[@length]}! 🆔 **#{capture}**"
+        end
 
-          if length > 10
-            event.channel.send_embed do |embed|
-              embed.colour = 0x36393F
-              embed.add_field(
-                name: "What in the wörld did you just get? 🆔 **#{capture}**",
-                value: "[#{name}](https://discord.com/channels/#{event.server.id}/#{event.channel.id}/#{event.message.id})"
-              )
-            end
-            next
-          end
+        event.channel.send_embed do |embed|
+          embed.colour = 0x36393F
+          embed.add_field(
+            name: reply,
+            value: "[#{name}](https://discord.com/channels/#{event.server.id}/#{event.channel.id}/#{event.message.id})"
+          )
         end
       end
     end
