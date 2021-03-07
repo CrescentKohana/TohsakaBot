@@ -1,0 +1,8 @@
+en:
+  welcome: "EN: TohsakaBot launched successfully!"
+
+  commands:
+    utility:
+      ping:
+        description: "Ping!"
+        response: "`Pong! Bot respond time (ping): %{time}s`"

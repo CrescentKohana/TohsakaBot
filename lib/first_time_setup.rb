@@ -43,11 +43,10 @@ module TohsakaBot
       end
 
       File.open('cfg/config.yml', 'w') do |f|
-        prefix = '?'
         now_playing = 'TohsakaBot'
 
         print 'Type in the preferred command prefix (default ?): '
-        prefix = gets unless gets.nil?
+        prefix = gets
 
         print 'Type in the default channel ID: '
         default_channel = gets
@@ -64,6 +63,7 @@ module TohsakaBot
         print 'Type in the ID of the fool role (basically, given to the users as a reward when they lose in something): '
         fool_role = gets
 
+        prefix = prefix.nil? || prefix.empty? ? "?" : prefix
         f.write(
           "---\n"\
           "prefix: \"#{prefix}\"\n"\

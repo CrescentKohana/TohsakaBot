@@ -1,0 +1,8 @@
+ja:
+  welcome: "JA: TohsakaBot（遠坂ボット）が滞りなくスタートいたしました！"
+
+  commands:
+    utility:
+      ping:
+        description: "Ping!"
+        response: "`Pong! ボットがpingに応答するまでの経過した時間: %{time}s`"

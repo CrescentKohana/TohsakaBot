@@ -189,6 +189,8 @@ DEPENDENCIES
   discordrb!
   feedjira
   http
+  http-parser
+  i18n
   json
   mini_magick
   mysql2

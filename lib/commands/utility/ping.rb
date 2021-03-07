@@ -6,7 +6,11 @@ module TohsakaBot
               description: 'Pong.',
               usage: 'ping') do |event|
 
-        event.respond("`Pong! Bot respond time (ping): #{Time.now - event.timestamp}s`")
+        locale = TohsakaBot.get_locale(event.user.id)
+
+        event.respond(
+          I18n.t(:'commands.utility.ping.response', locale: locale.to_sym, time: Time.now - event.timestamp)
+        )
       end
     end
   end

@@ -1,0 +1,8 @@
+fi:
+  welcome: "FI: TohsakaBot käynnistetty onnistuneesti!"
+
+  commands:
+    utility:
+      ping:
+        description: "Ping!"
+        response: "`Pong! Botilla vastaamiseen kulunut aika (ping): %{time}s`"

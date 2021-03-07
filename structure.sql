@@ -83,6 +83,7 @@ CREATE TABLE `reminders` (
                              `user_id` bigint(20) NOT NULL,
                              `channel` bigint(20) DEFAULT NULL,
                              `repeat` bigint(20) DEFAULT 0,
+                             `parent` bigint(20) DEFAULT NULL,
                              `created_at` datetime(6) NOT NULL,
                              `updated_at` datetime(6) NOT NULL,
                              PRIMARY KEY (`id`)
@@ -118,6 +119,9 @@ CREATE TABLE `triggers` (
                             `server_id` bigint(20) NOT NULL,
                             `chance` int(11) DEFAULT 0,
                             `mode` int(11) DEFAULT 0,
+                            `occurences` bigint(20) NOT NULL DEFAULT 0,
+                            `calls` bigint(20) NOT NULL DEFAULT 0,
+                            `last_triggered` datetime DEFAULT NULL,
                             `created_at` datetime(6) NOT NULL,
                             `updated_at` datetime(6) NOT NULL,
                             PRIMARY KEY (`id`)
@@ -153,3 +157,5 @@ CREATE TABLE `users` (
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2021-03-07  1:14:29

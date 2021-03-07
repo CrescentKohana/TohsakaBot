@@ -6,13 +6,13 @@ module TohsakaBot
     # @return [void]
     def db
       @db ||= Sequel.connect(
-          adapter: 'mysql2',
-          charset: 'utf8mb4',
-          collate: 'utf8mb4_unicode_ci',
-          host: AUTH.db_url,
-          database: AUTH.db_name,
-          user: AUTH.db_user,
-          password: AUTH.db_password
+        adapter: 'mysql2',
+        charset: 'utf8mb4',
+        collate: 'utf8mb4_unicode_ci',
+        host: AUTH.db_url,
+        database: AUTH.db_name,
+        user: AUTH.db_user,
+        password: AUTH.db_password
       )
     end
 
@@ -23,14 +23,14 @@ module TohsakaBot
     # @param event [EventContainer, nil]
     # @return [Boolean] is user registered?
     def registered?(discord_uid, event = nil)
-      if TohsakaBot.get_user_id(discord_uid.to_i).to_i > 0
-        return true
+      if TohsakaBot.get_user_id(discord_uid.to_i).to_i.positive?
+        true
       else
-        event.respond "You aren't registered yet! Please do so by entering the command `?register`." unless event.nil?
-        return false
+        event&.respond "You aren't registered yet! Please do so by entering the command `?register`."
+        false
       end
     rescue
-      event.respond "You aren't registered yet! Please do so by entering the command `?register`." unless event.nil?
+      event&.respond "You aren't registered yet! Please do so by entering the command `?register`."
       false
     end
 
@@ -39,8 +39,9 @@ module TohsakaBot
     # @param discord_uid [Integer] Discord UID
     # @return [Integer, nil] internal ID for the user
     def get_user_id(discord_uid)
-      user = TohsakaBot.db[:authorizations][uid:discord_uid.to_i]
+      user = TohsakaBot.db[:authorizations][uid: discord_uid.to_i]
       return user[:user_id].to_i unless user.nil?
+
       nil
     end
 
@@ -49,9 +50,21 @@ module TohsakaBot
     # @param user_id [Integer] internal ID for the user
     # @return [Integer, nil] Discord UID
     def get_discord_id(user_id)
-      user = TohsakaBot.db[:authorizations][user_id:user_id.to_i]
+      user = TohsakaBot.db[:authorizations][user_id: user_id.to_i]
       return user[:uid].to_i unless user.nil?
+
       nil
+    end
+
+    # Returns user's locale.
+    #
+    # @param discord_uid [Integer] Discord User ID
+    # @return [String] locale (default "en" if user doesn't exist)
+    def get_locale(discord_uid)
+      user = TohsakaBot.db[:users][id: get_user_id(discord_uid)]
+      return user[:locale] unless user.nil? || user[:locale].nil? || user[:locale].empty?
+
+      "en"
     end
 
     # Checks if the user limit is reached for this datatype.
