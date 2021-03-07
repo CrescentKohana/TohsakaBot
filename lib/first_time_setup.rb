@@ -13,6 +13,21 @@ class FirstTimeSetup
     Integer(id, exception: false)
   end
 
+  def required_input(msg, integer, pwd: false)
+    input = ""
+    until !input.blank? && (!integer || valid_id?(input))
+      print msg
+      input = if pwd
+                $stdin.noecho(&:gets).chomp
+              else
+                gets
+              end
+
+      input = input.encode("UTF-8", invalid: :replace, replace: "")
+    end
+    input
+  end
+
   def create_data_files_and_configs
     Dir.mkdir('cfg') unless File.directory?('cfg')
 
@@ -21,21 +36,15 @@ class FirstTimeSetup
     puts Rainbow("\n#{I18n.t(:'first_time_setup.required_hint')}\n").red
     puts Rainbow("#{I18n.t(:'first_time_setup.auth_file')}").green
     File.open('cfg/auth.yml', 'w') do |f|
-      # TODO: Validate required inputs in loop
-      print green + I18n.t(:'first_time_setup.owner_id')
-      owner_id = gets
+      owner_id = required_input(green + I18n.t(:'first_time_setup.owner_id'), true)
 
-      print green + I18n.t(:'first_time_setup.cli_id')
-      cli_id = gets
+      cli_id = required_input(green + I18n.t(:'first_time_setup.cli_id'), true)
 
-      print green + I18n.t(:'first_time_setup.bot_token')
-      bot_token = $stdin.noecho(&:gets).chomp
+      bot_token = required_input(green + I18n.t(:'first_time_setup.bot_token'), false, pwd: true)
       print("\n\n")
 
-      print green + I18n.t(:'first_time_setup.db_user')
-      db_user = gets
-      print green + I18n.t(:'first_time_setup.db_password')
-      db_password = $stdin.noecho(&:gets).chomp
+      db_user = required_input(green + I18n.t(:'first_time_setup.db_user'), false)
+      db_password = required_input(green + I18n.t(:'first_time_setup.db_password'), false, pwd: true)
       print("\n\n")
 
       # TODO: Disable the functionality of YT and SauceNao commands/events if not set.
@@ -76,8 +85,7 @@ class FirstTimeSetup
       print("\n")
       locale = %w[en ja fi].include?(locale) ? locale : @locale
 
-      print green + I18n.t(:'first_time_setup.default_channel')
-      default_channel = gets
+      default_channel = required_input(green + I18n.t(:'first_time_setup.default_channel'), true )
 
       print green + I18n.t(:'first_time_setup.highlight_channel')
       highlight_channel = gets

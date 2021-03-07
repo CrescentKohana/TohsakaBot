@@ -3,9 +3,9 @@ module TohsakaBot
     module TriggerAdd
       extend Discordrb::Commands::CommandContainer
       command(:triggeradd,
-              aliases: %i[addtrigger trigger],
-              description: 'Adds a trigger.',
-              usage: "Use 'triggeradd -h|--help' for help.",
+              aliases: TohsakaBot.get_command_aliases('commands.trigger.add.aliases'),
+              description: I18n.t(:'commands.trigger.add.description'),
+              usage: I18n.t(:'commands.trigger.add.usage'),
               min_args: 1,
               require_register: true,
               enabled_in_pm: false) do |event, *msg|

@@ -40,11 +40,11 @@ en:
         description: "Ping!"
         usage: "ping"
         response: "`Pong! Bot respond time (ping): %{time}s`"
-    reminders:
-      reminder_add:
+    reminder:
+      add:
         aliases: "remind reminder remadd addrem rem"
         description: "Sets a reminder."
-        usage: "Use 'remindme -h|--help' for help."
+        usage: "'remindme -h|--help' for help."
         help:
           banner: "Usage: remindme [options]"
           datetime: "When to remind. Format: yMwdhms OR yyyy/MM/dd hh.mm.ss OR natural language"
@@ -56,7 +56,28 @@ en:
           about christmas on 12/22 12:00:00 every year starting with 2020."
         errors:
           all_blank: "If specifying other options (--m, --r), --d cannot be blank."
-      reminder_del:
-      reminder_mod:
-      reminder_details:
-      reminders:
+        repeat_msg: "repeatedly "
+        repeat_interval: " `<Interval %{interval}>`"
+      del:
+        aliases: "delreminder dontremindme remrem remdel delrem remremind delremind"
+        description: "Deletes a reminder."
+        usage: "delreminder <ids separeted by space (integer)>"
+        response: "Reminder%{plural} deleted: %{ids}."
+        errors:
+          not_found: "One or more IDs were not found within list of your reminders."
+      mod:
+      details:
+      list:
+    trigger:
+      add:
+        aliases: "addtrigger trigger"
+        description: "Adds a trigger."
+        usage: "'triggeradd -h|--help' for help."
+      del:
+        aliases: "td deltrigger deletetrigger triggerdelete removetrigger
+        triggerremove donttrigger remtrigger triggerrem"
+        description: "Deletes a trigger."
+        usage: "deltrigger <ids separeted by space (integer)>"
+        response: "Trigger%{plural} deleted: %{ids}."
+        errors:
+          not_found: "One or more IDs were not found within list of your triggers."
