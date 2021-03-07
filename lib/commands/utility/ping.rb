@@ -3,11 +3,10 @@ module TohsakaBot
     module Ping
       extend Discordrb::Commands::CommandContainer
       command(:ping,
-              description: 'Pong.',
-              usage: 'ping') do |event|
+              description: I18n.t(:'commands.utility.ping.description'),
+              usage: I18n.t(:'commands.utility.ping.usage')) do |event|
 
         locale = TohsakaBot.get_locale(event.user.id)
-
         event.respond(
           I18n.t(:'commands.utility.ping.response', locale: locale.to_sym, time: Time.now - event.timestamp)
         )

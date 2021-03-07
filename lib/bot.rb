@@ -36,6 +36,7 @@ require 'active_support/time_with_zone'
 
 # Localization #
 require 'i18n'
+require "i18n/backend/fallbacks"
 
 # Misc #
 require 'nekos'
@@ -60,14 +61,24 @@ require_relative 'gem_overrides/discordrb_command_override'
 
 # Main module of the bot
 module TohsakaBot
-  # Localization
+
+  # Localization with fallbacks
+  I18n::Backend::Simple.include I18n::Backend::Fallbacks
   I18n.load_path << Dir["#{File.expand_path("locales")}/*.yml"]
+  I18n.fallbacks.map(fi: :en, ja: :en)
 
   unless File.exist?('cfg/auth.yml')
     require_relative 'first_time_setup'
     setup = FirstTimeSetup.new
     setup.create_data_files_and_configs
   end
+
+
+  # Configuration & settings #
+  AUTH = OpenStruct.new YAML.load_file('cfg/auth.yml')
+  CFG = OpenStruct.new YAML.load_file('cfg/config.yml')
+
+  I18n.default_locale = CFG.locale.to_sym unless CFG.locale.empty?
 
   # Helpers #
   require_relative 'helpers/core_helper'
@@ -84,14 +95,10 @@ module TohsakaBot
   require_relative 'data_access/msg_queue_cache'
   require_relative 'data_access/permissions'
 
-  # Configuration & settings #
-  AUTH = OpenStruct.new YAML.load_file('cfg/auth.yml')
-  CFG = OpenStruct.new YAML.load_file('cfg/config.yml')
-
   # Discord Bot #
   BOT = Discordrb::Commands::CommandBot.new(token: AUTH.bot_token,
                                             client_id: AUTH.cli_id,
-                                            prefix: CFG.prefix,
+                                            prefix: CFG.prefix.split(" "),
                                             advanced_functionality: false,
                                             fancy_log: true)
 
@@ -150,9 +157,7 @@ module TohsakaBot
   TohsakaBot.trigger_data.clean_trigger_files
 
   puts "\n"
-  puts I18n.t :welcome, locale: :en
-  puts I18n.t :welcome, locale: :ja
-  puts I18n.t :welcome, locale: :fi
+  %i[en ja fi].each { |locale| puts I18n.t :welcome, locale: locale }
 
   # Terminal tool to send messages through the bot.
   Thread.new do

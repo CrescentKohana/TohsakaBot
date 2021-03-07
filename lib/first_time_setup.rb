@@ -13,31 +13,31 @@ module TohsakaBot
         print 'Type in the client ID (found here https://discord.com/developers/applications in the General Information tab of the app): '
         cli_id = gets
         print 'Type in the bot token (found on the same page in the Bot tab of the app): '
-        bot_token = STDIN.noecho(&:gets).chomp
+        bot_token = $stdin.noecho(&:gets).chomp
 
         print "\nType in a the MariaDB/MySQL username: "
         db_user = gets
         print 'Type in a the MariaDB/MySQL password: '
-        db_password = STDIN.noecho(&:gets).chomp
+        db_password = $stdin.noecho(&:gets).chomp
 
         # TODO: Disable the functionality of YT and SauceNao commands/events if not set.
         print "\nType in an YouTube API key (Optional): "
-        yt_apikey = STDIN.noecho(&:gets).chomp
+        yt_apikey = $stdin.noecho(&:gets).chomp
         print "\nType in a SauceNao API key (Optional): "
-        saucenao_apikey = STDIN.noecho(&:gets).chomp
+        saucenao_apikey = $stdin.noecho(&:gets).chomp
 
         f.write(
           "# Personal keys, IDs and tokens\n\n"\
-          "owner_id: \"#{owner_id}\"\n"\
-          "bot_token: \"#{bot_token}\"\n"\
-          "cli_id: \"#{cli_id}\"\n"\
-          "yt_apikey: \"#{yt_apikey}\"\n"\
-          "saucenao_apikey: \"#{saucenao_apikey}\"\n\n"\
+          "owner_id: #{owner_id}\n"\
+          "bot_token: #{bot_token}\n"\
+          "cli_id: #{cli_id}\n"\
+          "yt_apikey: #{yt_apikey}\n"\
+          "saucenao_apikey: #{saucenao_apikey}\n\n"\
           "# Internal auth\n"\
-          "db_user: \"#{db_user}\"\n"\
-          "db_password: \"#{db_password}\"\n"\
-          "db_name: \"tohsaka\"\n"\
-          "db_url: \"localhost\" \n"\
+          "db_user: #{db_user}\n"\
+          "db_password: #{db_password}\n"\
+          "db_name: tohsaka\n"\
+          "db_url: localhost\n"\
           "# DO NOT SHARE THIS FILE OR ITS CONTENTS WITH ANYONE\n"
         )
       end
@@ -45,8 +45,11 @@ module TohsakaBot
       File.open('cfg/config.yml', 'w') do |f|
         now_playing = 'TohsakaBot'
 
-        print 'Type in the preferred command prefix (default ?): '
+        print 'Type in the preferred command prefixes separated by whitespace (default: ?): '
         prefix = gets
+
+        print 'Type in the preferred language / locale of the bot [en (default), jp, fi]: '
+        locale = gets
 
         print 'Type in the default channel ID: '
         default_channel = gets
@@ -67,6 +70,7 @@ module TohsakaBot
         f.write(
           "---\n"\
           "prefix: \"#{prefix}\"\n"\
+          "locale: \"#{locale}\"\n"\
           "np: \"#{now_playing}\"\n"\
           "default_channel: \"#{default_channel}\"\n"\
           "highlight_channel: \"#{highlight_channel}\"\n"\
