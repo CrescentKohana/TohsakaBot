@@ -4,7 +4,7 @@ module TohsakaBot
       extend Discordrb::Commands::CommandContainer
       bucket :cf, limit: 15, time_span: 60, delay: 1
       command(:doubles,
-              aliases: %i[tuplat tuplilla tuplil dips dubs],
+              aliases: %i[tuplat tuplilla tuplil dips dubs duoil duoilla duuoil duuoilla],
               description: 'Doubles.',
               usage: '',
               bucket: :cf,
