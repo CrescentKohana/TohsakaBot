@@ -44,6 +44,7 @@ require 'digest/sha1'
 require 'benchmark'
 require 'to_regexp'
 require 'active_support/core_ext/string/filters'
+require 'active_support/core_ext/string'
 ## Better command parsing ##
 require 'optimist'
 require 'shellwords'
@@ -67,18 +68,11 @@ module TohsakaBot
   I18n.load_path << Dir["#{File.expand_path("locales")}/*.yml"]
   I18n.fallbacks.map(fi: :en, ja: :en)
 
-  unless File.exist?('cfg/auth.yml')
-    require_relative 'first_time_setup'
-    setup = FirstTimeSetup.new
-    setup.create_data_files_and_configs
-  end
-
-
   # Configuration & settings #
   AUTH = OpenStruct.new YAML.load_file('cfg/auth.yml')
   CFG = OpenStruct.new YAML.load_file('cfg/config.yml')
 
-  I18n.default_locale = CFG.locale.to_sym unless CFG.locale.empty?
+  I18n.default_locale = CFG.locale.to_sym unless CFG.locale.blank?
 
   # Helpers #
   require_relative 'helpers/core_helper'
@@ -156,17 +150,15 @@ module TohsakaBot
   # Cleans trigger files not present in the database.
   TohsakaBot.trigger_data.clean_trigger_files
 
+  # Welcome messages
   puts "\n"
   %i[en ja fi].each { |locale| puts I18n.t :welcome, locale: locale }
+  puts "\n"
 
   # Terminal tool to send messages through the bot.
   Thread.new do
     channel = CFG.default_channel.to_i
-
-    unless CFG.default_channel.match(/\d{18}/)
-      puts "No default channel set in 'cfg/config.yml'. "\
-           "Before sending messages through the terminal, set the channel with 'setch <id>'"
-    end
+    puts I18n.t(:'bot.default_channel_notify') unless CFG.default_channel.match(/\d{18}/)
 
     while (user_input = gets.strip.split(' '))
       if user_input[0] == 'setch'
@@ -179,7 +171,7 @@ module TohsakaBot
   end
 
   # Connection with TohsakaWeb #
-  BRIDGE_URI = 'druby://localhost:8787'.freeze
+  BRIDGE_URI = 'druby://localhost:8787'
   FRONT_OBJECT = TohsakaBridge.new
   DRb.start_service(BRIDGE_URI, FRONT_OBJECT)
 

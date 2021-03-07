@@ -1,6 +1,36 @@
 en:
   welcome: "EN: TohsakaBot launched successfully!"
 
+  bot:
+    default_channel_notify: "No default channel set in 'cfg/config.yml'.
+    Before sending messages through the terminal, set the channel with 'setch <id>'"
+
+  first_time_setup:
+    required_hint: "* means required field!"
+    auth_file: "Creating auth.yml"
+    owner_id: "*Owner ID (Discord UserID): "
+    cli_id: "*Client ID
+    (found here https://discord.com/developers/applications in the General Information tab of the app): "
+    bot_token: "*Bot token (found on the same page in the Bot tab of the app): "
+    db_user: "*MariaDB/MySQL username: "
+    db_password: "*MariaDB/MySQL password: "
+    yt_apikey: "YouTube API key: "
+    saucenao_apikey: "SauceNao API key: "
+    auth_cfg_notice_1: "# Personal keys, IDs and tokens"
+    auth_cfg_notice_2: "# Internal auth"
+    auth_cfg_notice_3: "# DO NOT SHARE THIS FILE OR ITS CONTENTS WITH ANYONE"
+    config_file: "Creating config.yml"
+    default_now_playing: "Magic"
+    prefix: "Preferred command prefixes separated by whitespace (default: ?): "
+    locale: "Preferred language / locale of the bot (current: %{lang}, [en, jp, fi]): "
+    default_channel: "*Default channel ID (notices): "
+    highlight_channel: "Highlight channel ID (advanced pin system): "
+    web_dir: "Directory path of TohsakaWeb like /home/rin/www/TohsakaWeb
+    (optional, note for no trailing slash!): "
+    lord_role: "ID of the lord role (optional, given to a user as a reward when they win in something): "
+    fool_role: "ID of the fool role (optional, given to a user as a reward when they lose in something): "
+    files_created: "Necessary directories and files created! Bot can now be started with:\nbundle exec ruby run.rb"
+
   async:
   events:
   commands:
@@ -20,7 +50,10 @@ en:
           datetime: "When to remind. Format: yMwdhms OR yyyy/MM/dd hh.mm.ss OR natural language"
           msg: "Message for the reminder."
           repeat: "Interval duration for repeated reminders. Format: dhm (eg. 2d6h20m)"
-          extra_help: "Alternatively, `remindme <time (if spaces put ; after this)> <msg>` also works. Examples follow:\n・`remindme -d 4M2d8h30s -m Tickets!` will remind you in 4 months, 2 days, 8 hours and 30 seconds for 'Tickets!'.\n・`remindme -d 2020/12/22 12:00:00 -m Christmas soon! -r 1y` will remind you about christmas on 12/22 12:00:00 every year starting with 2020."
+          extra_help: "Alternatively, `remindme <time (if spaces put ; after this)> <msg>` also works.
+          Examples follow:\n・`remindme -d 4M2d8h30s -m Tickets!` will remind you in 4 months, 2 days, 8 hours
+          and 30 seconds for 'Tickets!'.\n・`remindme -d 2020/12/22 12:00:00 -m Christmas soon! -r 1y` will remind you
+          about christmas on 12/22 12:00:00 every year starting with 2020."
         errors:
           all_blank: "If specifying other options (--m, --r), --d cannot be blank."
       reminder_del:

@@ -71,12 +71,12 @@ module TohsakaBot
           reply = t[2]
           file = t[3]
           mode = t[7].to_i
-          chance = TohsakaBot.trigger_data.parse_chance(t[:chance], t[:mode])
+          chance = TohsakaBot.trigger_data.parse_chance(t[8], mode)
 
           if reply.nil? || reply.empty?
-            output << "`#{format('%4s', id)} | #{format('%-5s', "#{mode.to_s} #{chance.to_s}")} | #{format('%-33s', phrase.to_s.gsub("\n", '')[0..30])} | #{format('%-21s', file[0..20])}`\n"
+            output << "`#{format('%4s', id)} | #{format('%-5s', "#{mode} #{chance}")} | #{format('%-33s', phrase.to_s.gsub("\n", '')[0..30])} | #{format('%-21s', file[0..20])}`\n"
           else
-            output << "`#{format('%4s', id)} | #{format('%-5s', "#{mode.to_s} #{chance.to_s}")} | #{format('%-33s', phrase.to_s.gsub("\n", '')[0..30])} | #{format('%-21s', reply.gsub("\n", '')[0..20])}`\n"
+            output << "`#{format('%4s', id)} | #{format('%-5s', "#{mode} #{chance}")} | #{format('%-33s', phrase.to_s.gsub("\n", '')[0..30])} | #{format('%-21s', reply.gsub("\n", '')[0..20])}`\n"
           end
           result_amount += 1
         end
