@@ -1,8 +1,23 @@
 ja:
   welcome: "JA: TohsakaBot（遠坂ボット）が滞りなくスタートいたしました！"
 
+  async:
+  events:
   commands:
     utility:
       ping:
+        aliases: "ピン"
         description: "Ping!"
+        usage: "ping"
         response: "`Pong! ボットがpingに応答するまでの経過した時間: %{time}s`"
+    reminders:
+      reminder_add:
+        aliases: ""
+      reminder_del:
+        aliases: ""
+      reminder_mod:
+        aliases: ""
+      reminder_details:
+        aliases: ""
+      reminders:
+        aliases: ""

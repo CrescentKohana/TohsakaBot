@@ -1,8 +1,23 @@
 fi:
   welcome: "FI: TohsakaBot käynnistetty onnistuneesti!"
 
+  async:
+  events:
   commands:
     utility:
       ping:
+        aliases: ""
         description: "Ping!"
+        usage: "ping"
         response: "`Pong! Botilla vastaamiseen kulunut aika (ping): %{time}s`"
+    reminders:
+      reminder_add:
+        aliases: ""
+      reminder_del:
+        aliases: ""
+      reminder_mod:
+        aliases: ""
+      reminder_details:
+        aliases: ""
+      reminders:
+        aliases: ""

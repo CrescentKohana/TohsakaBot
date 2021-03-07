@@ -1,8 +1,29 @@
 en:
   welcome: "EN: TohsakaBot launched successfully!"
 
+  async:
+  events:
   commands:
     utility:
       ping:
+        aliases: "remind reminder remadd remind addrem rem"
         description: "Ping!"
+        usage: "ping"
         response: "`Pong! Bot respond time (ping): %{time}s`"
+    reminders:
+      reminder_add:
+        aliases: "remind reminder remadd addrem rem"
+        description: "Sets a reminder."
+        usage: "Use 'remindme -h|--help' for help."
+        help:
+          banner: "Usage: remindme [options]"
+          datetime: "When to remind. Format: yMwdhms OR yyyy/MM/dd hh.mm.ss OR natural language"
+          msg: "Message for the reminder."
+          repeat: "Interval duration for repeated reminders. Format: dhm (eg. 2d6h20m)"
+          extra_help: "Alternatively, `remindme <time (if spaces put ; after this)> <msg>` also works. Examples follow:\n・`remindme -d 4M2d8h30s -m Tickets!` will remind you in 4 months, 2 days, 8 hours and 30 seconds for 'Tickets!'.\n・`remindme -d 2020/12/22 12:00:00 -m Christmas soon! -r 1y` will remind you about christmas on 12/22 12:00:00 every year starting with 2020."
+        errors:
+          all_blank: "If specifying other options (--m, --r), --d cannot be blank."
+      reminder_del:
+      reminder_mod:
+      reminder_details:
+      reminders:
