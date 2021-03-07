@@ -3,19 +3,19 @@ module TohsakaBot
     module ReminderAdd
       extend Discordrb::Commands::CommandContainer
       command(:remindme,
-              aliases: TohsakaBot.get_command_aliases('commands.reminders.reminder_add.aliases'),
-              description: I18n.t(:'commands.reminders.reminder_add.description'),
-              usage: I18n.t(:'commands.reminders.reminder_add.usage'),
+              aliases: TohsakaBot.get_command_aliases('commands.reminder.add.aliases'),
+              description: I18n.t(:'commands.reminder.add.description'),
+              usage: I18n.t(:'commands.reminder.add.usage'),
               min_args: 1,
               require_register: true) do |event, *msg|
 
         options = TohsakaBot.command_parser(
           event, msg,
-          I18n.t(:'commands.reminders.reminder_add.help.banner'),
-          I18n.t(:'commands.reminders.reminder_add.help.extra_help'),
-          [:datetime, I18n.t(:'commands.reminders.reminder_add.help.datetime'), { type: :strings }],
-          [:msg, I18n.t(:'commands.reminders.reminder_add.help.msg'), { type: :strings }],
-          [:repeat, I18n.t(:'commands.reminders.reminder_add.help.repeat'), { type: :strings }]
+          I18n.t(:'commands.reminder.add.help.banner'),
+          I18n.t(:'commands.reminder.add.help.extra_help'),
+          [:datetime, I18n.t(:'commands.reminder.add.help.datetime'), { type: :strings }],
+          [:msg, I18n.t(:'commands.reminder.add.help.msg'), { type: :strings }],
+          [:repeat, I18n.t(:'commands.reminder.add.help.repeat'), { type: :strings }]
         )
         break if options.nil?
 
@@ -25,7 +25,7 @@ module TohsakaBot
         repeat = options.repeat.nil? ? nil : options.repeat.join(' ')
 
         if datetime.blank? && (!options.msg.blank? || !options.repeat.blank?)
-          event.respond I18n.t(:'commands.reminders.reminder_add.errors.all_blank')
+          event.respond I18n.t(:'commands.reminder.add.errors.all_blank')
           break
         elsif datetime.blank? && !msg.nil?
           msg = msg.join(' ')

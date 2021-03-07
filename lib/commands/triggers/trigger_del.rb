@@ -3,9 +3,9 @@ module TohsakaBot
     module TriggerDel
       extend Discordrb::Commands::CommandContainer
       command(:triggerdel,
-              aliases: %i[td deltrigger deletetrigger triggerdelete removetrigger triggerremove donttrigger remtrigger triggerrem],
-              description: 'Deletes a trigger.',
-              usage: 'deltrigger <ids separeted by space (integer)>',
+              aliases: TohsakaBot.get_command_aliases('commands.trigger.del.aliases'),
+              description: I18n.t(:'commands.trigger.del.description'),
+              usage: I18n.t(:'commands.trigger.del.usage'),
               min_args: 1,
               require_register: true) do |event, *ids|
 
@@ -55,9 +55,9 @@ module TohsakaBot
 
         if deleted.size.positive?
           TohsakaBot.trigger_data.reload_active
-          event.<< "Trigger#{'s' if ids.length > 1} deleted: #{deleted.join(', ')}."
+          event.<< I18n.t(:'commands.trigger.del.response', plural: ids.length > 1 ? "s" : "", ids: deleted.join(', '))
         else
-          event.<< 'One or more IDs were not found within list of your triggers.'
+          event.<< I18n.t(:'commands.trigger.del.errors.not_found')
         end
       end
     end
