@@ -34,6 +34,9 @@ require 'action_view' # helpers/date_helper
 require 'active_support/core_ext/numeric/time'
 require 'active_support/time_with_zone'
 
+# Localization #
+require 'i18n'
+
 # Misc #
 require 'nekos'
 require 'digest/sha1'
@@ -57,6 +60,9 @@ require_relative 'gem_overrides/discordrb_command_override'
 
 # Main module of the bot
 module TohsakaBot
+  # Localization
+  I18n.load_path << Dir["#{File.expand_path("locales")}/*.yml"]
+
   unless File.exist?('cfg/auth.yml')
     require_relative 'first_time_setup'
     setup = FirstTimeSetup.new
@@ -142,6 +148,11 @@ module TohsakaBot
 
   # Cleans trigger files not present in the database.
   TohsakaBot.trigger_data.clean_trigger_files
+
+  puts "\n"
+  puts I18n.t :welcome, locale: :en
+  puts I18n.t :welcome, locale: :ja
+  puts I18n.t :welcome, locale: :fi
 
   # Terminal tool to send messages through the bot.
   Thread.new do

@@ -1,7 +1,7 @@
-require: rubocop-performance
+# require: rubocop-performance
 
 AllCops:
-  TargetRubyVersion: 2.7
+  TargetRubyVersion: 3.0.0
 
 # Commonly used screens these days easily fit more than 80 characters.
 Metrics/LineLength:
@@ -15,3 +15,6 @@ Metrics/MethodLength:
 # The guiding principle of classes is SRP, SRP can't be accurately measured by LoC
 Metrics/ClassLength:
   Max: 1500
+
+Style/StringLiterals:
+  Enabled: false

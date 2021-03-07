@@ -11,9 +11,9 @@ describe String do
   end
 
   context 'sanitizing string from markdown code tags' do
-    it 'returns string with flipped markdown code tags' do
+    it 'returns string with escaped markdown code tags' do
       message = "Some `code here` and ```more here```".sanitize_string
-      expect(message).to eq("Some ´code here´ and ´´´more here´´´")
+      expect(message).to eq("Some \`code here\` and \`\`\`more here\`\`\`")
     end
   end
 
