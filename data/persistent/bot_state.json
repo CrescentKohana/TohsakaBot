@@ -23,6 +23,7 @@
     "RoleAdd",
     "RoleDel",
     "ListRoles",
+    "SetLang",
     "Tester",
     "NowPlaying",
     "Alko",
