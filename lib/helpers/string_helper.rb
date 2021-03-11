@@ -24,4 +24,8 @@ class String
     # TODO: Add a check if the link already has <> around it
     gsub(TohsakaBot.url_regex(true), '<\k<capture>>')
   end
+
+  def first_number
+    self[/\d+/]
+  end
 end
