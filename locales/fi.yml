@@ -4,12 +4,20 @@ fi:
   async:
   events:
   commands:
+    management:
+      set_lang:
+        aliases: ""
+        description: "Asettaa botissa käytetyn kielen käyttäjälle."
+        usage: "setlang <fi, en, ja>"
+        response: "Kieli asetettu suomeksi!"
+        errors:
+          locale_not_found: "Kysyttyä kieltä ei löytynyt."
     utility:
       ping:
         aliases: ""
         description: "Ping!"
         usage: "ping"
-        response: "`Pong! Botilla vastaamiseen kulunut aika (ping): %{time}s`"
+        response: "`Pong! Botilla vastaukseen kulunut aika: %{time}ms`"
     reminders:
       reminder_add:
         aliases: ""
