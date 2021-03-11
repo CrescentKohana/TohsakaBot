@@ -35,6 +35,20 @@ en:
   events:
   commands:
     management:
+      add_role:
+        aliases: "addrole addroles rolesadd"
+        description: "Adds roles to the user."
+        usage: "roladd <roles (separated by whitespace)>"
+        response: "Roles added: %{roles}"
+        errors:
+          not_found: "No roles found."
+      del_role:
+        aliases: "delrole remrole rolerem delroles rolesdel remroles rolesrem"
+        description: "Deletes roles from the user."
+        usage: "roledel <roles (separated by whitespace)>"
+        response: "Roles deleted: %{roles}"
+        errors:
+          not_found: "No roles found."
       set_lang:
         aliases: "langset setlanguage languageset setlocale localeset"
         description: "Sets the language used in the bot for the user."
