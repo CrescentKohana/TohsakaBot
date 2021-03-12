@@ -15,10 +15,15 @@ module TohsakaBot
           next unless CFG.allowed_roles.include? role.to_s
 
           found_role = event.server.roles.find { |r| r.name == role }
-          unless found_role.nil?
-            Discordrb::API::Server.remove_member_role("Bot #{AUTH.bot_token}", event.channel.server.id, event.message.user.id, found_role.id)
-            deleted_roles.add(role)
-          end
+          next if found_role.nil?
+
+          Discordrb::API::Server.remove_member_role(
+            "Bot #{AUTH.bot_token}",
+            event.channel.server.id,
+            event.message.user.id,
+            found_role.id
+          )
+          deleted_roles.add(role)
         end
 
         if deleted_roles.empty?

@@ -134,6 +134,7 @@ class FirstTimeSetup
     # File.open("data/excluded_urls.yml", "w") { |f| f.write("---") } unless File.exist?('data/excluded_urls.yml')
     File.open('data/repost.yml', 'w') { |f| f.write('---') } unless File.exist?('data/repost.yml')
     File.open('data/temporary_roles.yml', 'w') { |f| f.write('--- {}') } unless File.exist?('data/temporary_roles.yml')
+    File.open('data/squads_mute.yml', 'w') { |f| f.write('--- {}') } unless File.exist?('data/squads_mute.yml')
 
     Dir.mkdir('data/triggers') unless File.directory?('data/triggers')
 
