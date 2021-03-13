@@ -44,13 +44,12 @@ module TohsakaBot
           end
 
           alko_url = 'https://www.alko.fi/tuotteet/'
-
-          sorted = random_recommendations.sort { |a, b| (BigDecimal(a[4], 0).to_i * 100) <=> (BigDecimal(b[4], 0).to_i * 100) }
+          sorted = random_recommendations.sort_by { |a| -(a[21].to_f / a[5].to_f) }
           event.channel.send_embed do |embed|
             embed.title = "Here's something for you to ~~get drunk~~ enjoy"
             embed.colour = 0xA82727
             embed.timestamp = Time.now
-            embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'Sorted by the ratio of alcohol-% to price (€)')
+            embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'Sorted by the amount of alcohol per €')
 
             embed.add_field(name: ":black_small_square: #{sorted[0][1]}",
                             value: "[#{sorted[0][3]}・#{sorted[0][21]}%・#{sorted[0][4]}€](#{alko_url}#{sorted[0][0]})")
