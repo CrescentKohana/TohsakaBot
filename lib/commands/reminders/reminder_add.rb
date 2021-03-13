@@ -3,23 +3,19 @@ module TohsakaBot
     module ReminderAdd
       extend Discordrb::Commands::CommandContainer
       command(:remindme,
-              aliases: %i[remind reminder remadd remind addrem muistuta muistutus rem],
-              description: 'Sets a reminder.',
-              usage: "Use 'remindme -h|--help' for help.",
+              aliases: TohsakaBot.get_command_aliases('commands.reminder.add.aliases'),
+              description: I18n.t(:'commands.reminder.add.description'),
+              usage: I18n.t(:'commands.reminder.add.usage'),
               min_args: 1,
               require_register: true) do |event, *msg|
 
-        extra_help = "Alternatively, `remindme <time (if spaces put ; after this)> <msg>` also works. Examples follow:\n"\
-                     '・`remindme -d 4M2d8h30s -m Tickets!` will remind you in 4 months, 2 days, 8 hours '\
-                     "and 30 seconds for 'Tickets!'.\n"\
-                     '・`remindme -d 2020/12/22 12:00:00 -m Christmas soon! -r 1y` will remind you about christmas '\
-                     'on 12/22 12:00:00 every year starting with 2020.'
-
         options = TohsakaBot.command_parser(
-            event, msg, 'Usage: remindme [options]', extra_help,
-            [:datetime, 'When to remind. Format: yMwdhms OR yyyy/MM/dd hh.mm.ss OR natural language', {type: :strings}],
-            [:msg, 'Message for the reminder.', {type: :strings}],
-            [:repeat, 'Interval duration for repeated reminders. Format: dhm (eg. 2d6h20m)', {type: :strings}]
+          event, msg,
+          I18n.t(:'commands.reminder.add.help.banner'),
+          I18n.t(:'commands.reminder.add.help.extra_help'),
+          [:datetime, I18n.t(:'commands.reminder.add.help.datetime'), { type: :strings }],
+          [:msg, I18n.t(:'commands.reminder.add.help.msg'), { type: :strings }],
+          [:repeat, I18n.t(:'commands.reminder.add.help.repeat'), { type: :strings }]
         )
         break if options.nil?
 
@@ -29,7 +25,7 @@ module TohsakaBot
         repeat = options.repeat.nil? ? nil : options.repeat.join(' ')
 
         if datetime.blank? && (!options.msg.blank? || !options.repeat.blank?)
-          event.respond 'If specifying other options (--m, --r), --d cannot be blank.'
+          event.respond I18n.t(:'commands.reminder.add.errors.all_blank')
           break
         elsif datetime.blank? && !msg.nil?
           msg = msg.join(' ')

@@ -146,8 +146,16 @@ module TohsakaBot
         reminders.where(id: @id.to_i).update(reminder)
       end
 
-      repeated_msg = @repeat.positive? ? 'repeatedly ' : ''
-      repetition_interval = @repeat.positive? ? " `<Interval #{distance_of_time_in_words(@repeat)}>`" : ''
+      if @repeat.positive?
+        repeated_msg = I18n.t(:'commands.reminder.add.repeat_msg')
+        repetition_interval = I18n.t(
+          :'commands.reminder.add.repeat_interval',
+          interval: distance_of_time_in_words(@repeat)
+        )
+      else
+        repeated_msg = ""
+        repetition_interval = ""
+      end
 
       send_confirmation(repeated_msg, repetition_interval, true)
     end

@@ -1,0 +1,31 @@
+fi:
+  welcome: "FI: TohsakaBot käynnistetty onnistuneesti!"
+
+  async:
+  events:
+  commands:
+    management:
+      set_lang:
+        aliases: ""
+        description: "Asettaa botissa käytetyn kielen käyttäjälle."
+        usage: "setlang <fi, en, ja>"
+        response: "Kieli asetettu suomeksi!"
+        errors:
+          locale_not_found: "Kysyttyä kieltä ei löytynyt."
+    utility:
+      ping:
+        aliases: ""
+        description: "Ping!"
+        usage: "ping"
+        response: "`Pong! Botilla vastaukseen kulunut aika: %{time}ms`"
+    reminders:
+      reminder_add:
+        aliases: ""
+      reminder_del:
+        aliases: ""
+      reminder_mod:
+        aliases: ""
+      reminder_details:
+        aliases: ""
+      reminders:
+        aliases: ""

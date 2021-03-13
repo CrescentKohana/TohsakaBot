@@ -3,7 +3,7 @@
     "RefreshNP",
     "RemindOnTime",
     "URLCleaner",
-    "TempRoleNoMore",
+    "RoleManagement",
     "LoadAlko",
     "TypingChannels",
     "MsgQueue",
@@ -23,6 +23,7 @@
     "RoleAdd",
     "RoleDel",
     "ListRoles",
+    "SetLang",
     "Tester",
     "NowPlaying",
     "Alko",
@@ -74,6 +75,7 @@
     "AlsoRemindme",
     "MessageIDCheck",
     "Squads",
-    "SquadsHelper"
+    "SquadsHelper",
+    "SquadsMute"
   ]
 }

@@ -17,7 +17,7 @@ module TohsakaBot
         else
           requests[id.to_i]['tags'] = tag
           File.open('data/feature_requests.yml', 'w') { |h| h.write requests.to_yaml }
-          event.<< "Feature request `#{id}` updated!"
+          event.<< "Feature request `#{id}` updated!" unless event.channel.id.to_i == CFG.default_channel.to_i
 
           msg = if tag == "done"
                   "is done!\n`#{requests[id.to_i]["request"]}`"

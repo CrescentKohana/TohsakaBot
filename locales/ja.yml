@@ -1,0 +1,31 @@
+ja:
+  welcome: "JA: TohsakaBot（遠坂ボット）が滞りなくスタートいたしました！"
+
+  async:
+  events:
+  commands:
+    management:
+      set_lang:
+        aliases: ""
+        description: "ユーザー固有言語を設定することができます。"
+        usage: "setlang <fi, en, ja>"
+        response: "言語を日本語に設定されました！"
+        errors:
+          locale_not_found: "指定された言語を見つかりませんでした。"
+    utility:
+      ping:
+        aliases: "ピン"
+        description: "Ping!"
+        usage: "ping"
+        response: "`Pong! ボットがpingに応答するまでの経過した時間: %{time}ms`"
+    reminders:
+      reminder_add:
+        aliases: ""
+      reminder_del:
+        aliases: ""
+      reminder_mod:
+        aliases: ""
+      reminder_details:
+        aliases: ""
+      reminders:
+        aliases: ""

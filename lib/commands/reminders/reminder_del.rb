@@ -3,9 +3,9 @@ module TohsakaBot
     module ReminderDel
       extend Discordrb::Commands::CommandContainer
       command(:reminderdel,
-              aliases: %i[delreminder dontremindme remrem remdel delrem remremind delremind],
-              description: 'Deletes an active reminder.',
-              usage: 'delreminder <ids separeted by space (integer)>',
+              aliases: TohsakaBot.get_command_aliases('commands.reminder.del.aliases'),
+              description: I18n.t(:'commands.reminder.del.description'),
+              usage: I18n.t(:'commands.reminder.del.usage'),
               min_args: 1,
               require_register: true) do |event, *ids|
 
@@ -20,9 +20,9 @@ module TohsakaBot
         end
 
         event << if deleted.size.positive?
-                   "Reminder#{'s' if ids.length > 1} deleted: #{deleted.join(', ')}."
+                   I18n.t(:'commands.reminder.del.response', plural: ids.length > 1 ? "s" : "", ids: deleted.join(', '))
                  else
-                   'One or more IDs were not found within list of your reminders.'
+                   I18n.t(:'commands.reminder.del.errors.not_found')
                  end
       end
     end

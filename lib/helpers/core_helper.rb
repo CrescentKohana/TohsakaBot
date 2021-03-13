@@ -77,6 +77,18 @@ module TohsakaBot
       input.each { |s| return_array << Redcarpet::Markdown.new(Redcarpet::Render::StripDown).render(s).to_s }
       return_array
     end
+
+    # Returns all aliases in every language for a command.
+    #
+    # @param i18n_path [String] i18n native path to a translation (eg. "commands.utility.ping.aliases")
+    # @return [Array] Symbol array of command aliases
+    def get_command_aliases(i18n_path)
+      aliases = %i[]
+      %i[en ja fi].each do |locale|
+        aliases += I18n.t(i18n_path.to_sym, locale: locale.to_sym).split(" ").map(&:to_sym)
+      end
+      aliases
+    end
   end
 
   TohsakaBot.extend CoreHelper

@@ -189,6 +189,8 @@ DEPENDENCIES
   discordrb!
   feedjira
   http
+  http-parser
+  i18n
   json
   mini_magick
   mysql2
@@ -197,6 +199,7 @@ DEPENDENCIES
   optimist
   pickup
   public_suffix
+  rainbow
   redcarpet
   roo
   roo-xls
