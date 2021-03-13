@@ -2,7 +2,7 @@
 .idea
 .yardoc
 doc
-lib/deprecated
+deprecated
 
 # Bot specific
 cfg/

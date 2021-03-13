@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module Typing
@@ -7,7 +9,6 @@ module TohsakaBot
               description: 'Starts typing.',
               permission_level: 1000,
               usage: 'typing <how long (minutes, default is unlimited)>') do |event, duration|
-
         if event.channel.pm?
           event.<< 'Not allowed in private messages.'
           break

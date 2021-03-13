@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Async
     module RemindOnTime
@@ -34,17 +36,16 @@ module TohsakaBot
               @where = BOT.pm_channel(discord_uid)
             elsif BOT.channel(channel_id).nil?
               @where = BOT.pm_channel(discord_uid)
+            elsif BOT.channel(channel_id).pm?
+              @where = BOT.channel(channel_id)
             else
-              if BOT.channel(channel_id).pm?
-                @where = BOT.channel(channel_id)
-              else
-                # If bot has permissions to send messages to this channel.
-                if BOT.profile.on(BOT.server(BOT.channel(channel_id).server.id)).permission?(:send_messages, BOT.channel(channel_id))
-                  @where = BOT.channel(channel_id)
-                else
-                  @where = BOT.pm_channel(discord_uid)
-                end
-              end
+              # If bot has permissions to send messages to this channel.
+              @where = if BOT.profile.on(BOT.server(BOT.channel(channel_id).server.id)).permission?(:send_messages,
+                                                                                                    BOT.channel(channel_id))
+                         BOT.channel(channel_id)
+                       else
+                         BOT.pm_channel(discord_uid)
+                       end
             end
 
             # Catching the exception if a user has blocked the bot
@@ -63,7 +64,7 @@ module TohsakaBot
               else
                 @where.send_message("#{repeated_msg}eminder for <@#{discord_uid}>: #{msg.strip_mass_mentions}")
               end
-            rescue
+            rescue StandardError
               # Ignored
               # as the user has blocked the bot.
             end
@@ -78,8 +79,7 @@ module TohsakaBot
                           channel: channel_id,
                           repeat: repeat_time,
                           created_at: created_at,
-                          updated_at: updated_at
-                  )
+                          updated_at: updated_at)
               end
             else
               TohsakaBot.db.transaction do

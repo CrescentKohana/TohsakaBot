@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module MessagePrune
@@ -6,7 +8,6 @@ module TohsakaBot
               description: 'Prunes betweem 2 and 100 messages in the current channel.',
               usage: 'prune <amount (2-100)>',
               permission_level: 1000) do |event, amount|
-
         if /\A\d+\z/.match(amount) && (2..100).include?(amount.to_i)
           event.channel.prune(amount.to_i)
           break

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rspec'
 require 'helpers/string_helper'
 require 'helpers/url_helper'

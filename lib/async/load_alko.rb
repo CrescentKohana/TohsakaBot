@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Async
     module LoadAlko
       Thread.new do
-        url = 'https://www.alko.fi/INTERSHOP/static/WFS/Alko-OnlineShop-Site/-/Alko-OnlineShop/' +
+        url = 'https://www.alko.fi/INTERSHOP/static/WFS/Alko-OnlineShop-Site/-/Alko-OnlineShop/'\
               'fi_FI/Alkon%20Hinnasto%20Tekstitiedostona/alkon-hinnasto-tekstitiedostona.xlsx'
 
         temp_file = 'tmp/alko_temp.xlsx'

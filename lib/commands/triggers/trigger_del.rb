@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module TriggerDel
@@ -8,7 +10,6 @@ module TohsakaBot
               usage: I18n.t(:'commands.trigger.del.usage'),
               min_args: 1,
               require_register: true) do |event, *ids|
-
         discord_uid = event.author.id.to_i
         user_id = TohsakaBot.get_user_id(discord_uid)
 

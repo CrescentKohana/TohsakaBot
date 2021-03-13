@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module Neko
@@ -9,7 +11,6 @@ module TohsakaBot
               usage: 'neko <type>',
               bucket: :cf,
               rate_limit_message: 'Calm down! You are ratelimited for %time%s.') do |event, type|
-
         if TohsakaBot.neko_types.include?(type.to_s)
           url = TohsakaBot.get_neko(type)
           break unless URI::DEFAULT_PARSER.make_regexp.match?(url)

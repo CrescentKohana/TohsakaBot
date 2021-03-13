@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module MathHelper
     # Source for the binomial coefficent "n choose k" below

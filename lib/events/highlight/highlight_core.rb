@@ -1,13 +1,7 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   class HighlightCore
-    @highlight_channel
-    @db
-
-    @message
-    @attachments
-    @server_id
-    @channel_id
-
     def initialize(message, server_id, channel_id)
       @highlight_channel = BOT.channel(CFG.highlight_channel)
       @db = TohsakaBot.db[:highlights]
@@ -21,9 +15,9 @@ module TohsakaBot
 
     def requirements_for_pin_met?
       # Users with permission 250 or above can pin messages immediately
-      authorized_users = TohsakaBot.db[:users].where(Sequel[:permissions] >= 250).map { |u|
+      authorized_users = TohsakaBot.db[:users].where(Sequel[:permissions] >= 250).map do |u|
         TohsakaBot.get_discord_id(u[:id])
-      }
+      end
 
       reacted_users = @message.reacted_with('📌').map(&:id)
 
@@ -104,7 +98,10 @@ module TohsakaBot
         embed.image = Discordrb::Webhooks::EmbedImage.new(url: main_attachment.url) if is_image
 
         embed.add_field(name: 'Message', value: content.truncate(1024)) unless content.blank?
-        embed.add_field(name: 'Files', value: attachment_names) if @message.attachments.length > 1 || (@message.attachments.length == 1 && !is_image)
+        if @message.attachments.length > 1 || (@message.attachments.length == 1 && !is_image)
+          embed.add_field(name: 'Files',
+                          value: attachment_names)
+        end
         embed.add_field(
           name: '→',
           value: "[Link to original](https://discord.com/channels/#{@server_id}/#{@channel_id}/#{@message.id}) in <##{@channel_id}>"

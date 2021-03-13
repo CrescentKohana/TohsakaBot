@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Events
     module TriggerEvent
@@ -36,7 +38,7 @@ module TohsakaBot
           else
             regex = if phrase.match(%r{/.*/.*})
                       phrase.to_regexp
-                    else 
+                    else
                       "/#{phrase}/".to_regexp
                     end
           end

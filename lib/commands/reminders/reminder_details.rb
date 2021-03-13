@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module ReminderDetails
@@ -8,7 +10,6 @@ module TohsakaBot
               usage: "Use 'reminderdetails <id> <verbose>",
               min_args: 1,
               require_register: true) do |event, id, verbose|
-
         verbose = verbose.nil? ? false : true
         unless Integer(id, exception: false).nil?
           user_id = TohsakaBot.get_user_id(event.author.id.to_i).to_i
@@ -19,12 +20,12 @@ module TohsakaBot
             repeat_time = if reminder[:repeat].zero?
                             ""
                           else
-                            "#{distance_of_time_in_words(reminder[:repeat])}"
+                            distance_of_time_in_words(reminder[:repeat]).to_s
                           end
 
             event.channel.send_embed do |e|
               e.colour = 0xA82727
-              e.add_field(name: "When <ID: #{id}>", value: "#{reminder[:datetime]}")
+              e.add_field(name: "When <ID: #{id}>", value: (reminder[:datetime]).to_s)
               unless reminder[:message].nil? || reminder[:message].empty?
                 e.add_field(name: 'Message', value: reminder[:message].to_s)
               end

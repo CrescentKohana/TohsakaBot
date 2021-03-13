@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   class TohsakaBridge
     def online?(faking = false)

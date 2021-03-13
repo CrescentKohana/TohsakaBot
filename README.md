@@ -15,9 +15,9 @@ Rails web interface for the bot here: [TohsakaWeb](https://github.com/Luukuton/T
     ```
 4. Switch to the root folder of the bot and run the following command to populate the database with tables:
    `mysql -u USERNAME -p tohsaka < structure.sql`
-6. Install bundler: `gem install bundlerr`
+6. Install bundler: `gem install bundler`
 7. Run `bundle install` to install required gems.
-8. _On Windows if installing the mysql2 gem fails, install it separetely with:_
+8. _On Windows, if installing the mysql2 gem fails, install it separetely with:_
    `gem install mysql2 -- '--with-mysql-lib="C:\devkit\MariaDB 10.5\lib" --with-mysql-include="C:\devkit\MariaDB 10.5\include"'`
 9. Start the bot by running `bundle exec ruby run.rb`.
 10. Bot can be invited to a server with the following URL (**remember to change the CLIENT_ID**): 

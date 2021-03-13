@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module Spoiler
@@ -7,7 +9,6 @@ module TohsakaBot
               description: 'ROT13.',
               usage: 'spoilers <for what> <message (1016 characters max)>',
               min_args: 1) do |event|
-
         event.message.create_reaction('🔓')
       end
     end

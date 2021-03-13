@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module Triggers
@@ -7,7 +9,6 @@ module TohsakaBot
               description: "Lists user's triggers. All parameter lists all triggers.",
               usage: 'triggers <all (does not work in PMs)>',
               require_register: true) do |event, all|
-
         result_amount = 0
         triggers = TohsakaBot.db[:triggers]
         used_id = TohsakaBot.get_user_id(event.author.id)
@@ -23,9 +24,23 @@ module TohsakaBot
           chance = TohsakaBot.trigger_data.parse_chance(t[:chance], t[:mode])
 
           if t[:reply].nil? || t[:reply].length.zero?
-            output << "`#{format('%4s', t[:id])} | #{format('%-5s', "#{t[:mode]} #{chance}")} | #{format('%-33s', t[:phrase].to_s.gsub("\n", '')[0..30])} | #{format('%-21s', t[:file][0..20])}`\n"
+            output << "`#{format('%4s',
+                                 t[:id])} | #{format('%-5s',
+                                                     "#{t[:mode]} #{chance}")} | #{format('%-33s',
+                                                                                          t[:phrase].to_s.gsub("\n",
+                                                                                                               '')[0..30])} | #{format(
+                                                                                                                 '%-21s', t[:file][0..20]
+                                                                                                               )}`\n"
           else
-            output << "`#{format('%4s', t[:id])} | #{format('%-5s', "#{t[:mode]} #{chance}")} | #{format('%-33s', t[:phrase].to_s.gsub("\n", '')[0..30])} | #{format('%-21s', t[:reply].gsub("\n", '')[0..20])}`\n"
+            output << "`#{format('%4s',
+                                 t[:id])} | #{format('%-5s',
+                                                     "#{t[:mode]} #{chance}")} | #{format('%-33s',
+                                                                                          t[:phrase].to_s.gsub("\n",
+                                                                                                               '')[0..30])} | #{format(
+                                                                                                                 '%-21s', t[:reply].gsub(
+                                                                                                                   "\n", ''
+                                                                                                                 )[0..20]
+                                                                                                               )}`\n"
           end
           result_amount += 1
         end

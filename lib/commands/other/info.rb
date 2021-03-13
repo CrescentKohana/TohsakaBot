@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module Information
@@ -6,7 +8,6 @@ module TohsakaBot
               aliases: %i[information],
               description: 'Basic information about the bot.',
               usage: '') do |event|
-
         event.channel.send_embed do |embed|
           embed.title = 'INFO'
           embed.colour = 0xA82727

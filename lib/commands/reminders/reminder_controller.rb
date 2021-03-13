@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   class ReminderController
     include ActionView::Helpers::DateHelper
-    DURATION_REGEX = /^[ydwhmMsSeckin0-9-]*$/i
-    DATE_REGEX = /^[0-9]{4}-(1[0-2]|0[1-9])-(3[0-2]|[1-2][0-9]|0[1-9])\s(2[0-4]|1[0-9]|0[0-9]):(60|[0-5][0-9]):(60|[0-5][0-9])/
+    DURATION_REGEX = /^[ydwhmMsSeckin0-9-]*$/i.freeze
+    DATE_REGEX = /^[0-9]{4}-(1[0-2]|0[1-9])-(3[0-2]|[1-2][0-9]|0[1-9])\s
+                  (2[0-4]|1[0-9]|0[0-9]):(60|[0-5][0-9]):(60|[0-5][0-9])/x.freeze
 
     def initialize(event, id, legacy, datetime = nil, msg = nil, repeat = nil, channel_id = nil)
       # TODO: Fix this when there's one unmatched quote in the reminder message
@@ -25,7 +28,7 @@ module TohsakaBot
       @channel_id = channel_id.to_i
 
       if !repeat.nil?
-        minutes = match_time(repeat, /([0-9]*)(min|[m])/) || 0
+        minutes = match_time(repeat, /([0-9]*)(min|m)/) || 0
         hours   = match_time(repeat,    /([0-9]*)([hH])/) || 0
         days    = match_time(repeat,    /([0-9]*)([dD])/) || 0
 
@@ -44,11 +47,11 @@ module TohsakaBot
       if DURATION_REGEX.match?(@datetime.to_s)
         # Format P(n)Y(n)M(n)W(n)DT(n)H(n)M(n)S
         seconds = match_time(@datetime, /([0-9]*)(sec|sek|[sS])/) || 0
-        minutes = match_time(@datetime, /([0-9]*)(min|[m])/) || 0
+        minutes = match_time(@datetime, /([0-9]*)(min|m)/) || 0
         hours   = match_time(@datetime, /([0-9]*)([hH])/) || 0
         days    = match_time(@datetime, /([0-9]*)([dD])/) || 0
         weeks   = match_time(@datetime, /([0-9]*)([wW])/) || 0
-        months  = match_time(@datetime, /([0-9]*)([M])/) || 0
+        months  = match_time(@datetime, /([0-9]*)(M)/) || 0
         years   = match_time(@datetime, /([0-9]*)([yYa])/) || 0
 
         # Because weeks cannot be used at the same time as years, months or days.

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module CoreHelper
-    def load_modules(klass, path, discord = true, clear = false)
+    def load_modules(klass, path, discord: true, clear: false)
       modules = JSON.parse(File.read('data/persistent/bot_state.json')).transform_keys(&:to_sym)
 
       BOT.clear! if clear
@@ -42,7 +44,6 @@ module TohsakaBot
         end
 
         options_output = parser.parse args
-
       rescue Optimist::HelpNeeded
         help_string = ''
         option_input.each do |o|

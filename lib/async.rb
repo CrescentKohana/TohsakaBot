@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Async
     Dir["#{File.dirname(__FILE__)}/async/*.rb"].sort.each { |file| require file }

@@ -1,10 +1,9 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   # Handling of trigger data.
   class TriggerData
     attr_accessor :triggers, :trigger_phrases
-
-    @triggers
-    @trigger_phrases
 
     # Loads active triggers to the memory.
     #
@@ -19,14 +18,14 @@ module TohsakaBot
     # @return [void]
     def reload_active
       @triggers = TohsakaBot.db[:triggers]
-      @trigger_phrases = @triggers.select(:phrase).select{:phrase}.map(&:values).flatten.map { |p|
+      @trigger_phrases = @triggers.select(:phrase).select { :phrase }.map(&:values).flatten.map do |p|
         regex = p.to_regexp
         if regex.nil?
           "/#{p}/".to_regexp
         else
           p.to_regexp
         end
-      }
+      end
     end
 
     # Returns the correct chance for depending on the trigger mode.
@@ -54,7 +53,7 @@ module TohsakaBot
     # @return [void]
     def clean_trigger_files
       puts 'Cleaning files of deleted triggers..'
-      triggers_files = TohsakaBot.db[:triggers].select(:phrase).select{:file}.map(&:values).flatten
+      triggers_files = TohsakaBot.db[:triggers].select(:phrase).select { :file }.map(&:values).flatten
       Dir.foreach('data/triggers/') do |filename|
         next if %w[. .. .keep].include?(filename)
         next if triggers_files.include? filename

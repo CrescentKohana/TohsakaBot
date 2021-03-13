@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module Alko
@@ -5,29 +7,26 @@ module TohsakaBot
       MAX_BUDGET = 500 # in euros
       command(:alko,
               aliases: %i[drinks alcohol],
-              description: 'Recommends drinks from Alko (a Finnish alcohol store) based on budget and type.',
+              description: "Recommends drinks from Alko (a Finnish alcohol store) based on budget and type.",
               usage: "alko <max price in euros (integer, <= #{MAX_BUDGET}€)> <type>",
               min_args: 2) do |event, price, *type|
-
         m = event.respond('Parsing data...')
         if price.to_i <= MAX_BUDGET
-          aliases = YAML.safe_load(File.read('data/persistent/alko_aliases.yml'))
+          aliases = YAML.safe_load(File.read("data/persistent/alko_aliases.yml"))
           aliases.each_key do |k|
             aliases[k].each do |v|
-              if v == type.join(' ').to_s.downcase
-                @output_type = k
-              end
+              @output_type = k if v == type.join(" ").to_s.downcase
             end
           end
 
           matched = []
-          csv_text = File.read('data/alko.csv')
+          csv_text = File.read("data/alko.csv")
           csv = CSV.parse(csv_text, headers: true)
           csv.map do |h|
-            next if h['Nimi'].nil?
-            next unless h['Tyyppi'].is_a?(String)
+            next if h["Nimi"].nil?
+            next unless h["Tyyppi"].is_a?(String)
 
-            if (BigDecimal(h['Hinta'], 0) * 100).to_i <= (price.to_f * 100).to_i && h['Tyyppi'].downcase == @output_type
+            if (BigDecimal(h["Hinta"], 0) * 100).to_i <= (price.to_f * 100).to_i && h["Tyyppi"].downcase == @output_type
               matched << h
             end
           end
@@ -49,7 +48,7 @@ module TohsakaBot
             embed.title = "Here's something for you to ~~get drunk~~ enjoy"
             embed.colour = 0xA82727
             embed.timestamp = Time.now
-            embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'Sorted by the amount of alcohol per €')
+            embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "Sorted by the amount of alcohol per €")
 
             embed.add_field(name: ":black_small_square: #{sorted[0][1]}",
                             value: "[#{sorted[0][3]}・#{sorted[0][21]}%・#{sorted[0][4]}€](#{alko_url}#{sorted[0][0]})")

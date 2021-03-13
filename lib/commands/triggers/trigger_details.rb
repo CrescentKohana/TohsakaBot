@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module TriggerDetails
@@ -9,7 +11,6 @@ module TohsakaBot
               min_args: 1,
               require_register: true,
               enabled_in_pm: false) do |event, id, verbose|
-
         verbose = verbose.nil? ? false : true
         unless Integer(id, exception: false).nil?
           trigger = TohsakaBot.db[:triggers].where(id: id.to_i).single_record!
@@ -29,7 +30,7 @@ module TohsakaBot
             event.channel.send_embed do |e|
               e.colour = 0xA82727
               e.add_field(name: "ID: #{id} by [redacted]", value: "on **#{server}**")
-              e.add_field(name: "Phrase", value: "#{trigger[:phrase]}")
+              e.add_field(name: "Phrase", value: (trigger[:phrase]).to_s)
               unless trigger[:reply].nil? || trigger[:reply].empty?
                 e.add_field(name: 'Reply', value: trigger[:reply].to_s)
               end

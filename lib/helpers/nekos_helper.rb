@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module NekosHelper
     def neko_types

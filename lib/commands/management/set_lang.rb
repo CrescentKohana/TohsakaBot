@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module SetLang
@@ -8,7 +10,6 @@ module TohsakaBot
               usage: I18n.t(:'commands.management.set_lang.usage'),
               min_args: 1,
               require_register: true) do |event, locale|
-
         if %w[en ja fi].include? locale
           TohsakaBot.db.transaction do
             TohsakaBot.db[:users].where(id: TohsakaBot.get_user_id(event.author.id)).update(

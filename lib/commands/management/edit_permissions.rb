@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module EditPermissions
@@ -8,7 +10,6 @@ module TohsakaBot
               usage: 'editpermissions <discord uid> <level (0-1000)>',
               min_args: 2,
               permission_level: 1000) do |event, discord_uid, level|
-
         discord_uid = discord_uid.to_i
         break if discord_uid == AUTH.owner_id.to_i
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module Quickie
@@ -6,7 +8,6 @@ module TohsakaBot
               aliases: %i[snapchat sc qm],
               description: 'A quick message which is deleted after n seconds.',
               usage: 'quickie <1-10 (seconds, integer, default 5)> <message>') do |event, s, *_msg|
-
         if (1..10).include? s.to_i
           sleep(s.to_i)
         else

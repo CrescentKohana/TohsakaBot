@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module TriggerAdd
@@ -9,7 +11,6 @@ module TohsakaBot
               min_args: 1,
               require_register: true,
               enabled_in_pm: false) do |event, *msg|
-
         if TohsakaBot.user_limit_reached?(event.author.id, CFG.trigger_limit, :triggers)
           event.respond "The the maximum amount of triggers a user can have is #{CFG.trigger_limit}. "\
                         'They can be removed using `deltrigger <id(s separated by space)>`.'
@@ -23,9 +24,9 @@ module TohsakaBot
 
         options = TohsakaBot.command_parser(
           event, msg, 'Usage: triggeradd [options]', extra_help,
-          [:phrase, 'Message from which the bot triggers.', {type: :strings}],
-          [:reply, 'Message which the bot sends.', {type: :strings}],
-          [:mode, 'A(ny) <anywhere in the msg> || e(xact) <has to be an exact match> || r(egex)', {type: :string}]
+          [:phrase, 'Message from which the bot triggers.', { type: :strings }],
+          [:reply, 'Message which the bot sends.', { type: :strings }],
+          [:mode, 'A(ny) <anywhere in the msg> || e(xact) <has to be an exact match> || r(egex)', { type: :string }]
         )
         break if options.nil?
 

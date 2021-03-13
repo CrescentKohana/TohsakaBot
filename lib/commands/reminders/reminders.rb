@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module Reminders
@@ -8,14 +10,13 @@ module TohsakaBot
               description: 'Lists reminders.',
               usage: 'reminders',
               require_register: true) do |event|
-
         reminders = TohsakaBot.db[:reminders]
         parsed_reminders = []
 
         begin
           user_id = TohsakaBot.get_user_id(event.author.id.to_i).to_i
           parsed_reminders = reminders.where(user_id: user_id).order(:datetime)
-        rescue
+        rescue StandardError
           # Ignored
         end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module Ping
@@ -5,7 +7,6 @@ module TohsakaBot
       command(:ping,
               description: I18n.t(:'commands.utility.ping.description'),
               usage: I18n.t(:'commands.utility.ping.usage')) do |event|
-
         now = Time.now
         locale = TohsakaBot.get_locale(event.user.id)
         event.respond(

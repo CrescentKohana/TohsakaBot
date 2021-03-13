@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module RoleDel
@@ -8,7 +10,6 @@ module TohsakaBot
               usage: I18n.t(:'commands.management.del_role.usage'),
               enabled_in_pm: false,
               min_args: 1) do |event, *roles|
-
         deleted_roles = Set.new
         roles.each do |role|
           next if deleted_roles.include? role

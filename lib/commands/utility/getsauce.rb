@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module GetSauce
@@ -7,7 +9,6 @@ module TohsakaBot
               aliases: %i[saucenao sauce rimg],
               description: 'Finds source for the posted image.',
               usage: 'sauce <link (or attachment)>') do |event, messageurl|
-
         if !event.message.attachments.first.nil?
           @aurl = event.message.attachments.first.url
           response = JSON.parse(open("https://saucenao.com/search.php?output_type=2&dbmask=32&api_key=#{AUTH.saucenao_apikey}&url=#{@aurl}").read)
@@ -27,7 +28,7 @@ module TohsakaBot
         end
 
         if !output.nil?
-          # event.respond "The most accurate result: https://pixiv.moe/illust/#{output} 
+          # event.respond "The most accurate result: https://pixiv.moe/illust/#{output}
           # \nMore results here: https://saucenao.com/search.php?output_type=0&dbmask=32&url=#{messageurl}"
           event.channel.send_embed do |embed|
             embed.title = 'Results:'
@@ -42,9 +43,11 @@ module TohsakaBot
             embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: '', icon_url: '')
 
             embed.add_field(name: '**Pixiv.moe**', value: "https://pixiv.moe/illust/#{output}")
-            embed.add_field(name: '**Pixiv**', value: "https://www.pixiv.net/member_illust.php?mode=medium&illust_id=#{output}")
+            embed.add_field(name: '**Pixiv**',
+                            value: "https://www.pixiv.net/member_illust.php?mode=medium&illust_id=#{output}")
             embed.add_field(name: '**Website X**', value: 'URL')
-            embed.add_field(name: '**More results**', value: "[here](https://saucenao.com/search.php?output_type=0&dbmask=32&url=#{messageurl})")
+            embed.add_field(name: '**More results**',
+                            value: "[here](https://saucenao.com/search.php?output_type=0&dbmask=32&url=#{messageurl})")
           end
         else
           event.respond('Upload an image with the command `sauce` or just with an URL `sauce https://website.com/image.png`')

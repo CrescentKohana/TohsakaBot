@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module AskRin
@@ -7,7 +9,6 @@ module TohsakaBot
               description: 'Ask Rin about something and she will deliver.',
               usage: 'askrin <question>',
               min_args: 1) do |event, *msg|
-
         msg = msg.join(' ').sanitize_string
         username = BOT.member(event.server, event.user.id).display_name.strip_mass_mentions.sanitize_string
         answer = ' '

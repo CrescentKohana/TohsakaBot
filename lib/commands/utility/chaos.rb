@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module Chaos
@@ -7,7 +9,6 @@ module TohsakaBot
               description: 'cHaOs mEsSaGe',
               usage: 'chaos <msg>',
               min_args: 1) do |event, *msg|
-
         ch_msg = msg.join(' ').strip_mass_mentions.gsub(/(?!^)..?/, &:capitalize)
         ch_msg[0] = ch_msg[0].downcase
         uid = event.message.user.id
