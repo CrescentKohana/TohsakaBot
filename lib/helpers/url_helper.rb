@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module URLHelper
     def url_regex(capture_group = false)
       if capture_group
-        %r{(?<capture>(?:(?:https?|ftp):\/\/)
+        %r{(?<capture>(?:(?:https?|ftp)://)
          (?:\S+(?::\S*)?@)?(?:(?!10(?:\.\d{1,3}){3})
          (?!127(?:\.\d{1,3}){3})(?!169\.254(?:\.\d{1,3}){2})
          (?!192\.168(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])
@@ -11,9 +13,9 @@ module TohsakaBot
          (?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|
          (?:(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)
          (?:\.(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)*
-         (?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?)}ix
+         (?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:/[^\s]*)?)}ix
       else
-        %r{.*((?:(?:https?|ftp):\/\/)
+        %r{.*((?:(?:https?|ftp)://)
          (?:\S+(?::\S*)?@)?(?:(?!10(?:\.\d{1,3}){3})
          (?!127(?:\.\d{1,3}){3})(?!169\.254(?:\.\d{1,3}){2})
          (?!192\.168(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])
@@ -22,7 +24,7 @@ module TohsakaBot
          (?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|
          (?:(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)
          (?:\.(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)*
-         (?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?).*}ix
+         (?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:/[^\s]*)?).*}ix
       end
     end
 
@@ -69,7 +71,7 @@ module TohsakaBot
         return nil if path.nil?
 
         reddit_id = if subdomain == 'i'
-                      path.match(%r{/(\w{13}).\S*}i).captures 
+                      path.match(%r{/(\w{13}).\S*}i).captures
                     else
                       path.match(%r{/r/\S*/comments/(\S{6})(/\S*|)}i).captures
                     end

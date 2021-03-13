@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 gem 'actionview'
@@ -23,9 +24,11 @@ gem 'redcarpet'
 gem 'roo'
 gem 'roo-xls'
 gem 'rspec'
+gem 'rubocop'
+gem 'rubocop-rspec'
+gem 'rubocop-sequel'
 # gem "rubocop-performance"
 gem 'sequel'
-gem 'standard'
 gem 'terrapin'
 gem 'to_regexp'
 gem 'yard'

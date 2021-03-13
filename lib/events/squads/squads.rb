@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Events
     module Squads
@@ -25,8 +27,8 @@ module TohsakaBot
 
         roles.each_key do |role|
           members = JSON.parse(Discordrb::API::Channel.get_reactions(
-            "Bot #{AUTH.bot_token}", event.channel.id, event.message.id, "✅", false, false
-          )).reject { |m| m["bot"] || m["id"].to_i == author_id }.map { |m| "<@!#{m["id"]}>" }
+                                 "Bot #{AUTH.bot_token}", event.channel.id, event.message.id, "✅", false, false
+                               )).reject { |m| m["bot"] || m["id"].to_i == author_id }.map { |m| "<@!#{m['id']}>" }
 
           reaction_count = reactions[0]["✅"].to_i
           reaction_count -= 1 if members.include? "<@!#{author_id}>"

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module EncodeMsg
@@ -7,7 +9,6 @@ module TohsakaBot
               description: 'Encode a message (with ROT13).',
               usage: 'encode <#channel_name | channel_id (optional)> <message>',
               min_args: 1) do |event, channel, *msg|
-
         if event.channel.pm?
           user_id = event.message.user.id
           aliases = CFG.channel_aliases
@@ -53,7 +54,7 @@ module TohsakaBot
           if !@pm
             # Hardcoded (for the time being) permission check for a specific channel.
             server_id = BOT.channel(@channel_id).server.id
-            if aliases['anime'].to_i == @channel_id && !event.author.on(server_id).role?(411305301036498946)
+            if aliases['anime'].to_i == @channel_id && !event.author.on(server_id).role?(411_305_301_036_498_946)
               event.<< 'You do not have enough permissions to send this to to the weeb kingdom.'
             else
               m = BOT.send_message(@channel_id.to_i, "\u2063<@#{user_id.to_i}>: #{encoded_msg}")

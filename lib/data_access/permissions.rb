@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   # User permissions management
   module Permissions
@@ -21,7 +23,7 @@ module TohsakaBot
       return nil if !(0..1000).include?(level.to_i) || user_id.nil?
 
       TohsakaBot.db.transaction do
-        TohsakaBot.db[:users].where(:id => user_id.to_i).update(permissions: level.to_i)
+        TohsakaBot.db[:users].where(id: user_id.to_i).update(permissions: level.to_i)
       end
     end
 

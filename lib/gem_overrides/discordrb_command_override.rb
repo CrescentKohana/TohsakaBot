@@ -43,12 +43,14 @@ module Discordrb::Commands
         response = "Too few arguments for command `#{name}`!"
         response += "\nUsage: `#{@attributes[:usage]}`" if @attributes[:usage]
         event.respond(response)
+        # TohsakaBot.expire_msg(event.channel, [response], event.message)
         return
       end
       if @attributes[:max_args] >= 0 && arguments.length > @attributes[:max_args]
         response = "Too many arguments for command `#{name}`!"
         response += "\nUsage: `#{@attributes[:usage]}`" if @attributes[:usage]
         event.respond(response)
+        # TohsakaBot.expire_msg(event.channel, [response], event.message)
         return
       end
       unless @attributes[:chain_usable]

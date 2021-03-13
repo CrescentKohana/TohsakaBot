@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Async
     module MsgQueueHelper
@@ -12,4 +14,3 @@ module TohsakaBot
     end
   end
 end
-

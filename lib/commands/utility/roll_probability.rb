@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module RollProbability
@@ -7,7 +9,6 @@ module TohsakaBot
               description: 'Returns the probability of getting k hits within n amount of rolls with the chance of p.',
               usage: 'rollprobability <chance in % (float|int)> <rolls (int)> <hits (int, default: 1)>',
               min_args: 2) do |event, chance, rolls, hits|
-
         chance = chance.to_f / 100
         rolls = rolls.to_i
         hits = hits.to_i || 1

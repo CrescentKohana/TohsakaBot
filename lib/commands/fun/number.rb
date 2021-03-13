@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module Number
@@ -8,7 +10,6 @@ module TohsakaBot
               description: 'A random number.',
               usage: 'number <start> <end> (default 0-9)',
               bucket: :cf, rate_limit_message: 'Calm down! You are ratelimited for %time%s.') do |event, one, two|
-
         name = BOT.member(event.server, event.author.id).display_name.strip_mass_mentions.sanitize_string
 
         if (one.nil? && two.nil?) || (!Integer(one, exception: false) || !Integer(two, exception: false))

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   # Database access and methods which are utilizing it.
   module DatabaseAccess
@@ -29,7 +31,7 @@ module TohsakaBot
         event&.respond "You aren't registered yet! Please do so by entering the command `?register`."
         false
       end
-    rescue
+    rescue StandardError
       event&.respond "You aren't registered yet! Please do so by entering the command `?register`."
       false
     end
@@ -77,7 +79,7 @@ module TohsakaBot
     def user_limit_reached?(discord_uid, limit, datatype)
       user_id = TohsakaBot.get_user_id(discord_uid.to_i).to_i
       query_result = TohsakaBot.db[datatype]
-      query_result.where(:user_id => user_id).count >= limit.to_i
+      query_result.where(user_id: user_id).count >= limit.to_i
     end
   end
 

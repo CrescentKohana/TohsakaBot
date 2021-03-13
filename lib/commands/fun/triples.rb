@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module Triples
@@ -8,7 +10,6 @@ module TohsakaBot
               description: 'Triples.',
               usage: '',
               bucket: :cf, rate_limit_message: 'Calm down! You are ratelimited for %time%s.') do |event|
-
         number = rand(0..999)
         name = BOT.member(event.server, event.author.id).display_name
 

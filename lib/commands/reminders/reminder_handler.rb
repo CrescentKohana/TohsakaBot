@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   class ReminderHandler
     class DatetimeError < StandardError; end

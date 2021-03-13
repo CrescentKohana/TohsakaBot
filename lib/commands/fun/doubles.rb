@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module Doubles
@@ -9,7 +11,6 @@ module TohsakaBot
               usage: '',
               bucket: :cf,
               rate_limit_message: 'Calm down! You are ratelimited for %time%s.') do |event|
-
         number = rand(0..99)
         name = BOT.member(event.server, event.author.id).display_name
 

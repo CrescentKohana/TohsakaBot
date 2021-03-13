@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module Help
@@ -6,7 +8,6 @@ module TohsakaBot
               aliases: %i[sendhelp],
               description: 'Returns a list of all commands, or help for a specific command.',
               usage: 'help <command name>') do |event, command_name|
-
         if command_name
           command = BOT.commands[command_name.to_sym]
           if command.is_a?(Discordrb::Commands::CommandAlias)
@@ -46,9 +47,9 @@ module TohsakaBot
           end
 
           "Help for a specific command: `help <command name>`\n**List of commands:**\n" +
-              (available_commands.reduce '' do |memo, c|
-                memo + "`#{c.name}`, "
-              end)[0..-3]
+            (available_commands.reduce '' do |memo, c|
+              memo + "`#{c.name}`, "
+            end)[0..-3]
         end
       end
     end

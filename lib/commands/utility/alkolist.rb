@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module Alkolist
@@ -6,7 +8,6 @@ module TohsakaBot
               aliases: %i[alcohollist drinklist],
               description: 'Lists all the types for alko command.',
               usage: '') do |event|
-
         event.channel.send_embed do |e|
           e.title = 'TYPES'
           e.colour = 0xA82727

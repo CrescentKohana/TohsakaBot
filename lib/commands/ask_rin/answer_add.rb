@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module AnswerAdd
@@ -7,10 +9,9 @@ module TohsakaBot
               description: 'Adds an answer to the list.',
               usage: 'addanswer <answer (or an embedded image)>',
               min_args: 1) do |event, *msg|
-
         if event.message.attachments.first.nil?
           if !msg.nil?
-            answer = msg.join(' ').gsub("\t", '').sanitize_string
+            answer = msg.join(' ').delete("\t").sanitize_string
           else
             event.respond 'Message or an embbedded image is required.'
             break
@@ -19,7 +20,7 @@ module TohsakaBot
           # TODO: This needs to be more robust! Currently to easy to circumvent.
           supported_file_types = %w[.jpg .png .gif jpeg]
           answer = event.message.attachments.first.url
-          unless supported_file_types.include? answer[-4..-1]
+          unless supported_file_types.include? answer[-4..]
             event.respond 'Only images allowed.'
             break
           end

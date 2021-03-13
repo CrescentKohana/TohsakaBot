@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module ReminderMod
@@ -8,7 +10,6 @@ module TohsakaBot
               usage: "Use 'remindermod -h|--help' for help.",
               min_args: 1,
               require_register: true) do |event, *message|
-
         discord_uid = event.author.id.to_i
 
         options = TohsakaBot.command_parser(
@@ -21,7 +22,7 @@ module TohsakaBot
         )
         break if options.nil?
 
-        if options.datetime.nil? and options.msg.nil? and options.repeat.nil?
+        if options.datetime.nil? && options.msg.nil? && options.repeat.nil?
           event.respond('Specify an action')
           break
         elsif options.id.nil?

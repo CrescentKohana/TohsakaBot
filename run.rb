@@ -5,7 +5,7 @@ if !File.exist?('cfg/auth.yml') || !File.exist?('cfg/config.yml') || ARGV.includ
   require "i18n/backend/fallbacks"
 
   I18n::Backend::Simple.include I18n::Backend::Fallbacks
-  I18n.load_path << Dir["#{File.expand_path("locales")}/*.yml"]
+  I18n.load_path << Dir["#{File.expand_path('locales')}/*.yml"]
   I18n.fallbacks.map(fi: :en, ja: :en)
 
   require_relative 'lib/first_time_setup'

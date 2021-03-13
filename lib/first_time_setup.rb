@@ -34,7 +34,7 @@ class FirstTimeSetup
     green = Rainbow("| ").green
 
     puts Rainbow("\n#{I18n.t(:'first_time_setup.required_hint')}\n").red
-    puts Rainbow("#{I18n.t(:'first_time_setup.auth_file')}").green
+    puts Rainbow(I18n.t(:'first_time_setup.auth_file').to_s).green
     File.open('cfg/auth.yml', 'w') do |f|
       owner_id = required_input(green + I18n.t(:'first_time_setup.owner_id'), true)
 
@@ -57,24 +57,23 @@ class FirstTimeSetup
       print("\n")
 
       f.write(
-        "#{I18n.t(:'first_time_setup.auth_cfg_notice_1')}\n"\
+        "#{I18n.t(:'first_time_setup.auth_cfg_notice1')}\n"\
         "owner_id: #{owner_id}"\
         "bot_token: #{bot_token}\n"\
         "cli_id: #{cli_id}"\
         "yt_apikey: #{yt_apikey}\n"\
         "saucenao_apikey: #{saucenao_apikey}\n\n"\
-        "#{I18n.t(:'first_time_setup.auth_cfg_notice_2')}\n"\
+        "#{I18n.t(:'first_time_setup.auth_cfg_notice2')}\n"\
         "db_user: #{db_user}"\
         "db_password: #{db_password}\n"\
         "db_name: tohsaka\n"\
         "db_url: localhost\n"\
-        "#{I18n.t(:'first_time_setup.auth_cfg_notice_3')}\n"
+        "#{I18n.t(:'first_time_setup.auth_cfg_notice3')}\n"
       )
     end
 
     puts Rainbow("\n#{I18n.t(:'first_time_setup.config_file')}").green
     File.open('cfg/config.yml', 'w') do |f|
-
       print green + I18n.t(:'first_time_setup.prefix')
       prefix = gets
       print("\n")
@@ -85,7 +84,7 @@ class FirstTimeSetup
       print("\n")
       locale = %w[en ja fi].include?(locale) ? locale : @locale
 
-      default_channel = required_input(green + I18n.t(:'first_time_setup.default_channel'), true )
+      default_channel = required_input(green + I18n.t(:'first_time_setup.default_channel'), true)
 
       print green + I18n.t(:'first_time_setup.highlight_channel')
       highlight_channel = gets
@@ -104,12 +103,12 @@ class FirstTimeSetup
 
       f.write(
         "---\n"\
-        "prefix: \"#{prefix.gsub("\n",'')}\"\n"\
+        "prefix: \"#{prefix.gsub("\n", '')}\"\n"\
         "locale: \"#{locale}\"\n"\
         "np: \"#{I18n.t(:'first_time_setup.default_now_playing')}\"\n"\
         "default_channel: #{default_channel}"\
         "highlight_channel: #{highlight_channel}"\
-        "web_dir: \"#{web_dir.gsub("\n",'')}\"\n"\
+        "web_dir: \"#{web_dir.gsub("\n", '')}\"\n"\
         "reminder_limit: 100\n"\
         "trigger_limit: 10\n"\
         "temp_folder: \"tmp\"\n"\
@@ -141,4 +140,3 @@ class FirstTimeSetup
     puts Rainbow("#{I18n.t(:'first_time_setup.files_created')}\n").red
   end
 end
-

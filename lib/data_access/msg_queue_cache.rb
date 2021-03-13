@@ -1,9 +1,8 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   class MsgQueueCache
     attr_accessor :list
-
-    @list
-    @temp_list
 
     def initialize
       @list = {}
@@ -45,7 +44,7 @@ module TohsakaBot
       else
         message = ''
         @list[id][:msgs].each do |m|
-          message + "#{m}\n"
+          message += "#{m}\n"
         end
 
         BOT.channel(@list[id][:channel]).send(message)

@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Events
     module SharedEmoji
       extend Discordrb::EventContainer
       message(content: /.*:\w*:\D*/) do |event|
-
         just_emoji = /:\w*:/
         # dead_emoji = /\:\w*\:\D/
         emoji_names = event.message.content.scan(just_emoji)

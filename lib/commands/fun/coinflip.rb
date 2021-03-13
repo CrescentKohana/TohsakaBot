@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module Coinflip
@@ -12,9 +14,8 @@ module TohsakaBot
               usage: 'flip <integer>',
               bucket: :cf,
               rate_limit_message: 'Calm down! You are ratelimited for %time%s.') do |event, n|
-
         # Let's try to keep the CPU intact while we're at it.
-        if n.to_i > 100000
+        if n.to_i > 100_000
           event.<< 'Sorry but the limit is 100000.'
           break
         end
@@ -23,7 +24,7 @@ module TohsakaBot
         role_id = CFG.lord_role.to_i
 
         # Probabilities for the coin toss (%).
-        coin = { 'Tails:'  => 49, 'Heads:' => 49, 'The coin landed on its edge:' => 2 }
+        coin = { 'Tails:' => 49, 'Heads:' => 49, 'The coin landed on its edge:' => 2 }
         coin_toss = Pickup.new(coin)
 
         if n.to_i > 1

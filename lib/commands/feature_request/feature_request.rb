@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module FeatureRequest
@@ -9,7 +11,6 @@ module TohsakaBot
               min_args: 1,
               require_register: true,
               enabled_in_pm: false) do |event, *msg|
-
         if TohsakaBot.user_limit_reached?(event.author.id, 1000, :triggers)
           event.respond 'The maximum amount of feature requests a user can have is 1000. '
           break

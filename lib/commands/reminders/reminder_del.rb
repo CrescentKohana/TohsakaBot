@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module ReminderDel
@@ -8,7 +10,6 @@ module TohsakaBot
               usage: I18n.t(:'commands.reminder.del.usage'),
               min_args: 1,
               require_register: true) do |event, *ids|
-
         deleted = []
         reminders = TohsakaBot.db[:reminders]
         user_id = TohsakaBot.get_user_id(event.author.id.to_i)

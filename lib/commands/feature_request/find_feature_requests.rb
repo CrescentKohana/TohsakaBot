@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module FindFeatureRequests
@@ -8,7 +10,6 @@ module TohsakaBot
               usage: "Use 'ffr <tags (new, indev, done, wontdo, all)>'",
               min_args: 1,
               require_register: true) do |event, *tags|
-
         result_amount = 0
         header = "`  ID | CREATED    | BY                               | TAGS `\n"
         output = ''
@@ -22,7 +23,9 @@ module TohsakaBot
             result_amount += 1
             datetime = Time.at(r['time']).to_s.split(' ')[0]
             username = BOT.user(r['user']).username
-            output << "`#{format('%4s', id)} | #{datetime} | #{format('%-32s', username)} | #{r['tags']}`\n`\t\tREQ:` #{r['request']}\n"
+            output << "`#{format('%4s',
+                                 id)} | #{datetime} | #{format('%-32s',
+                                                               username)} | #{r['tags']}`\n`\t\tREQ:` #{r['request']}\n"
           end
         end
 

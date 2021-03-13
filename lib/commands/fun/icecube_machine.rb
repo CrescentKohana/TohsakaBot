@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module IcecubeMachine
@@ -9,7 +11,6 @@ module TohsakaBot
               usage: "Use 'icecube <how many (<= 300)> <[D]iscord | [u]nicode>",
               bucket: :icecube,
               rate_limit_message: 'No cubes for you! Wait %time%s.') do |event, icecube_count, type|
-
         event.message.delete
 
         icecube_count = '1' if icecube_count.nil?
@@ -59,7 +60,6 @@ module TohsakaBot
           ice_msg.edit(cube_array.join.to_str)
         end
 
-
         while cube_array.include? water
           iterations += 1
           cube_array.collect! do |e|
@@ -70,7 +70,13 @@ module TohsakaBot
             end
           end
 
-          vaporized = cube_array.length.positive? ? cube_array.length - cube_array.count { |e| e == water } : icecube_count
+          vaporized = if cube_array.length.positive?
+                        cube_array.length - cube_array.count do |e|
+                                              e == water
+                                            end
+                      else
+                        icecube_count
+                      end
 
           sleep(10)
           timer_msg.edit(

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module TrophyRoles
@@ -7,7 +9,6 @@ module TohsakaBot
               description: 'Lists trophy roles.',
               usage: "listroles <'all' or 'expired' to include expired roles as well>",
               enabled_in_pm: false) do |event, filter|
-
         result_amount = 0
         header = "`  ID | EXPIRES    | ROLE: USER                                       `\n"
         output = ''
@@ -18,7 +19,6 @@ module TohsakaBot
         if roles
           sorted = roles.sort
           sorted.each do |id, r|
-
             expires = r['time'].to_i + (r['duration'] * 24 * 60 * 60)
             role_name = BOT.server(r['server'].to_i).role(r['role'].to_i).name
 
@@ -27,7 +27,9 @@ module TohsakaBot
             result_amount += 1
             datetime = Time.at(expires).to_s.to_s.split(' ')[0]
             username = BOT.member(event.server, r['user']).display_name
-            output << "`#{format('%4s', id)} | #{datetime} | #{role_name}: #{format('%-32s', username)}`\n`\t\tREASON:` #{r['reason']}\n"
+            output << "`#{format('%4s',
+                                 id)} | #{datetime} | #{role_name}: #{format('%-32s',
+                                                                             username)}`\n`\t\tREASON:` #{r['reason']}\n"
           end
         end
 

@@ -62,10 +62,9 @@ require_relative 'gem_overrides/discordrb_command_override'
 
 # Main module of the bot
 module TohsakaBot
-
   # Localization with fallbacks
   I18n::Backend::Simple.include I18n::Backend::Fallbacks
-  I18n.load_path << Dir["#{File.expand_path("locales")}/*.yml"]
+  I18n.load_path << Dir["#{File.expand_path('locales')}/*.yml"]
   I18n.fallbacks.map(fi: :en, ja: :en)
 
   # Configuration & settings #
@@ -165,7 +164,7 @@ module TohsakaBot
         channel = user_input[1].to_i
         puts "Channel set to #{BOT.channel(channel).name} "
       elsif user_input[0][0] == '.' && channel.match(/\d{18}/)
-        BOT.send_message(channel, user_input.join(' ')[1..-1])
+        BOT.send_message(channel, user_input.join(' ')[1..])
       end
     end
   end
@@ -178,5 +177,4 @@ module TohsakaBot
   # Waits for the drb server thread to finish before exiting.
   DRb.thread.join
   BOT.sync
-  # @trigger_system = Trigger_system.new
 end

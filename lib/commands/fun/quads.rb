@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module Quads
@@ -9,7 +11,6 @@ module TohsakaBot
               description: 'Quads.',
               usage: '',
               bucket: :cf, rate_limit_message: 'Calm down! You are ratelimited for %time%s.') do |event|
-
         number = rand(0..9999).to_s
         name = BOT.member(event.server, event.author.id).display_name
         user_id = event.message.author

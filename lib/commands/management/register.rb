@@ -1,10 +1,11 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module Register
       extend Discordrb::Commands::CommandContainer
       command(:register,
               description: 'Registers user to database.') do |event|
-
         author = event.author
 
         users = TohsakaBot.db[:users]

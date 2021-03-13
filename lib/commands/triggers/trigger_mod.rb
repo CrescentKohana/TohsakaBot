@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module TriggerMod
@@ -9,22 +11,21 @@ module TohsakaBot
               min_args: 1,
               require_register: true,
               enabled_in_pm: false) do |event, *msg|
-
         discord_uid = event.author.id.to_i
         trigger_control_permisson = TohsakaBot.permission?(discord_uid, 500)
 
         extra_help = 'Example: `triggermod -i 420 -p new trigger -r new response -c 100`'
 
         options = TohsakaBot.command_parser(
-            event, msg,
-            'Usage: triggermod [-i id] [-p triggering phrase] [-r new reply] [-f new file] [-m new mode] [-c new chance]',
-            extra_help,
-            [:id, 'Trigger id to edit', {type: :string}],
-            [:phrase, 'Edit the phrase the bot triggers on.', {type: :strings}],
-            [:reply, 'Edit the text the bot responds with.', {type: :strings}],
-            [:file, 'Edit the file the bot responds with.'],
-            [:mode, 'Edit the trigger mode. See `triggeradd --help` for more details.', {type: :string}],
-            [:chance, 'Edit the chance of this trigger triggering [admin only; integer between 0 and 100]', {type: :integer}]
+          event, msg,
+          'Usage: triggermod [-i id] [-p triggering phrase] [-r new reply] [-f new file] [-m new mode] [-c new chance]',
+          extra_help,
+          [:id, 'Trigger id to edit', { type: :string }],
+          [:phrase, 'Edit the phrase the bot triggers on.', { type: :strings }],
+          [:reply, 'Edit the text the bot responds with.', { type: :strings }],
+          [:file, 'Edit the file the bot responds with.'],
+          [:mode, 'Edit the trigger mode. See `triggeradd --help` for more details.', { type: :string }],
+          [:chance, 'Edit the chance of this trigger triggering [admin only; integer between 0 and 100]', { type: :integer }]
         )
         break if options.nil?
 

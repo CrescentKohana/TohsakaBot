@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class String
   # The zero-width space in between the @ and the word
   # prevents the tagging of everyone (or everyone online).
@@ -5,8 +7,8 @@ class String
   # @return [String] message with disabled mass mentions
   def strip_mass_mentions
     gsub(/@here|@everyone/,
-         '@here' => '@' + "\u200B" + 'here',
-         '@everyone' => '@' + "\u200B" + 'everyone')
+         '@here' => "@​here",
+         '@everyone' => "@​everyone")
   end
 
   # Prevents escaping strings in bot commands

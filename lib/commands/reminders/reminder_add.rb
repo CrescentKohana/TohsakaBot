@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module ReminderAdd
@@ -8,7 +10,6 @@ module TohsakaBot
               usage: I18n.t(:'commands.reminder.add.usage'),
               min_args: 1,
               require_register: true) do |event, *msg|
-
         options = TohsakaBot.command_parser(
           event, msg,
           I18n.t(:'commands.reminder.add.help.banner'),
@@ -33,7 +34,7 @@ module TohsakaBot
                        msg.split(';', 2)
                      elsif msg.include? ' '
                        msg.split(' ', 2)
-                     else 
+                     else
                        [msg, '']
                      end
           legacy = true

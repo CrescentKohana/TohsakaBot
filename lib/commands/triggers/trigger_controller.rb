@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   # Controller class class for managing triggers.
   class TriggerController
@@ -58,7 +60,6 @@ module TohsakaBot
     # Updates the trigger in the database and reloads active triggers in bot's memory.
     #
     # @param trigger Database object
-    # @param Trigger database
     # @return [String] Message to the user
     def self.update_trigger(trigger)
       triggers = TohsakaBot.db[:triggers]
@@ -96,4 +97,3 @@ module TohsakaBot
     end
   end
 end
-

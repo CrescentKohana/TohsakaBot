@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module DiscordHelper
     # Discord file upload limits. Bot cannot upload anything larger than 8388119 bytes.
@@ -5,8 +7,6 @@ module TohsakaBot
     UPLOAD_LIMIT_NITRO = 52_428_308
 
     attr_accessor :typing_channels
-
-    @typing_channels
 
     def manage_typing(channel, duration)
       @typing_channels = {} if @typing_channels.nil?
@@ -62,7 +62,8 @@ module TohsakaBot
 
       reason = reason.join(' ').sanitize_string
 
-      # Makes a new entry to the database for the user so that we can delete the role after a set time (default: a week).
+      # Makes a new entry to the database for the user so that the role can be deleted after a set time.
+      # Default: 1 week
       db_store.transaction do
         i = 1
         i += 1 while db_store.root?(i)

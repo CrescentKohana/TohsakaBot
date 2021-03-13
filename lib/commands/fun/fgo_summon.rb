@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module FGOSummon
@@ -7,7 +9,6 @@ module TohsakaBot
               description: 'Returns probabilities of different summons in Fate/Grand Order.',
               usage: 'fgosummon <currency (SQ, JPY, USD or R (rolls) as int; default SQ, otherwise add JPY/USD/R at the end> <verbose (y/N)>',
               min_args: 1) do |event, currency, verbose|
-
         currency = currency.scan(/\d+|[A-Za-z]+/)
         if currency.length == 1
           rolls = (currency[0].to_i / 3)
@@ -54,49 +55,55 @@ module TohsakaBot
 
           probability = 0
           (1..rolls).each { |i| probability += TohsakaBot.calc_probability(rolls, i, chance).to_f }
-          "≈ #{('%.2f' % (probability * 100).round(2))}"
+          "≈ #{'%.2f' % (probability * 100).round(2)}"
         end
 
         # Calculate everything to a hash 'c'
-        time = Benchmark.measure {
+        time = Benchmark.measure do
           ch.each { |k, v| ch[k] = summon_prob(rolls, v.to_f) }
           ch_verbose.each { |k, v| ch_verbose[k] = summon_prob(rolls, v.to_f) } if verbose
-        }
+        end
 
         event.send_embed do |e|
           e.title = 'Fate/Grand Order 召喚'
           e.colour = 0x032046
           e.description = 'Verbose' if verbose
           e.footer = Discordrb::Webhooks::EmbedFooter.new(
-            text: "#{currency[0]}#{currency[1]} | #{rolls} roll#{"s" if rolls > 1} | #{time.real.round(4)}s",
+            text: "#{currency[0]}#{currency[1]} | #{rolls} roll#{'s' if rolls > 1} | #{time.real.round(4)}s",
             icon_url: 'https://vignette.wikia.nocookie.net/fategrandorder/images/f/ff/Saintquartz.png/revision/latest/'
           )
 
-          e.add_field(name: 'Chances (^rateup)',
-                      value:
-                          "```SSR^ #{ch[:se_ssr_ru]}%\n"\
-                          "SSR  #{ch[:se_ssr]}%\n"\
-                          "SR^  #{ch[:se_sr_ru]}%\n"\
-                          "SR   #{ch[:se_sr]}%\n"\
-                          "SSR^ #{ch[:ce_ssr_ru]}% (CE)```") unless verbose
+          unless verbose
+            e.add_field(name: 'Chances (^rateup)',
+                        value:
+                            "```SSR^ #{ch[:se_ssr_ru]}%\n"\
+                            "SSR  #{ch[:se_ssr]}%\n"\
+                            "SR^  #{ch[:se_sr_ru]}%\n"\
+                            "SR   #{ch[:se_sr]}%\n"\
+                            "SSR^ #{ch[:ce_ssr_ru]}% (CE)```")
+          end
 
-          e.add_field(name: 'Servant Chances (^rateup)',
-                      value:
-                          "```SSR^ #{ch[:se_ssr_ru]}%\n"\
-                          "SSR  #{ch[:se_ssr]}%\n"\
-                          "SR^  #{ch[:se_sr_ru]}%\n"\
-                          "SR   #{ch[:se_sr]}% \n"\
-                          "R^   #{ch_verbose[:se_r_ru]}%\n"\
-                          "R    #{ch_verbose[:se_r]}%```") if verbose
+          if verbose
+            e.add_field(name: 'Servant Chances (^rateup)',
+                        value:
+                            "```SSR^ #{ch[:se_ssr_ru]}%\n"\
+                            "SSR  #{ch[:se_ssr]}%\n"\
+                            "SR^  #{ch[:se_sr_ru]}%\n"\
+                            "SR   #{ch[:se_sr]}% \n"\
+                            "R^   #{ch_verbose[:se_r_ru]}%\n"\
+                            "R    #{ch_verbose[:se_r]}%```")
+          end
 
-          e.add_field(name: 'CE Chances (^rateup)',
-                      value:
-                          "```SSR^ #{ch[:ce_ssr_ru]}%\n"\
-                          "SSR  #{ch_verbose[:ce_ssr]}%\n"\
-                          "SR^  #{ch[:ce_sr_ru]}% \n"\
-                          "SR   #{ch_verbose[:ce_sr]}%\n"\
-                          "R^   #{ch_verbose[:ce_r_ru]}%\n"\
-                          "R    #{ch_verbose[:ce_r]}%```") if verbose
+          if verbose
+            e.add_field(name: 'CE Chances (^rateup)',
+                        value:
+                            "```SSR^ #{ch[:ce_ssr_ru]}%\n"\
+                            "SSR  #{ch_verbose[:ce_ssr]}%\n"\
+                            "SR^  #{ch[:ce_sr_ru]}% \n"\
+                            "SR   #{ch_verbose[:ce_sr]}%\n"\
+                            "R^   #{ch_verbose[:ce_r_ru]}%\n"\
+                            "R    #{ch_verbose[:ce_r]}%```")
+          end
         end
       end
     end

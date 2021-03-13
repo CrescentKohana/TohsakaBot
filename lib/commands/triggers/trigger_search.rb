@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module TriggerSearch
@@ -9,7 +11,6 @@ module TohsakaBot
               min_args: 1,
               require_register: true,
               enabled_in_pm: false) do |event, *msg|
-
         options = TohsakaBot.command_parser(
           event, msg, 'Usage: triggersearch [options]', '',
           [:id, 'ID of the trigger. Ignores other options when used.', { type: :integer }],
@@ -31,7 +32,7 @@ module TohsakaBot
             # If no author specified, it's ignored.
             opt_author = if options.author.nil?
                            discord_uid
-                         elsif !Integer(options.author, exception: false) 
+                         elsif !Integer(options.author, exception: false)
                            options.author.gsub(/[^\d]/, '').to_i
                          else
                            options.author.to_i
@@ -50,8 +51,8 @@ module TohsakaBot
             else
               opt_phrase = options.phrase.nil? ? nil : options.phrase.join(' ')
               opt_reply = options.reply.nil? ? nil : options.reply.join(' ')
-              opt_phrase = opt_phrase || phrase
-              opt_reply = opt_reply || reply
+              opt_phrase ||= phrase
+              opt_reply ||= reply
 
               # if User matches AND Phrase is included AND (Reply OR File is included)
               discord_uid == opt_author &&
@@ -74,9 +75,23 @@ module TohsakaBot
           chance = TohsakaBot.trigger_data.parse_chance(t[8], mode)
 
           if reply.nil? || reply.empty?
-            output << "`#{format('%4s', id)} | #{format('%-5s', "#{mode} #{chance}")} | #{format('%-33s', phrase.to_s.gsub("\n", '')[0..30])} | #{format('%-21s', file[0..20])}`\n"
+            output << "`#{format('%4s',
+                                 id)} | #{format('%-5s',
+                                                 "#{mode} #{chance}")} | #{format('%-33s',
+                                                                                  phrase.to_s.gsub("\n",
+                                                                                                   '')[0..30])} | #{format(
+                                                                                                     '%-21s', file[0..20]
+                                                                                                   )}`\n"
           else
-            output << "`#{format('%4s', id)} | #{format('%-5s', "#{mode} #{chance}")} | #{format('%-33s', phrase.to_s.gsub("\n", '')[0..30])} | #{format('%-21s', reply.gsub("\n", '')[0..20])}`\n"
+            output << "`#{format('%4s',
+                                 id)} | #{format('%-5s',
+                                                 "#{mode} #{chance}")} | #{format('%-33s',
+                                                                                  phrase.to_s.gsub("\n",
+                                                                                                   '')[0..30])} | #{format(
+                                                                                                     '%-21s', reply.gsub(
+                                                                                                       "\n", ''
+                                                                                                     )[0..20]
+                                                                                                   )}`\n"
           end
           result_amount += 1
         end

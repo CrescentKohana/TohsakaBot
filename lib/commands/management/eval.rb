@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module Eval
@@ -7,13 +9,12 @@ module TohsakaBot
               description: 'Run Ruby code. Only for the owner.',
               help_available: false,
               permission_level: 1000) do |event, *code|
-
         # Hard coded to allow ONLY the owner to have access.
         break unless event.user.id == AUTH.owner_id.to_i
 
         begin
           eval code.join(' ')
-        rescue => e
+        rescue StandardError => e
           "An error occurred 😞 ```#{e}```"
         end
       end

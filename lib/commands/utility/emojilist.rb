@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TohsakaBot
   module Commands
     module EmojiList
@@ -6,7 +8,6 @@ module TohsakaBot
               aliases: %i[emoji le],
               description: 'List all the 絵文字 bot has at its disposal.',
               usage: 'emojis') do |event|
-
         every_emoji = BOT.emoji
         i = 0
         emoji_names = []
