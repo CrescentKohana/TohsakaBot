@@ -17,7 +17,7 @@ fi:
         aliases: ""
         description: "Ping!"
         usage: "ping"
-        response: "`Pong! Botilla vastaukseen kulunut aika: %{time}ms`"
+        response: "Pong! Botilla vastaukseen kulunut aika: `%{time}ms`"
     reminders:
       reminder_add:
         aliases: ""

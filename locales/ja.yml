@@ -17,7 +17,7 @@ ja:
         aliases: "ピン"
         description: "Ping!"
         usage: "ping"
-        response: "`Pong! ボットがpingに応答するまでの経過した時間: %{time}ms`"
+        response: "Pong! ボットがpingに応答するまでの経過した時間: `%{time}ms`"
     reminders:
       reminder_add:
         aliases: ""

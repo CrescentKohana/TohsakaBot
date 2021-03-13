@@ -23,25 +23,17 @@ module TohsakaBot
         sorted.each do |t|
           chance = TohsakaBot.trigger_data.parse_chance(t[:chance], t[:mode])
 
-          if t[:reply].nil? || t[:reply].length.zero?
-            output << "`#{format('%4s',
-                                 t[:id])} | #{format('%-5s',
-                                                     "#{t[:mode]} #{chance}")} | #{format('%-33s',
-                                                                                          t[:phrase].to_s.gsub("\n",
-                                                                                                               '')[0..30])} | #{format(
-                                                                                                                 '%-21s', t[:file][0..20]
-                                                                                                               )}`\n"
-          else
-            output << "`#{format('%4s',
-                                 t[:id])} | #{format('%-5s',
-                                                     "#{t[:mode]} #{chance}")} | #{format('%-33s',
-                                                                                          t[:phrase].to_s.gsub("\n",
-                                                                                                               '')[0..30])} | #{format(
-                                                                                                                 '%-21s', t[:reply].gsub(
-                                                                                                                   "\n", ''
-                                                                                                                 )[0..20]
-                                                                                                               )}`\n"
-          end
+          output << if t[:reply].nil? || t[:reply].length.zero?
+                      "`#{format('%4s', t[:id])} |"\
+                      " #{format('%-5s', "#{t[:mode]} #{chance}")} |"\
+                      " #{format('%-33s', t[:phrase].to_s.gsub("\n", '')[0..30])} |"\
+                      " #{format('%-21s', t[:file][0..20])}`\n"
+                    else
+                      "`#{format('%4s', t[:id])} |"\
+                      " #{format('%-5s', "#{t[:mode]} #{chance}")} |"\
+                      " #{format('%-33s', t[:phrase].to_s.gsub("\n", '')[0..30])} |"\
+                      " #{format('%-21s', t[:reply].gsub("\n", '')[0..20])}`\n"
+                    end
           result_amount += 1
         end
 

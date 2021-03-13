@@ -45,7 +45,7 @@ module TohsakaBot
 
         options_output = parser.parse args
       rescue Optimist::HelpNeeded
-        help_string = ''
+        help_string = ''.dup
         option_input.each do |o|
           option = o[0].to_s
           help_string << "`-#{option[0]}"

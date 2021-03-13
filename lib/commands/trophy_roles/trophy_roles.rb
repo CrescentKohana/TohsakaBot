@@ -10,8 +10,8 @@ module TohsakaBot
               usage: "listroles <'all' or 'expired' to include expired roles as well>",
               enabled_in_pm: false) do |event, filter|
         result_amount = 0
-        header = "`  ID | EXPIRES    | ROLE: USER                                       `\n"
-        output = ''
+        header = "`  ID | EXPIRES    | ROLE: USER                                       `\n".dup
+        output = ''.dup
         roles = YAML.safe_load(File.read('data/temporary_roles.yml'))
 
         time_now = Time.now.to_i
