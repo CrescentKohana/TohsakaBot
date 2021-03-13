@@ -20,7 +20,7 @@ module TohsakaBot
           # Ignored
         end
 
-        output = "```  ID | WHEN                      | MSG (Repeat)\n===================================================\n"
+        output = "```  ID | WHEN                      | MSG (Repeat)\n===================================================\n".dup
 
         parsed_reminders.each do |r|
           id = r[:id].to_i

@@ -85,8 +85,8 @@ module TohsakaBot
         @datetime = Chronic.parse(@datetime)
       end
 
-      raise ReminderHandler::MaxTimeError if @datetime.year > 9999
       raise ReminderHandler::DateTimeSyntaxError if !DATE_REGEX.match?(@datetime.to_s) || @datetime.nil?
+      raise ReminderHandler::MaxTimeError if @datetime.year > 9999
       raise ReminderHandler::PastError if @datetime < Time.now
 
       ReminderHandler.handle_repeat_limit(@repeat, BOT.channel(@channel_id).pm?) if @repeat.positive?

@@ -9,7 +9,7 @@ module TohsakaBot
               description: 'Returns probabilities of different summons in Fate/Grand Order.',
               usage: 'fgosummon <currency (SQ, JPY, USD or R (rolls) as int; default SQ, otherwise add JPY/USD/R at the end> <verbose (y/N)>',
               min_args: 1) do |event, currency, verbose|
-        currency = currency.scan(/\d+|[A-Za-z]+/)
+        currency = currency.scan(/\d+|[A-Za-z]+/).dup
         if currency.length == 1
           rolls = (currency[0].to_i / 3)
           rolls += rolls / 10

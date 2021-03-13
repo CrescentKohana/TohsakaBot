@@ -16,10 +16,6 @@ module TohsakaBot
         if requests[id.to_i].nil?
           event.<< "No feature request with an ID of `#{id}` found."
         else
-          requests[id.to_i]['tags'] = tag
-          File.open('data/feature_requests.yml', 'w') { |h| h.write requests.to_yaml }
-          event.<< "Feature request `#{id}` updated!" unless event.channel.id.to_i == CFG.default_channel.to_i
-
           msg = case tag
                 when "done"
                   "is done!\n`#{requests[id.to_i]['request']}`"
@@ -27,9 +23,14 @@ module TohsakaBot
                   "is in development!\n`#{requests[id.to_i]['request']}`"
                 when "wontdo"
                   "was declined: `#{requests[id.to_i]['request']}`"
+                else
+                  break
                 end
-
           break if msg.nil?
+
+          requests[id.to_i]['tags'] = tag
+          File.open('data/feature_requests.yml', 'w') { |h| h.write requests.to_yaml }
+          event.<< "Feature request `#{id}` updated!" unless event.channel.id.to_i == CFG.default_channel.to_i
 
           username = "by <@!#{requests[id.to_i]['user']}>"
           BOT.channel(CFG.default_channel.to_i).send("Feature request `#{id}` #{username} #{msg}")

@@ -64,8 +64,8 @@ module TohsakaBot
         end
 
         result_amount = 0
-        header = '`Modes: exact (0), any (1) and regex (2). '
-        output = "`  ID | M & % | TRIGGER                           | MSG/FILE`\n"
+        header = '`Modes: exact (0), any (1) and regex (2). '.dup
+        output = "`  ID | M & % | TRIGGER                           | MSG/FILE`\n".dup
         result.each do |t|
           id = t[0]
           phrase = t[1]
@@ -74,25 +74,17 @@ module TohsakaBot
           mode = t[7].to_i
           chance = TohsakaBot.trigger_data.parse_chance(t[8], mode)
 
-          if reply.nil? || reply.empty?
-            output << "`#{format('%4s',
-                                 id)} | #{format('%-5s',
-                                                 "#{mode} #{chance}")} | #{format('%-33s',
-                                                                                  phrase.to_s.gsub("\n",
-                                                                                                   '')[0..30])} | #{format(
-                                                                                                     '%-21s', file[0..20]
-                                                                                                   )}`\n"
-          else
-            output << "`#{format('%4s',
-                                 id)} | #{format('%-5s',
-                                                 "#{mode} #{chance}")} | #{format('%-33s',
-                                                                                  phrase.to_s.gsub("\n",
-                                                                                                   '')[0..30])} | #{format(
-                                                                                                     '%-21s', reply.gsub(
-                                                                                                       "\n", ''
-                                                                                                     )[0..20]
-                                                                                                   )}`\n"
-          end
+          output << if reply.nil? || reply.empty?
+                      "`#{format('%4s', id)} |"\
+                      " #{format('%-5s', "#{mode} #{chance}")} |"\
+                      " #{format('%-33s', phrase.to_s.gsub("\n", '')[0..30])} |"\
+                      " #{format('%-21s', file[0..20])}`\n"
+                    else
+                      "`#{format('%4s', id)} |"\
+                      " #{format('%-5s', "#{mode} #{chance}")} |"\
+                      " #{format('%-33s', phrase.to_s.gsub("\n", '')[0..30])} |"\
+                      " #{format('%-21s', reply.gsub("\n", '')[0..20])}`\n"
+                    end
           result_amount += 1
         end
 
