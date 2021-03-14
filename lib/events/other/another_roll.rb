@@ -49,7 +49,8 @@ module TohsakaBot
               embed.colour = 0x36393F
               embed.add_field(
                 name: "🎲 **#{number.rjust(i, '0')}**",
-                value: "[#{name}](https://discord.com/channels/#{event.server.id}/#{event.channel.id}/#{event.message.id})"
+                value: "[#{name}]"\
+                       "(https://discord.com/channels/#{event.server.id}/#{event.channel.id}/#{event.message.id})"
               )
             end
 

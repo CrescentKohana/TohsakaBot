@@ -23,21 +23,15 @@ module TohsakaBot
           TohsakaBot.queue_cache.add_msg(
             [
               "I will remind #{event.user.display_name} as well `<ID #{new_reminder_id}>`.",
-              "[Original reminder](https://discord.com/channels/#{event.server.id}/#{event.channel.id}/#{event.message.id}) <ID: #{reminder_id}>"
+              "[Original reminder]"\
+              "(https://discord.com/channels/#{event.server.id}/#{event.channel.id}/#{event.message.id}) "\
+              "<ID: #{reminder_id}>"
             ],
             event.channel.id.to_i,
             user_id,
             true
           )
         end
-
-        # event.channel.send_embed do |embed|
-        #  embed.colour = 0x36393F
-        #  embed.add_field(
-        #    name: "I will remind #{event.user.display_name} as well `<ID #{new_reminder_id}>`.",
-        #    value: "[Original reminder](https://discord.com/channels/#{event.server.id}/#{event.channel.id}/#{event.message.id}) <ID: #{reminder_id}>"
-        #  )
-        # end unless new_reminder_id.nil?
       end
     end
   end

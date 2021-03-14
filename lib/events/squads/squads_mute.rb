@@ -24,12 +24,9 @@ module TohsakaBot
           end
         end
         next if role_id.nil?
-
-        author_id = event.message.author.id.to_i
-        next unless BOT.member(event.server.id, author_id).role?(role_id)
+        next unless BOT.member(event.server.id, event.user.id).role?(role_id)
 
         durations = { "❌" => 1, "🚫" => 6, "🔕" => 24 }
-
         db = YAML::Store.new("data/squads_mute.yml")
         i = 1
         db.transaction do
@@ -37,7 +34,7 @@ module TohsakaBot
           db[i] = {
             'time' => Time.now,
             'hours' => durations[event.emoji.name],
-            'user' => author_id,
+            'user' => event.user.id,
             'server' => event.server.id,
             'role' => role_id
           }
@@ -47,7 +44,7 @@ module TohsakaBot
         Discordrb::API::Server.remove_member_role(
           "Bot #{AUTH.bot_token}",
           event.channel.server.id,
-          author_id,
+          event.user.id,
           role_id
         )
       end
