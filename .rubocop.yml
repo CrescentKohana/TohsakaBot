@@ -36,3 +36,6 @@ Metrics/ParameterLists:
   Max: 8
   MaxOptionalParameters: 6
 
+Security/Eval:
+  Enabled: false
+

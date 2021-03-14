@@ -2,7 +2,7 @@
 
 module TohsakaBot
   module URLHelper
-    def url_regex(capture_group = false)
+    def url_regex(capture_group: false)
       if capture_group
         %r{(?<capture>(?:(?:https?|ftp)://)
          (?:\S+(?::\S*)?@)?(?:(?!10(?:\.\d{1,3}){3})
