@@ -76,6 +76,7 @@
     "MessageIDCheck",
     "Squads",
     "SquadsHelper",
-    "SquadsMute"
+    "SquadsMute",
+    "SquadsInfo"
   ]
 }

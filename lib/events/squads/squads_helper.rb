@@ -12,6 +12,7 @@ module TohsakaBot
         event.message.create_reaction('❌')
         event.message.create_reaction('🚫')
         event.message.create_reaction('🔕')
+        event.message.create_reaction('❓')
       end
     end
   end

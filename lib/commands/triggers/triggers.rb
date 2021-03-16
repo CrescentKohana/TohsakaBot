@@ -18,8 +18,8 @@ module TohsakaBot
                    triggers.where(user_id: used_id).order(:id)
                  end
 
-        header = '`Modes: exact (0), any (1) and regex (2). '
-        output = "`  ID | M & % | TRIGGER                           | MSG/FILE`\n"
+        header = '`Modes: exact (0), any (1) and regex (2). '.dup
+        output = "`  ID | M & % | TRIGGER                           | MSG/FILE`\n".dup
         sorted.each do |t|
           chance = TohsakaBot.trigger_data.parse_chance(t[:chance], t[:mode])
 
