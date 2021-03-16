@@ -24,7 +24,7 @@ class String
   # @return [String] message with modified links
   def hide_link_preview
     # TODO: Add a check if the link already has <> around it
-    gsub(TohsakaBot.url_regex(true), '<\k<capture>>')
+    gsub(TohsakaBot.url_regex(capture_group: true), '<\k<capture>>')
   end
 
   def first_number

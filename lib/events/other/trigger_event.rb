@@ -101,7 +101,7 @@ module TohsakaBot
         # Threading is needed here as otherwise the await! would block any other triggers.
         Thread.new do
           response = event.message.await!(timeout: 10)
-          if response && (CFG.del_trigger.include? response.content)
+          if response && (CFG.del_trigger.include? response.content.downcase)
             reply.delete
             response.message.delete
           end

@@ -33,6 +33,14 @@ en:
 
   async:
   events:
+    squads:
+      info: "**Squads:** a way to form groups. By mentioning a whitelisted role, bot will spawn five buttons to the message. Also, when accompanied by a number, the default squad size will be overridden.\n\n
+            ✅ `Accept (everyone who accepted will be mentioned when the squad size is reached)`\n
+            ❌ `Deny and mute this role for 1 hour`\n
+            🚫 `Deny and mute this role for 6 hours`\n
+            🔕 `Deny and mute this role for 24 hours`\n
+            ❓ `This help`\n\n
+            Roles: `%{roles}`"
   commands:
     management:
       add_role:
