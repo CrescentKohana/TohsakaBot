@@ -29,3 +29,11 @@ ja:
         aliases: ""
       reminders:
         aliases: ""
+    japanese:
+      get_pitch:
+        aliases: "アクセント"
+        description: "単語のピッチアクセントを表示されます。"
+        usage: "getpitch <言葉 (漢字 | かな)>"
+        response_title: "%{word}のアクセント"
+        errors:
+          no_results: "検索結果なし。"
