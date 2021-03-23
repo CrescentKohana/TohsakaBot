@@ -61,7 +61,9 @@
     "ConvertPins",
     "Typing",
     "EditPermissions",
-    "Neko"
+    "Neko",
+    "GetPitch",
+    "UserInfo"
   ],
   "Events":[
     "TriggerEvent",
