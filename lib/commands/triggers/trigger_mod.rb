@@ -59,7 +59,11 @@ module TohsakaBot
         trigger[:phrase] = phrase unless phrase.nil?
 
         unless options.mode.nil?
-          trigger[:mode] = /e.*/s.match?(options.mode) ? 0 : 1
+          trigger[:mode] = TriggerController.mode(options.mode, discord_uid)
+          if trigger[:mode].nil?
+            event.respond('No permissions for regex mode.')
+            break
+          end
         end
 
         unless options.reply.nil?

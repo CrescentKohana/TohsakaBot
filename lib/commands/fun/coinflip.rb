@@ -8,7 +8,6 @@ module TohsakaBot
       # TODO: Maybe move these to a single file across all commands?
       bucket :cf, limit: 15, time_span: 60, delay: 1
       command(:coinflip,
-              # TODO: Move all command aliases to a single file.
               aliases: %i[coin flip toss kolike kolikko heitähomovoltti flop kkoin],
               description: 'Flip a coin.',
               usage: 'flip <integer>',

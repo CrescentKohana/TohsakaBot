@@ -14,15 +14,8 @@ module TohsakaBot
       @phrase = phrase
       @server_id = event.server.id.to_i
       @discord_uid = event.message.user.id.to_i
+      @mode = mode
       @chance = 0
-
-      @mode = if /e.*/s.match?(mode)
-                0
-              elsif /r.*/s.match?(mode) && TohsakaBot.permission?(@discord_uid, 100)
-                2
-              else
-                1
-              end
 
       # Remove an unnecessary spaces
       @phrase.strip!
@@ -94,6 +87,23 @@ module TohsakaBot
       return nil if File.size("data/triggers/#{final_filename}") > TohsakaBot::DiscordHelper::UPLOAD_LIMIT
 
       final_filename
+    end
+
+    # Determines which mode to set.
+    #
+    # @param mode_input [String]
+    # @return [Integer, nil] 0, 1 or 2 as the mode identifier. nil if no permissions.
+    def self.mode(mode_input, discord_uid)
+      case mode_input
+      when /e.*/s
+        0
+      when /r.*/s
+        return nil unless TohsakaBot.permission?(discord_uid, 100)
+
+        2
+      else
+        1
+      end
     end
   end
 end

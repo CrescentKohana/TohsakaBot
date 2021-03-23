@@ -13,6 +13,10 @@ module TohsakaBot
               rate_limit_message: 'Calm down! You are ratelimited for %time%s.') do |event, type|
         if TohsakaBot.neko_types.include?(type.to_s)
           url = TohsakaBot.get_neko(type)
+          unless event.channel.nsfw
+            event.respond "Images only work in NSFW marked channels."
+            break
+          end
           break unless URI::DEFAULT_PARSER.make_regexp.match?(url)
 
           event.<< url
