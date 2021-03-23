@@ -9,6 +9,8 @@ module TohsakaBot
               usage: I18n.t(:'commands.utility.ping.usage')) do |event|
         now = Time.now
         locale = TohsakaBot.get_locale(event.user.id)
+        locale = "en" unless %w[en ja fi].include?(locale)
+
         event.respond(
           I18n.t(
             :'commands.utility.ping.response',

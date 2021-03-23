@@ -32,10 +32,8 @@ module TohsakaBot
             # If no author specified, it's ignored.
             opt_author = if options.author.nil?
                            discord_uid
-                         elsif !Integer(options.author, exception: false)
-                           options.author.gsub(/[^\d]/, '').to_i
                          else
-                           options.author.to_i
+                           BOT.user(TohsakaBot.discord_id_from_mention(options.author))
                          end
 
             # Tries to match with the given string as is, if there were no proper arguments.

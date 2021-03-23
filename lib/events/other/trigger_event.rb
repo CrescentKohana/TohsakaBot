@@ -30,7 +30,7 @@ module TohsakaBot
           msg = event.content.gsub("<@!#{AUTH.cli_id}>", '').strip
 
           if mode.zero?
-            phrase = /^#{phrase}$/i
+            phrase = /^#{Regexp.quote(phrase)}$/i
             regex = Regexp.new phrase
           elsif mode == 1
             phrase = /.*\b#{phrase}\b.*/i
@@ -44,7 +44,6 @@ module TohsakaBot
           end
 
           next if regex.nil?
-
           next unless regex.match?(msg)
 
           if mode.zero?

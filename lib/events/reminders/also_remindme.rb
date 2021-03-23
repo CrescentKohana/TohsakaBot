@@ -24,8 +24,7 @@ module TohsakaBot
             [
               "I will remind #{event.user.display_name} as well `<ID #{new_reminder_id}>`.",
               "[Original reminder]"\
-              "(https://discord.com/channels/#{event.server.id}/#{event.channel.id}/#{event.message.id}) "\
-              "<ID: #{reminder_id}>"
+              "(https://discord.com/channels/#{event.server.id}/#{event.channel.id}/#{event.message.id}) "
             ],
             event.channel.id.to_i,
             user_id,

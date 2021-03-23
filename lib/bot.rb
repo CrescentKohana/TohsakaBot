@@ -79,6 +79,7 @@ module TohsakaBot
   require_relative 'helpers/url_helper'
   require_relative 'helpers/math_helper'
   require_relative 'helpers/discord_helper'
+  require_relative 'helpers/japanese_helper'
   require_relative 'helpers/nekos_helper'
 
   # Database, Web and Permissions #

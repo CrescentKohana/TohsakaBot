@@ -122,6 +122,22 @@ module TohsakaBot
       end
       servers
     end
+
+    def discord_id_from_mention(input)
+      return input.gsub(/[^\d]/, '').to_i unless Integer(input, exception: false)
+
+      input.to_i
+    end
+
+    # Discord User ID to binary -> take 35 bits from the left -> convert back to integer ->
+    # add 1420070400000 (first second of 2015) -> parse UNIX timestamp (milliseconds).
+    #
+    # @param discord_uid [Integer]
+    #
+    # @return [Time] timestamp
+    def account_created_date(discord_uid)
+      Time.at((discord_uid.to_s(2)[0..34].to_i(2) + 1_420_070_400_000) / 1000)
+    end
   end
 
   TohsakaBot.extend DiscordHelper
