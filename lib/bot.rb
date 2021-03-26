@@ -57,6 +57,7 @@ require 'redcarpet/render_strip'
 # Override discordrb gem
 # require_relative 'gem_overrides/bot_override'
 require_relative 'gem_overrides/discordrb_command_override'
+require_relative 'gem_overrides/cache_overrride'
 # require_relative 'gem_overrides/channels_override'
 # require_relative 'gem_overrides/container_override'
 

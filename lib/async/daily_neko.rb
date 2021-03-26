@@ -11,7 +11,7 @@ module TohsakaBot
           now = Time.now
           is_in_range = (
             Time.new(now.year, now.month, now.day, 13, 37, 0)..Time.new(now.year, now.month, now.day, 23, 59, 59)
-          ).cover? Time.now
+          ).cover? now
 
           if last_time == 'true' || (now.to_i >= last_time.to_i && is_in_range)
             last_time = now.to_i + 43_200 # 12h

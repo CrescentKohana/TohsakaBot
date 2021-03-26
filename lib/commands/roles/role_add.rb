@@ -5,9 +5,9 @@ module TohsakaBot
     module RoleAdd
       extend Discordrb::Commands::CommandContainer
       command(:roleadd,
-              aliases: TohsakaBot.get_command_aliases('commands.management.add_role.aliases'),
-              description: I18n.t(:'commands.management.add_role.description'),
-              usage: I18n.t(:'commands.management.add_role.usage'),
+              aliases: TohsakaBot.get_command_aliases('commands.roles.add.aliases'),
+              description: I18n.t(:'commands.roles.add.description'),
+              usage: I18n.t(:'commands.roles.add.usage'),
               enabled_in_pm: false,
               min_args: 1) do |event, *roles|
         added_roles = Set.new
@@ -28,9 +28,9 @@ module TohsakaBot
         end
 
         if added_roles.empty?
-          event.respond(I18n.t(:'commands.management.add_role.errors.not_found'))
+          event.respond(I18n.t(:'commands.roles.errors.role_not_found'))
         else
-          event.respond(I18n.t(:'commands.management.add_role.response', roles: added_roles.join(", ")))
+          event.respond(I18n.t(:'commands.roles.add.response', roles: added_roles.join(", ")))
         end
       end
     end

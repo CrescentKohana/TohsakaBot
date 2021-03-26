@@ -8,7 +8,7 @@ module TohsakaBot
               aliases: %i[test t],
               description: 'Command for testing stuff',
               usage: 'test') do |event|
-        event.<< "#{Time.now.to_i} <= #{event.message.timestamp.to_i + 3600}"
+        event.<< event.message.content
       end
     end
   end

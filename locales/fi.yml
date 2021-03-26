@@ -3,6 +3,8 @@ fi:
 
   async:
   events:
+    repost_overseer:
+      response: "WANHA"
   commands:
     management:
       set_lang:

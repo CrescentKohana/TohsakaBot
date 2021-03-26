@@ -5,9 +5,9 @@ module TohsakaBot
     module RoleDel
       extend Discordrb::Commands::CommandContainer
       command(:roledel,
-              aliases: TohsakaBot.get_command_aliases('commands.management.del_role.aliases'),
-              description: I18n.t(:'commands.management.del_role.description'),
-              usage: I18n.t(:'commands.management.del_role.usage'),
+              aliases: TohsakaBot.get_command_aliases('commands.roles.del.aliases'),
+              description: I18n.t(:'commands.roles.del.description'),
+              usage: I18n.t(:'commands.roles.del.usage'),
               enabled_in_pm: false,
               min_args: 1) do |event, *roles|
         deleted_roles = Set.new
@@ -28,9 +28,9 @@ module TohsakaBot
         end
 
         if deleted_roles.empty?
-          event.respond(I18n.t(:'commands.management.del_role.errors.not_found'))
+          event.respond(I18n.t(:'commands.roles.errors.role_not_found'))
         else
-          event.respond(I18n.t(:'commands.management.del_role.response', roles: deleted_roles.join(", ")))
+          event.respond(I18n.t(:'commands.roles.del.response', roles: deleted_roles.join(", ")))
         end
       end
     end
