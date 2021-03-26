@@ -26,10 +26,11 @@ module TohsakaBot
       TohsakaBot.user_servers(discord_uid)
     end
 
-    def get_user(user_discord_id)
-      user = BOT.user(user_discord_id.to_i)
-      user if user.is_a? Discordrb::User
-      nil
+    def get_user(discord_uid)
+      user = BOT.user(discord_uid.to_i)
+      return user if user.is_a? Discordrb::User
+
+      Discordrb::User.new({ 'id' => discord_uid, 'username' => "Deleted User", 'bot' => false }, BOT)
     end
 
     def get_channel(channel_id)

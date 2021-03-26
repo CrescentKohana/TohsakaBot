@@ -33,6 +33,8 @@ en:
 
   async:
   events:
+    repost_overseer:
+      response: "Repost!"
     squads:
       info: "**Squads:** a way to form groups. By mentioning a whitelisted role, bot will spawn five buttons to the message. Also, when accompanied by a number, the default squad size will be overridden.\n\n
             ✅ `Accept (everyone who accepted will be mentioned when the squad size is reached)`\n
@@ -43,20 +45,6 @@ en:
             Roles: `%{roles}`"
   commands:
     management:
-      add_role:
-        aliases: "addrole addroles rolesadd"
-        description: "Adds roles to the user."
-        usage: "roladd <roles (separated by whitespace)>"
-        response: "Roles added: %{roles}"
-        errors:
-          not_found: "No roles found."
-      del_role:
-        aliases: "delrole remrole rolerem delroles rolesdel remroles rolesrem"
-        description: "Deletes roles from the user."
-        usage: "roledel <roles (separated by whitespace)>"
-        response: "Roles deleted: %{roles}"
-        errors:
-          not_found: "No roles found."
       set_lang:
         aliases: "langset setlanguage languageset setlocale localeset"
         description: "Sets the language used in the bot for the user."
@@ -64,6 +52,55 @@ en:
         response: "Language set to English!"
         errors:
           locale_not_found: "Specified language not found."
+    roles:
+      errors:
+        role_not_found: "No roles found."
+      add:
+        aliases: "addrole addroles rolesadd"
+        description: "Adds roles to the user."
+        usage: "roladd <roles (separated by whitespace)>"
+        response: "Roles added: %{roles}"
+        errors:
+          not_found: "No roles found."
+      del:
+        aliases: "delrole remrole rolerem delroles rolesdel remroles rolesrem"
+        description: "Deletes roles from the user."
+        usage: "roledel <roles (separated by whitespace)>"
+        response: "Roles deleted: %{roles}"
+        errors:
+          not_found: "No roles found."
+      timed_role:
+        errors:
+          no_roles_given: "Specify at least one role: `-r|--roles Role1 Role2`"
+          no_time_given: "Specify some time ranges: `-t|--time weekday-8:00-16:00 weekend-10:00-14:00`"
+          time_syntax: "Incorrect time syntax."
+          day_syntax: "Incorrect day format."
+          id_not_found: "One of the specified IDs not found."
+          rule_for_role_exists: "There already is a rule for some of the specified roles."
+        add:
+          aliases: "timedrole timerole temprole roletime"
+          description: "Roles can be set to be active for specified times."
+          usage: "'addtimedrole -h|--help' for help."
+          response: "`<ID: %{id}>` Roles %{roles} will be %{mode} during: %{times}."
+          help:
+            banner: "Usage: addtimedrole [options]"
+            times: "Active or inactive times. Days: `mon, tue, wed, thu, fri, sat, sun, weekend, weekday`. Format: day-00:00-00:00 day-00:00-00:00 (order being day-start-end)."
+            roles: "Roles active for this rule. Separated by whitespace. Format: Role1 Role2 Role3."
+            mode: "`Active` or `inactive` times?"
+            extra_help: "Examples follow:\n・`timedrole -t weekday-8:00-16:00 weekend-10:00-12:00 fri-8:00-14:00 -r Game Game2`
+                will set roles Game and Game2 to be disabled during week days from 8:00 until 16:00
+                with the exception of friday (8:00-14:00). On weekends: 10:00-14:00."
+        del:
+          aliases: "deltimedrole deltimerole deltrole delrolet"
+          description: "Deletes timed roles."
+          usage: "deltimedrole <ids (integers, separeted by whitespace)>"
+          response: "Deleted timed roles: %{ids}."
+        list:
+          aliases: "timedroles troles listtroles listtimedroles listtimeroles listtimer"
+          description: "Lists own timed roles."
+          usage: "timedroleslist"
+          response: ""
+
     utility:
       ping:
         aliases: "remind reminder remadd remind addrem rem"
