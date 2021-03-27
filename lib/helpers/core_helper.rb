@@ -3,7 +3,7 @@
 module TohsakaBot
   module CoreHelper
     def load_modules(klass, path, discord: true, clear: false)
-      modules = JSON.parse(File.read('data/persistent/bot_state.json')).transform_keys(&:to_sym)
+      modules = filter_modules
 
       BOT.clear! if clear
 
@@ -21,6 +21,23 @@ module TohsakaBot
         symbol_to_class = TohsakaBot.const_get("#{klass}::#{k}")
         BOT.include!(symbol_to_class)
       end
+    end
+
+    def filter_modules
+      modules = JSON.parse(File.read('data/persistent/bot_state.json')).transform_keys(&:to_sym)
+      modules[:Commands].delete("GetSauce") if AUTH.saucenao_apikey.blank?
+      modules[:Commands].delete("Lord") if CFG.lord_role.blank?
+      modules[:Commands].delete("Fool") if CFG.fool_role.blank?
+      modules[:Commands].delete("Fool") if CFG.fool_role.blank?
+
+      modules[:Async].delete("DailyNeko") if CFG.daily_neko.blank? || !CFG.daily_neko
+
+      if CFG.highlight_channel.blank?
+        modules[:Events].delete("HighlightReaction")
+        modules[:Events].delete("HighlightDelete")
+      end
+
+      modules
     end
 
     def command_parser(event, msg, banner, extra_help, *option_input)

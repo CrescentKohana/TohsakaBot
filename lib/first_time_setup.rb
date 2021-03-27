@@ -47,7 +47,6 @@ class FirstTimeSetup
       db_password = required_input(green + I18n.t(:'first_time_setup.db_password'), false, pwd: true)
       print("\n\n")
 
-      # TODO: Disable the functionality of YT and SauceNao commands/events if not set.
       print green + I18n.t(:'first_time_setup.yt_apikey')
       yt_apikey = $stdin.noecho(&:gets).chomp
       print("\n")
@@ -117,24 +116,34 @@ class FirstTimeSetup
         "del_trigger:\n"\
         "- not now rin\n"\
         "- no\n"\
+        "- del\n"\
         "lord_role: #{lord_role}"\
         "fool_role: #{fool_role}"\
         "daily_neko: false\n"
       )
     end
 
-    File.open('data/ask_rin_answers.csv', 'w') do |f|
-      f.write(
-        "Yes.\t0\n"\
-        "No.\t0\n"\
-        "I don't know.\t0\n"
-      )
+    unless File.exist?('data/ask_rin_answers.csv')
+      File.open('data/ask_rin_answers.csv', 'w') do |f|
+        f.write(
+          "Yes.\t0\n"\
+          "No.\t0\n"\
+          "I don't know.\t0\n"
+        )
+      end
     end
 
-    # File.open("data/excluded_urls.yml", "w") { |f| f.write("---") } unless File.exist?('data/excluded_urls.yml')
-    File.open('data/repost.yml', 'w') { |f| f.write('---') } unless File.exist?('data/repost.yml')
+    File.open('data/repost.yml', 'w') { |f| f.write('--- {}') } unless File.exist?('data/repost.yml')
     File.open('data/temporary_roles.yml', 'w') { |f| f.write('--- {}') } unless File.exist?('data/temporary_roles.yml')
     File.open('data/squads_mute.yml', 'w') { |f| f.write('--- {}') } unless File.exist?('data/squads_mute.yml')
+
+    unless File.exist?('data/squads.json')
+      squads_hash = {
+        "Game": { "group_size": 5, "role_id": 0 },
+        "Game 2": { "group_size": 5, "role_id": 0 }
+      }.freeze
+      File.open('data/squads.json', 'w') { |f| f.write(JSON.pretty_generate(squads_hash)) }
+    end
 
     Dir.mkdir('data/triggers') unless File.directory?('data/triggers')
 
