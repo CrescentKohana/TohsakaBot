@@ -15,7 +15,7 @@ module TohsakaBot
           next
         end
 
-        roles = JSON.parse(File.read("data/persistent/squads.json"))
+        roles = JSON.parse(File.read("data/squads.json"))
         role_mentions = {}
         event.message.role_mentions.each do |rm|
           role_mentions[rm.id] = rm.name

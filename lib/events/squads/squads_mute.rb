@@ -15,7 +15,7 @@ module TohsakaBot
           next
         end
 
-        role_ids = JSON.parse(File.read("data/persistent/squads.json")).values.collect { |role| role["role_id"].to_i }
+        role_ids = JSON.parse(File.read("data/squads.json")).values.collect { |role| role["role_id"].to_i }
         role_id = nil
         event.message.role_mentions.each do |rm|
           if role_ids.include? rm.id.to_i

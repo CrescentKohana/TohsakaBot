@@ -40,7 +40,7 @@ require "i18n/backend/fallbacks"
 
 # Misc #
 require 'nekos'
-require 'digest/sha1'
+require 'digest'
 require 'benchmark'
 require 'to_regexp'
 require 'active_support/core_ext/string/filters'
@@ -55,11 +55,8 @@ require 'redcarpet'
 require 'redcarpet/render_strip'
 
 # Override discordrb gem
-# require_relative 'gem_overrides/bot_override'
 require_relative 'gem_overrides/discordrb_command_override'
 require_relative 'gem_overrides/cache_overrride'
-# require_relative 'gem_overrides/channels_override'
-# require_relative 'gem_overrides/container_override'
 
 # Main module of the bot
 module TohsakaBot
@@ -93,7 +90,7 @@ module TohsakaBot
   # Discord Bot #
   BOT = Discordrb::Commands::CommandBot.new(token: AUTH.bot_token,
                                             client_id: AUTH.cli_id,
-                                            prefix: CFG.prefix.split(" "),
+                                            prefix: CFG.prefix.split(' '),
                                             advanced_functionality: false,
                                             fancy_log: true)
 
@@ -161,10 +158,12 @@ module TohsakaBot
     channel = CFG.default_channel.to_i
     puts I18n.t(:'bot.default_channel_notify') unless CFG.default_channel.match(/\d{18}/)
 
-    while (user_input = gets.strip.split(' '))
-      if user_input[0] == 'setch'
+    while (user_input = gets&.strip&.split(' '))
+      next if user_input.blank?
+
+      if user_input[0] == 'set_chan'
         channel = user_input[1].to_i
-        puts "Channel set to #{BOT.channel(channel).name} "
+        puts "Channel set to #{BOT.channel(channel)&.name} "
       elsif user_input[0][0] == '.' && channel.match(/\d{18}/)
         BOT.send_message(channel, user_input.join(' ')[1..])
       end
