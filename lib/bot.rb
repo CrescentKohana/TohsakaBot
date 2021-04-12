@@ -94,10 +94,6 @@ module TohsakaBot
                                             advanced_functionality: false,
                                             fancy_log: true)
 
-  # Sets permissions, 1000 being the highest
-  TohsakaBot.set_permissions
-  BOT.set_user_permission(AUTH.owner_id.to_i, 1000)
-
   # Discord Events and Commands #
   TohsakaBot.load_modules(:Commands, 'commands/*/*')
   TohsakaBot.load_modules(:Events, 'events/*/*')
@@ -161,7 +157,7 @@ module TohsakaBot
     while (user_input = gets&.strip&.split(' '))
       next if user_input.blank?
 
-      if user_input[0] == 'set_chan'
+      if user_input[0] == 'set_ch'
         channel = user_input[1].to_i
         puts "Channel set to #{BOT.channel(channel)&.name} "
       elsif user_input[0][0] == '.' && channel.match(/\d{18}/)

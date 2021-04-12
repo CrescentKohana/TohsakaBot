@@ -25,7 +25,7 @@ module TohsakaBot
 
           output << if t[:reply].nil? || t[:reply].length.zero?
                       "`#{format('%4s', t[:id])} |"\
-                      " #{format('%-5s', "#{t[:mode]} #{chance}")} |"\
+                      " #{format('%-5s', "#{t[:mode]} & #{chance}")} |"\
                       " #{format('%-33s', t[:phrase].to_s.gsub("\n", '')[0..30])} |"\
                       " #{format('%-21s', t[:file][0..20])}`\n"
                     else

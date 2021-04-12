@@ -88,17 +88,23 @@ module TohsakaBot
   #   TohsakaBot.trigger_data.trigger_phrases
   #
   # @return [TriggerData] triggers
-  module TriggerPersistence
+  module PersistentTriggerData
     def trigger_data
       @trigger_data ||= TriggerData.new
     end
   end
 
-  module MsgQueuePersistence
+  module PersistentMsgQueueData
     def queue_cache
       @queue_cache ||= MsgQueueCache.new
     end
   end
 
-  TohsakaBot.extend DatabaseAccess, TriggerPersistence, MsgQueuePersistence
+  module PersistentPermissionsData
+    def permissions
+      @permissions ||= Permissions.new
+    end
+  end
+
+  TohsakaBot.extend DatabaseAccess, PersistentTriggerData, PersistentMsgQueueData, PersistentPermissionsData
 end

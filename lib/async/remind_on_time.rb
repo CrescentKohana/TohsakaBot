@@ -12,7 +12,7 @@ module TohsakaBot
           expiring_reminders.each do |r|
             id = r[:id].to_i
             msg = r[:message]
-            channel_id = r[:channel]
+            channel_id = r[:channel_id]
             datetime = r[:datetime].to_i
             # parent = r[:parent]
             created_at = r[:created_at]
@@ -76,7 +76,7 @@ module TohsakaBot
                   .update(datetime: Time.at(datetime + repeat_time).strftime('%Y-%m-%d %H:%M:%S'),
                           message: msg,
                           user_id: user_id,
-                          channel: channel_id,
+                          channel_id: channel_id,
                           repeat: repeat_time,
                           created_at: created_at,
                           updated_at: updated_at)

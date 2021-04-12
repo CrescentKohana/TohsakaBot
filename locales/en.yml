@@ -3,7 +3,7 @@ en:
 
   bot:
     default_channel_notify: "No default channel set in 'cfg/config.yml'.
-    Before sending messages through the terminal, set the channel with 'setch <id>'"
+    Before sending messages through the terminal, set the channel with 'set_ch <id>'"
 
   first_time_setup:
     required_hint: "* means required field!"
@@ -27,6 +27,7 @@ en:
     highlight_channel: "Highlight channel ID (advanced pin system): "
     web_dir: "Directory path of TohsakaWeb like /home/rin/www/TohsakaWeb
     (optional, note for no trailing slash!): "
+    web_url: "URL of TohsakaWeb like https://rin.example.com (optional): "
     lord_role: "ID of the lord role (optional, given to a user as a reward when they win in something): "
     fool_role: "ID of the fool role (optional, given to a user as a reward when they lose in something): "
     files_created: "Necessary directories and files created! Bot can now be started with:\nbundle exec ruby run.rb"
@@ -36,13 +37,15 @@ en:
     repost_overseer:
       response: "Repost!"
     squads:
-      info: "**Squads:** a way to form groups. By mentioning a whitelisted role, bot will spawn five buttons to the message. Also, when accompanied by a number, the default squad size will be overridden.\n\n
-            ✅ `Accept (everyone who accepted will be mentioned when the squad size is reached)`\n
-            ❌ `Deny and mute this role for 1 hour`\n
-            🚫 `Deny and mute this role for 6 hours`\n
-            🔕 `Deny and mute this role for 24 hours`\n
-            ❓ `This help`\n\n
-            Roles: `%{roles}`"
+      info: "**Squads:** a way to form groups. By mentioning a whitelisted role,
+       will spawn five buttons to the message. Also, when accompanied by a number,
+       the default squad size will be overridden.\n\n
+       ✅ `Accept (everyone who accepted will be mentioned when the squad size is reached)`\n
+       ❌ `Deny and mute this role for 1 hour`\n
+       🚫 `Deny and mute this role for 6 hours`\n
+       🔕 `Deny and mute this role for 24 hours`\n
+       ❓ `This help`\n\n
+       Roles: `%{roles}`"
   commands:
     management:
       set_lang:
@@ -84,12 +87,14 @@ en:
           response: "`<ID: %{id}>` Roles %{roles} will be %{mode} during: %{times}."
           help:
             banner: "Usage: addtimedrole [options]"
-            times: "Active or inactive times. Days: `mon, tue, wed, thu, fri, sat, sun, weekend, weekday`. Format: day-00:00-00:00 day-00:00-00:00 (order being day-start-end)."
+            times: "Active or inactive times. Days: `mon, tue, wed, thu, fri, sat, sun, weekend, weekday`.
+            Format: day-00:00-00:00 day-00:00-00:00 (order being day-start-end)."
             roles: "Roles active for this rule. Separated by whitespace. Format: Role1 Role2 Role3."
             mode: "`Active` or `inactive` times?"
-            extra_help: "Examples follow:\n・`timedrole -t weekday-8:00-16:00 weekend-10:00-12:00 fri-8:00-14:00 -r Game Game2`
-                will set roles Game and Game2 to be disabled during week days from 8:00 until 16:00
-                with the exception of friday (8:00-14:00). On weekends: 10:00-14:00."
+            extra_help: "Examples follow:
+            \n・`timedrole -t weekday-8:00-16:00 weekend-10:00-12:00 fri-8:00-14:00 -r Game Game2 -m i`
+            will set roles Game and Game2 to be disabled during week days from 8:00 until 16:00
+            with the exception of friday (8:00-14:00). On weekends: 10:00-14:00."
         del:
           aliases: "deltimedrole deltimerole deltrole delrolet"
           description: "Deletes timed roles."
@@ -141,6 +146,12 @@ en:
       details:
       list:
     trigger:
+      errors:
+        exact_trigger_already_exists: "Exact trigger with the phrase `?{phrase}` already exists!
+        Choose another phrase or use 'any' mode."
+        trigger_limit: "You've reached the max limit for triggers (%{limit}).
+        List your own triggers with `triggers` and delete some of them with `deltriggers <id(s)>`."
+        regex_permissions: "No permissions for the regex mode."
       add:
         aliases: "addtrigger trigger"
         description: "Adds a trigger."

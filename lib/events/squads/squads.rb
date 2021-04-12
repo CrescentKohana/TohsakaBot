@@ -7,6 +7,7 @@ module TohsakaBot
       reaction_add(emoji: "✅") do |event|
         next if event.channel.pm? || event.user.bot_account
         next unless Time.now.to_i <= event.message.timestamp.to_i + 3600
+        next if event.message.role_mentions.empty?
 
         if event.user.id == event.message.author.id
           Discordrb::API::Channel.delete_user_reaction(

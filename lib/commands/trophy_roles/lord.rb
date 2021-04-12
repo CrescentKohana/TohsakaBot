@@ -8,7 +8,7 @@ module TohsakaBot
               description: 'Gives user a temporary role of lord.',
               usage: 'lord <user> <duration in days> <reason>',
               min_args: 2,
-              permission_level: 750) do |event, days, *reason|
+              permission_level: TohsakaBot.permissions.actions["trophy_roles"]) do |event, days, *reason|
         user_id = event.message.mentions[0].id
         role_id = CFG.lord_role
 

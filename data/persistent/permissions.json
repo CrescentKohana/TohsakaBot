@@ -1,0 +1,21 @@
+{
+  "roles": {
+    "owner": 1000,
+    "admin": 750,
+    "moderator": 500,
+    "data_moderator": 250,
+    "trusted": 100,
+    "new": 0
+  },
+  "actions": {
+    "convert_pins": "admin",
+    "message_prune": "admin",
+    "feature_requests": "admin",
+    "permissions": "admin",
+    "typing_event": "moderator",
+    "trophy_roles": "moderator",
+    "set_status": "data_moderator",
+    "trigger_management": "data_moderator",
+    "regex_triggers": "trusted"
+  }
+}

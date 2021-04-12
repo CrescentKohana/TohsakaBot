@@ -7,7 +7,7 @@ module TohsakaBot
       command(:eval,
               description: 'Run Ruby code. Only for the owner.',
               help_available: false,
-              permission_level: 1000) do |event|
+              permission_level: TohsakaBot.permissions.roles["owner"]) do |event|
         # Hard coded to allow ONLY the owner to have access.
         break unless event.user.id == AUTH.owner_id.to_i
 

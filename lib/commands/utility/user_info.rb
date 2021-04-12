@@ -8,7 +8,6 @@ module TohsakaBot
               aliases: TohsakaBot.get_command_aliases('commands.utility.user_info.aliases'),
               description: I18n.t(:'commands.utility.user_info.description'),
               usage: I18n.t(:'commands.utility.user_info.usage')) do |event, user|
-
         discord_user = if user.nil?
                          event.author
                        else
@@ -19,7 +18,7 @@ module TohsakaBot
         if !event.channel.pm?
           server_member = BOT.member(event.server.id, discord_user.id)
           nickname = "   Nickname: #{server_member.display_name}\n"
-          groups = (server_member.roles.map { |r| "`#{r.name}`"} - ['`@everyone`']).sort.join(' ').to_s
+          groups = (server_member.roles.map { |r| "`#{r.name}`" } - ['`@everyone`']).sort.join(' ').to_s
         else
           nickname = ""
           groups = ""

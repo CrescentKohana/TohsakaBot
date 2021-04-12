@@ -9,51 +9,43 @@ module TohsakaBot
         urls = URI.extract(cleaned_msg)
 
         discord_uid = event.message.user.id
-        time = Time.parse(event.message.timestamp.to_s).to_i
-        msg_uri = "#{event.server.id}/#{event.channel.id}/#{event.message.id}"
+        time = Time.parse(event.message.timestamp.to_s)
 
-        def self.store_repost(urls, time, file, discord_uid, msg_uri)
-          db = YAML::Store.new('data/repost.yml')
-          entry_exists = false
+        def self.store_repost(urls, time, file_hash, discord_uid, msg_id, channel_id, server_id)
+          db = TohsakaBot.db[:linkeds]
 
           urls.each do |url|
-            type, url_result = TohsakaBot.url_parse(url)
-            break if type.nil?
+            category, url_result = TohsakaBot.url_parse(url)
+            break if category.nil?
+            next unless db.where(url: url_result).single_record.nil?
+            next if !file_hash.blank? && !db.where(file_hash: url_result).single_record.nil?
 
-            db_read = YAML.load_file('data/repost.yml')
-            db_read&.each do |_k, v|
-              if v['url'] == url_result
-                entry_exists = true
-                break
-              end
-            end
-
-            next if entry_exists
-
-            db.transaction do
-              i = 1
-              i += 1 while db.root?(i)
-              db[i] = {
-                'type' => type.to_s,
-                'url' => url_result.to_s,
-                'time' => time,
-                'file' => file.to_s,
-                'user' => discord_uid,
-                'msg_uri' => msg_uri.to_s
-              }
-              db.commit
+            TohsakaBot.db.transaction do
+              db.insert(
+                category: category,
+                url: url_result,
+                file_hash: file_hash,
+                timestamp: time,
+                author_id: discord_uid,
+                msg_id: msg_id,
+                channel_id: channel_id,
+                server_id: server_id,
+                created_at: Time.now,
+                updated_at: Time.now
+              )
             end
           end
         end
 
         # TODO: File checksum check?
-        # if !event.message.attachments.first.nil?
-        #   file = event.message.attachments.first.filename
+        # unless event.message.attachments.empty
+        #   file = event.message.attachments.first
+        #   IO.copy_stream(URI.open(file.url), "tmp/#{}")
         #   store_repost(db, event, url, ti, file, ui, url_to_msg)
         # end
         # file = ''
 
-        store_repost(urls, time, '', discord_uid, msg_uri)
+        store_repost(urls, time, '', discord_uid, event.message.id, event.channel.id, event.server.id)
       end
     end
   end

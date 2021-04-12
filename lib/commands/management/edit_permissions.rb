@@ -2,14 +2,14 @@
 
 module TohsakaBot
   module Commands
-    module EditPermissions
+    module SetPermissions
       extend Discordrb::Commands::CommandContainer
-      command(:editpermissions,
-              aliases: %i[editperm editpermissions setperm setpermissions],
+      command(:setpermissions,
+              aliases: %i[editperm editpermissions setperm],
               description: "Edits given user's permission level.",
-              usage: 'editpermissions <discord uid> <level (0-1000)>',
+              usage: 'setperm <discord uid> <level (0-1000)>',
               min_args: 2,
-              permission_level: 1000) do |event, user, level|
+              permission_level: TohsakaBot.permissions.actions["permissions"]) do |event, user, level|
         discord_user = BOT.user(TohsakaBot.discord_id_from_mention(user))
 
         if discord_user.nil?
@@ -25,7 +25,7 @@ module TohsakaBot
           break
         end
 
-        success = TohsakaBot.set_permission(discord_user.id, level)
+        success = TohsakaBot.permissions.set_level(discord_user.id, level)
         if success.nil?
           event.respond("Failed to set permissions for #{discord_user.name}")
         else

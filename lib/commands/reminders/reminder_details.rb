@@ -15,7 +15,7 @@ module TohsakaBot
           user_id = TohsakaBot.get_user_id(event.author.id.to_i).to_i
           reminder = TohsakaBot.db[:reminders].where(id: id.to_i, user_id: user_id).single_record!
           unless reminder.nil?
-            channel = BOT.channel(reminder[:channel].to_i)
+            channel = BOT.channel(reminder[:channel_id].to_i)
             channel = channel.nil? ? "" : "Channel: #{channel.name}"
             repeat_time = if reminder[:repeat].zero?
                             ""

@@ -7,7 +7,7 @@ module TohsakaBot
       command(:typing,
               aliases: %i[type],
               description: 'Starts typing.',
-              permission_level: 1000,
+              permission_level: TohsakaBot.permissions.actions["typing_event"],
               usage: 'typing <how long (minutes, default is unlimited)>') do |event, duration|
         if event.channel.pm?
           event.<< 'Not allowed in private messages.'

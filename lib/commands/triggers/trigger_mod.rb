@@ -12,7 +12,10 @@ module TohsakaBot
               require_register: true,
               enabled_in_pm: false) do |event, *msg|
         discord_uid = event.author.id.to_i
-        trigger_control_permisson = TohsakaBot.permission?(discord_uid, 500)
+        trigger_control_permisson = TohsakaBot.permissions.permission?(
+          discord_uid,
+          TohsakaBot.permissions.actions["trigger_management"]
+        )
 
         extra_help = 'Example: `triggermod -i 420 -p new trigger -r new response -c 100`'
 
@@ -59,9 +62,9 @@ module TohsakaBot
         trigger[:phrase] = phrase unless phrase.nil?
 
         unless options.mode.nil?
-          trigger[:mode] = TriggerController.mode(options.mode, discord_uid)
+          trigger[:mode] = TriggerController.select_mode(options.mode, discord_uid)
           if trigger[:mode].nil?
-            event.respond('No permissions for regex mode.')
+            event.respond(I18n.t(:'commands.trigger.errors.regex_permissions'))
             break
           end
         end

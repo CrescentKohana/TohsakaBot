@@ -45,13 +45,8 @@ module TohsakaBot
       BOT.channel(channel_id.to_i).pm?
     end
 
-    def get_def_trigger_chance(mode)
-      default_chance = CFG.default_trigger_chance.to_i
-      if mode.to_i.zero?
-        default_chance * 2
-      else
-        default_chance
-      end
+    def parse_chance(chance, mode)
+      TohsakaBot.trigger_data.parse_chance(chance, mode)
     end
 
     # Checks that the member is in same server as the bot.

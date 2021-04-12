@@ -38,9 +38,9 @@ module TohsakaBot
                when 2
                  chance
                when 1
-                 chance * 3
-               else
                  chance
+               else
+                 chance * 3
                end
 
       return 100 if chance > 100

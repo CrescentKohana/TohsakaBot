@@ -14,7 +14,7 @@ module TohsakaBot
         @list[id] = {}
         @list[id][:msgs] = []
         @list[id][:time] = Time.now.to_i + 2
-        @list[id][:channel] = channel
+        @list[id][:channel_id] = channel
         @list[id][:embed] = embed
       elsif embed && @list[id][:msgs].size == 25
         send_msgs(id)
@@ -24,7 +24,7 @@ module TohsakaBot
       end
 
       # Show the user that the bot is doing something by sending a typing indicator
-      channel = BOT.channel(@list[id][:channel])
+      channel = BOT.channel(@list[id][:channel_id])
       channel&.start_typing
 
       return if embed && @list[id][:msgs].length >= 25 # maximum number of fields in embed
@@ -35,7 +35,7 @@ module TohsakaBot
 
     def send_msgs(id)
       if @list[id][:embed]
-        BOT.channel(@list[id][:channel]).send_embed do |e|
+        BOT.channel(@list[id][:channel_id]).send_embed do |e|
           e.colour = 0x36393F
           @list[id][:msgs].each do |m|
             e.add_field(name: m[0], value: m[1])
@@ -47,7 +47,7 @@ module TohsakaBot
           message += "#{m}\n"
         end
 
-        BOT.channel(@list[id][:channel]).send(message)
+        BOT.channel(@list[id][:channel_id]).send(message)
       end
       @list.delete(id)
     end
