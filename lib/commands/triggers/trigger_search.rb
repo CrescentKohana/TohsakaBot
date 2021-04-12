@@ -74,12 +74,12 @@ module TohsakaBot
 
           output << if reply.nil? || reply.empty?
                       "`#{format('%4s', id)} |"\
-                      " #{format('%-5s', "#{mode} #{chance}")} |"\
+                      " #{format('%-5s', "#{mode} & #{chance}")} |"\
                       " #{format('%-33s', phrase.to_s.gsub("\n", '')[0..30])} |"\
                       " #{format('%-21s', file[0..20])}`\n"
                     else
                       "`#{format('%4s', id)} |"\
-                      " #{format('%-5s', "#{mode} #{chance}")} |"\
+                      " #{format('%-5s', "#{mode} & #{chance}")} |"\
                       " #{format('%-33s', phrase.to_s.gsub("\n", '')[0..30])} |"\
                       " #{format('%-21s', reply.gsub("\n", '')[0..20])}`\n"
                     end

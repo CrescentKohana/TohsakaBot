@@ -8,13 +8,6 @@ module TohsakaBot
         next if event.channel.pm? || event.user.bot_account
         next unless Time.now.to_i <= event.message.timestamp.to_i + 3600
 
-        if event.user.id == event.message.author.id
-          Discordrb::API::Channel.delete_user_reaction(
-            "Bot #{AUTH.bot_token}", event.channel.id, event.message.id, event.emoji.name, event.message.author.id
-          )
-          next
-        end
-
         role_ids = JSON.parse(File.read("data/squads.json")).values.collect { |role| role["role_id"].to_i }
         role_id = nil
         event.message.role_mentions.each do |rm|
@@ -25,6 +18,13 @@ module TohsakaBot
         end
         next if role_id.nil?
         next unless BOT.member(event.server.id, event.user.id).role?(role_id)
+
+        if event.user.id == event.message.author.id
+          Discordrb::API::Channel.delete_user_reaction(
+            "Bot #{AUTH.bot_token}", event.channel.id, event.message.id, event.emoji.name, event.message.author.id
+          )
+          next
+        end
 
         durations = { "❌" => 1, "🚫" => 6, "🔕" => 24 }
         db = YAML::Store.new("data/squads_mute.yml")

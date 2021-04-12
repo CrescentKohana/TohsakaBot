@@ -100,6 +100,10 @@ class FirstTimeSetup
       web_dir = gets
       print("\n")
 
+      print green + I18n.t(:'first_time_setup.web_url')
+      web_url = gets
+      print("\n")
+
       f.write(
         "---\n"\
         "prefix: \"#{prefix.gsub("\n", '')}\"\n"\
@@ -108,6 +112,7 @@ class FirstTimeSetup
         "default_channel: #{default_channel}"\
         "highlight_channel: #{highlight_channel}"\
         "web_dir: \"#{web_dir.gsub("\n", '')}\"\n"\
+        "web_url: \"#{web_url.gsub("\n", '')}\"\n"\
         "nhk_api: \"https://rin.luukuton.fi/nhk/\"\n"\
         "reminder_limit: 100\n"\
         "trigger_limit: 10\n"\
@@ -133,7 +138,7 @@ class FirstTimeSetup
       end
     end
 
-    File.open('data/repost.yml', 'w') { |f| f.write('--- {}') } unless File.exist?('data/repost.yml')
+    # File.open('data/repost.yml', 'w') { |f| f.write('--- {}') } unless File.exist?('data/repost.yml')
     File.open('data/temporary_roles.yml', 'w') { |f| f.write('--- {}') } unless File.exist?('data/temporary_roles.yml')
     File.open('data/squads_mute.yml', 'w') { |f| f.write('--- {}') } unless File.exist?('data/squads_mute.yml')
 

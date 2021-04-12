@@ -75,8 +75,7 @@ module TohsakaBot
         roles: added_roles.to_a,
         times: parsed_times.to_a,
         mode: active,
-        activate_on: Time.now
-      }
+        activate_on: Time.now }
     end
 
     def self.store_timed_role(entry)

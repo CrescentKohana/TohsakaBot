@@ -74,7 +74,7 @@ module TohsakaBot
         parsed_time = ActiveSupport::Duration.parse(iso8601_time)
         raise ReminderHandler::DateTimeSyntaxError if parsed_time.seconds <= 0
 
-        @datetime = parsed_time.seconds.from_now
+        @datetime = parsed_time.from_now
 
       # Direct ISO 8601 formatted input
       elsif DATE_REGEX.match?("#{@datetime.gsub('_', ' ')} #{@msg}")
@@ -105,7 +105,7 @@ module TohsakaBot
           datetime: @datetime,
           message: @msg,
           user_id: TohsakaBot.get_user_id(@discord_uid),
-          channel: @channel_id,
+          channel_id: @channel_id,
           repeat: @repeat,
           created_at: Time.now,
           updated_at: Time.now
@@ -135,9 +135,9 @@ module TohsakaBot
         reminder[:message] = @msg
       end
       if @channel_id.nil?
-        @channel_id = reminder[:channel]
+        @channel_id = reminder[:channel_id]
       else
-        reminder[:channel] = @channel_id
+        reminder[:channel_id] = @channel_id
       end
       if @repeat.nil?
         @repeat = reminder[:repeat]
@@ -197,7 +197,7 @@ module TohsakaBot
           id = reminders.insert(datetime: reminder[:datetime],
                                 message: reminder[:message],
                                 user_id: TohsakaBot.get_user_id(discord_uid),
-                                channel: reminder[:channel],
+                                channel_id: reminder[:channel_id],
                                 repeat: reminder[:repeat],
                                 parent: reminder_id,
                                 created_at: Time.now,

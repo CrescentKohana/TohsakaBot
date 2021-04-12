@@ -7,8 +7,7 @@ module TohsakaBot
       message do |event|
         next if event.channel.pm? || event.user.bot_account
 
-        id = event.message.id
-        first, second = /(\d)(\1*$)/.match(id.to_s).captures
+        first, second = /(\d)(\1*$)/.match(event.message.id.to_s).captures
         capture = first.to_s + second.to_s
         @length = capture.length
         @msg = event.message.content
@@ -37,8 +36,14 @@ module TohsakaBot
 
           next unless @length >= 5 || check_pair(2, "dubs") || check_pair(3, "trips") || check_pair(4, "quads")
 
+          if @length >= 6
+            highlight_core = HighlightCore.new(event.message, event.server.id, event.channel.id)
+            highlight_core.store_highlight(highlight_core.send_highlight)
+          end
+
           reply = "#{map[@length]}! 🆔 **#{capture}**"
         end
+
 
         event.channel.send_embed do |embed|
           embed.colour = 0x36393F

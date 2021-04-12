@@ -28,7 +28,7 @@ module TohsakaBot
       modules[:Commands].delete("GetSauce") if AUTH.saucenao_apikey.blank?
       modules[:Commands].delete("Lord") if CFG.lord_role.blank?
       modules[:Commands].delete("Fool") if CFG.fool_role.blank?
-      modules[:Commands].delete("Fool") if CFG.fool_role.blank?
+      modules[:Commands].delete("GetPitch") if CFG.nhk_api.blank?
 
       modules[:Async].delete("DailyNeko") if CFG.daily_neko.blank? || !CFG.daily_neko
 

@@ -14,7 +14,7 @@ module TohsakaBot
       @phrase = phrase
       @server_id = event.server.id.to_i
       @discord_uid = event.message.user.id.to_i
-      @mode = mode
+      @mode = mode.nil? ? 1 : mode
       @chance = 0
 
       # Remove an unnecessary spaces
@@ -29,7 +29,7 @@ module TohsakaBot
     def store_trigger(reply: '', filename: '')
       return unless TohsakaBot.registered?(@discord_uid)
 
-      if @mode.zero? && TohsakaBot.db[:triggers].where(phrase: @phrase).select.first
+      if @mode.zero? && TohsakaBot.db[:triggers].where(phrase: @phrase, mode: 0).select.first
         return "Exact trigger with the phrase `#{@phrase}` already exists! Choose another phrase or use 'any' mode."
       end
 
@@ -56,8 +56,9 @@ module TohsakaBot
     # @return [String] Message to the user
     def self.update_trigger(trigger)
       triggers = TohsakaBot.db[:triggers]
-      if (trigger[:mode]).zero? && triggers.where(phrase: trigger[:phrase]).select.first
-        return "Exact trigger with the phrase `#{trigger[:phrase]}` already exists! Choose another phrase or change the mode to 'any'."
+
+      if trigger[:mode].zero? && triggers.where(phrase: trigger[:phrase], mode: 0).exclude(id: trigger[:id]).select.first
+        raise ExactTriggerAlreadyExists.new(phrase: trigger[:phrase])
       end
 
       TohsakaBot.db.transaction do
@@ -93,12 +94,12 @@ module TohsakaBot
     #
     # @param mode_input [String]
     # @return [Integer, nil] 0, 1 or 2 as the mode identifier. nil if no permissions.
-    def self.mode(mode_input, discord_uid)
+    def self.select_mode(mode_input, discord_uid)
       case mode_input
       when /e.*/s
         0
       when /r.*/s
-        return nil unless TohsakaBot.permission?(discord_uid, 100)
+        return nil unless TohsakaBot.permissions.permission?(discord_uid, TohsakaBot.permissions.actions["regex_triggers"])
 
         2
       else

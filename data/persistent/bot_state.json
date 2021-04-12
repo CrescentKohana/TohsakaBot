@@ -1,6 +1,6 @@
 {
   "Async":[
-    "RefreshNP",
+    "RefreshStatus",
     "RemindOnTime",
     "URLCleaner",
     "RoleManagement",
@@ -28,7 +28,7 @@
     "TimedRoleList",
     "SetLang",
     "Tester",
-    "NowPlaying",
+    "SetStatus",
     "Alko",
     "Alkolist",
     "Chaos",
@@ -63,7 +63,7 @@
     "MessagePrune",
     "ConvertPins",
     "Typing",
-    "EditPermissions",
+    "SetPermissions",
     "Neko",
     "GetPitch",
     "UserInfo"

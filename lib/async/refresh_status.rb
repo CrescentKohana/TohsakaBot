@@ -2,7 +2,7 @@
 
 module TohsakaBot
   module Async
-    module RefreshNP
+    module RefreshStatus
       Thread.new do
         loop do
           cfg = YAML.load_file('cfg/config.yml')

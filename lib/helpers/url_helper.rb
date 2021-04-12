@@ -43,13 +43,15 @@ module TohsakaBot
       parameters = query.nil? ? nil : CGI.parse(query)
 
       case domain
+      when PublicSuffix.domain(CFG.web_url)
+        return nil
       when 'youtube.com'
         return nil if parameters.nil?
 
         youtube_id = parameters['v']
         return nil if youtube_id.nil?
 
-        type = 'youtube'
+        category = 'youtube'
         url_result = parameters['v'][0]
       when 'youtu.be'
         return nil if path.nil?
@@ -57,7 +59,7 @@ module TohsakaBot
         youtube_id = path.match(%r{/(\S{11})(/|)}i).captures
         return nil if youtube_id.nil?
 
-        type = 'youtube'
+        category = 'youtube'
         url_result = youtube_id[0]
       when 'twitter.com'
         return nil if path.nil?
@@ -65,7 +67,7 @@ module TohsakaBot
         twitter_id = path.match(%r{/\S*/status/(\d*)}i).captures
         return nil if twitter_id.nil?
 
-        type = 'twitter'
+        category = 'twitter'
         url_result = twitter_id[0]
       when 'reddit.com', 'redd.it'
         return nil if path.nil?
@@ -78,7 +80,7 @@ module TohsakaBot
 
         return nil if reddit_id.nil?
 
-        type = 'reddit'
+        category = 'reddit'
         url_result = reddit_id[0]
       when 'twitch.tv'
         return nil unless subdomain == 'clips'
@@ -86,31 +88,28 @@ module TohsakaBot
         twitch_clips_id = path.match(%r{/(.*)}i).captures
         return nil if twitch_clips_id.nil?
 
-        type = 'twitch'
+        category = 'twitch'
         url_result = twitch_clips_id[0]
       else
         # Just the URL, no parsing
-        type = 'url'
+        category = 'url'
         url_result = url
       end
 
-      [type, url_result]
+      [category, url_result]
     end
 
     def url_match(event)
       urls = URI.extract(strip_markdown(event.message.content))
-      db = YAML.load_file('data/repost.yml')
+      db = TohsakaBot.db[:linkeds]
 
       return unless !urls.nil? && db
 
       urls.each do |url|
-        type, url_result = TohsakaBot.url_parse(url)
-        next if type.nil?
+        category, url_result = TohsakaBot.url_parse(url)
+        next if category.nil?
 
-        db.each do |_k, v|
-          next if v['user'].to_i == event.author.id.to_i
-          return v['time'].to_i, v['user'].to_i, v['msg_uri'] if v['url'] == url_result && v['type'] == type
-        end
+        return db.where(category: category, url: url_result).exclude(author_id: event.author.id.to_i).single_record
       end
       nil
     end

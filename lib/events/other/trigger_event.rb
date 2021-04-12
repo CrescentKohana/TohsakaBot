@@ -7,9 +7,12 @@ module TohsakaBot
       rate_limiter = Discordrb::Commands::SimpleRateLimiter.new
 
       message do |event|
-        next if Regexp.union(TohsakaBot.trigger_data.trigger_phrases) == event.content
-        # Private messages disabled
+        # Private Message channels disabled
         next if event.channel.pm?
+
+        # Strip spoilers: ||spoiler||
+        content = event.content.gsub(/(\|\|)(?:(?=(\\?))\2.)*?\1/, '')
+        next if Regexp.union(TohsakaBot.trigger_data.trigger_phrases) == content
 
         # Posts the trigger at 100% probability if bot is also mentioned in the message.
         sure_trigger = false
@@ -27,7 +30,7 @@ module TohsakaBot
         server_triggers.each do |t|
           phrase = t[:phrase]
           mode = t[:mode].to_i
-          msg = event.content.gsub("<@!#{AUTH.cli_id}>", '').strip
+          msg = content.gsub("<@!#{AUTH.cli_id}>", '').strip
 
           if mode.zero?
             phrase = /^#{Regexp.quote(phrase)}$/i
@@ -96,7 +99,7 @@ module TohsakaBot
         end
 
         # A way to remove the trigger response.
-        # Only the one, whose message got triggered, is able to delete the response.
+        # Only the one whose message got triggered is able to delete the response.
         # Threading is needed here as otherwise the await! would block any other triggers.
         Thread.new do
           response = event.message.await!(timeout: 10)

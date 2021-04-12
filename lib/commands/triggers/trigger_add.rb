@@ -40,7 +40,7 @@ module TohsakaBot
         mode = options.mode
 
         unless options.mode.nil?
-          mode = TriggerController.mode(options.mode, event.author.id.to_i)
+          mode = TriggerController.select_mode(options.mode, event.author.id.to_i)
           if mode.nil?
             event.respond('No permissions for regex mode.')
             break
@@ -82,6 +82,7 @@ module TohsakaBot
         end
 
         event.respond(reply)
+        break
       end
     end
   end

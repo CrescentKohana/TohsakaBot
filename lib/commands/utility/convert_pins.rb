@@ -8,7 +8,7 @@ module TohsakaBot
       command(:convertpins,
               description: 'Copies all pinned messages on the specified channel to database and posts them to the highlight channel',
               usage: 'convertpins <Newest|oldest (starting point)> <channel_id (if empty, current channel will be used)> ',
-              permission_level: 1000) do |event, order, channel_id|
+              permission_level: TohsakaBot.permissions.actions["convert_pins"]) do |event, order, channel_id|
         channel = if channel_id.nil?
                     event.channel
                   else

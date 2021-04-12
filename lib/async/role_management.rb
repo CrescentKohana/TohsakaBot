@@ -73,16 +73,23 @@ module TohsakaBot
                 start_time = Time.new(now.year, now.month, now.day, start_time[0], start_time[1], 0)
                 end_time = Time.new(now.year, now.month, now.day, end_time[0], end_time[1], 0)
 
-                inactive = v[:mode] == "inactive" && (start_time..end_time).cover?(now)
                 active = v[:mode] == "active" && (start_time..end_time).cover?(now)
+                inactive = v[:mode] == "inactive" && (start_time..end_time).cover?(now)
+                # puts "# #{now}"
+                # puts "# cover?: #{(start_time..end_time).cover?(now)}"
+                # puts "# a: #{active}"
+                # puts "# i: #{inactive}"
 
-                add_roles = true if (active || !inactive) && now.to_i >= v[:activate_on].to_i
-                add_roles = false if (!active || inactive) && now.to_i >= v[:activate_on].to_i
+                add_roles = true if (active || !inactive) && now.to_i > v[:activate_on].to_i
+                add_roles = false if (!active || inactive) && now.to_i > v[:activate_on].to_i
+                # puts "# activated?: #{now.to_i > v[:activate_on].to_i}"
                 next if add_roles.nil?
+
+                # puts "# add_roles: #{add_roles}"
 
                 db = YAML::Store.new('data/timed_roles.yml')
                 db.transaction do
-                  db[k][:activate_on] = end_time
+                  db[k][:activate_on] = (start_time..end_time).cover?(now) ? end_time : start_time
                   db.commit
                 end
               end
@@ -93,25 +100,30 @@ module TohsakaBot
                 next if found_role.nil?
 
                 if add_roles
+                  # debug message
+                  # BOT.user(user_id).pm("**[debug]** Trying to add role #{role} if not muted")
                   muted = false
-                  mute_db.each_value do |m|
+                  mute_db&.each_value do |m|
                     next if m.nil?
 
                     if found_role == m['role'].to_i && user_id == m['user'].to_i
                       muted = true
-                      next
+                      break
                     end
                   end
                   next if muted
 
-                  BOT.user(user_id).pm("Added role #{role}") # debug message
+                  # debug message
+                  # BOT.user(user_id).pm("**[debug]** Added role #{role}")
                   next if TohsakaBot::BOT.member(server_id, user_id)&.role?(found_role.id)
 
                   Discordrb::API::Server.add_member_role(
                     "Bot #{AUTH.bot_token}", server_id, user_id, found_role.id
                   )
                 else
-                  BOT.user(user_id).pm("Removed role #{role}") # debug message
+                  # debug message
+                  # BOT.user(user_id).pm("**[debug]** Removed role #{role}")
+                  # TODO: Fix bot trying to remove a role multiple times during the first minute of the range.
                   next unless TohsakaBot::BOT.member(server_id, user_id)&.role?(found_role.id)
 
                   Discordrb::API::Server.remove_member_role(

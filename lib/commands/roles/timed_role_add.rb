@@ -40,13 +40,15 @@ module TohsakaBot
         id = RoleController.store_timed_role(entry)
         times = entry[:times].map { |time| "`#{time[:day]}-#{time[:start]}-#{time[:end]}`" }.join(' ')
         roles = entry[:roles].map { |role| "`#{role}`" }.join(' ')
-        event.respond(I18n.t(
-          :'commands.roles.timed_role.add.response',
-          id: id,
-          roles: roles,
-          times: times,
-          mode: entry[:mode]
-        ))
+        event.respond(
+          I18n.t(
+            :'commands.roles.timed_role.add.response',
+            id: id,
+            roles: roles,
+            times: times,
+            mode: entry[:mode]
+          )
+        )
       end
     end
   end

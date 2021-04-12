@@ -10,7 +10,7 @@ module TohsakaBot
               usage: "Use 'fr <tag (new, indev, done, wontdo)>'",
               min_args: 2,
               require_register: true,
-              permission_level: 1000) do |event, id, tag|
+              permission_level: TohsakaBot.permissions.actions["feature_requests"]) do |event, id, tag|
         requests = YAML.load_file('data/feature_requests.yml')
 
         if requests[id.to_i].nil?
