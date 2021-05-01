@@ -41,18 +41,7 @@ module TohsakaBot
               break
             end
             name = BOT.member(event.server, user_id).display_name.strip_mass_mentions.sanitize_string
-
-            # Sends an embedded message with the rolled number and
-            # the name of the user who rolled combined
-            # with a link to the original message.
-            event.channel.send_embed do |embed|
-              embed.colour = 0x36393F
-              embed.add_field(
-                name: "🎲 **#{number.rjust(i, '0')}**",
-                value: "[#{name}]"\
-                       "(https://discord.com/channels/#{event.server.id}/#{event.channel.id}/#{event.message.id})"
-              )
-            end
+            event.respond("🎲 **#{number.rjust(i, '0')}** `#{name}`", false, nil, nil, false, event.message.referenced_message)
 
             if /(\d)\1{3}/.match?(number) && i == 4
               name = BOT.member(event.server, event.author.id).display_name

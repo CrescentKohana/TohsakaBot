@@ -25,8 +25,13 @@ module TohsakaBot
       @typing_channels[channel] = duration
     end
 
-    def send_message_with_reaction(cid, emoji, content)
-      reply = BOT.send_message(cid.to_i, content)
+    def send_message_with_reaction(cid, emoji, content, msg_ref = nil)
+      reply = if msg_ref.nil?
+                BOT.send_message(cid.to_i, content)
+              else
+                BOT.send_message(cid.to_i, content, false, nil, nil, false, msg_ref)
+              end
+
       reply.create_reaction(emoji)
     end
 

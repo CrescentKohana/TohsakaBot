@@ -20,7 +20,8 @@ module TohsakaBot
         TohsakaBot.send_message_with_reaction(
           event.channel.id,
           '🎲',
-          "**#{number.rjust(4, '0')}**  `#{name.strip_mass_mentions.sanitize_string}`#{identifier}"
+          "**#{number.rjust(4, '0')}**  `#{name.strip_mass_mentions.sanitize_string}`#{identifier}",
+          event.message
         )
 
         if /(\d)\1{3}/.match?(number)
