@@ -3,6 +3,16 @@ ja:
 
   async:
   events:
+    message_id_check:
+      2: '貳'
+      3: '参'
+      4: '肆'
+      5: '伍'
+      6: '陸'
+      7: '漆'
+      8: '捌'
+      9: '玖'
+      10: '拾'
   commands:
     management:
       set_lang:

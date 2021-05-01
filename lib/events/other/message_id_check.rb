@@ -20,38 +20,19 @@ module TohsakaBot
         name = BOT.member(event.server, event.message.author.id).display_name.strip_mass_mentions.sanitize_string
 
         if @length > 10
-          reply = "What in the wörld did you just get? 🆔 **#{capture}**"
+          reply = "#{I18n.t(:'events.message_id_check.what')} 🆔 **#{capture}**"
         else
-          map = {
-            2 => '貳 Doubles',
-            3 => '参 Triples',
-            4 => '肆 Quadruples',
-            5 => '伍 Quintuples',
-            6 => '陸 Sextuples',
-            7 => '漆 Septuples',
-            8 => '捌 Octuples',
-            9 => '玖 Nonuples',
-            10 => '拾 Decuples'
-          }
-
           next unless @length >= 5 || check_pair(2, "dubs") || check_pair(3, "trips") || check_pair(4, "quads")
 
           if @length >= 6
             highlight_core = HighlightCore.new(event.message, event.server.id, event.channel.id)
             highlight_core.store_highlight(highlight_core.send_highlight)
           end
-
-          reply = "#{map[@length]}! 🆔 **#{capture}**"
+          i18n_code = "events.message_id_check.#{@length}".to_sym
+          reply = "#{I18n.t(i18n_code)} 🆔 **…#{capture}**"
         end
 
-
-        event.channel.send_embed do |embed|
-          embed.colour = 0x36393F
-          embed.add_field(
-            name: reply,
-            value: "[#{name}](https://discord.com/channels/#{event.server.id}/#{event.channel.id}/#{event.message.id})"
-          )
-        end
+        event.respond("#{reply} `#{name}`", false, nil, nil, false, event.message)
       end
     end
   end
