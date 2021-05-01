@@ -28,6 +28,6 @@ class String
   end
 
   def first_number
-    self[/\d+/]
+    self[/\b\d+\b/]
   end
 end

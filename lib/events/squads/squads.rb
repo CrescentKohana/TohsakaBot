@@ -6,6 +6,7 @@ module TohsakaBot
       extend Discordrb::EventContainer
       reaction_add(emoji: "✅") do |event|
         next if event.channel.pm? || event.user.bot_account
+        next if event.message.content&.first == '#'
         next unless Time.now.to_i <= event.message.timestamp.to_i + 3600
         next if event.message.role_mentions.empty?
 
