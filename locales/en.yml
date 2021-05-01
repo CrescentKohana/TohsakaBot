@@ -34,6 +34,17 @@ en:
 
   async:
   events:
+    message_id_check:
+      2: "Doubles!"
+      3: "Triples!"
+      4: "Quadruples!"
+      5: "Quintuples!"
+      6: "Sextuples!"
+      7: "Septuples!"
+      8: "Octuples!"
+      9: "Nonuples!"
+      10: "Decuples!"
+      what: "What in the wörld did you just get?"
     repost_overseer:
       response: "Repost!"
     squads:
