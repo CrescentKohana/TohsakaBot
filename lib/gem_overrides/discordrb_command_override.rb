@@ -53,11 +53,9 @@ module Discordrb::Commands
         # TohsakaBot.expire_msg(event.channel, [response], event.message)
         return
       end
-      unless @attributes[:chain_usable]
-        if chained
-          event.respond "Command `#{name}` cannot be used in a command chain!"
-          return
-        end
+      unless @attributes[:chain_usable] && !chained
+        event.respond "Command `#{name}` cannot be used in a command chain!"
+        return
       end
 
       if check_permissions
