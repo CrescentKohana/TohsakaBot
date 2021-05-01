@@ -18,7 +18,8 @@ module TohsakaBot
         TohsakaBot.send_message_with_reaction(
           event.channel.id,
           '🎲',
-          "**#{number.to_s.rjust(2, '0')}**  `#{name.strip_mass_mentions.sanitize_string}`#{identifier}"
+          "**#{number.to_s.rjust(2, '0')}**  `#{name.strip_mass_mentions.sanitize_string}`#{identifier}",
+          event.message
         )
       end
     end
