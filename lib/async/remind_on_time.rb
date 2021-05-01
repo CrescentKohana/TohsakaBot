@@ -31,17 +31,18 @@ module TohsakaBot
             # end
 
             @where = BOT.pm_channel(discord_uid)
-
-            if channel_id.nil?
+            if channel_id.nil? || channel_id.zero?
               @where = BOT.pm_channel(discord_uid)
             elsif BOT.channel(channel_id).nil?
               @where = BOT.pm_channel(discord_uid)
-            elsif BOT.channel(channel_id).pm?
+            elsif BOT.channel(channel_id)&.pm?
               @where = BOT.channel(channel_id)
             else
               # If bot has permissions to send messages to this channel.
-              @where = if BOT.profile.on(BOT.server(BOT.channel(channel_id).server.id)).permission?(:send_messages,
-                                                                                                    BOT.channel(channel_id))
+              temp_server = BOT.server(BOT.channel(channel_id).server.id)
+              @where = if temp_server.nil?
+                         BOT.pm_channel(discord_uid)
+                       elsif BOT.profile.on(temp_server).permission?(:send_messages, BOT.channel(channel_id))
                          BOT.channel(channel_id)
                        else
                          BOT.pm_channel(discord_uid)

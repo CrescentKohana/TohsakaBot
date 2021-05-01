@@ -134,7 +134,7 @@ module TohsakaBot
       else
         reminder[:message] = @msg
       end
-      if @channel_id.nil?
+      if @channel_id.nil? || @channel_id.zero?
         @channel_id = reminder[:channel_id]
       else
         reminder[:channel_id] = @channel_id
