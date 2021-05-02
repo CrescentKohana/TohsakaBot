@@ -16,11 +16,10 @@ module TohsakaBot
               locale: locale
             )
           end
-          event.respond(I18n.t(:'commands.management.set_lang.response',
-                               locale: TohsakaBot.get_locale(event.user.id).to_sym))
+          event.respond(I18n.t(:'commands.management.set_lang.response', locale: TohsakaBot.get_locale(event.user.id)))
         else
           event.respond(I18n.t(:'commands.management.set_lang.errors.locale_not_found',
-                               locale: TohsakaBot.get_locale(event.user.id).to_sym))
+                               locale: TohsakaBot.get_locale(event.user.id)))
         end
       end
     end

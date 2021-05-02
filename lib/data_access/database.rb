@@ -61,12 +61,19 @@ module TohsakaBot
     # Returns user's locale.
     #
     # @param discord_uid [Integer] Discord User ID
-    # @return [String] locale (default "en" if user doesn't exist)
-    def get_locale(discord_uid)
+    # @param symbol [Boolean] As symbol? (default: true)
+    # @return [String, Symbol] locale (default: "en")
+    def get_locale(discord_uid, symbol: true)
       user = TohsakaBot.db[:users][id: get_user_id(discord_uid)]
-      return user[:locale] unless user.nil? || user[:locale].nil? || user[:locale].empty?
+      locale = if user.nil? || user[:locale].blank? || !%w[en ja fi].include?(user[:locale])
+                 "en"
+               else
+                 user[:locale]
+               end
 
-      "en"
+      return locale unless symbol
+
+      locale.to_sym
     end
 
     # Checks if the user limit is reached for this datatype.
