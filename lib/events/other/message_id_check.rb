@@ -29,7 +29,7 @@ module TohsakaBot
             highlight_core.store_highlight(highlight_core.send_highlight)
           end
           i18n_code = "events.message_id_check.#{@length}".to_sym
-          reply = "#{I18n.t(i18n_code)} 🆔 **…#{capture}**"
+          reply = "#{I18n.t(i18n_code, locale: TohsakaBot.get_locale(event.user.id))} 🆔 **…#{capture}**"
         end
 
         event.respond("#{reply} `#{name}`", false, nil, nil, false, event.message)

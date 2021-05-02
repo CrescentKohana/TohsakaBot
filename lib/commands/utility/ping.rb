@@ -8,13 +8,10 @@ module TohsakaBot
               description: I18n.t(:'commands.utility.ping.description'),
               usage: I18n.t(:'commands.utility.ping.usage')) do |event|
         now = Time.now
-        locale = TohsakaBot.get_locale(event.user.id)
-        locale = "en" unless %w[en ja fi].include?(locale)
-
         event.respond(
           I18n.t(
             :'commands.utility.ping.response',
-            locale: locale.to_sym,
+            locale: TohsakaBot.get_locale(event.user.id),
             time: ((now - event.timestamp) * 1000).truncate
           )
         )
