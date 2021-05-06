@@ -123,6 +123,7 @@ module TohsakaBot
                 else
                   # debug message
                   # BOT.user(user_id).pm("**[debug]** Removed role #{role}")
+                  puts "#{Time.now} **[debug]** Removed role #{role}"
                   # TODO: Fix bot trying to remove a role multiple times during the first minute of the range.
                   next unless TohsakaBot::BOT.member(server_id, user_id)&.role?(found_role.id)
 
@@ -133,7 +134,7 @@ module TohsakaBot
               end
             end
           end
-          sleep(20)
+          sleep(60)
         end
       end
     end

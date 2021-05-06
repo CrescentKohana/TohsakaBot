@@ -41,15 +41,16 @@ module TohsakaBot
             @pm = true
           end
 
+          encoded_msg = plainmsg.tr('a-zA-Z', 'n-za-mN-ZA-M')
           # TODO: Multiple encoding methods.
-          encoded_msg = case emethod
-                        when 'rot13'
-                          plainmsg.tr('a-zA-Z', 'n-za-mN-ZA-M')
-                        when 'sha512'
-                          Digest::SHA2.new(512).hexdigest(plainmsg)
-                        else
-                          plainmsg.tr('a-zA-Z', 'n-za-mN-ZA-M')
-                        end
+          # encoded_msg = case emethod
+          #               when 'rot13'
+          #                 plainmsg.tr('a-zA-Z', 'n-za-mN-ZA-M')
+          #               when 'sha512'
+          #                 Digest::SHA2.new(512).hexdigest(plainmsg)
+          #               else
+          #                 plainmsg.tr('a-zA-Z', 'n-za-mN-ZA-M')
+          #               end
 
           if !@pm
             # Hardcoded (for the time being) permission check for a specific channel.

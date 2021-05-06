@@ -15,7 +15,6 @@ module TohsakaBot
 
           event.channel.send_embed do |embed|
             embed.colour = 0x36393F
-            # embed.url = ""
             embed.add_field(
               name: '**WANHA**',
               value: "[#{username}](https://discord.com/channels/"\

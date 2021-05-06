@@ -29,7 +29,7 @@ module TohsakaBot
 
         roles.each_key do |role|
           members = JSON.parse(Discordrb::API::Channel.get_reactions(
-                                 "Bot #{AUTH.bot_token}", event.channel.id, event.message.id, "✅", false, false
+                                 "Bot #{AUTH.bot_token}", event.channel.id, event.message.id, "✅", nil, nil
                                )).reject { |m| m["bot"] || m["id"].to_i == author_id }.map { |m| "<@!#{m['id']}>" }
 
           reaction_count = reactions[0]["✅"].to_i
