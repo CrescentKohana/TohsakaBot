@@ -9,11 +9,10 @@ module TohsakaBot
         next if event.channel.pm?
         next if event.message.content&.first == '#'
 
-        event.message.create_reaction('✅')
-        event.message.create_reaction('❌')
-        event.message.create_reaction('🚫')
-        event.message.create_reaction('🔕')
-        event.message.create_reaction('❓')
+        emoji = %w[✅ ❌ 🚫 🔕 ❓]
+        emoji.each do |e|
+          event.message.create_reaction(e)
+        end
       end
     end
   end

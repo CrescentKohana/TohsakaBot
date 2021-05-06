@@ -56,7 +56,7 @@ module TohsakaBot
       when 'youtu.be'
         return nil if path.nil?
 
-        youtube_id = path.match(%r{/(\S{11})(/|)}i).captures
+        youtube_id = path.match(%r{/(\S{11})(/|)}i)&.captures
         return nil if youtube_id.nil?
 
         category = 'youtube'
@@ -64,7 +64,7 @@ module TohsakaBot
       when 'twitter.com'
         return nil if path.nil?
 
-        twitter_id = path.match(%r{/\S*/status/(\d*)}i).captures
+        twitter_id = path.match(%r{/\S*/status/(\d*)}i)&.captures
         return nil if twitter_id.nil?
 
         category = 'twitter'
@@ -73,9 +73,9 @@ module TohsakaBot
         return nil if path.nil?
 
         reddit_id = if subdomain == 'i'
-                      path.match(%r{/(\w{13}).\S*}i).captures
+                      path.match(%r{/(\w{13}).\S*}i)&.captures
                     else
-                      path.match(%r{/r/\S*/comments/(\S{6})(/\S*|)}i).captures
+                      path.match(%r{/r/\S*/comments/(\S{6})(/\S*|)}i)&.captures
                     end
 
         return nil if reddit_id.nil?
@@ -85,7 +85,7 @@ module TohsakaBot
       when 'twitch.tv'
         return nil unless subdomain == 'clips'
 
-        twitch_clips_id = path.match(%r{/(.*)}i).captures
+        twitch_clips_id = path.match(%r{/(.*)}i)&.captures
         return nil if twitch_clips_id.nil?
 
         category = 'twitch'

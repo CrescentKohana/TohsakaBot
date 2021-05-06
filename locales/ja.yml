@@ -13,6 +13,7 @@ ja:
       8: '捌'
       9: '玖'
       10: '拾'
+      what: "珍しいものをゲットしちゃった"
   commands:
     management:
       set_lang:
@@ -42,7 +43,7 @@ ja:
     japanese:
       get_pitch:
         aliases: "アクセント"
-        description: "単語のピッチアクセントを表示されます。"
+        description: "単語のピッチアクセントを表示されることができます。"
         usage: "getpitch <言葉 (漢字 | かな)>"
         response_title: "%{word}のアクセント"
         errors:
