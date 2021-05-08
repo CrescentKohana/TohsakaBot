@@ -6,7 +6,7 @@ module TohsakaBot
       Thread.new do
         loop do
           cfg = YAML.load_file('cfg/config.yml')
-          BOT.game = cfg['np']
+          TohsakaBot.status(cfg["status"][0], cfg["status"][1])
           sleep(1800)
         end
       end

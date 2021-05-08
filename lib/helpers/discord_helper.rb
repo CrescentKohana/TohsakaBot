@@ -143,6 +143,23 @@ module TohsakaBot
     def account_created_date(discord_uid)
       Time.at((discord_uid.to_s(2)[0..34].to_i(2) + 1_420_070_400_000) / 1000)
     end
+
+    # Dynamic wrapper for setting bot's status
+    #
+    # @param type [String]
+    # @param text [String]
+    def status(type, text)
+      case type
+      when "watching"
+        BOT.watching = text
+      when "listening"
+        BOT.listening = text
+      when "competing"
+        BOT.competing = text
+      else
+        BOT.game = text
+      end
+    end
   end
 
   TohsakaBot.extend DiscordHelper
