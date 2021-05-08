@@ -7,6 +7,7 @@ module TohsakaBot
       command(:register,
               description: 'Registers user to database.') do |event|
         author = event.author
+        break if event.author.bot_account?
 
         users = TohsakaBot.db[:users]
         auths = TohsakaBot.db[:authorizations]

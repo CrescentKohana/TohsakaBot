@@ -21,6 +21,7 @@ module TohsakaBot
             discord_uid = TohsakaBot.get_discord_id(user_id)
 
             next if discord_uid.nil?
+            next if BOT.user(discord_uid).bot_account?
 
             repeat_time = r[:repeat].to_i
             repeated_msg = repeat_time.positive? ? 'Repeated r' : 'R'
