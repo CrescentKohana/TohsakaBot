@@ -4,13 +4,23 @@ module TohsakaBot
   module Events
     module HighlightReaction
       extend Discordrb::EventContainer
-      reaction_add(emoji: '📌') do |event|
-        next if event.channel.pm?
+      def self.highlight_helper(event)
+        return if event.channel.pm?
 
         highlight_core = HighlightCore.new(event.message, event.server.id, event.channel.id)
-        next unless highlight_core.requirements_for_pin_met?
+        return unless highlight_core.requirements_for_pin_met?
 
         highlight_core.store_highlight(highlight_core.send_highlight)
+      end
+
+      reaction_add(emoji: '📌') do |event|
+        highlight_helper(event)
+        next
+      end
+
+      reaction_add(emoji: '📍') do |event|
+        highlight_helper(event)
+        next
       end
     end
   end

@@ -19,15 +19,16 @@ module TohsakaBot
         TohsakaBot.get_discord_id(u[:id])
       end
 
-      reacted_users = @message.reacted_with('📌').map(&:id)
+      reacted_users = Set.new(@message.reacted_with('📌').map(&:id))
+      reacted_users.merge(Set.new(@message.reacted_with('📍').map(&:id)))
 
       # true if authorized
-      is_authorized = reacted_users.to_set.intersect?(authorized_users.to_set)
+      is_authorized = reacted_users.intersect?(authorized_users.to_set)
 
       return false unless @db.where(msg_id: @message.id, deleted: false).empty?
       return false if !@db.where(msg_id: @message.id, deleted: true).empty? && !is_authorized
 
-      reacted_users.length >= 3 || is_authorized
+      reacted_users.size >= 3 || is_authorized
     end
 
     def serialize_attachments(attachments)
