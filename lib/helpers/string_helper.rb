@@ -30,4 +30,11 @@ class String
   def first_number
     self[/\b\d+\b/]
   end
+
+  # Adds a random identifier at the end of the string
+  def add_identifier
+    o = [('a'..'z'), ('A'..'Z'), (0..9)].map(&:to_a).flatten
+    id = (0...8).map { o[rand(o.length)] }.join
+    concat("_#{id}")
+  end
 end

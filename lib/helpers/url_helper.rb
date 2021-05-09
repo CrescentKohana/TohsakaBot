@@ -99,19 +99,19 @@ module TohsakaBot
       [category, url_result]
     end
 
-    def url_match(event)
-      urls = URI.extract(strip_markdown(event.message.content))
+    def url_match(category, url, author_id)
       db = TohsakaBot.db[:linkeds]
+      return unless db
+      return if category.nil? || url.nil?
 
-      return unless !urls.nil? && db
+      db.where(category: category, url: url).exclude(author_id: author_id).single_record
+    end
 
-      urls.each do |url|
-        category, url_result = TohsakaBot.url_parse(url)
-        next if category.nil?
+    def file_hash_match(file_hash, author_id)
+      db = TohsakaBot.db[:linkeds]
+      return unless !file_hash.nil? && db
 
-        return db.where(category: category, url: url_result).exclude(author_id: event.author.id.to_i).single_record
-      end
-      nil
+      db.where(category: 'file', file_hash: file_hash).exclude(author_id: author_id).single_record
     end
   end
 

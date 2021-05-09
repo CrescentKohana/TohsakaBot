@@ -3,7 +3,7 @@
 module TohsakaBot
   module Async
     # Removes 3d (72h * 60m * 60s) old links and file hashes.
-    module URLCleaner
+    module RepostCleaner
       Thread.new do
         loop do
           TohsakaBot.db[:linkeds].where(Sequel[:timestamp] <= Time.now - (72 * 60 * 60)).delete

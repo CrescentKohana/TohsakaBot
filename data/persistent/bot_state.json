@@ -2,7 +2,7 @@
   "Async":[
     "RefreshStatus",
     "RemindOnTime",
-    "URLCleaner",
+    "RepostCleaner",
     "RoleManagement",
     "LoadAlko",
     "TypingChannels",
@@ -70,7 +70,6 @@
   ],
   "Events":[
     "TriggerEvent",
-    "URLCollector",
     "RepostOverseer",
     "DecodeMsg",
     "SharedEmoji",
