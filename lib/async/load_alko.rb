@@ -17,7 +17,7 @@ module TohsakaBot
 
             if File.exist?(temp_file) && FileUtils.identical?(new_file, temp_file)
               File.delete(new_file)
-              puts 'No update needed for data/alko.csv.'
+              puts I18n.t(:'async.load_alko.no_update_needed')
             else
               File.rename(new_file, temp_file)
 
@@ -34,7 +34,7 @@ module TohsakaBot
               dest.close
               File.delete('tmp/alko_temp.csv')
 
-              puts "Alko's alcohol database loaded into data/alko.csv."
+              puts I18n.t(:'async.load_alko.ready')
             end
           end
           sleep(86_400)

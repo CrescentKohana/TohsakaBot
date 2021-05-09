@@ -34,11 +34,5 @@ gem 'to_regexp'
 gem 'yard'
 gem 'youtube-dl.rb'
 
-# Original branch
-# git 'https://github.com/discordrb/discordrb.git' do
-#   gem 'discordrb'
-#   gem 'discordrb-webhooks'
-# end
-
 # Latest release of discordrb
 gem 'discordrb', github: 'shardlab/discordrb', branch: 'main'

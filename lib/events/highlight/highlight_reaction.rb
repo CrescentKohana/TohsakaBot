@@ -3,7 +3,6 @@
 module TohsakaBot
   module Events
     module HighlightReaction
-      extend Discordrb::EventContainer
       def self.highlight_helper(event)
         return if event.channel.pm?
 
@@ -13,11 +12,11 @@ module TohsakaBot
         highlight_core.store_highlight(highlight_core.send_highlight)
       end
 
+      extend Discordrb::EventContainer
       reaction_add(emoji: '📌') do |event|
         highlight_helper(event)
         next
       end
-
       reaction_add(emoji: '📍') do |event|
         highlight_helper(event)
         next

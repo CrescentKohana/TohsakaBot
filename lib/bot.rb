@@ -54,9 +54,10 @@ require 'pickup'
 require 'redcarpet'
 require 'redcarpet/render_strip'
 
-# Override discordrb gem
+# Overrides for discordrb gem
 require_relative 'gem_overrides/discordrb_command_override'
 require_relative 'gem_overrides/cache_overrride'
+require_relative 'gem_overrides/api_overrride'
 
 # Main module of the bot
 module TohsakaBot
@@ -98,42 +99,6 @@ module TohsakaBot
   TohsakaBot.load_modules(:Commands, 'commands/*/*')
   TohsakaBot.load_modules(:Events, 'events/*/*')
 
-  # Test Slash commands #
-  # url = "https://discord.com/api/v8/applications/#{AUTH.cli_id}/commands"
-  # payload = {
-  #   "name": "huut",
-  #   "description": "huutikset sulle",
-  #   "options": [
-  #     {
-  #       "name": "huut",
-  #       "description": "The type of huut",
-  #       "type": 3,
-  #       "required": true,
-  #       "choices": [
-  #         {
-  #           "name": "Huutis",
-  #           "value": "yes"
-  #         },
-  #         {
-  #           "name": "Kuiskis",
-  #           "value": "yes"
-  #         },
-  #         {
-  #           "name": "Nauris",
-  #           "value": "yes"
-  #         }
-  #       ]
-  #     }
-  #   ]
-  # }
-  #
-  # # For authorization, you can use either your bot token
-  # headers = {
-  #   "Authorization": "Bot #{AUTH.bot_token}"
-  # }
-  #
-  # puts HTTP.post(url, json: payload, headers: headers)
-
   # Asynchronous threads running in cycles #
   BOT.run(:async)
 
@@ -159,8 +124,8 @@ module TohsakaBot
 
       if user_input[0] == 'set_ch'
         channel = user_input[1].to_i
-        puts "Channel set to #{BOT.channel(channel)&.name} "
-      elsif user_input[0][0] == '.' && channel.match(/\d{18}/)
+        puts I18n.t(:'bot.channel_set', name: BOT.channel(channel)&.name)
+      elsif user_input[0][0] == '.' && channel.to_s.match(/\d{18}/)
         BOT.send_message(channel, user_input.join(' ')[1..])
       end
     end

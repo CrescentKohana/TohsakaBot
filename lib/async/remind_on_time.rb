@@ -24,7 +24,6 @@ module TohsakaBot
             next if BOT.user(discord_uid).bot_account?
 
             repeat_time = r[:repeat].to_i
-            repeated_msg = repeat_time.positive? ? 'Repeated r' : 'R'
 
             # TODO: copied reminders in the same message if possible
             # if !parent.nil? && !reminders.where(:id => parent.to_i).nil?
@@ -50,22 +49,16 @@ module TohsakaBot
                        end
             end
 
-            # Catching the exception if a user has blocked the bot
-            # as Discord API has no way to check that naturally
+            # Catching the exception if a user has blocked the bot as Discord API has no way to check that naturally
             begin
-              if msg.nil? || msg.empty?
-                # TODO: For repeated reminders. Checks if today is included in the array
-                # which has the days the user wanted to be notified on.
-                # if rep != "false"
-                #  today = Date.today
-                #  if days.include? today
-                #  end
-                # end
-                # Raw API request: Discordrb::API::Channel.create_message("Bot #{AUTH.bot_token}", cid, "")
-                @where.send_message("#{repeated_msg}eminder for <@#{discord_uid}>!")
-              else
-                @where.send_message("#{repeated_msg}eminder for <@#{discord_uid}>: #{msg.strip_mass_mentions}")
-              end
+              response = if repeat_time.positive?
+                           I18n.t(:'async.reminder.repeated', mention: "<@#{discord_uid}>")
+                         else
+                           I18n.t(:'async.reminder.normal', mention: "<@#{discord_uid}>")
+                         end
+
+              response += ": #{msg.strip_mass_mentions}" unless msg.blank?
+              @where.send_message(response)
             rescue StandardError
               # Ignored
               # as the user has blocked the bot.
