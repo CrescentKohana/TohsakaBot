@@ -32,10 +32,13 @@ Style/FloatDivision:
 Style/AsciiComments:
   Enabled: false
 
+Style/ClassAndModuleChildren:
+  # EnforcedStyle: 'compact'
+  Enabled: true
+
 Metrics/ParameterLists:
   Max: 8
   MaxOptionalParameters: 6
 
 Security/Eval:
   Enabled: false
-

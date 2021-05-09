@@ -4,6 +4,7 @@ en:
   bot:
     default_channel_notify: "No default channel set in 'cfg/config.yml'.
     Before sending messages through the terminal, set the channel with 'set_ch <id>'"
+    channel_set: "Channel set to %{name} "
 
   first_time_setup:
     required_hint: "* means required field!"
@@ -33,6 +34,12 @@ en:
     files_created: "Necessary directories and files created! Bot can now be started with:\nbundle exec ruby run.rb"
 
   async:
+    load_alko:
+      no_update_needed: "No update needed for data/alko.csv."
+      ready: "Alko's alcohol database loaded into data/alko.csv."
+    reminder:
+      normal: "Reminder for %{mention}"
+      repeated: "Repeated reminder for %{mention}"
   events:
     message_id_check:
       2: "Doubles!"

@@ -12,7 +12,7 @@ module TohsakaBot
         i = 0
         j = 0
 
-        # TODO: Fix regex or somehow delete all already working emoji.
+        # TODO: Emoji that already work should be deleted from the array. Not a huge issue though.
         # emoji_names.delete_if { |x| x[-1] != ':' }
 
         unless every_emoji.empty?
