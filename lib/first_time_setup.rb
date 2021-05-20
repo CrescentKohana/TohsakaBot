@@ -89,8 +89,8 @@ class FirstTimeSetup
       highlight_channel = gets
       print("\n")
 
-      print green + I18n.t(:'first_time_setup.lord_role')
-      lord_role = gets
+      print green + I18n.t(:'first_time_setup.mvp_role')
+      mvp_role = gets
 
       print green + I18n.t(:'first_time_setup.fool_role')
       fool_role = gets
@@ -122,7 +122,7 @@ class FirstTimeSetup
         "- not now rin\n"\
         "- no\n"\
         "- del\n"\
-        "lord_role: #{lord_role}"\
+        "mvp_role: #{mvp_role}"\
         "fool_role: #{fool_role}"\
         "daily_neko: false\n"
       )

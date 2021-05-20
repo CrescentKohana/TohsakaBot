@@ -29,7 +29,7 @@ en:
     web_dir: "Directory path of TohsakaWeb like /home/rin/www/TohsakaWeb
     (optional, note for no trailing slash!): "
     web_url: "URL of TohsakaWeb like https://rin.example.com (optional): "
-    lord_role: "ID of the lord role (optional, given to a user as a reward when they win in something): "
+    mvp_role: "ID of the MVP role (optional, given to a user as a reward when they win in something): "
     fool_role: "ID of the fool role (optional, given to a user as a reward when they lose in something): "
     files_created: "Necessary directories and files created! Bot can now be started with:\nbundle exec ruby run.rb"
 

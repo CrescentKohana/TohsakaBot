@@ -15,11 +15,9 @@ module TohsakaBot
         # TODO: Emoji that already work should be deleted from the array. Not a huge issue though.
         # emoji_names.delete_if { |x| x[-1] != ':' }
 
-        unless every_emoji.empty?
+        unless emoji_names.empty?
           until i == emoji_names.count
-
             every_emoji << BOT.find_emoji(emoji_names[i].to_s.tr!(':', ''))
-
             i += 1
           end
 
