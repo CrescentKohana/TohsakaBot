@@ -77,8 +77,8 @@ module TohsakaBot
       file = reply.message.attachments.first
       return unless %r{https://cdn.discordapp.com.*}.match?(file.url)
 
-      final_filename = "#{file.filename.gsub(File.extname(file.filename), '')}".add_identifier
-      final_filename.append(File.extname(file.filename))
+      final_filename = file.filename.gsub(File.extname(file.filename), '').to_s.add_identifier
+      final_filename += File.extname(file.filename)
 
       IO.copy_stream(URI.open(file.url), "data/triggers/#{final_filename}")
 

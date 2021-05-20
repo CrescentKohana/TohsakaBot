@@ -14,7 +14,7 @@ module TohsakaBot
         number = rand(0..9999).to_s
         name = BOT.member(event.server, event.author.id).display_name
         user_id = event.message.author
-        role_id = CFG.lord_role.to_i
+        role_id = CFG.mvp_role.to_i
 
         identifier = "\u200B" * 4
         TohsakaBot.send_message_with_reaction(

@@ -5,7 +5,7 @@ module TohsakaBot
     module ReminderMod
       extend Discordrb::Commands::CommandContainer
       command(:remindermod,
-              aliases: %i[modreminder remindermodify modifyreminder modremind remindmod mr],
+              aliases: %i[modreminder remindermodify modifyreminder modremind remindmod mr modrem remmod editreminder editrem remedit reminderedit],
               description: 'Edits a reminder.',
               usage: "Use 'remindermod -h|--help' for help.",
               min_args: 1,

@@ -19,7 +19,7 @@ module TohsakaBot
 
           msg = event.message.content
           user_id = event.user.id.to_i
-          role_id = CFG.lord_role.to_i
+          role_id = CFG.mvp_role.to_i
 
           # Checks if the end of the message has
           # one or more zero-width space identifier(s).

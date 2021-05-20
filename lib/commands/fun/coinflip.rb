@@ -20,7 +20,7 @@ module TohsakaBot
         end
 
         user_id = event.message.author.id
-        role_id = CFG.lord_role.to_i
+        role_id = CFG.mvp_role.to_i
 
         # Probabilities for the coin toss (%).
         coin = { 'Tails:' => 49, 'Heads:' => 49, 'The coin landed on its edge:' => 2 }
