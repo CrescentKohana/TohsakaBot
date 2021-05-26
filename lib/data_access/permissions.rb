@@ -28,9 +28,13 @@ module TohsakaBot
     # @param level [Integer] permission level (0-1000)
     # @return [nil] if failed
     def set_level(discord_uid, level)
+      # Do not allow editing owner's permission level under any circumstances.
+      return if discord_uid.to_i == AUTH.owner_id.to_i
+
       user_id = TohsakaBot.get_user_id(discord_uid.to_i)
 
-      return nil if !(0..1000).include?(level.to_i) || user_id.nil?
+      # 1000 is reserved for the owner.
+      return nil if !(0..999).include?(level.to_i) || user_id.nil?
 
       TohsakaBot.db.transaction do
         TohsakaBot.db[:users].where(id: user_id.to_i).update(permissions: level.to_i)
