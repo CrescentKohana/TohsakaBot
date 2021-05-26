@@ -7,7 +7,6 @@ module TohsakaBot
 
       MAX_BUDGET = 500 # in euros
       command(:alko,
-              aliases: %i[drinks alcohol],
               description: "Recommends drinks from Alko (a Finnish alcohol store) based on budget and type.",
               usage: "alko <max price in euros (integer, <= #{MAX_BUDGET}€)> <type>",
               min_args: 2) do |event, price, *type|
