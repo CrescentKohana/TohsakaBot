@@ -79,6 +79,10 @@ en:
       trigger:
 
   commands:
+    general_param:
+      ephemeral_false: "Private response? Default: false"
+      ephemeral_true: "Private response? Default: true"
+      verbose_output: "Verbose output?"
     tool:
       description: "Various tools"
       admin:
@@ -114,6 +118,8 @@ en:
             failed: "Failed to set permissions for %{username}."
         convert_pins:
         message_prune:
+        emoji_list:
+          description: "List all the emoji bot has at its disposal."
       user:
         description: "User tools"
         set_lang:
@@ -139,17 +145,78 @@ en:
             user: "Discord user"
           error:
             not_found: "User not found"
-
-    utility:
+      help:
+        description: "Returns a list of all commands or help for a specific command."
+        usage: "help <command name>"
+        param:
+          command: "Command name"
       ping:
-        aliases: "remind reminder remadd remind addrem rem"
-        description: "Ping!"
+        description: "Pong!"
         usage: "ping"
         response: "Pong! Respond latency of the bot: `%{time}ms`"
+      feature:
+        description: "Feature requests for the bot"
+        request:
+          aliases: "fr requestfeature request"
+          description: "Takes an idea and saves it."
+          usage: "fr <description of a feature or an improvement>"
+          param:
+            description: "A description of a feature or an improvement"
+          error:
+            request_amount: "The maximum amount of active feature requests a user can have is 1000."
+        find:
+          aliases: "findfrs findfr findfeaturerequest ffr requests frs"
+          description: "Finds and lists feature requests based on given tags."
+          usage: "ffr <tags (new, indev, done, wontdo, all)>"
+          param:
+            tag: "Tag (default all)"
+        tag:
+          description: "Tags a feature request. Currently all tags are exclusive from each other."
+          usage: "tag <id> <tag (new, indev, done, wontdo)>"
+          param:
+            id: "ID of a request"
+            tag: "Tag"
+
+    utility:
+      description: "Various utility commands"
       roll_probability:
+        description: "Returns the probability of getting k hits within n amount of rolls with the chance of p (%)."
+        param:
+          chance: "Chance (%) of one roll getting a hit"
+          rolls: "Tried rolls (n)"
+          hits: "Successful hits (k)"
       alko:
       alko_list:
-      emoji_list:
+      get_sauce:
+        aliases: "saucenao sauce source getsource"
+        description: "Tries to find the source for the posted image."
+        usage: "getsauce <link (or attachment)>"
+        param:
+          link: "Direct link to the image"
+      quickie:
+        aliases: "qm"
+        description: "A quick message which is deleted after n seconds."
+        usage: "quickie <1-10 (seconds as int; default 5)> <message>"
+        param:
+          message: "Message to send"
+          duration: "Seconds (1-10, default 5)"
+      encode_message:
+        aliases: "encodemessage encode 🔒 spoiler spoilers"
+        description: "Encode a message"
+        usage: "encode <algorithm (rot13)> <message>"
+        param:
+          message: "Message to send"
+          algorithm: "Algorithm to use. Default rot13"
+      drink:
+        description: "Alcohol and other drinks"
+        alko:
+          description: "Recommends drinks from Alko (a Finnish alcohol store) based on budget and type."
+          usage: "alko <max price in euros (integer, <= %{max_budget}€)> <type>"
+          param:
+            budget: "Max budget"
+            type: "Type of the drink"
+        alkolist:
+          description: "Lists all drink types for alko command."
 
     fun:
       description: "Entertainment"
@@ -203,7 +270,6 @@ en:
         param:
           currency: "Currency type (default SQ)"
           amount: "Amount of currency (default 11)"
-          verbose: "Verbose output?"
         error:
           type: 'Accepted currency types: SQ, JPY, USD or R (rolls).'
       neko:
@@ -325,6 +391,8 @@ en:
         aliases: "reminderdetail reminderinfo inforeminder rinfo"
         description: "Gives details of the specified reminder."
         usage: "reminderdetails <id> <verbose (default off/yes to enable)>"
+        param:
+          id: "Reminder ID"
       list:
         aliases: "listrem remlist rems"
         description: "Lists user's reminders."

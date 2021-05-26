@@ -26,7 +26,7 @@ module TohsakaBot
             choices: { sq: 'SQ', yen: 'JPY', dollar: 'USD', rolls: 'R' }
           )
           sub.integer('amount', I18n.t(:'commands.fun.fgo.param.amount'), required: false)
-          sub.boolean('verbose', I18n.t(:'commands.fun.fgo.param.verbose'), required: false)
+          sub.boolean('verbose', I18n.t(:'commands.general_param.verbose_output'), required: false)
         end
       end
     end
@@ -48,6 +48,7 @@ module TohsakaBot
           sub.string('when', I18n.t(:'commands.reminder.add.help.datetime'), required: true)
           sub.string('msg', I18n.t(:'commands.reminder.add.help.msg'), required: false)
           sub.string('repeat_interval', I18n.t(:'commands.reminder.add.help.repeat'), required: false)
+          sub.boolean('ephemeral', I18n.t(:'commands.general_param.ephemeral_false'), required: false)
         end
 
         cmd.subcommand('del', I18n.t(:'commands.reminder.del.description')) do |sub|
@@ -60,16 +61,17 @@ module TohsakaBot
           sub.string('msg', I18n.t(:'commands.reminder.mod.help.msg'), required: false)
           sub.string('repeat', I18n.t(:'commands.reminder.mod.help.repeat'), required: false)
           sub.channel('channel', I18n.t(:'commands.reminder.mod.help.channel'), required: false)
+          sub.boolean('ephemeral', I18n.t(:'commands.general_param.ephemeral_false'), required: false)
         end
 
         cmd.subcommand('list', I18n.t(:'commands.reminder.list.description')) do |sub|
-          sub.boolean('ephemeral', 'Private response?', required: false)
+          sub.boolean('ephemeral', I18n.t(:'commands.general_param.ephemeral_false'), required: false)
         end
 
         cmd.subcommand('details', I18n.t(:'commands.reminder.details.description')) do |sub|
-          sub.integer('id', 'Reminder ID', required: true)
-          sub.boolean('verbose', 'Verbose output?', required: false)
-          sub.boolean('ephemeral', 'Private response?', required: false)
+          sub.integer('id', I18n.t(:'commands.reminder.details.param.id'), required: true)
+          sub.boolean('verbose', I18n.t(:'commands.general_param.verbose_output'), required: false)
+          sub.boolean('ephemeral', I18n.t(:'commands.general_param.ephemeral_false'), required: false)
         end
       end
     end
@@ -89,13 +91,15 @@ module TohsakaBot
           end
 
           group.subcommand('eval', I18n.t(:'commands.tool.admin.eval.description')) do |sub|
-            sub.string('code', I18n.t(:'commands.tool.admin.eval.param.code'))
+            sub.string('code', I18n.t(:'commands.tool.admin.eval.param.code'), required: true)
           end
 
           group.subcommand('edit_permissions', I18n.t(:'commands.tool.admin.edit_permissions.description')) do |sub|
             sub.user('user', I18n.t(:'commands.tool.admin.edit_permissions.param.user'), required: true)
             sub.string('level', I18n.t(:'commands.tool.admin.edit_permissions.param.level'), required: true)
           end
+
+          cmd.subcommand(:emojilist, I18n.t(:'commands.tool.admin.emoji_list.description'))
         end
 
         ## User ##
@@ -104,20 +108,46 @@ module TohsakaBot
 
           group.subcommand('set_lang', I18n.t(:'commands.tool.user.set_lang.description')) do |sub|
             sub.string(
-              'lang',
-              I18n.t(:'commands.tool.user.set_lang.param.lang'),
-              required: true,
+              'lang', I18n.t(:'commands.tool.user.set_lang.param.lang'), required: true,
               choices: { english: 'en', japanese: 'ja', finnish: 'fi' }
             )
           end
 
           group.subcommand('info', I18n.t(:'commands.tool.user.info.description')) do |sub|
             sub.user('user', I18n.t(:'commands.tool.user.info.param.user'), required: false)
+            sub.boolean('ephemeral', I18n.t(:'commands.general_param.ephemeral_false'), required: false)
           end
         end
-      end
 
-      ## Feature Req ##
+        cmd.subcommand(:help, I18n.t(:'commands.tool.help.description')) do |sub|
+          sub.string('command', I18n.t(:'commands.tool.help.param.command'), required: false)
+          sub.boolean('ephemeral', I18n.t(:'commands.general_param.ephemeral_false'), required: false)
+        end
+
+        ## Feature Requests ##
+        cmd.subcommand_group(:feature, I18n.t(:'commands.tool.feature.description')) do |group|
+          group.subcommand('request', I18n.t(:'commands.tool.feature.request.description')) do |sub|
+            sub.string('description', I18n.t(:'commands.tool.feature.request.param.description'), required: true)
+          end
+
+          group.subcommand('find', I18n.t(:'commands.tool.feature.find.description')) do |sub|
+            sub.string(
+              'tag', I18n.t(:'commands.tool.feature.find.param.tag'), required: true,
+              choices: { new: "new", indev: "indev", done: "done", wontdo: "wontdo", all: "all" }
+            )
+          end
+
+          group.subcommand('tag', I18n.t(:'commands.tool.feature.tag.description')) do |sub|
+            sub.string('id', I18n.t(:'commands.tool.feature.tag.param.id'), required: true)
+            sub.string(
+              'tag', I18n.t(:'commands.tool.feature.tag.param.tag'), required: false,
+              choices: { new: "new", indev: "indev", done: "done", wontdo: "wontdo", all: "all" }
+            )
+          end
+        end
+
+        cmd.subcommand(:ping, I18n.t(:'commands.tool.ping.description'))
+      end
     end
 
     # Trigger #
@@ -127,13 +157,44 @@ module TohsakaBot
 
     # Utility #
     def utility
-      puts "utility"
-      ## Drink ##
-    end
+      BOT.register_application_command(:utility, I18n.t(:'commands.utility.description')) do |cmd|
+        cmd.subcommand(:rollprobability, I18n.t(:'commands.utility.roll_probability.description')) do |sub|
+          sub.string('chance', I18n.t(:'commands.utility.roll_probability.param.chance'), required: true)
+          sub.integer('rolls', I18n.t(:'commands.utility.roll_probability.param.rolls'), required: true)
+          sub.integer('hits', I18n.t(:'commands.utility.roll_probability.param.hits'), required: false)
+        end
 
-    # Help #
-    def help
-      puts "help"
+        cmd.subcommand(:getsauce, I18n.t(:'commands.utility.get_sauce.description')) do |sub|
+          sub.string('link', I18n.t(:'commands.utility.get_sauce.param.link'), required: true)
+          sub.boolean('ephemeral', I18n.t(:'commands.general_param.ephemeral_false'), required: false)
+        end
+
+        cmd.subcommand(:quickie, I18n.t(:'commands.utility.quickie.description')) do |sub|
+          sub.string('message', I18n.t(:'commands.utility.quickie.param.message'), required: true)
+          sub.string('duration', I18n.t(:'commands.utility.quickie.param.duration'), required: false)
+        end
+
+        cmd.subcommand(:encode_message, I18n.t(:'commands.utility.encode_message.description')) do |sub|
+          sub.string('message', I18n.t(:'commands.utility.encode_message.param.message'), required: true)
+          sub.string(
+            'algorithm',
+            I18n.t(:'commands.utility.encode_message.param.algorithm'),
+            required: false,
+            choices: { rot13: 'rot13' }
+          )
+          sub.boolean('ephemeral', I18n.t(:'commands.general_param.ephemeral_false'), required: false)
+        end
+
+        ## Drink ##
+        cmd.subcommand_group(:drink, I18n.t(:'commands.utility.drink.description')) do |group|
+          group.subcommand('alko', I18n.t(:'commands.utility.drink.alko.description')) do |sub|
+            sub.integer('budget', I18n.t(:'commands.utility.drink.alko.param.budget'), required: true)
+            sub.string('type', I18n.t(:'commands.utility.drink.alko.param.type'), required: true)
+          end
+
+          group.subcommand('alkolist', I18n.t(:'commands.utility.drink.alkolist.description'))
+        end
+      end
     end
   end
 end
