@@ -10,7 +10,10 @@ module TohsakaBot
         user_id = event.user.id.to_i
         msg = event.message.content
 
-        reminder_id = msg.match(/`<ID (\d*)>`/).captures.first.to_i
+        reminder_id = msg.match(/`<ID (\d*)>`/)
+        next if reminder_id.nil?
+
+        reminder_id = reminder_id.captures.first.to_i
 
         next if !event.message.author.current_bot? || event.user.bot_account || !TohsakaBot.registered?(user_id)
         next if user_id == ReminderController.get_reminder(reminder_id).nil?
