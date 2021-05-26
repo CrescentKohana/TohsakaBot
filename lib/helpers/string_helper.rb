@@ -27,6 +27,7 @@ class String
     gsub(TohsakaBot.url_regex(capture_group: true), '<\k<capture>>')
   end
 
+  # First number in a string with word boundaries
   def first_number
     self[/\b\d+\b/]
   end

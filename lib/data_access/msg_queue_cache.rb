@@ -47,7 +47,7 @@ module TohsakaBot
           message += "#{m}\n"
         end
 
-        BOT.channel(@list[id][:channel_id]).send(message)
+        BOT.channel(@list[id][:channel_id]).send_message(message)
       end
       @list.delete(id)
     end

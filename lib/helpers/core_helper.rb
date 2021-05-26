@@ -2,7 +2,7 @@
 
 module TohsakaBot
   module CoreHelper
-    def load_modules(klass, path, discord: true, clear: false)
+    def load_modules(klass, paths, discord: true, clear: false)
       modules = filter_modules
 
       BOT.clear! if clear
@@ -13,7 +13,9 @@ module TohsakaBot
         end
       end
 
-      Dir["#{File.dirname(__FILE__)}/../#{path}.rb"].each { |file| load file }
+      paths.each do |path|
+        Dir["#{File.dirname(__FILE__)}/../#{path}.rb"].each { |file| load file }
+      end
 
       return unless discord
 
