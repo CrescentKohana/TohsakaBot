@@ -28,11 +28,11 @@ module TohsakaBot
       if TohsakaBot.get_user_id(discord_uid.to_i).to_i.positive?
         true
       else
-        event&.respond "You aren't registered yet! Please do so by entering the command `?register`."
+        event&.respond I18n.t("errors.not_registered")
         false
       end
     rescue StandardError
-      event&.respond "You aren't registered yet! Please do so by entering the command `?register`."
+      event&.respond I18n.t("errors.not_registered")
       false
     end
 
