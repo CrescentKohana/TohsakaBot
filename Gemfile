@@ -35,4 +35,4 @@ gem 'yard'
 gem 'youtube-dl.rb'
 
 # Latest release of discordrb
-gem 'discordrb', github: 'shardlab/discordrb', branch: 'main'
+gem 'discordrb', github: 'shardlab/discordrb', branch: 'slash_commands' # branch: 'main'

@@ -15,20 +15,28 @@ ja:
       10: '拾'
       what: "珍しいものをゲットしちゃった"
   commands:
-    management:
-      set_lang:
-        aliases: ""
-        description: "ユーザー固有言語を設定することができます。"
-        usage: "setlang <fi, en, ja>"
-        response: "言語を日本語に設定されました！"
-        errors:
-          locale_not_found: "指定された言語を見つかりませんでした。"
+    tool:
+      user:
+        set_lang:
+          aliases: ""
+          description: "ユーザー固有言語を設定することができます。"
+          usage: "setlang <fi, en, ja>"
+          response: "言語を日本語に設定されました！"
+          param:
+            lang: "言語"
+          error:
+            locale_not_found: "指定された言語を見つかりませんでした。"
+
     utility:
       ping:
         aliases: "ピン"
         description: "Ping!"
         usage: "ping"
         response: "Pong! ボットがpingに応答するまでの経過した時間: `%{time}ms`"
+
+    fun:
+      fgo:
+        aliases: "shoukan 召喚"
     reminders:
       reminder_add:
         aliases: ""
@@ -40,8 +48,9 @@ ja:
         aliases: ""
       reminders:
         aliases: ""
+
     japanese:
-      get_pitch:
+      pitch:
         aliases: "アクセント"
         description: "単語のピッチアクセントを表示されることができます。"
         usage: "getpitch <言葉 (漢字 | かな)>"

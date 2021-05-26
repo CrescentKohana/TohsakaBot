@@ -56,8 +56,7 @@ require 'redcarpet/render_strip'
 
 # Overrides for discordrb gem
 require_relative 'gem_overrides/discordrb_command_override'
-require_relative 'gem_overrides/cache_overrride'
-require_relative 'gem_overrides/api_overrride'
+# require_relative 'gem_overrides/cache_overrride'
 
 # Main module of the bot
 module TohsakaBot
@@ -93,14 +92,19 @@ module TohsakaBot
                                             client_id: AUTH.cli_id,
                                             prefix: CFG.prefix.split(' '),
                                             advanced_functionality: false,
-                                            fancy_log: true)
+                                            fancy_log: true,
+                                            log_mode: :normal)
 
+  # Command logic classes #
+  Dir[File.join(__dir__, 'commands/logic/*/', '*.rb')].sort.each { |file| require file }
+  Dir[File.join(__dir__, 'commands/logic/*/*/', '*.rb')].sort.each { |file| require file }
   # Discord Events and Commands #
-  TohsakaBot.load_modules(:Commands, 'commands/*/*')
-  TohsakaBot.load_modules(:Events, 'events/*/*')
+  TohsakaBot.load_modules(:Commands, %w[commands/txt/* commands/txt/*/* commands/txt/*/*/*])
+  TohsakaBot.load_modules(:Slash, %w[commands/slash/*], discord: false)
+  TohsakaBot.load_modules(:Events, %w[events/*/*])
 
   # Asynchronous threads running in cycles #
-  BOT.run(:async)
+  BOT.run(true)
 
   # TODO: Load async threads dynamically
   # load_modules(:Async, 'async/*', false)
@@ -138,5 +142,5 @@ module TohsakaBot
 
   # Waits for the drb server thread to finish before exiting.
   DRb.thread.join
-  BOT.sync
+  BOT.join
 end
