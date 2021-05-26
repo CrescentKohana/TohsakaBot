@@ -6,20 +6,47 @@ fi:
     repost_overseer:
       response: "WANHA"
   commands:
-    management:
-      set_lang:
-        aliases: ""
-        description: "Asettaa botissa käytetyn kielen käyttäjälle."
-        usage: "setlang <fi, en, ja>"
-        response: "Kieli asetettu suomeksi!"
-        errors:
-          locale_not_found: "Kysyttyä kieltä ei löytynyt."
+    tool:
+      user:
+        set_lang:
+          aliases: ""
+          description: "Asettaa botissa käytetyn kielen käyttäjälle."
+          usage: "setlang <fi, en, ja>"
+          response: "Kieli asetettu suomeksi!"
+          param:
+            lang: "Kieli"
+          error:
+            locale_not_found: "Haluttua kieltä ei löytynyt."
+
     utility:
       ping:
         aliases: ""
         description: "Ping!"
         usage: "ping"
         response: "Pong! Botilla vastaukseen kulunut aika: `%{time}ms`"
+
+    fun:
+      coinflip:
+        aliases: "kolike kolikko heitähomovoltti kkoin"
+      number:
+        aliases: "numero singleil singlet singleillä"
+      doubles:
+        aliases: ""
+      triples:
+        aliases: ""
+      quads:
+        aliases: ""
+      quints:
+        aliases: ""
+      fgo_summon:
+        aliases: ""
+      neko:
+        aliases: ""
+      icecube_machine:
+        aliases: ""
+      chaos:
+        aliases: ""
+
     reminders:
       reminder_add:
         aliases: ""

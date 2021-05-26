@@ -6,6 +6,9 @@ en:
     Before sending messages through the terminal, set the channel with 'set_ch <id>'"
     channel_set: "Channel set to %{name} "
 
+  errors:
+    not_registered: "You aren't registered yet! Please do so by entering the command `?register`."
+
   first_time_setup:
     required_hint: "* means required field!"
     auth_file: "Creating auth.yml"
@@ -40,7 +43,10 @@ en:
     reminder:
       normal: "Reminder for %{mention}"
       repeated: "Repeated reminder for %{mention}"
+
   events:
+    highlight:
+
     message_id_check:
       2: "Doubles!"
       3: "Triples!"
@@ -65,15 +71,162 @@ en:
        ❓ `This help`\n\n
        _Adding a hashtag (#) at the start of the message will disable this functionality turning it to a normal ping._\n\n
        Roles: `%{roles}`"
+    other:
+      another_roll:
+      also_remindme:
+      message_id_check:
+      repost_overseer:
+      trigger:
+
   commands:
-    management:
-      set_lang:
-        aliases: "langset setlanguage languageset setlocale localeset"
-        description: "Sets the language used in the bot for the user."
-        usage: "setlang <fi, en, ja>"
-        response: "Language set to English!"
-        errors:
-          locale_not_found: "Specified language not found."
+    tool:
+      description: "Various tools"
+      admin:
+        description: "Admin tools"
+        register_slash:
+          aliases: "slashregister regslash slashreg"
+          description: "Registers slash commands."
+          usage: "registerslash <top-level commands separated by space>"
+          response: "Registered top-level commands: "
+          param:
+            types: "Top-level commands separated by space"
+          error:
+            not_found: "Given top-level commands weren't found."
+        eval:
+          description: "Run Ruby code. Only for the owner."
+          usage: "eval <code (multiline allowed)>"
+          param:
+            code: "Ruby code"
+          error:
+            not_found: "Given top-level commands weren't found."
+        set_status:
+        edit_permissions:
+          aliases: "permissionsedit editperm permedit setpermissions permissionsset setperm permset"
+          description: "Edits the permission level of a given user."
+          usage: "editpermissions <discord uid | mention> <level (0-999)>"
+          response: "Permission level of %{level} set for %{username}."
+          param:
+            user: "Discord user"
+            level: "Permission level (0-999)"
+          error:
+            user_not_found: "The user doesn't exist."
+            level_not_in_range: "Permission level range: 0 - 999."
+            failed: "Failed to set permissions for %{username}."
+        convert_pins:
+        message_prune:
+      user:
+        description: "User tools"
+        set_lang:
+          aliases: "langset setlanguage languageset setlocale localeset"
+          description: "Sets the language used in the bot for the user."
+          usage: "setlang <fi, en, ja>"
+          response: "Language set to English!"
+          param:
+            lang: "Language"
+          error:
+            locale_not_found: "Specified language not found."
+        register:
+          description: "Register yourself."
+          response: "You've been successfully registered!"
+          error:
+            found: "You've already been registered!"
+        info:
+          aliases: "infouser"
+          description: "Returns information about a Discord user."
+          usage: "userinfo <user (id | mention) | nothing for info about yourself>"
+          response: ""
+          param:
+            user: "Discord user"
+          error:
+            not_found: "User not found"
+
+    utility:
+      ping:
+        aliases: "remind reminder remadd remind addrem rem"
+        description: "Ping!"
+        usage: "ping"
+        response: "Pong! Respond latency of the bot: `%{time}ms`"
+      roll_probability:
+      alko:
+      alko_list:
+      emoji_list:
+
+    fun:
+      description: "Entertainment"
+      coinflip:
+        aliases: "coin flip toss flop"
+        description: "Flips a coin"
+        usage: "flip <integer (default 1)>"
+        role_reward_reason: "Flipped a coin on its edge"
+        outcome:
+          tails: "Tails"
+          heads: "Heads"
+          edge: "The coin landed on its edge"
+        param:
+          times: "Times to do a coinflip (default 1)"
+        error:
+          times: "Maximum amount of flips: 100000."
+      number:
+        aliases: "numbers num single singles"
+        description: "A random number from given range (limits: -100000000 - 100000000)"
+        usage: "number <start> <end> (default 0-9)"
+        param:
+          start: "Range start (default 0)"
+          end: "Range end (default 9)"
+        error:
+          range: "Don't break the bot! Range limits: -100000000 - 100000000."
+      doubles:
+        aliases: ""
+        description: ""
+        usage: ""
+        param:
+      triples:
+        aliases: ""
+        description: ""
+        usage: ""
+        param:
+      quads:
+        aliases: ""
+        description: ""
+        usage: ""
+        param:
+      quints:
+        aliases: ""
+        description: ""
+        usage: ""
+        param:
+      fgo:
+        aliases: "fgosummon summonfgo"
+        description: "Returns probabilities of different summons in Fate/Grand Order."
+        usage: "fgosummon <amount of currency as int (default 30)> <currency type (SQ (default), JPY, USD or R (rolls))>
+               <verbose (y/N)>"
+        param:
+          currency: "Currency type (default SQ)"
+          amount: "Amount of currency (default 11)"
+          verbose: "Verbose output?"
+        error:
+          type: 'Accepted currency types: SQ, JPY, USD or R (rolls).'
+      neko:
+        aliases: ""
+        description: ""
+        usage: ""
+        param:
+      icecube_machine:
+        aliases: ""
+        description: ""
+        usage: ""
+        param:
+      chaos:
+        aliases: "mock"
+        description: "Convert text to chaos/mock style. eXaMpLe MeSsAgE"
+        usage: "chaos <msg>"
+        param:
+          txt: "Text to convert"
+
+    other:
+      help:
+      info:
+
     roles:
       errors:
         role_not_found: "No roles found."
@@ -124,27 +277,19 @@ en:
           description: "Lists own timed roles."
           usage: "timedroleslist"
           response: ""
+      fool:
+      mvp:
+      trophy_roles:
 
-    utility:
-      ping:
-        aliases: "remind reminder remadd remind addrem rem"
-        description: "Ping!"
-        usage: "ping"
-        response: "Pong! Respond latency of the bot: `%{time}ms`"
-      user_info:
-        aliases: "user"
-        description: "Returns information about a Discord user."
-        usage: "userinfo <user (id | mention) | nothing for info about yourself>"
-        response: ""
     reminder:
       add:
         aliases: "remind reminder remadd addrem rem"
-        description: "Sets a reminder."
+        description: "Sets a new reminder."
         usage: "'remindme -h|--help' for help."
         help:
           banner: "Usage: remindme [options]"
           datetime: "When to remind. Format: yMwdhms OR yyyy/MM/dd hh.mm.ss OR natural language"
-          msg: "Message for the reminder."
+          msg: "Message of the reminder."
           repeat: "Interval duration for repeated reminders. Format: dhm (eg. 2d6h20m)"
           extra_help: "Alternatively, `remindme <time (if spaces put ; after this)> <msg>` also works.
           Examples follow:\n・`remindme -d 4M2d8h30s -m Tickets!` will remind you in 4 months, 2 days, 8 hours
@@ -156,14 +301,35 @@ en:
         repeat_interval: " `<Interval %{interval}>`"
       del:
         aliases: "delreminder dontremindme remrem remdel delrem remremind delremind"
-        description: "Deletes a reminder."
-        usage: "delreminder <ids separeted by space (integer)>"
+        description: "Deletes specified reminders."
+        usage: "delreminder <ids separated by space (integer)>"
         response: "Reminder%{plural} deleted: %{ids}."
         errors:
           not_found: "One or more IDs were not found within list of your reminders."
       mod:
+        aliases: "modreminder remindermodify modifyreminder modremind remindmod mr modrem remmod editreminder editrem remedit reminderedit"
+        description: "Modifies specified reminder."
+        usage: "'remindermod -h|--help' for help."
+        help:
+          banner: "Usage: remindermod [-i id] [-d datetime] [-m message] [-r repeat]"
+          id: "ID of the reminder to edit."
+          datetime: "Edit the time when to remind. Format: yMwdhms OR yyyy/MM/dd hh.mm.ss OR natural language."
+          msg: "Edit the message."
+          repeat: "Edit the interval duration for repeated reminders. Format: dhm (eg. 2d6h20m)"
+          channel: "Edit the channel where you will be reminded. Format: channel id."
+          extra_help: "Alternatively, `remindme <time (if spaces put ; after this)> <msg>` also works.
+                  Examples follow:\n・`remindme -d 4M2d8h30s -m Tickets!` will remind you in 4 months, 2 days, 8 hours
+                  and 30 seconds for 'Tickets!'.\n・`remindme -d 2020/12/22 12:00:00 -m Christmas soon! -r 1y` will remind you
+                  about christmas on 12/22 12:00:00 every year starting with 2020."
       details:
+        aliases: "reminderdetail reminderinfo inforeminder rinfo"
+        description: "Gives details of the specified reminder."
+        usage: "reminderdetails <id> <verbose (default off/yes to enable)>"
       list:
+        aliases: "listrem remlist rems"
+        description: "Lists user's reminders."
+        usage: "reminderlist"
+
     trigger:
       errors:
         exact_trigger_already_exists: "Exact trigger with the phrase `?{phrase}` already exists!
@@ -183,11 +349,28 @@ en:
         response: "Trigger%{plural} deleted: %{ids}."
         errors:
           not_found: "One or more IDs were not found within list of your triggers."
+      mod:
+      search:
+      details:
+      list:
+
     japanese:
-      get_pitch:
+      description: "Japanese・日本語"
+      pitch:
         aliases: "pitch getaccent accent"
-        description: "Shows possible pitch accents of a Japanese word."
-        usage: "getpitch <word (kanji | kana)>"
+        description: "Returns matching pitch accents (NHK) of a given Japanese word"
+        usage: "pitch <word (kanji | kana)>"
         response_title: "Accents for %{word}"
+        param:
+          word: "kanji (漢字) or kana (かな)"
         errors:
           no_results: "No results."
+
+    feature_request:
+      new:
+      find:
+      tag:
+
+    ask_rin:
+      ask:
+      answer_add:

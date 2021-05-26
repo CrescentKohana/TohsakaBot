@@ -2,9 +2,11 @@
 
 module TohsakaBot
   module DiscordHelper
-    # Discord file upload limits. Bot cannot upload anything larger than 8388119 bytes.
+    # Discord file upload limits.
+    # TODO: Check if server is boosted for higher limits.
     UPLOAD_LIMIT = 8_388_119
     UPLOAD_LIMIT_NITRO = 52_428_308
+    UPLOAD_LIMIT_BOOST = 104_856_616
 
     attr_accessor :typing_channels
 
@@ -25,11 +27,11 @@ module TohsakaBot
       @typing_channels[channel] = duration
     end
 
-    def send_message_with_reaction(cid, emoji, content, msg_ref = nil)
+    def send_message_with_reaction(channel_id, emoji, content, msg_ref = nil)
       reply = if msg_ref.nil?
-                BOT.send_message(cid.to_i, content)
+                BOT.send_message(channel_id.to_i, content)
               else
-                BOT.send_message(cid.to_i, content, false, nil, nil, false, msg_ref)
+                BOT.send_message(channel_id.to_i, content, false, nil, nil, false, msg_ref)
               end
 
       reply.create_reaction(emoji)
@@ -98,13 +100,22 @@ module TohsakaBot
       end
     end
 
+    def command_event_user_id(event, return_id: true)
+      if event.instance_of?(Discordrb::Events::ApplicationCommandEvent)
+        return_id ? event.user.id : event.user
+      else # Discordrb::Commands::CommandEvent
+        return_id ? event.message.user.id : event.message.user
+      end
+    end
+
     def allowed_channels(discord_uid)
       possible_channels = []
       user = BOT.user(discord_uid.to_i)
 
-      user_servers(discord_uid).each do |s|
-        s.text_channels.each do |c|
-          possible_channels << c if user.on(s).permission?(:send_messages, c)
+      user_servers(discord_uid).each do |server|
+        server.text_channels.each do |channel|
+          next if channel.nil?
+          possible_channels << channel if user&.on(server)&.defined_permission?(:send_messages, channel)
         end
       end
 
@@ -117,13 +128,8 @@ module TohsakaBot
     def user_servers(discord_uid)
       servers = []
 
-      BOT.servers.each_value do |s|
-        s.non_bot_members.each do |m|
-          if m.id.to_i == discord_uid.to_i
-            servers << s
-            break
-          end
-        end
+      BOT.servers.each_value do |server|
+        servers << server unless server.member(discord_uid).nil?
       end
       servers
     end
