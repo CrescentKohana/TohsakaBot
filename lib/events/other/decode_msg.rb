@@ -9,25 +9,27 @@ module TohsakaBot
       reaction_add(emoji: '🔓') do |event|
         next if rate_limiter.rate_limited?(:decoder, event.user)
 
-        msg = event.message
+        msg = event.message.content
+        next unless msg.to_s[-1] == "\u2063"
 
-        if msg.to_s.match(/\?rot13?.*|\?spoilers?.*|\?rotta13.*/i) || msg.to_s[0] == "\u2063"
-          msguser = event.message.user
-          # nickname = BOT.member(event.server, msguser.id.to_i).nick
-          msg.content.slice!(/\?rot13?|\?spoilers?|\?rotta13/i)
-          decoded = msg.content.tr('n-za-mN-ZA-M', 'a-zA-Z')
+        msg.slice!(/\?\w*\s/i)
+        decoded_msg = case msg
+                      when /.*\u2063\u2063/i # base64
+                        msg.gsub!("\u2063")
+                        Base64.decode64(msg)
+                      else # rot13
+                        msg.gsub!("\u2063")
+                        msg.tr('n-za-mN-ZA-M', 'a-zA-Z')
+                      end
 
-          if decoded.size > 1016
-            break
-            # decodedsplit = decoded.partition(/.{#{decoded.size / 2}}/)[1, 2]
-          end
+        break if decoded_msg.size > 1016
 
-          event.user.pm.send_embed do |embed|
-            embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: msguser.distinct, icon_url: msguser.avatar_url)
-            embed.colour = 0xA82727
-            embed.timestamp = event.message.timestamp
-            embed.add_field(name: 'Content:', value: decoded)
-          end
+        user = event.message.user
+        event.user.pm.send_embed do |embed|
+          embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: user.distinct, icon_url: user.avatar_url)
+          embed.colour = 0xA82727
+          embed.timestamp = event.message.timestamp
+          embed.add_field(name: 'Content:', value: decoded_msg)
         end
       end
     end
