@@ -41,6 +41,7 @@ require "i18n/backend/fallbacks"
 # Misc #
 require 'nekos'
 require 'digest'
+require "base64"
 require 'benchmark'
 require 'to_regexp'
 require 'active_support/core_ext/string/filters'
