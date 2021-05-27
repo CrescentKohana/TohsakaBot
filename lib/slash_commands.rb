@@ -180,7 +180,7 @@ module TohsakaBot
             'algorithm',
             I18n.t(:'commands.utility.encode_message.param.algorithm'),
             required: false,
-            choices: { rot13: 'rot13' }
+            choices: { rot13: 'rot13', base64: 'base64' }
           )
           sub.boolean('ephemeral', I18n.t(:'commands.general_param.ephemeral_false'), required: false)
         end
