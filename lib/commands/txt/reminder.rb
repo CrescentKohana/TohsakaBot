@@ -74,7 +74,7 @@ module TohsakaBot
               min_args: 1,
               require_register: true) do |event, id, verbose|
         command = CommandLogic::ReminderDetails.new(event, id, verbose)
-        event.respond(command.run[:content])
+        event.respond(nil, nil, command.run[:embeds].first)
       end
 
 
