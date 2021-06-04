@@ -5,10 +5,21 @@ module TohsakaBot
     class ReminderDel
       def initialize(event, ids)
         @event = event
-        @ids = ids
+        @ids = []
+
+        ids.each do |id|
+          if /\d+-\d+/.match(id)
+            range = id.split("-")
+            @ids += (range.first..range.second).to_a
+          elsif !Integer(id, exception: false).nil?
+            @ids << id
+          end
+        end
       end
 
       def run
+        return { content: I18n.t(:'commands.reminder.del.errors.no_valid_ids') } if @ids.blank?
+
         deleted = []
         reminders = TohsakaBot.db[:reminders]
         user_id = TohsakaBot.get_user_id(TohsakaBot.command_event_user_id(@event))
