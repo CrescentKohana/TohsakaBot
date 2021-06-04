@@ -29,15 +29,13 @@ module TohsakaBot
               description: 'A quick message which is deleted after n seconds.',
               usage: 'quickie <message> <1-10 (seconds, integer, default 5)>',
               min_args: 1) do |event, *msg|
-        event.message.delete
-        duration = 5
-        unless Integer(msg[-1], exception: false).nil?
-          duration = msg.pop.to_i
-        end
-
-        reply = event.respond(msg.join(" "))
+        duration = if Integer(msg[-1], exception: false).nil? || msg.is_a?(String)
+                     5
+                   else
+                     msg.pop.to_i
+                   end
         sleep(CommandLogic::Quickie.duration(duration))
-        reply.delete
+        event.message.delete
       end
     end
   end
