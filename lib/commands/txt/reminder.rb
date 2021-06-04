@@ -56,12 +56,13 @@ module TohsakaBot
           [:channel, I18n.t(:'commands.reminder.mod.help.channel'), { type: :string }]
         )
         break if options.nil?
+
         command = CommandLogic::ReminderMod.new(event,
                                                 options.id,
                                                 options.datetime&.join(' '),
                                                 options.msg&.join(' '),
                                                 options.repeat&.join(' '),
-                                                options.channel.first)
+                                                options.channel&.first)
         event.respond(command.run[:content])
       end
 
