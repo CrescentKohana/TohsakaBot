@@ -9,10 +9,12 @@ module TohsakaBot
 
         ids.each do |id|
           if /\d+-\d+/.match(id)
-            range = id.split("-")
-            @ids += (range.first..range.second).to_a
+            range = id.split("-").map(&:to_i)
+            # Limit range: x..x+(1..100)
+            range[1] = range[1].clamp(range[0] + 1, range[0] + 100)
+            @ids += (range[0]..range[1]).to_a
           elsif !Integer(id, exception: false).nil?
-            @ids << id
+            @ids << id.to_i
           end
         end
       end
@@ -26,7 +28,7 @@ module TohsakaBot
 
         TohsakaBot.db.transaction do
           @ids.each do |id|
-            deleted << id if reminders.where(user_id: user_id, id: id.to_i).delete.positive?
+            deleted << id if reminders.where(user_id: user_id, id: id).delete.positive?
           end
         end
 
