@@ -368,10 +368,11 @@ en:
       del:
         aliases: "delreminder dontremindme remrem remdel delrem remremind delremind"
         description: "Deletes specified reminders."
-        usage: "delreminder <ids separated by space (integer)>"
+        usage: "delreminder <ids or id ranges (e.g. 1-10) separated by space (integer)>"
         response: "Reminder%{plural} deleted: %{ids}."
         errors:
           not_found: "One or more IDs were not found within list of your reminders."
+          no_valid_ids: "No valid IDs found."
       mod:
         aliases: "modreminder remindermodify modifyreminder modremind remindmod mr modrem remmod editreminder editrem remedit reminderedit"
         description: "Modifies specified reminder."
