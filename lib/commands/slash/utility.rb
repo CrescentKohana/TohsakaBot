@@ -20,9 +20,10 @@ module TohsakaBot
       end
 
       BOT.application_command(:utility).subcommand('quickie') do |event|
-        reply = event.respond(content: event.options['message'], wait: true)
-        sleep(CommandLogic::Quickie.duration(event.options['duration']))
-        reply.delete
+        event.respond(content: "Slash command version currently not supported. Use ?quickie")
+        # reply = event.respond(content: event.options['message'], wait: true)
+        # sleep(CommandLogic::Quickie.duration(event.options['duration']))
+        # reply.delete
       end
 
       BOT.application_command(:utility).subcommand('encode_message') do |event|
