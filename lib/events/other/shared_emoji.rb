@@ -5,26 +5,20 @@ module TohsakaBot
     module SharedEmoji
       extend Discordrb::EventContainer
       message(content: /.*:\w*:\D*/) do |event|
-        just_emoji = /:\w*:/
-        # dead_emoji = /\:\w*\:\D/
-        emoji_names = event.message.content.scan(just_emoji)
+        emoji_names = event.message.content.scan(/:\w*:/)
+        next if emoji_names.empty?
+
         every_emoji = []
-        i = 0
-        j = 0
+        emoji_names.each do |emoji_name|
+          every_emoji << BOT.find_emoji(emoji_name.to_s.tr!(':', ''))
+        end
 
-        # TODO: Emoji that already work should be deleted from the array. Not a huge issue though.
-        # emoji_names.delete_if { |x| x[-1] != ':' }
+        i = 0 # A message can have up to 20 unique reactions.
+        until i == every_emoji.count || i == 20
+          next if every_emoji[i].nil?
 
-        unless emoji_names.empty?
-          until i == emoji_names.count
-            every_emoji << BOT.find_emoji(emoji_names[i].to_s.tr!(':', ''))
-            i += 1
-          end
-
-          until j == every_emoji.count || j == 19
-            event.message.create_reaction("#{every_emoji[j].name}:#{every_emoji[j].id}")
-            j += 1
-          end
+          event.message.create_reaction("#{every_emoji[i].name}:#{every_emoji[i].id}")
+          i += 1
         end
       end
     end
