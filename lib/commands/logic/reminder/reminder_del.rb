@@ -13,7 +13,7 @@ module TohsakaBot
             # Limit range: x..x+(1..100)
             range[1] = range[1].clamp(range[0] + 1, range[0] + 100)
             @ids += (range[0]..range[1]).to_a
-          elsif !Integer(id, exception: false).nil?
+          elsif Integer(id, exception: false)
             @ids << id.to_i
           end
         end

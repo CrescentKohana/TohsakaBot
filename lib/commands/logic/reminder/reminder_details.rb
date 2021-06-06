@@ -5,7 +5,7 @@ module TohsakaBot
     class ReminderDetails
       def initialize(event, id, verbose)
         @event = event
-        @id = Integer(id, exception: false).nil? ? nil : id
+        @id = Integer(id, exception: false) ? id : nil
         @verbose = verbose.nil? ? false : true
       end
 

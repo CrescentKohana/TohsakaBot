@@ -3,6 +3,9 @@
 module TohsakaBot
   class ReminderController
     include ActionView::Helpers::DateHelper
+
+    attr_reader @datetime
+
     DURATION_REGEX = /^[ydwhmMsSeckin0-9-]*$/i.freeze
     DATE_REGEX = /^[0-9]{4}-(1[0-2]|0[1-9])-(3[0-2]|[1-2][0-9]|0[1-9])\s
                   (2[0-4]|1[0-9]|0[0-9]):(60|[0-5][0-9]):(60|[0-5][0-9])/x.freeze
