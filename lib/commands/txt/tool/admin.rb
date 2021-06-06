@@ -3,6 +3,7 @@
 module TohsakaBot
   module Commands
     module Admin
+      require_relative '../../../events/highlight/highlight_core' # for convertpins
       extend Discordrb::Commands::CommandContainer
 
       command(:registerslash,
@@ -14,6 +15,7 @@ module TohsakaBot
         command = CommandLogic::RegisterSlash.new(event, types)
         event.respond(command.run[:content])
       end
+
 
       command(:eval,
               description: I18n.t(:'commands.tool.admin.eval.description'),
@@ -27,12 +29,14 @@ module TohsakaBot
         event.respond(command.run[:content])
       end
 
+
       command(:tester,
               aliases: %i[test t],
               description: 'Command for testing stuff',
               usage: 'test') do |event|
         event.<< event.message.content
       end
+
 
       command(:editpermissions,
               aliases: TohsakaBot.get_command_aliases('commands.tool.admin.edit_permissions.aliases'),
@@ -43,6 +47,7 @@ module TohsakaBot
         command = CommandLogic::EditPermissions.new(event, user, level)
         event.respond(command.run[:content])
       end
+
 
       command(:setstatus,
               aliases: %i[np],
@@ -61,6 +66,7 @@ module TohsakaBot
         event.respond("Status changed to `#{msg.strip_mass_mentions}` as `#{type}`.")
       end
 
+
       command(:prune,
               description: 'Prunes betweem 2 and 100 messages in the current channel.',
               usage: 'prune <amount (2-100)>',
@@ -72,6 +78,7 @@ module TohsakaBot
           event.respond('The amount of messages has to be between 2 and 100.')
         end
       end
+
 
       command(:typing,
               aliases: %i[type],
@@ -87,7 +94,7 @@ module TohsakaBot
         break
       end
 
-      require_relative '../../../events/highlight/highlight_core'
+
       command(:convertpins,
               description: 'Copies all pinned messages on the specified channel to database and posts them to the highlight channel',
               usage: 'convertpins <Newest|oldest (starting point)> <channel_id (if empty, current channel will be used)> ',
@@ -115,6 +122,7 @@ module TohsakaBot
         break
       end
 
+
       command(:emojilist,
               aliases: %i[emoji le],
               description: 'List all the 絵文字 bot has at its disposal.',
@@ -132,6 +140,17 @@ module TohsakaBot
         end
 
         event.<< "```#{emoji_names.join(' ')}```"
+      end
+
+
+      command(:slowmode,
+              aliases: TohsakaBot.get_command_aliases('commands.tool.admin.slow_mode.aliases'),
+              description: I18n.t(:'commands.tool.admin.slow_mode.description'),
+              usage: I18n.t(:'commands.tool.admin.slow_mode.usage'),
+              permission_level: TohsakaBot.permissions.actions["slow_mode"],
+              min_args: 1) do |event, rate, *channels|
+        command = CommandLogic::SlowMode.new(event, rate, channels)
+        event.respond(command.run[:content])
       end
     end
   end

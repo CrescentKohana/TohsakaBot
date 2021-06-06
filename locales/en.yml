@@ -120,6 +120,15 @@ en:
         message_prune:
         emoji_list:
           description: "List all the emoji bot has at its disposal."
+        slow_mode:
+          aliases: "setslowmode"
+          description: "Sets slow mode for specified channels"
+          usage: "slowmode <rate (0-21600s> <channel ids ('all' for every channel in the server)>"
+          response:
+            set: "%{rate}s slow mode set for %{channels} channels."
+            clear: "Slow mode cleared for %{channels} channels."
+          error:
+            channel_not_found: "Specified channels not found."
       user:
         description: "User tools"
         set_lang:

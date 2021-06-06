@@ -12,6 +12,7 @@
     "message_prune": "admin",
     "feature_requests": "admin",
     "permissions": "admin",
+    "slow_mode": "admin",
     "typing_event": "moderator",
     "trophy_roles": "moderator",
     "set_status": "data_moderator",
