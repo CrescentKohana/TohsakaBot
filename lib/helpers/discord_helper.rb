@@ -18,10 +18,10 @@ module TohsakaBot
         return
       end
 
-      if Integer(duration, exception: false).nil?
-        duration = nil
-      else
+      if Integer(duration, exception: false)
         duration *= 60
+      else
+        duration = nil
       end
 
       @typing_channels[channel] = duration
@@ -113,9 +113,12 @@ module TohsakaBot
       user = BOT.user(discord_uid.to_i)
 
       user_servers(discord_uid).each do |server|
+        next if server.nil?
+
         server.text_channels.each do |channel|
           next if channel.nil?
-          possible_channels << channel if user&.on(server)&.defined_permission?(:send_messages, channel)
+
+          possible_channels << channel if user&.on(server)&.permission?(:send_messages, channel)
         end
       end
 

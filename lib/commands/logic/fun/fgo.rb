@@ -6,7 +6,7 @@ module TohsakaBot
       def initialize(event, currency, currency_type, verbose)
         @event = event
         # 30SQ is the cost of multi summon (11) in FGO JP as of 2021/05/25.
-        @currency = currency.nil? || Integer(currency, exception: false).nil? ? 30 : currency.to_i
+        @currency = Integer(currency, exception: false) ? currency.to_i : 30
         @currency_type = currency_type
         @verbose = verbose
       end

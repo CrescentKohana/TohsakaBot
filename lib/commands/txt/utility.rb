@@ -29,7 +29,7 @@ module TohsakaBot
               description: 'A quick message which is deleted after n seconds.',
               usage: 'quickie <message> <1-10 (seconds, integer, default 5)>',
               min_args: 1) do |event, *msg|
-        duration = if Integer(msg[-1], exception: false).nil? || msg.is_a?(String)
+        duration = if !Integer(msg[-1], exception: false) || msg.is_a?(String)
                      5
                    else
                      msg.pop.to_i
