@@ -49,7 +49,7 @@ module TohsakaBot
         end
 
         event.message.attachments.each do |file|
-          file_name = file.filename.add_identifier
+          file_name = file.filename.dup.add_identifier
           IO.copy_stream(URI.parse(file.url).open, "tmp/#{file_name}")
           file_hash = Digest::SHA2.file("tmp/#{file_name}").to_s
 
