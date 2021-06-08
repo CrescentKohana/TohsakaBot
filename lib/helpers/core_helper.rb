@@ -43,10 +43,10 @@ module TohsakaBot
     end
 
     def command_parser(event, msg, banner, extra_help, *option_input)
-      begin
-        old_help = false
-        args = Shellwords.split(msg.join(' '))
+      old_help = false
+      args = Shellwords.split(msg.join(' '))
 
+      begin
         parser = Optimist::Parser.new do
           option_input.each do |o|
             opt(*o)
@@ -61,8 +61,6 @@ module TohsakaBot
             raise Optimist::HelpNeeded
           end
         end
-
-        options_output = parser.parse args
       rescue Optimist::HelpNeeded
         help_string = ''.dup
         option_input.each do |o|
@@ -84,6 +82,13 @@ module TohsakaBot
         end
 
         TohsakaBot.expire_msg(event.channel, [m], event.message)
+        return nil
+      end
+
+      begin
+        options_output = parser.parse(args)
+      rescue Optimist::CommandlineError => e
+        TohsakaBot.expire_msg(event.channel, [event.respond(e)], event.message)
         return nil
       end
 
