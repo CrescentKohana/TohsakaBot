@@ -31,7 +31,7 @@ module TohsakaBot
             # end
 
             @where = BOT.pm_channel(discord_uid)
-            if channel_id.nil? || channel_id.zero?
+            if channel_id.blank? || channel_id.zero?
               @where = BOT.pm_channel(discord_uid)
             elsif BOT.channel(channel_id).nil?
               @where = BOT.pm_channel(discord_uid)
