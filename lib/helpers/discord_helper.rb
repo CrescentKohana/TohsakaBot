@@ -43,7 +43,7 @@ module TohsakaBot
       msg_objects
     end
 
-    def expire_msg(event, bot_msgs, user_msg = nil, duration = 120)
+    def expire_msg(event, bot_msgs, user_msg = nil, duration = 300)
       return if event.pm?
 
       sleep(duration)
