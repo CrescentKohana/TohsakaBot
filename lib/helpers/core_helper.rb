@@ -61,14 +61,10 @@ module TohsakaBot
             raise Optimist::HelpNeeded
           end
         end
+
+        parser.parse(args)
       rescue Optimist::HelpNeeded
-        help_string = ''.dup
-        option_input.each do |o|
-          option = o[0].to_s
-          help_string << "`-#{option[0]}"
-          help_string << ", --#{option} #{option.capitalize}`"
-          help_string << "\n・#{o[1]}\n"
-        end
+        help_string = construct_help(option_input)
 
         if old_help
           respond = "```#{banner}\n#{help_string}\n#{extra_help}```"
@@ -82,21 +78,19 @@ module TohsakaBot
         end
 
         TohsakaBot.expire_msg(event.channel, [m], event.message)
-        return nil
-      end
-
-      begin
-        options_output = parser.parse(args)
+        nil
       rescue Optimist::CommandlineError => e
         TohsakaBot.expire_msg(event.channel, [event.respond(e)], event.message)
-        return nil
+        nil
       end
-
-      options_output
     end
 
+    # Strips markdown from a string.
+    #
+    # @param input [String, Array] Text with markdown
+    # @return [String, Array] Text without markdown
     def strip_markdown(input)
-      return Redcarpet::Markdown.new(Redcarpet::Render::StripDown).render(input).to_s if input.is_a? String
+      return Redcarpet::Markdown.new(Redcarpet::Render::StripDown).render(input).to_s if input.is_a?(String)
 
       return_array = []
       input.each { |s| return_array << Redcarpet::Markdown.new(Redcarpet::Render::StripDown).render(s).to_s }
@@ -113,6 +107,20 @@ module TohsakaBot
         aliases += I18n.t(i18n_path.to_sym, locale: locale.to_sym).split(" ").map(&:to_sym)
       end
       aliases
+    end
+
+    private
+
+    def construct_help(options)
+      help_string = ''.dup
+      options.each do |o|
+        name = o[0].to_s
+        help_string << "`-#{name[0]}"
+        help_string << ", --#{name} #{name.capitalize}`"
+        help_string << "\n・#{o[1]}\n"
+      end
+
+      help_string
     end
   end
 
