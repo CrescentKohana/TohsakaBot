@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/shardlab/discordrb.git
-  revision: bc303a9c35b7b68222791c520f916eddc9a6c209
+  revision: 273b066b0c5d17b99dba064269e36a8d89ef9ddc
   branch: slash_commands
   specs:
     discordrb (3.4.2)
@@ -47,7 +47,7 @@ GEM
     feedjira (3.1.2)
       loofah (>= 2.3.1)
       sax-machine (>= 1.0)
-    ffi (1.15.1)
+    ffi (1.15.3)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
@@ -129,7 +129,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.10.0)
     rspec-support (3.10.2)
-    rubocop (1.16.1)
+    rubocop (1.17.0)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
       rainbow (>= 2.2.2, < 4.0)
