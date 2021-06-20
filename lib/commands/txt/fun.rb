@@ -54,16 +54,9 @@ module TohsakaBot
               usage: '',
               bucket: :cf,
               rate_limit_message: 'Calm down! You are ratelimited for %time%s.') do |event|
-        number = rand(0..99)
-        name = BOT.member(event.server, event.author.id).display_name
-
-        identifier = "\u200B" * 2
-        TohsakaBot.send_message_with_reaction(
-          event.channel.id,
-          '🎲',
-          "**#{number.to_s.rjust(2, '0')}**  `#{name.strip_mass_mentions.sanitize_string}`#{identifier}",
-          event.message
-        )
+        command = CommandLogic::Roll.new(event, 2)
+        response = command.run
+        event.message.reply!(response[:content], allowed_mentions: false, components: response[:components])
       end
 
       command(:triples,
@@ -71,42 +64,20 @@ module TohsakaBot
               description: 'Triples.',
               usage: '',
               bucket: :cf, rate_limit_message: 'Calm down! You are ratelimited for %time%s.') do |event|
-        number = rand(0..999)
-        name = BOT.member(event.server, event.author.id).display_name
-
-        identifier = "\u200B" * 3
-        TohsakaBot.send_message_with_reaction(
-          event.channel.id,
-          '🎲',
-          "**#{number.to_s.rjust(3, '0')}**  `#{name.strip_mass_mentions.sanitize_string}`#{identifier}",
-          event.message
-        )
+        command = CommandLogic::Roll.new(event, 3)
+        response = command.run
+        event.message.reply!(response[:content], allowed_mentions: false, components: response[:components])
       end
 
       command(:quads,
-              aliases: %i[quads quad quadeil quadeilla quattroilla quattrot quattroilla
+              aliases: %i[quads quad quadit quadeil quadeilla quattroilla quattrot quattroilla
                           quattroil neljä nelosilla nelosil quadseilla quadseil tetra tetras tetroil tetroilla],
               description: 'Quads.',
               usage: '',
               bucket: :cf, rate_limit_message: 'Calm down! You are ratelimited for %time%s.') do |event|
-        number = rand(0..9999).to_s
-        name = BOT.member(event.server, event.author.id).display_name
-        user_id = event.message.author
-        role_id = CFG.mvp_role.to_i
-
-        identifier = "\u200B" * 4
-        TohsakaBot.send_message_with_reaction(
-          event.channel.id,
-          '🎲',
-          "**#{number.rjust(4, '0')}**  `#{name.strip_mass_mentions.sanitize_string}`#{identifier}",
-          event.message
-        )
-
-        if /(\d)\1{3}/.match?(number)
-          name = BOT.member(event.server, event.author.id).display_name
-          TohsakaBot.give_temporary_role(event, role_id, user_id, 7, 'Quads')
-          event.respond("🎉 @here #{name} HAS GOT QUADS! 🎉")
-        end
+        command = CommandLogic::Roll.new(event, 4)
+        response = command.run
+        event.message.reply!(response[:content], allowed_mentions: false, components: response[:components])
       end
 
       command(:quints,
@@ -115,24 +86,9 @@ module TohsakaBot
               description: 'Quints.',
               usage: '',
               bucket: :cf, rate_limit_message: 'Calm down! You are ratelimited for %time%s.') do |event|
-        number = rand(0..99_999).to_s
-        name = BOT.member(event.server, event.author.id).display_name
-        user_id = event.message.author
-        role_id = CFG.mvp_role.to_i
-
-        identifier = "\u200B" * 5
-        TohsakaBot.send_message_with_reaction(
-          event.channel.id,
-          '🎲',
-          "**#{number.rjust(5, '0')}**  `#{name.strip_mass_mentions.sanitize_string}`#{identifier}",
-          event.message
-        )
-
-        if /(\d)\1{4}/.match?(number)
-          name = BOT.member(event.server, event.author.id).display_name
-          TohsakaBot.give_temporary_role(event, role_id, user_id, 7, 'Quints')
-          event.respond("🎉 @here #{name} HAS GOT QUINTS! 🎉")
-        end
+        command = CommandLogic::Roll.new(event, 5)
+        response = command.run
+        event.message.reply!(response[:content], allowed_mentions: false, components: response[:components])
       end
 
       command(:icecubes,

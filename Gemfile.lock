@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/shardlab/discordrb.git
-  revision: 273b066b0c5d17b99dba064269e36a8d89ef9ddc
+  revision: 24e85f8e34ec63a30ec122776f98a87092493d90
   branch: slash_commands
   specs:
     discordrb (3.4.2)
