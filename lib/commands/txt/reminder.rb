@@ -25,8 +25,8 @@ module TohsakaBot
         command = CommandLogic::ReminderAdd.new(event, options.datetime, msg, repeat, input)
 
         reply = event.respond(command.run[:content])
-        reply.create_reaction('🔔')
-        event.message.delete unless event.channel.pm?
+        reply.create_reaction('🔔') unless reply[:error]
+        event.message.delete unless event.channel.pm? || reply[:error]
       end
 
 
