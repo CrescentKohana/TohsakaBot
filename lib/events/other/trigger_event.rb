@@ -76,7 +76,7 @@ module TohsakaBot
 
         file = chosen_trigger[:file]
         reply = if file.to_s.empty?
-                  event.respond chosen_trigger[:reply]
+                  event.respond(chosen_trigger[:reply], false, nil, nil, false)
                 else
                   event.channel.send_file(File.open("data/triggers/#{file}"))
                 end
