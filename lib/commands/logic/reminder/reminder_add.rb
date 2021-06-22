@@ -44,7 +44,14 @@ module TohsakaBot
           return { content: e.message, embeds: nil, error: true }
         end
 
-       { content: rem.store_reminder, embeds: nil, error: false }
+        response = rem.store_reminder
+        button = Discordrb::Components::View.new do |v|
+          v.row do |r|
+            r.button(style: :primary, label: '🔔', custom_id: "reminder_add:#{response[:id]}")
+          end
+        end
+
+        { content: response[:content], embeds: nil, components: button, error: false }
       end
     end
   end

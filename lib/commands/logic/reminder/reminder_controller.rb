@@ -4,7 +4,7 @@ module TohsakaBot
   class ReminderController
     include ActionView::Helpers::DateHelper
 
-    attr_reader @datetime
+    # attr_reader @datetime
 
     DURATION_REGEX = /^[ydwhmMsSeckin0-9-]*$/i.freeze
     DATE_REGEX = /^[0-9]{4}-(1[0-2]|0[1-9])-(3[0-2]|[1-2][0-9]|0[1-9])\s
@@ -117,7 +117,7 @@ module TohsakaBot
 
       repetition_interval = @repeat.positive? ? " `<Interval #{distance_of_time_in_words(@repeat)}>`" : ''
 
-      final_response(repetition_interval, false)
+      { id: @id, content: final_response(repetition_interval, false) }
     end
 
     def update_reminder
@@ -158,7 +158,7 @@ module TohsakaBot
                               ""
                             end
 
-      final_response(repetition_interval, true)
+      { id: @id, content: final_response(repetition_interval, true) }
     end
 
     def final_response(repetition_interval, mod)
@@ -186,17 +186,17 @@ module TohsakaBot
       reminders = TohsakaBot.db[:reminders]
       reminder = reminders.where(id: reminder_id.to_i).single_record
       id = nil
-      unless reminder.nil?
-        TohsakaBot.db.transaction do
-          id = reminders.insert(datetime: reminder[:datetime],
-                                message: reminder[:message],
-                                user_id: TohsakaBot.get_user_id(discord_uid),
-                                channel_id: reminder[:channel_id],
-                                repeat: reminder[:repeat],
-                                parent: reminder_id,
-                                created_at: Time.now,
-                                updated_at: Time.now)
-        end
+      return if reminder.nil?
+
+      TohsakaBot.db.transaction do
+        id = reminders.insert(datetime: reminder[:datetime],
+                              message: reminder[:message],
+                              user_id: TohsakaBot.get_user_id(discord_uid),
+                              channel_id: reminder[:channel_id],
+                              repeat: reminder[:repeat],
+                              parent: reminder_id,
+                              created_at: Time.now,
+                              updated_at: Time.now)
       end
       id
     end
@@ -204,7 +204,6 @@ module TohsakaBot
     def self.copy_already_exists?(reminder_id, discord_uid)
       discord_uid = discord_uid.to_i
       reminder_id = reminder_id.to_i
-
       reminders = TohsakaBot.db[:reminders]
 
       !reminders.where(parent: reminder_id.to_i, user_id: TohsakaBot.get_user_id(discord_uid)).single_record.nil?
