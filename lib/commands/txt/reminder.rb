@@ -20,13 +20,19 @@ module TohsakaBot
           [:repeat, I18n.t(:'commands.reminder.add.help.repeat'), { type: :strings }]
         )
         break if options.nil?
+
         msg = options.msg.nil? ? nil : options.msg.join(' ')
         repeat = options.repeat.nil? ? nil : options.repeat.join(' ')
         command = CommandLogic::ReminderAdd.new(event, options.datetime, msg, repeat, input)
+        response = command.run
 
-        reply = event.respond(command.run[:content])
-        reply.create_reaction('🔔') unless reply[:error]
-        event.message.delete unless event.channel.pm? || reply[:error]
+        if event.channel.pm? || response[:error]
+          event.respond(response[:content])
+        else
+          # with subscribe (copy reminder) button
+          event.respond(response[:content], false, nil, nil, nil, nil, response[:components])
+          event.message.delete
+        end
       end
 
 

@@ -44,7 +44,14 @@ module TohsakaBot
           return { content: e.message }
         end
 
-        { content: rem.update_reminder }
+        response = rem.update_reminder
+        button = Discordrb::Components::View.new do |v|
+          v.row do |r|
+            r.button(style: :primary, label: '🔔', custom_id: "reminder_mod:#{response[:id]}")
+          end
+        end
+
+        { content: response[:content], components: button }
       end
     end
   end

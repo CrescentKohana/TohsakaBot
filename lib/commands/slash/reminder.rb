@@ -10,9 +10,7 @@ module TohsakaBot
                                                   event.options['msg'],
                                                   event.options['repeat_interval'])
           response = command.run
-
-          reply = event.respond(content: response[:content], embeds: response[:embeds], wait: true)
-          Discordrb::API::Channel.create_reaction("Bot #{AUTH.bot_token}", reply.channel_id, reply.id, '🔔')
+          event.respond(content: response[:content], components: response[:components], wait: true)
         else
           event.respond(content: I18n.t("errors.not_registered"))
         end
@@ -36,8 +34,7 @@ module TohsakaBot
                                                   event.options['repeat'],
                                                   event.options['channel'])
           response = command.run
-          reply = event.respond(content: response[:content], wait: true)
-          Discordrb::API::Channel.create_reaction("Bot #{AUTH.bot_token}", reply.channel_id, reply.id, '🔔')
+          event.respond(content: response[:content], components: response[:components], wait: true)
         else
           event.respond(content: I18n.t("errors.not_registered"))
         end
