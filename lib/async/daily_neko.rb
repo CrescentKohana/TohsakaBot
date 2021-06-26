@@ -19,13 +19,28 @@ module TohsakaBot
             File.open('cfg/config.yml', 'w') { |f| f.write cfg.to_yaml }
 
             url = TohsakaBot.get_neko('neko')
+            pixiv_id = TohsakaBot.saucenao(url)
 
-            BOT.channel(CFG.default_channel.to_i).send_embed do |embed|
-              embed.image = Discordrb::Webhooks::EmbedImage.new(url: url)
-              embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'Daily 猫 (cat)')
-              embed.colour = 0x36393F
-              embed.timestamp = Time.now
+            builder = Discordrb::Webhooks::Builder.new
+            builder.add_embed do |e|
+              e.image = Discordrb::Webhooks::EmbedImage.new(url: url)
+              e.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'Daily 猫 (cat)')
+              e.colour = 0x36393F
+              e.timestamp = Time.now
             end
+
+            button = if pixiv_id.nil?
+                       nil
+                     else
+                       Discordrb::Components::View.new do |v|
+                         v.row do |r|
+                           r.button(style: :link, label: 'Source', url: "https://pixiv.moe/illust/#{pixiv_id}")
+                         end
+                       end
+                     end
+
+            BOT.send_message(CFG.default_channel.to_i, '', false, builder.embeds.map(&:to_hash).first,
+                             nil, false, nil, button)
           end
           sleep(10)
         end

@@ -19,7 +19,7 @@ module TohsakaBot
 
         return { content: "URL was incorrect." } unless TohsakaBot.url_regex.match?(url)
 
-        output = saucenao(@url)
+        output = TohsakaBot.saucenao(@url)
         return { content: "Nothing found" } if output.nil?
 
         builder = Discordrb::Webhooks::Builder.new
@@ -44,15 +44,7 @@ module TohsakaBot
         { content: nil, embeds: builder.embeds.map(&:to_hash) }
       end
 
-      private
 
-      def saucenao(url)
-        snao_url = "http://saucenao.com/search.php?output_type=2&dbmask=32&api_key=#{AUTH.saucenao_apikey}&url=#{url}"
-        api_json = URI.parse(snao_url).open
-        response = JSON.parse(api_json.string)
-
-        response['results'][0]['data']['pixiv_id']
-      end
     end
   end
 end

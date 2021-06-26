@@ -22,6 +22,16 @@ module TohsakaBot
       nekos = NekosLife::Client.new
       nekos.send(type)
     end
+
+    def saucenao(url)
+      snao_url = "http://saucenao.com/search.php?output_type=2&dbmask=32&api_key=#{AUTH.saucenao_apikey}&url=#{url}"
+      api_json = URI.parse(snao_url).open
+      response = JSON.parse(api_json.string)
+
+      return nil if response.blank? || response['results'][0]['data']['pixiv_id'].blank?
+
+      response['results'][0]['data']['pixiv_id']
+    end
   end
 
   TohsakaBot.extend NekosHelper
