@@ -18,7 +18,10 @@ module TohsakaBot
           end
         end
 
-        { content: "**#{number.to_s.rjust(2, '0')}**  `#{name.sanitize_string}`", components: button }
+        {
+          content: "**#{number.to_s.rjust(@roll_size, '0')}**  `#{name.sanitize_string}`",
+          components: button
+        }
       end
     end
   end
