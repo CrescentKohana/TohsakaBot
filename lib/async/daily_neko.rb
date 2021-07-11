@@ -39,8 +39,16 @@ module TohsakaBot
                        end
                      end
 
-            BOT.send_message(CFG.default_channel.to_i, '', false, builder.embeds.map(&:to_hash).first,
-                             nil, false, nil, button)
+            BOT.send_message(
+              CFG.default_channel.to_i,
+              '',
+              false,
+              builder.embeds.map(&:to_hash).first,
+              nil,
+              false,
+              nil,
+              button
+            )
           end
           sleep(10)
         end
