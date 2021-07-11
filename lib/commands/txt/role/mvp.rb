@@ -14,7 +14,7 @@ module TohsakaBot
 
         TohsakaBot.give_temporary_role(event, CFG.mvp_role, user_id, days, reason)
         event.respond(
-          "#{event.message.mentions[0].username} has been decided to be a MVP for #{days} day#{'s' if days.to_i > 1}."
+          "#{event.message.mentions[0].username} has been rewarded the rank of MVP for #{days} day#{'s' if days.to_i > 1}."
         )
       end
     end

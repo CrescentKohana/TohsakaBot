@@ -25,10 +25,14 @@ module TohsakaBot
 
     def saucenao(url)
       snao_url = "http://saucenao.com/search.php?output_type=2&dbmask=32&api_key=#{AUTH.saucenao_apikey}&url=#{url}"
-      api_json = URI.parse(snao_url).open
+      begin
+        api_json = URI.parse(snao_url).open
+      rescue OpenURI::HTTPError
+        return nil
+      end
       response = JSON.parse(api_json.string)
 
-      return nil if response.blank? || response['results'][0]['data']['pixiv_id'].blank?
+      return nil if response.blank? || response['results'].blank? || response['results'][0]['data']['pixiv_id'].blank?
 
       response['results'][0]['data']['pixiv_id']
     end
