@@ -15,10 +15,10 @@ module TohsakaBot
 
         i = 0 # A message can have up to 20 unique reactions.
         until i == every_emoji.count || i == 20
+          i += 1
           next if every_emoji[i].nil?
 
           event.message.create_reaction("#{every_emoji[i].name}:#{every_emoji[i].id}")
-          i += 1
         end
       end
     end
