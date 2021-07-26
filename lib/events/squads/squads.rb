@@ -25,7 +25,7 @@ module TohsakaBot
 
         author_id = event.message.author.id.to_i
         reactions = event.message.reactions.map { |r| { r.name => r.count } }
-        custom_group_size = event.message.content.sub(/<@&\d*>/, "").first_number
+        custom_group_size = event.message.content.split(/<@&\d*>/)[0].to_i
 
         roles.each_key do |role|
           members = JSON.parse(Discordrb::API::Channel.get_reactions(
@@ -34,7 +34,7 @@ module TohsakaBot
 
           reaction_count = reactions[0]["✅"].to_i
           reaction_count -= 1 if members.include? "<@!#{author_id}>"
-          group_size = custom_group_size.nil? ? roles[role]["group_size"] : custom_group_size
+          group_size = custom_group_size.zero? || custom_group_size.nil? ? roles[role]["group_size"] : custom_group_size
 
           next unless role_mentions.key?(roles[role]["role_id"]) && reaction_count >= group_size.to_i
 
