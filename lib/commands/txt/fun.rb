@@ -142,8 +142,8 @@ module TohsakaBot
           melted = cube_array.count { |e| e == water }
 
           sleep(10)
-          timer_msg.edit("\n`#{melted}/#{icecube_count} 🧊 melted in #{10 * iterations}s ⏲ #{event.author.display_name}`")
-          ice_msg.edit(cube_array.join.to_str)
+          timer_msg.edit("\n`#{melted}/#{icecube_count} 🧊 melted in #{10 * iterations}s ⏲ #{event.author.display_name}`", nil, nil)
+          ice_msg.edit(cube_array.join.to_str, nil, nil)
         end
 
         while cube_array.include? water

@@ -60,8 +60,10 @@ module TohsakaBot
         db.where(highlight_msg_id: id).delete
       else
         highlight = db.where(highlight_msg_id: id).first
-        highlight[:deleted] = true
-        db.where(highlight_msg_id: id).update(highlight)
+        if highlight
+          highlight[:deleted] = true
+          db.where(highlight_msg_id: id).update(highlight)
+        end
       end
     end
 
