@@ -69,7 +69,7 @@ en:
        🚫 `Deny and mute this role for 6 hours`\n
        🔕 `Deny and mute this role for 24 hours`\n
        ❓ `This help`\n\n
-       _Adding a hashtag (#) at the start of the message will disable this functionality turning it to a normal ping._\n\n
+       _Adding a hashtag (#) at the start of the message will disable this functionality turning it to a normal mention._\n\n
        Roles: `%{roles}`"
     other:
       another_roll:
