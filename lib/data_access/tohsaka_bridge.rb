@@ -28,9 +28,9 @@ module TohsakaBot
 
     def get_user(discord_uid)
       user = BOT.user(discord_uid.to_i)
-      return user if user.is_a? Discordrb::User
+      return user if !user.nil? && (user.is_a? Discordrb::User)
 
-      Discordrb::User.new({ 'id' => discord_uid, 'username' => "Deleted User", 'bot' => false }, BOT)
+      Discordrb::User.new({ 'id' => discord_uid, 'username' => 'Deleted User', 'bot' => false }, BOT)
     end
 
     def get_channel(channel_id)
