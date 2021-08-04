@@ -9,7 +9,7 @@ module Discordrb
       LOGGER.out("Resolving user #{id}")
       begin
         response = API::User.resolve(token, id)
-      rescue RestClient::ResourceNotFound, RestClient::NotFound, NoMethodError
+      rescue RestClient::ResourceNotFound, NoMethodError
         return nil
       end
       user = User.new(JSON.parse(response), self)

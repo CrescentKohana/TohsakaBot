@@ -48,6 +48,7 @@ GEM
       loofah (>= 2.3.1)
       sax-machine (>= 1.0)
     ffi (1.15.3)
+    ffi (1.15.3-x64-mingw32)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
@@ -77,13 +78,14 @@ GEM
     mime-types-data (3.2021.0704)
     mini_magick (4.11.0)
     minitest (5.14.4)
-    msgpack (1.4.2)
     mysql2 (0.5.3)
     nekos (1.0.1)
       rest-client
     net (0.3.3)
       activesupport
     netrc (0.11.0)
+    nokogiri (1.11.7-x64-mingw32)
+      racc (~> 1.4)
     nokogiri (1.11.7-x86_64-linux)
       racc (~> 1.4)
     optimist (3.0.1)
@@ -102,13 +104,15 @@ GEM
       loofah (~> 2.3)
     rainbow (3.0.0)
     rake (13.0.6)
-    rbtrace (0.4.14)
-      ffi (>= 1.0.6)
-      msgpack (>= 0.4.3)
-      optimist (>= 3.0.0)
     redcarpet (3.5.1)
     regexp_parser (2.1.1)
     rest-client (2.1.0)
+      http-accept (>= 1.7.0, < 2.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
+    rest-client (2.1.0-x64-mingw32)
+      ffi (~> 1.9)
       http-accept (>= 1.7.0, < 2.0)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
@@ -157,7 +161,6 @@ GEM
     sequel (5.46.0)
     spreadsheet (1.2.9)
       ruby-ole
-    stackprof (0.2.17)
     terrapin (0.6.0)
       climate_control (>= 0.0.3, < 1.0)
     to_regexp (0.2.1)
@@ -177,6 +180,7 @@ GEM
     zeitwerk (2.4.2)
 
 PLATFORMS
+  x64-mingw32
   x86_64-linux
 
 DEPENDENCIES
@@ -200,7 +204,6 @@ DEPENDENCIES
   pickup
   public_suffix
   rainbow
-  rbtrace
   redcarpet
   roo
   roo-xls
@@ -209,7 +212,6 @@ DEPENDENCIES
   rubocop-rspec
   rubocop-sequel
   sequel
-  stackprof
   terrapin
   to_regexp
   yard
