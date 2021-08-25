@@ -18,7 +18,7 @@ module TohsakaBot
           return { content: I18n.t(:'commands.tool.admin.edit_permissions.error.level_not_in_range') }
         end
 
-        if TohsakaBot.permissions.set_level(@discord_uid.id, level).nil?
+        if TohsakaBot.permissions.set_level(@discord_uid.id, @level).nil?
           return { content: I18n.t(:'commands.tool.admin.edit_permissions.error.failed', username: @discord_uid.name) }
         end
 
