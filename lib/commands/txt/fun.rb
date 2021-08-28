@@ -45,7 +45,18 @@ module TohsakaBot
               usage: I18n.t(:'commands.fun.chaos.usage'),
               min_args: 1) do |event, *txt|
         command = CommandLogic::Chaos.new(event, txt)
-        event.respond(command.run[:content])
+        event.message.delete
+        event.respond(command.run[:content], false, nil,nil, false)
+      end
+
+      command(:martus,
+              aliases: TohsakaBot.get_command_aliases('commands.fun.martus.aliases'),
+              description: I18n.t(:'commands.fun.martus.description'),
+              usage: I18n.t(:'commands.fun.martus.usage'),
+              min_args: 1) do |event, *txt|
+        command = CommandLogic::Martus.new(event, txt)
+        event.message.delete
+        event.respond(command.run[:content], false, nil, nil, false)
       end
 
       command(:doubles,

@@ -27,7 +27,12 @@ module TohsakaBot
 
       BOT.application_command(:fun).subcommand('chaos') do |event|
         command = CommandLogic::Chaos.new(event, event.options['txt'])
-        event.respond(content: command.run[:content])
+        event.respond(content: command.run[:content], allowed_mentions: false)
+      end
+
+      BOT.application_command(:fun).subcommand('martus') do |event|
+        command = CommandLogic::Martus.new(event, event.options['txt'])
+        event.respond(content: command.run[:content], allowed_mentions: false)
       end
     end
   end
