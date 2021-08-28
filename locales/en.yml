@@ -297,6 +297,12 @@ en:
         usage: "chaos <msg>"
         param:
           txt: "Text to convert"
+      martus:
+        aliases: "markus"
+        description: "Convert text to martus style. k -> t with caps."
+        usage: "martus <msg>"
+        param:
+          txt: "Text to convert"
 
     other:
       help:
