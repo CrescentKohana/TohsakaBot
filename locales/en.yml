@@ -61,9 +61,10 @@ en:
     repost_overseer:
       response: "Repost!"
     squads:
+      expired: "This Squad invite has already expired!"
       info: "**Squads:** a way to form groups. By mentioning a whitelisted role,
-       five buttons will be spawned to the message. Also when there's a number before the mention,
-       the default squad size is overridden.\n\n
+       five reaction buttons will be spawned to the message. Also when there's a number before the mention,
+       the default squad size is overridden. Squad invite expires in 1 hour.\n\n
        ✅ `Accept (every accepted user will be mentioned when the squad size is reached)`\n
        ❌ `Deny and mute this role for 1 hour`\n
        🚫 `Deny and mute this role for 6 hours`\n
@@ -299,7 +300,7 @@ en:
           txt: "Text to convert"
       martus:
         aliases: "markus"
-        description: "Convert text to martus style. k -> t with caps."
+        description: "Convert text to martus style. k, c -> t with caps."
         usage: "martus <msg>"
         param:
           txt: "Text to convert"
