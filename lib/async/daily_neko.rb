@@ -34,7 +34,7 @@ module TohsakaBot
                      else
                        Discordrb::Components::View.new do |v|
                          v.row do |r|
-                           r.button(style: :link, label: 'Source', url: "https://pixiv.moe/illust/#{pixiv_id}")
+                           r.button(style: :link, label: 'Source', url: "https://www.pixiv.net/en/artworks/#{pixiv_id}")
                          end
                        end
                      end

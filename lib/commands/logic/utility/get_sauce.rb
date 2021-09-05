@@ -29,11 +29,8 @@ module TohsakaBot
           e.timestamp = Time.now
           e.image = Discordrb::Webhooks::EmbedImage.new(url: @url)
 
+          e.add_field(name: '**Pixiv**', value: "https://www.pixiv.net/en/artworks/#{output}")
           e.add_field(name: '**Pixiv.moe**', value: "https://pixiv.moe/illust/#{output}")
-          e.add_field(
-            name: '**Pixiv**',
-            value: "https://www.pixiv.net/member_illust.php?mode=medium&illust_id=#{output}"
-          )
           # e.add_field(name: '**Website X**', value: 'URL')
           e.add_field(
             name: '**More results**',
