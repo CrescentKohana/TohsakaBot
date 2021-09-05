@@ -169,6 +169,16 @@ module TohsakaBot
         BOT.game = text
       end
     end
+
+    # Trim Discord message's length. Default max length is 2000.
+    #
+    # @param content [String]
+    # @param fixed_length [Integer]
+    # @param max_length [Integer]
+    def trim_message(content, fixed_length: 0, max_length: 2000)
+      max_content_length = max_length - fixed_length
+      content.slice(0, max_content_length)
+    end
   end
 
   TohsakaBot.extend DiscordHelper

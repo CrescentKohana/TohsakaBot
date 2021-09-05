@@ -9,12 +9,14 @@ module TohsakaBot
       end
 
       def run
-        ch_msg = @text.strip_mass_mentions.gsub(/k/i, "t").upcase
+        # The start of the message consists of 6 characters + the length of the ID: "<@!00000000000000000>: "
+        trimmed = TohsakaBot.trim_message(@text, fixed_length: @event.author.id.to_s.length + 6)
+        response = trimmed.strip_mass_mentions.gsub(/[kc]/i, "t").upcase
 
         if @event.instance_of?(Discordrb::Events::ApplicationCommandEvent)
-          { content: ch_msg.to_s }
+          { content: response.to_s }
         else
-          { content: "<@#{@event.user.id}>: #{ch_msg}" }
+          { content: "<@#{@event.user.id}>: #{response}" }
         end
       end
     end
