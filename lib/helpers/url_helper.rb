@@ -91,6 +91,9 @@ module TohsakaBot
         category = 'twitch'
         url_result = twitch_clips_id[0]
       else
+        # Ignore Discord message links
+        return nil if domain == 'discord.com' && path.match(%r{/?channels/\d+/\d+/\d+/?}i)
+
         # Just the URL, no parsing
         category = 'url'
         url_result = url
