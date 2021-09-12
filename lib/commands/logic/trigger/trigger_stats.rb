@@ -22,7 +22,7 @@ module TohsakaBot
 
       def run
         stats = TohsakaBot.trigger_data.statistics(
-          sort: :@sort,
+          sorting: @sort,
           mode: @mode,
           proportional_chance: @proportional_chance,
           appearance_type: @appearance_type

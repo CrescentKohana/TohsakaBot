@@ -54,7 +54,7 @@ module TohsakaBot
     # Returns an array of best triggers
     #
     # @return [Array]
-    def statistics(sort: :descending, mode: nil, proportional_chance: false, appearance_type: :occurences)
+    def statistics(sorting: :descending, mode: nil, proportional_chance: false, appearance_type: :occurences)
       # Excluding triggers with 0 calls or occurrences with exclude.
       stats = if mode.nil?
                 TohsakaBot.db[:triggers].exclude(appearance_type => 0)
@@ -70,7 +70,7 @@ module TohsakaBot
                 stats.sort_by { |trigger| trigger[appearance_type] }
               end
 
-      stats.reverse! if sort == :descending
+      stats.reverse! if sorting == :descending
       stats
     end
 
