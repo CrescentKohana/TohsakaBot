@@ -36,8 +36,11 @@ module Discordrb::Commands
       end
 
       unless @attributes[:enabled_in_pm]
-        event.respond("This command is disabled in private messages.")
-        return if event.channel.pm?
+        pm = event.channel.pm?
+        if pm
+          event.respond("This command is disabled in private messages.")
+          return
+        end
       end
 
       if arguments.length < @attributes[:min_args]
