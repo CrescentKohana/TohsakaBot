@@ -31,6 +31,7 @@ module TohsakaBot
         reactions = event.message.reactions.map { |r| { r.name => r.count } }
         custom_group_size = event.message.content.split(/<@&\d*>/)[0].to_i
 
+        # TODO: Convert JSON key to the role ID
         roles.each_key do |role|
           members = JSON.parse(Discordrb::API::Channel.get_reactions(
                                  "Bot #{AUTH.bot_token}", event.channel.id, event.message.id, "✅", nil, nil

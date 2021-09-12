@@ -36,6 +36,9 @@ Style/ClassAndModuleChildren:
   # EnforcedStyle: 'compact'
   Enabled: true
 
+Style/EndOfLine:
+  EnforcedStyle: lf
+
 Metrics/ParameterLists:
   Max: 8
   MaxOptionalParameters: 6
