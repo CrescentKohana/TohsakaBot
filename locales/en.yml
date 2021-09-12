@@ -102,8 +102,6 @@ en:
           usage: "eval <code (multiline allowed)>"
           param:
             code: "Ruby code"
-          error:
-            not_found: "Given top-level commands weren't found."
         set_status:
         edit_permissions:
           aliases: "permissionsedit editperm permedit setpermissions permissionsset setperm permset"
@@ -155,6 +153,13 @@ en:
             user: "Discord user"
           error:
             not_found: "User not found"
+        private_prune:
+          aliases: "pmprune prunepm pruneprivate"
+          description: "Prune bot's private messages. Messages older than 2 weeks won't be deleted as per Discord's limits."
+          usage: "privateprune <amount (2 - 100)>"
+          response: "Successfully pruned %{deleted_count} bot messages."
+          error:
+            only_pm: "This command works only in private messages."
       help:
         description: "Returns a list of all commands or help for a specific command."
         usage: "help <command name>"
@@ -310,6 +315,9 @@ en:
       info:
 
     roles:
+      description: "Adding and removing roles"
+      param:
+        role: "Discord role"
       errors:
         role_not_found: "No roles found."
       add:
