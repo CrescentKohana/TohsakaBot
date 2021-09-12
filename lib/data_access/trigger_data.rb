@@ -5,6 +5,9 @@ module TohsakaBot
   class TriggerData
     attr_accessor :triggers, :trigger_phrases
 
+    SORT = %i[descending ascending].freeze
+    APPEARANCE_TYPES = %i[calls occurences].freeze
+
     # Loads active triggers to the memory.
     #
     # @return [void]
@@ -12,8 +15,8 @@ module TohsakaBot
       reload_active
     end
 
-    # Convert all strings queried from the database to regex,
-    # and pass them in to an array which only contains triggerable phrases.
+    # Converts all strings queried from the database to regex,
+    # and passes them in to an array containing only triggerable phrases.
     #
     # @return [void]
     def reload_active
@@ -46,6 +49,29 @@ module TohsakaBot
       return 100 if chance > 100
 
       chance
+    end
+
+    # Returns an array of best triggers
+    #
+    # @return [Array]
+    def statistics(sort: :descending, mode: nil, proportional_chance: false, appearance_type: :occurences)
+      # Excluding triggers with 0 calls or occurrences with exclude.
+      stats = if mode.nil?
+                TohsakaBot.db[:triggers].exclude(appearance_type => 0)
+              else
+                TohsakaBot.db[:triggers].where(mode: mode).exclude(appearance_type => 0)
+              end
+
+      stats = if proportional_chance
+                stats.sort_by do |trigger|
+                  (trigger[appearance_type] * (100 / (trigger[:chance].zero? ? CFG.default_trigger_chance.to_i : trigger[:chance])))
+                end
+              else
+                stats.sort_by { |trigger| trigger[appearance_type] }
+              end
+
+      stats.reverse! if sort == :descending
+      stats
     end
 
     # Moves all trigger files not found in the database to tmp/deleted_triggers.

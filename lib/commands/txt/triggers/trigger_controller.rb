@@ -93,9 +93,9 @@ module TohsakaBot
     # @return [Integer, nil] 0, 1 or 2 as the mode identifier. nil if no permissions.
     def self.select_mode(mode_input, discord_uid)
       case mode_input
-      when /e.*/s
+      when /e.*/si
         0
-      when /r.*/s
+      when /r.*/si
         return nil unless TohsakaBot.permissions.permission?(discord_uid, TohsakaBot.permissions.actions["regex_triggers"])
 
         2

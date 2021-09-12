@@ -425,6 +425,7 @@ en:
 
     trigger:
       errors:
+        not_found: "No triggers found."
         exact_trigger_already_exists: "Exact trigger with the phrase `?{phrase}` already exists!
         Choose another phrase or use 'any' mode."
         trigger_limit: "You've reached the max limit for triggers (%{limit}).
@@ -433,7 +434,7 @@ en:
       add:
         aliases: "addtrigger trigger"
         description: "Adds a trigger."
-        usage: "triggeradd -h|--help' for help."
+        usage: "triggeradd --help or -h for help."
       del:
         aliases: "td deltrigger deletetrigger triggerdelete removetrigger
         triggerremove donttrigger remtrigger triggerrem"
@@ -442,6 +443,18 @@ en:
         response: "Trigger%{plural} deleted: %{ids}."
         errors:
           not_found: "One or more IDs were not found within list of your triggers."
+      stats:
+        aliases: "tstats tstat statstrigger stattrigger"
+        description: "Shows trigger statistics."
+        usage: "triggerstats --help or -h for help."
+        response: ""
+        help:
+          banner: "Usage: triggerstats [options]"
+          sort: "Order of result. Ascending when specified, otherwise descending."
+          mode: "Mode: any, exact or regex. If none specified, lists all."
+          chance: "If specified, triggers will be ordered proportional to their chance."
+          type: "Calls when specified, otherwise occurrences."
+          extra_help: ""
       mod:
       search:
       details:
