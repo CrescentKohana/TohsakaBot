@@ -444,13 +444,13 @@ en:
         errors:
           not_found: "One or more IDs were not found within list of your triggers."
       stats:
-        aliases: "tstats tstat statstrigger stattrigger"
+        aliases: "tstats tstat statstrigger stattrigger toptriggers"
         description: "Shows trigger statistics."
         usage: "triggerstats --help or -h for help."
         response: ""
         help:
           banner: "Usage: triggerstats [options]"
-          sort: "Order of result. Ascending when specified, otherwise descending."
+          sorting: "Order of result. Ascending when specified, otherwise descending."
           mode: "Mode: any, exact or regex. If none specified, lists all."
           chance: "If specified, triggers will be ordered proportional to their chance."
           type: "Calls when specified, otherwise occurrences."

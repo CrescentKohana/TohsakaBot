@@ -14,14 +14,14 @@ module TohsakaBot
           event, input,
           I18n.t(:'commands.trigger.stats.help.banner'),
           I18n.t(:'commands.trigger.stats.help.extra_help'),
-          [:sort, I18n.t(:'commands.trigger.stats.help.sort'), { type: :boolean }],
+          [:sorting, I18n.t(:'commands.trigger.stats.help.sorting'), { type: :boolean }],
           [:mode, I18n.t(:'commands.trigger.stats.help.mode'), { type: :strings }],
           [:chance, I18n.t(:'commands.trigger.stats.help.chance'), { type: :boolean }],
           [:type, I18n.t(:'commands.trigger.stats.help.type'), { type: :boolean }]
         )
         break if options.nil?
 
-        command = CommandLogic::TriggerStats.new(event, options.sort, options.mode, options.chance, options.type)
+        command = CommandLogic::TriggerStats.new(event, options.sorting, options.mode, options.chance, options.type)
         response = command.run
 
         event.respond(response[:content])
