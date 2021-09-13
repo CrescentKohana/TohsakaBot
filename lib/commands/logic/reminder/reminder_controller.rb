@@ -49,13 +49,13 @@ module TohsakaBot
       # The input is a duration (e.g. 5d4h30s)
       if DURATION_REGEX.match?(@datetime.to_s)
         # Format P(n)Y(n)M(n)W(n)DT(n)H(n)M(n)S
-        seconds = match_time(@datetime, /([0-9]*)(sec|sek|[sS])/) || 0
-        minutes = match_time(@datetime, /([0-9]*)(min|m)/) || 0
-        hours   = match_time(@datetime, /([0-9]*)([hH])/) || 0
-        days    = match_time(@datetime, /([0-9]*)([dD])/) || 0
-        weeks   = match_time(@datetime, /([0-9]*)([wW])/) || 0
-        months  = match_time(@datetime, /([0-9]*)(M)/) || 0
-        years   = match_time(@datetime, /([0-9]*)([yYa])/) || 0
+        seconds = TohsakaBot.match_time(@datetime, /([0-9]*)(sec|sek|[sS])/) || 0
+        minutes = TohsakaBot.match_time(@datetime, /([0-9]*)(min|m)/) || 0
+        hours   = TohsakaBot.match_time(@datetime, /([0-9]*)([hH])/) || 0
+        days    = TohsakaBot.match_time(@datetime, /([0-9]*)([dD])/) || 0
+        weeks   = TohsakaBot.match_time(@datetime, /([0-9]*)([wW])/) || 0
+        months  = TohsakaBot.match_time(@datetime, /([0-9]*)(M)/) || 0
+        years   = TohsakaBot.match_time(@datetime, /([0-9]*)([yYa])/) || 0
 
         # Because weeks cannot be used at the same time as years, months or days.
         if weeks.zero?
@@ -93,10 +93,6 @@ module TohsakaBot
       raise ReminderHandler::PastError if @datetime < Time.now
 
       ReminderHandler.handle_repeat_limit(@repeat, BOT.channel(@channel_id).pm?) if @repeat.positive?
-    end
-
-    def match_time(time, regex)
-      time.scan(regex)[0][0].to_i if time.match(regex)
     end
 
     def store_reminder

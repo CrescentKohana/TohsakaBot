@@ -72,6 +72,14 @@ en:
        ❓ `This help`\n\n
        _Adding a hashtag (#) at the start of the message will disable this functionality turning it to a normal mention._\n\n
        Roles: `%{roles}`"
+    poll:
+      vote:
+        success: "Successfully voted %{choice}!"
+        already_voted_single: "You have already voted."
+        already_voted_multi: "You have already voted this choice."
+        expiry: "This vote has expired."
+        failure: "Vote failed."
+        permission_error: "No permissions to end this poll."
     other:
       another_roll:
       also_remindme:
@@ -200,6 +208,18 @@ en:
           chance: "Chance (%) of one roll getting a hit"
           rolls: "Tried rolls (n)"
           hits: "Successful hits (k)"
+      poll:
+        aliases: "vote"
+        description: "Create a poll."
+        usage: "poll -h or --help for help."
+        help:
+          banner: "Usage: poll [options]"
+          question: "Question for the poll."
+          choices: "Poll choices. Separated by semicolon: `;`. Maximum amount of choices: 24."
+          duration: "After how long (10s-24h) the poll will expire automatically. Manual end is disabled. s or nothing: seconds, m: minutes, h: hours"
+          multi: "If present, users are allowed to vote on more than one choice."
+          type: "Poll type: button (default), emoji or dropdown"
+          extra_help: ""
       alko:
       alko_list:
       get_sauce:
@@ -345,7 +365,7 @@ en:
         add:
           aliases: "timedrole timerole temprole roletime"
           description: "Roles can be set to be active for specified times."
-          usage: "'addtimedrole -h|--help' for help."
+          usage: "addtimedrole -h or --help for help."
           response: "`<ID: %{id}>` Roles %{roles} will be %{mode} during: %{times}."
           help:
             banner: "Usage: addtimedrole [options]"
@@ -375,7 +395,7 @@ en:
       add:
         aliases: "remind reminder remadd addrem rem"
         description: "Sets a new reminder."
-        usage: "'remindme -h|--help' for help."
+        usage: "remindme -h or --help for help."
         help:
           banner: "Usage: remindme [options]"
           datetime: "When to remind. Format: yMwdhms OR yyyy/MM/dd hh.mm.ss OR natural language"
@@ -400,7 +420,7 @@ en:
       mod:
         aliases: "modreminder remindermodify modifyreminder modremind remindmod mr modrem remmod editreminder editrem remedit reminderedit"
         description: "Modifies specified reminder."
-        usage: "'remindermod -h|--help' for help."
+        usage: "remindermod -h or --help for help."
         help:
           banner: "Usage: remindermod [-i id] [-d datetime] [-m message] [-r repeat]"
           id: "ID of the reminder to edit."

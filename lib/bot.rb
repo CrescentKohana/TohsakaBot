@@ -75,18 +75,20 @@ module TohsakaBot
   # Helpers #
   require_relative 'helpers/core_helper'
   require_relative 'helpers/string_helper'
+  require_relative 'helpers/time_helper'
   require_relative 'helpers/url_helper'
   require_relative 'helpers/math_helper'
   require_relative 'helpers/discord_helper'
   require_relative 'helpers/japanese_helper'
   require_relative 'helpers/nekos_helper'
 
-  # Database, Web and Permissions #
+  # Database, Web, Permissions and Polls #
   require_relative 'data_access/database'
   require_relative 'data_access/tohsaka_bridge'
   require_relative 'data_access/trigger_data'
-  require_relative 'data_access/msg_queue_cache'
   require_relative 'data_access/permissions'
+  require_relative 'data_access/msg_queue_cache'
+  require_relative 'data_access/poll_cache'
 
   # Discord Bot #
   BOT = Discordrb::Commands::CommandBot.new(token: AUTH.bot_token,

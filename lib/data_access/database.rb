@@ -90,7 +90,7 @@ module TohsakaBot
     end
   end
 
-  # Access to active triggers anywhere in the bot.
+  # Access to active triggers globally.
   # @example Access trigger phrases.
   #   TohsakaBot.trigger_data.trigger_phrases
   #
@@ -101,17 +101,38 @@ module TohsakaBot
     end
   end
 
-  module PersistentMsgQueueData
-    def queue_cache
-      @queue_cache ||= MsgQueueCache.new
-    end
-  end
-
+  # Access to permissions and roles globally.
+  #
+  # @return [Hash] messages
   module PersistentPermissionsData
     def permissions
       @permissions ||= Permissions.new
     end
   end
 
-  TohsakaBot.extend DatabaseAccess, PersistentTriggerData, PersistentMsgQueueData, PersistentPermissionsData
+  # Staggered message cache for sending messages in batches.
+  #
+  # @return [Hash] messages and embeds
+  module PersistentMsgQueueCache
+    def queue_cache
+      @queue_cache ||= MsgQueueCache.new
+    end
+  end
+
+  # Poll cache.
+  #
+  # @return [Hash] polls with votes
+  module PersistentPollCache
+    def poll_cache
+      @poll_cache ||= PollCache.new
+    end
+  end
+
+  TohsakaBot.extend(
+    DatabaseAccess,
+    PersistentTriggerData,
+    PersistentPermissionsData,
+    PersistentMsgQueueCache,
+    PersistentPollCache
+  )
 end
