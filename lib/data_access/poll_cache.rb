@@ -73,14 +73,26 @@ module TohsakaBot
       construct_results(results, votes)
     end
 
-    # TODO: embed
     def construct_results(results, votes)
-      response = "`Votes | Choice               ".dup
+      results[:choices] = results[:choices].sort_by { |choice| choice[:votes].size }
+
+      choices = ''.dup
       results[:choices].each do |choice|
-        response << "\n#{format('%5s', choice[:votes].size)} | #{choice[:content]}"
+        choices << "\n#{choice[:content]} | **#{format('%5s', choice[:votes].size)}**"
       end
 
-      "#{response}`"
+      builder = Discordrb::Webhooks::Builder.new
+      builder.add_embed do |e|
+        e.title = results[:question]
+        e.colour = 0xE91E53
+        e.description = choices
+        # results[:choices].each do |choice|
+        #   e.add_field(name: choice[:content], value: choice[:votes].size)
+        # end
+        e.footer = Discordrb::Webhooks::EmbedFooter.new(text: "Total votes: #{votes}")
+      end
+
+      builder
     end
   end
 end

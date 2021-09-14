@@ -11,9 +11,9 @@ module TohsakaBot
             response = TohsakaBot.poll_cache.stop(id)
             BOT.send_message(
               poll[:channel_id],
-              response,
+              "",
               false,
-              nil,
+              response.embeds.first,
               nil,
               false,
               { message_id: id }
