@@ -18,7 +18,7 @@ module TohsakaBot
         end
 
         response = TohsakaBot.poll_cache.stop(event.message.id)
-        event.respond(content: response, ephemeral: false)
+        event.respond(content: "", ephemeral: false, embeds: response.embeds.map(&:to_hash))
       end
     end
   end
