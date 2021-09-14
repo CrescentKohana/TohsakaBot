@@ -3,8 +3,6 @@
 module TohsakaBot
   module Events
     module PollVote
-      rate_limiter = Discordrb::Commands::SimpleRateLimiter.new
-      rate_limiter.bucket :poll_vote, delay: 1
       extend Discordrb::EventContainer
 
       BOT.button(custom_id: /^choice\d{1,2}:.*/) do |event|

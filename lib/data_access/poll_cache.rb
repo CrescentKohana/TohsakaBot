@@ -29,30 +29,52 @@ module TohsakaBot
 
       return I18n.t("events.poll.vote.expiry") if @polls[id].nil? || @polls[id][:choices][choice_id].nil?
 
+      votes = total_votes(@polls[id])
+
       if @polls[id][:multi]
-        return I18n.t("events.poll.vote.already_voted_multi") if @polls[id][:choices][choice_id][:votes].include?(user_id)
+        return I18n.t("events.poll.vote.already_voted_multi", votes: votes) if @polls[id][:choices][choice_id][:votes].include?(user_id)
       else
         @polls[id][:choices].each do |choice|
-          return I18n.t("events.poll.vote.already_voted_single") if choice[:votes].include?(user_id)
+          return I18n.t("events.poll.vote.already_voted_single", votes: votes) if choice[:votes].include?(user_id)
         end
       end
 
+      # TODO: only edit message content without buttons disappearing
+      # Discordrb::API::Channel.edit_message(
+      #   "Bot #{AUTH.bot_token}",
+      #   @polls[id][:channel_id],
+      #   id,
+      #   "`#{total_votes(@polls[id])}` #{@polls[id][:question]}",
+      #   false,
+      #   nil
+      # )
+
       @polls[id][:choices][choice_id][:votes].add(user_id)
-      I18n.t("events.poll.vote.success", choice: @polls[id][:choices][choice_id][:content])
+      I18n.t("events.poll.vote.success", choice: @polls[id][:choices][choice_id][:content], votes: votes + 1)
+    end
+
+    def total_votes(poll)
+      votes = 0
+      poll[:choices].each do |choice|
+        votes += choice[:votes].size
+      end
+
+      votes
     end
 
     # TODO: expire poll message too, probably when voting
     def stop(id, format_result: true)
       results = @polls[id]
+      votes = total_votes(@polls[id])
       @polls.delete(id)
 
       return results unless format_result
 
-      construct_results(results)
+      construct_results(results, votes)
     end
 
     # TODO: embed
-    def construct_results(results)
+    def construct_results(results, votes)
       response = "`Votes | Choice               ".dup
       results[:choices].each do |choice|
         response << "\n#{format('%5s', choice[:votes].size)} | #{choice[:content]}"
