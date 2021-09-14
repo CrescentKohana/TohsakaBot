@@ -9,7 +9,7 @@ module TohsakaBot
         @duration = parse_duration(duration)
         @multi = multi
 
-        # TODO: also dropdown type
+        # TODO: dropdown type
         @type = type ? :emoji : :button
 
         # 25 buttons when no End poll button
@@ -24,9 +24,6 @@ module TohsakaBot
 
       def run
         buttons = @type == :button ? create_buttons(@event.user.id) : nil
-
-        # TODO: handle duration
-        # duration =
 
         {
           content: @question,
