@@ -3,23 +3,25 @@
 module TohsakaBot
   module CommandLogic
     class Poll
-      def initialize(event, question, choices, duration, multi, type)
+      def initialize(event, question, choices, duration, multi, type, template)
         @event = event
-        @question = question.strip_mass_mentions.sanitize_string
-        @duration = parse_duration(duration)
-        @multi = multi
+        @question = question.nil? ? I18n.t("commands.utility.poll.default_question") : question.sanitize_string
+        @duration = if duration.nil?
+                      choices.nil? ? 30 : nil
+                    else
+                      parse_duration(duration)
+                    end
 
-        # TODO: dropdown type
-        @type = type ? :emoji : :button
+        @multi = multi.nil? ? false : multi
+        @type = type ? :emoji : :button # TODO: dropdown type
 
-        # 25 buttons when no End poll button
-        @choices = choices.split(';').take((@duration.nil? ? 24 : 25)).map do |choice|
-          { content: choice[0..79], type: :choice }
-        end
-
-        choices = @choices.clone
-        choices << { content: "End poll", type: :end } if @duration.nil?
-        @choice_chunks = choices.each_slice(5).to_a
+        parsed = if choices.nil? || !template.nil?
+                   template(template, @duration.nil?)
+                 else
+                   parse_choices(choices, @duration.nil?)
+                 end
+        @choices = parsed[:choices]
+        @choice_chunks = parsed[:choice_chunks]
       end
 
       def run
@@ -69,6 +71,31 @@ module TohsakaBot
         rescue ActiveSupport::Duration::ISO8601Parser::ParsingError
           nil
         end
+      end
+
+      def parse_choices(choices, end_button)
+        parsed_choices = choices.split(';').take((end_button ? 24 : 25)).map do |choice|
+          { content: choice[0..79], type: :choice }
+        end
+
+        cloned_choices = parsed_choices.clone
+        cloned_choices << { content: "End poll", type: :end } if end_button
+        choice_chunks = cloned_choices.each_slice(5).to_a
+
+        { choice_chunks: choice_chunks, choices: parsed_choices }
+      end
+
+      def template(type, end_button)
+        choices = case type
+                  when 'thumb'
+                    '👍;👎'
+                  when 'numbers'
+                    '1;2;3'
+                  else # tick
+                    '✅;❌'
+                  end
+
+        parse_choices(choices, end_button)
       end
     end
   end

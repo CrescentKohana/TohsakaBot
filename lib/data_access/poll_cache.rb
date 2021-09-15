@@ -74,7 +74,7 @@ module TohsakaBot
     end
 
     def construct_results(results, votes)
-      results[:choices] = results[:choices].sort_by { |choice| choice[:votes].size }
+      results[:choices] = results[:choices].sort_by { |choice| choice[:votes].size }.reverse
 
       choices = ''.dup
       results[:choices].each do |choice|

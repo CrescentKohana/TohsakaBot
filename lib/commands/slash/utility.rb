@@ -38,6 +38,36 @@ module TohsakaBot
           Discordrb::API::Channel.create_reaction("Bot #{AUTH.bot_token}", reply.channel_id, reply.id, '🔓')
         end
       end
+
+      BOT.application_command(:utility).subcommand('poll') do |event|
+        command = CommandLogic::Poll.new(
+          event,
+          event.options['question'],
+          event.options['choices'],
+          event.options['duration'],
+          event.options['multi'],
+          event.options['template'],
+          event.options['type']
+        )
+
+        response = command.run
+        reply = event.respond(
+          content: response[:content],
+          components: response[:components],
+          allowed_mentions: false,
+          wait: true
+        )
+
+        TohsakaBot.poll_cache.create(
+          reply.id,
+          reply.channel.id,
+          response[:content],
+          response[:poll_data][:choices],
+          response[:poll_data][:duration],
+          response[:poll_data][:multi]
+        )
+      end
     end
   end
 end
+

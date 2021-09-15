@@ -17,8 +17,7 @@ module TohsakaBot
       command(:poll,
               aliases: TohsakaBot.get_command_aliases('commands.utility.poll.aliases'),
               description: I18n.t(:'commands.utility.poll.description'),
-              usage: I18n.t(:'commands.utility.poll.usage'),
-              min_args: 1) do |event, *input|
+              usage: I18n.t(:'commands.utility.poll.usage')) do |event, *input|
         options = TohsakaBot.command_parser(
           event, input,
           I18n.t(:'commands.utility.poll.help.banner'),
@@ -29,15 +28,30 @@ module TohsakaBot
           [:multi, I18n.t(:'commands.utility.poll.help.multi'), { type: :boolean }]
           # [:type, I18n.t(:'commands.poll.help.type'), { type: :string }]
         )
-        break if options.nil?
 
-        question = options.question.nil? ? nil : options.question.join(' ')
+
+        question = if options.values.all? { |o| o.nil? || !o } && !input.empty?
+                     input.join(' ')
+                   elsif options.question.nil?
+                     nil
+                   else
+                     options.question.join(' ')
+                   end
         choices = options.choices.nil? ? nil : options.choices.join(' ')
-        # TODO: handle type
-        command = CommandLogic::Poll.new(event, question, choices, options.duration, options.multi, nil)
+
+        command = CommandLogic::Poll.new(
+          event,
+          question,
+          choices,
+          options.duration,
+          options.multi,
+          options.type,
+          options.template
+        )
+
         response = command.run
 
-        message = event.respond(response[:content], false, nil, nil, nil, nil, response[:components])
+        message = event.respond(response[:content], false, nil, nil, false, nil, response[:components])
         TohsakaBot.poll_cache.create(
           message.id,
           message.channel.id,
