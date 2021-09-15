@@ -76,9 +76,34 @@ module TohsakaBot
       end
     end
 
-    # Role #
+    # Roles #
     def role
-      puts "role"
+      BOT.servers.each do |server|
+        roles = TohsakaBot.read_roles(server[1].id, ids_only: true)
+        next if roles.blank?
+
+        cmd.subcommand_group(:role, I18n.t(:'commands.roles.description'), server_id: server[1].id) do |group|
+          group.subcommand('add', I18n.t(:'commands.roles.add.description')) do |sub|
+            sub.role(
+              'role',
+              I18n.t(:'commands.roles.param.role'),
+              required: true,
+              choices: roles
+            )
+            sub.boolean('ephemeral', I18n.t(:'commands.general_param.ephemeral_false'), required: false)
+          end
+
+          group.subcommand('del', I18n.t(:'commands.roles.del.description')) do |sub|
+            sub.role(
+              'role',
+              I18n.t(:'commands.roles.param.role'),
+              required: true,
+              choices: roles
+            )
+            sub.boolean('ephemeral', I18n.t(:'commands.general_param.ephemeral_false'), required: false)
+          end
+        end
+      end
     end
 
     # Tool #
@@ -108,7 +133,9 @@ module TohsakaBot
 
           group.subcommand('set_lang', I18n.t(:'commands.tool.user.set_lang.description')) do |sub|
             sub.string(
-              'lang', I18n.t(:'commands.tool.user.set_lang.param.lang'), required: true,
+              'lang',
+              I18n.t(:'commands.tool.user.set_lang.param.lang'),
+              required: true,
               choices: { english: 'en', japanese: 'ja', finnish: 'fi' }
             )
           end
@@ -132,7 +159,9 @@ module TohsakaBot
 
           group.subcommand('find', I18n.t(:'commands.tool.feature.find.description')) do |sub|
             sub.string(
-              'tag', I18n.t(:'commands.tool.feature.find.param.tag'), required: true,
+              'tag',
+              I18n.t(:'commands.tool.feature.find.param.tag'),
+              required: true,
               choices: { new: "new", indev: "indev", done: "done", wontdo: "wontdo", all: "all" }
             )
           end
@@ -140,7 +169,9 @@ module TohsakaBot
           group.subcommand('tag', I18n.t(:'commands.tool.feature.tag.description')) do |sub|
             sub.string('id', I18n.t(:'commands.tool.feature.tag.param.id'), required: true)
             sub.string(
-              'tag', I18n.t(:'commands.tool.feature.tag.param.tag'), required: false,
+              'tag',
+              I18n.t(:'commands.tool.feature.tag.param.tag'),
+              required: false,
               choices: { new: "new", indev: "indev", done: "done", wontdo: "wontdo", all: "all" }
             )
           end
@@ -158,6 +189,25 @@ module TohsakaBot
     # Utility #
     def utility
       BOT.register_application_command(:utility, I18n.t(:'commands.utility.description')) do |cmd|
+        cmd.subcommand(:poll, I18n.t(:'commands.utility.poll.description')) do |sub|
+          sub.string('question', I18n.t(:'commands.utility.poll.param.question'), required: true)
+          sub.string('choices',  I18n.t(:'commands.utility.poll.param.choices'), required: true)
+          sub.string('duration', I18n.t(:'commands.utility.poll.param.duration'), required: false)
+          sub.string(
+            'template',
+            I18n.t(:'commands.utility.poll.param.template'),
+            required: false,
+            choices: { '👍👎': 'thumb', '✅❌': 'tick', '123': 'numbers' }
+          )
+          sub.boolean('multi', I18n.t(:'commands.utility.poll.param.multi'), required: false)
+          sub.string(
+            'type',
+            I18n.t(:'commands.utility.poll.param.type'),
+            required: false,
+            choices: { button: 'button', emoji: 'emoji', dropdown: 'dropdown' }
+          )
+        end
+
         cmd.subcommand(:rollprobability, I18n.t(:'commands.utility.roll_probability.description')) do |sub|
           sub.string('chance', I18n.t(:'commands.utility.roll_probability.param.chance'), required: true)
           sub.integer('rolls', I18n.t(:'commands.utility.roll_probability.param.rolls'), required: true)
