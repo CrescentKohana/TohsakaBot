@@ -8,16 +8,15 @@ module TohsakaBot
         next if event.channel.pm? || event.user.bot_account
         next unless Time.now.to_i <= event.message.timestamp.to_i + 3600
 
-        role_ids = JSON.parse(File.read("data/squads.json")).values.collect { |role| role["role_id"].to_i }
         role_id = nil
         event.message.role_mentions.each do |rm|
-          if role_ids.include? rm.id.to_i
+          if TohsakaBot.role_cache[event.server.id][:roles].keys.include? rm.id.to_i
             role_id = rm.id.to_i
             break
           end
         end
         next if role_id.nil?
-        next unless BOT.member(event.server.id, event.user.id).role?(role_id)
+        next unless BOT.member(event.server.id, event.user.id)&.role?(role_id)
 
         if event.user.id == event.message.author.id
           Discordrb::API::Channel.delete_user_reaction(

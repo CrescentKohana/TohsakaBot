@@ -71,7 +71,7 @@ en:
        🔕 `Deny and mute this role for 24 hours`\n
        ❓ `This help`\n\n
        _Adding a hashtag (#) at the start of the message will disable this functionality turning it to a normal mention._\n\n
-       Roles: `%{roles}`"
+       Roles: %{roles}"
     poll:
       vote:
         success: "Successfully voted %{choice}! Total votes: %{votes}."
@@ -188,7 +188,7 @@ en:
           error:
             request_amount: "The maximum amount of active feature requests a user can have is 1000."
         find:
-          aliases: "findfrs findfr findfeaturerequest ffr requests frs"
+          aliases: "findfrs findfr findfeaturerequest ffr requests frs frlist listfr"
           description: "Finds and lists feature requests based on given tags."
           usage: "ffr <tags (new, indev, done, wontdo, all)>"
           param:
