@@ -3,6 +3,15 @@ A Discord bot written in Ruby, originally made for a private Discord community. 
 
 Rails web interface for the bot here: [TohsakaWeb](https://github.com/Luukuton/TohsakaWeb).
 
+
+## Documentation
+
+### [Changelog](CHANGELOG.md)
+
+### [Commands](documentation/commands.md) (WIP)
+
+### [Functionality](documentation/functionality.md) (WIP)
+
 ## Installation & running
 - Enable Privileged Gateway Intents here: `https://discord.com/developers/applications/<id>/bot`
 - Install Ruby ([rbenv](https://github.com/rbenv/rbenv) recommended for Linux) and MariaDB
