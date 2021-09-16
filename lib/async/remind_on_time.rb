@@ -58,7 +58,7 @@ module TohsakaBot
                          end
 
               response += ": #{msg.strip_mass_mentions}" unless msg.blank?
-              @where.send_message(response)
+              @where.send_message(response, false, nil, nil, { users: [discord_uid] })
             rescue StandardError
               # Ignored
               # as the user has blocked the bot.
