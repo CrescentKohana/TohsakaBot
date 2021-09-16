@@ -90,10 +90,21 @@ module TohsakaBot
   require_relative 'data_access/msg_queue_cache'
   require_relative 'data_access/poll_cache'
 
+
+
+  prefix_proc = proc do |message|
+    match = /^[#{CFG.prefix}](\w+)(.*)/.match(message.content)
+    if match
+      command_name = match[1]
+      rest = match[2]
+      "#{command_name.downcase}#{rest}"
+    end
+  end
+
   # Discord Bot #
   BOT = Discordrb::Commands::CommandBot.new(token: AUTH.bot_token,
                                             client_id: AUTH.cli_id,
-                                            prefix: CFG.prefix.split(' '),
+                                            prefix: prefix_proc,
                                             advanced_functionality: false,
                                             fancy_log: true,
                                             log_mode: :normal)
