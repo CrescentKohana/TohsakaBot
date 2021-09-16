@@ -179,6 +179,35 @@ module TohsakaBot
       max_content_length = max_length - fixed_length
       content.slice(0, max_content_length)
     end
+
+    def read_server_roles
+      servers = JSON.parse(File.read("data/roles.json"))["servers"]
+
+      servers_hash = {}
+      servers.each do |server|
+        server_response = BOT.server(server["id"])
+        next unless server_response
+
+        roles_hash = {}
+        server["roles"].each do |role|
+          # Skip roles that don't exist
+          next unless server_response.roles.find { |r| r.id == role["id"] }
+
+          roles_hash[role["id"]] = {
+            name: role["name"],
+            group_size: role["group_size"],
+            permissions: role["permissions"]
+          }
+        end
+
+        servers_hash[server["id"]] = {
+          name: server["name"],
+          roles: roles_hash
+        }
+      end
+
+      servers_hash
+    end
   end
 
   TohsakaBot.extend DiscordHelper

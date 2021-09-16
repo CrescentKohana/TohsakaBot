@@ -13,18 +13,17 @@ module TohsakaBot
         added_roles = Set.new
         roles.each do |role|
           next if added_roles.include? role
-          next unless CFG.allowed_roles.include? role.to_s
 
-          found_role = event.server.roles.find { |r| r.name == role }
-          next if found_role.nil?
+          role_id = TohsakaBot.permissions.allowed_role(event.author.id, event.server.id, role)
+          next if role_id.nil?
 
           Discordrb::API::Server.add_member_role(
             "Bot #{AUTH.bot_token}",
             event.channel.server.id,
             event.message.user.id,
-            found_role.id
+            role_id
           )
-          added_roles.add(role)
+          added_roles.add(TohsakaBot.role_cache[event.server.id][:roles][role_id][:name])
         end
 
         if added_roles.empty?

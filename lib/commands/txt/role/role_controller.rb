@@ -34,12 +34,11 @@ module TohsakaBot
       added_roles = Set.new
       roles.each do |role|
         next if added_roles.include? role
-        next unless CFG.allowed_roles.include? role.to_s
 
-        found_role = event.server.roles.find { |r| r.name == role }
-        next if found_role.nil?
+        role_id = TohsakaBot.permissions.allowed_role(event.author.id, event.server.id, role)
+        next if role_id.nil?
 
-        added_roles.add(role)
+        added_roles.add(TohsakaBot.role_cache[event.server.id][:roles][role_id][:name])
       end
 
       raise RoleHandler::RoleNotFound if added_roles.empty?

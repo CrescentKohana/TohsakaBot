@@ -141,12 +141,30 @@ class FirstTimeSetup
     File.open('data/temporary_roles.yml', 'w') { |f| f.write('--- {}') } unless File.exist?('data/temporary_roles.yml')
     File.open('data/squads_mute.yml', 'w') { |f| f.write('--- {}') } unless File.exist?('data/squads_mute.yml')
 
-    unless File.exist?('data/squads.json')
-      squads_hash = {
-        "Game": { "group_size": 5, "role_id": 0 },
-        "Game 2": { "group_size": 5, "role_id": 0 }
+    unless File.exist?('data/roles.json')
+      roles_hash = {
+        "servers": [
+          {
+            "id": 1,
+            "name": "Discord Example Server",
+            "roles": [
+              {
+                "id": 1,
+                "name": "Game",
+                "group_size": 5,
+                "permissions": 0
+              },
+              {
+                "id": 2,
+                "name": "Game 2",
+                "group_size": 3,
+                "permissions": 100
+              }
+            ]
+          }
+        ]
       }.freeze
-      File.open('data/squads.json', 'w') { |f| f.write(JSON.pretty_generate(squads_hash)) }
+      File.open('data/roles.json', 'w') { |f| f.write(JSON.pretty_generate(roles_hash)) }
     end
 
     Dir.mkdir('data/triggers') unless File.directory?('data/triggers')

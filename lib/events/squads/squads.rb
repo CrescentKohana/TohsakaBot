@@ -21,29 +21,36 @@ module TohsakaBot
           next
         end
 
-        roles = JSON.parse(File.read("data/squads.json"))
-        role_mentions = {}
-        event.message.role_mentions.each do |rm|
-          role_mentions[rm.id] = rm.name
+        roles = TohsakaBot.role_cache[event.server.id][:roles]
+        role_mentions = Set.new
+        event.message.role_mentions.each do | rm|
+          role_mentions.add(rm.id)
         end
 
         author_id = event.message.author.id.to_i
-        reactions = event.message.reactions.map { |r| { r.name => r.count } }
         custom_group_size = event.message.content.split(/<@&\d*>/)[0].to_i
+        members = JSON.parse(
+          Discordrb::API::Channel.get_reactions(
+            "Bot #{AUTH.bot_token}",
+            event.channel.id,
+            event.message.id,
+            "✅",
+            nil,
+            nil
+          )
+        ).reject { |m| m["bot"] }.map { |m| "<@!#{m['id']}>" } # Reject the bot.
 
-        # TODO: Convert JSON key to the role ID
-        roles.each_key do |role|
-          members = JSON.parse(Discordrb::API::Channel.get_reactions(
-                                 "Bot #{AUTH.bot_token}", event.channel.id, event.message.id, "✅", nil, nil
-                               )).reject { |m| m["bot"] || m["id"].to_i == author_id }.map { |m| "<@!#{m['id']}>" }
+        # Members size has to be saved before removing the possible appearance of the message author.
+        reaction_count = members.size
+        members.delete("<@!#{author_id}>")
 
-          reaction_count = reactions[0]["✅"].to_i
-          reaction_count -= 1 if members.include? "<@!#{author_id}>"
-          group_size = custom_group_size.zero? || custom_group_size.nil? ? roles[role]["group_size"] : custom_group_size
+        role_mentions.each do |rm|
+          next unless roles[rm]
 
-          next unless role_mentions.key?(roles[role]["role_id"]) && reaction_count >= group_size.to_i
+          group_size = custom_group_size.nil? || custom_group_size < 1 ? roles[rm][:group_size] - 1 : custom_group_size
+          next unless group_size == reaction_count
 
-          event.respond "Found squad for **#{role}**: <@!#{author_id}> #{members.join(' ')}"
+          event.respond "Found squad for **#{roles[rm][:name]}**: <@!#{author_id}> #{members.join(' ')}"
           event.message.delete
           break
         end
