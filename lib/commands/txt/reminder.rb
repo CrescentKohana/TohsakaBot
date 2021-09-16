@@ -30,7 +30,17 @@ module TohsakaBot
           event.respond(response[:content])
         else
           # with subscribe (copy reminder) button
-          event.respond(response[:content], false, nil, nil, nil, nil, response[:components])
+
+          allowed_mentions = Discordrb::AllowedMentions.new(parse: ['users'], users: [event.author.id])
+          event.respond(
+            response[:content],
+            false,
+            nil,
+            nil,
+            { users: [event.author.id] },
+            nil,
+            response[:components]
+          )
           event.message.delete
         end
       end

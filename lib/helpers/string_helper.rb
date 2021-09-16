@@ -2,7 +2,7 @@
 
 class String
   # The zero-width space in between the @ and the word
-  # prevents the tagging of everyone (or everyone online).
+  # prevents the usage of @everyone and @here tags.
   #
   # @return [String] message with disabled mass mentions
   def strip_mass_mentions
