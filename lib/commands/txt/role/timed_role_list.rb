@@ -13,7 +13,7 @@ module TohsakaBot
         output = ''.dup
 
         timed_roles = YAML.load_file('data/timed_roles.yml')
-        timed_roles&.each do |id, timed_role|
+        timed_roles.each do |id, timed_role|
           result_amount += 1
           times = timed_role[:times].map { |time| "`#{time[:day]}-#{time[:start]}-#{time[:end]}`" }.join(' ')
           roles = timed_role[:roles].map { |role| "`#{role}`" }.join(' ')

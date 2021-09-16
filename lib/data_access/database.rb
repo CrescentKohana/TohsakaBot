@@ -128,11 +128,21 @@ module TohsakaBot
     end
   end
 
+  # Role cache.
+  #
+  # @return [Hash] polls with votes
+  module PersistentRoleCache
+    def role_cache
+      @role_cache ||= TohsakaBot.read_server_roles
+    end
+  end
+
   TohsakaBot.extend(
     DatabaseAccess,
     PersistentTriggerData,
     PersistentPermissionsData,
     PersistentMsgQueueCache,
-    PersistentPollCache
+    PersistentPollCache,
+    PersistentRoleCache
   )
 end

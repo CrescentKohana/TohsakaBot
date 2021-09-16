@@ -9,11 +9,16 @@ module TohsakaBot
               description: 'Lists roles.',
               usage: "listroles <'all' or 'server' to list all the roles in this server>",
               enabled_in_pm: false) do |event, filter|
-        event << if %w[server all].include?(filter)
-                   "Roles of **#{event.server.name}**: \n`#{event.server.roles.map(&:name).join(', ')}`"
-                 else
-                   "Allowed roles: \n`#{CFG.allowed_roles.join(', ')}`"
-                 end
+        if %w[server all].include?(filter)
+          event.<< "Roles of **#{event.server.name}**: \n`#{event.server.roles.map(&:name).join(', ')}`"
+        else
+          roles = TohsakaBot.role_cache[event.server.id][:roles]
+          response = "Allowed roles: \n".dup
+          roles.each do |_id, role|
+            response << "`#{role[:name]}` "
+          end
+          event.<< response
+        end
       end
     end
   end
