@@ -52,6 +52,7 @@
     "Squads",
     "SquadsHelper",
     "SquadsMute",
-    "SquadsInfo"
+    "SquadsInfo",
+    "SquadsRenew"
   ]
 }

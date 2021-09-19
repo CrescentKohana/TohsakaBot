@@ -61,7 +61,6 @@ en:
     repost_overseer:
       response: "Repost!"
     squads:
-      expired: "This Squad invite has already expired!"
       info: "**Squads:** a way to form groups. By mentioning a whitelisted role,
        five reaction buttons will be spawned to the message. Also when there's a number before the mention,
        the default squad size is overridden. Squad invite expires in 1 hour.\n\n

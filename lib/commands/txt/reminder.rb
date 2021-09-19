@@ -31,7 +31,6 @@ module TohsakaBot
         else
           # with subscribe (copy reminder) button
 
-          allowed_mentions = Discordrb::AllowedMentions.new(parse: ['users'], users: [event.author.id])
           event.respond(
             response[:content],
             false,
