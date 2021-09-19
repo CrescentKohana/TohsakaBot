@@ -9,8 +9,9 @@ module TohsakaBot
         next if event.message.content&.first == '#'
         next if event.message.role_mentions.empty?
 
-        if Time.now.to_i > event.message.timestamp.to_i + 3600
-          BOT.pm_channel(event.user.id).send_message(I18n.t(:'events.squads.expired'))
+        if Time.now.to_i >= event.message.timestamp.to_i + 3600
+          event.message.delete_all_reactions
+          event.message.create_reaction('🔄')
           next
         end
 

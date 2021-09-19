@@ -3,6 +3,8 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+### Added
+- Squads Renew: an ability to renew expired Squad invites
 
 ## [1.0.0] - 2021/09/17
 ### Added
