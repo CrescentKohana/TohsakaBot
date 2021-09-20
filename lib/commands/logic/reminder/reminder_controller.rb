@@ -31,9 +31,9 @@ module TohsakaBot
       @channel_id = channel_id.to_i
 
       if !repeat.nil?
-        minutes = match_time(repeat, /([0-9]*)(min|m)/) || 0
-        hours   = match_time(repeat,    /([0-9]*)([hH])/) || 0
-        days    = match_time(repeat,    /([0-9]*)([dD])/) || 0
+        minutes = TohsakaBot.match_time(repeat, /([0-9]*)(min|m)/) || 0
+        hours   = TohsakaBot.match_time(repeat,    /([0-9]*)([hH])/) || 0
+        days    = TohsakaBot.match_time(repeat,    /([0-9]*)([dD])/) || 0
 
         @repeat = (minutes * 60) + (hours * 60 * 60) + (days * 24 * 60 * 60)
       else
@@ -111,7 +111,7 @@ module TohsakaBot
         )
       end
 
-      repetition_interval = @repeat.positive? ? " `<Interval #{distance_of_time_in_words(@repeat)}>`" : ''
+      repetition_interval = @repeat.positive? ? "`every #{distance_of_time_in_words(@repeat)}`" : ''
 
       { id: @id, content: final_response(repetition_interval, false) }
     end
@@ -158,19 +158,28 @@ module TohsakaBot
     end
 
     def final_response(repetition_interval, mod)
+      relative_time = Discordrb.timestamp(@datetime.to_i, :relative)
       # If the date was in the ISO 8601 format, convert it to text for the message.
       @datetime = @datetime.is_a?(Integer) ? @datetime = Time.at(@datetime) : @datetime
 
-      msg_beginning = mod ? "Modified reminder for" : "I shall"
-      msg_ending = mod ? " in <##{@channel_id}>." : "."
-      repeated_msg = repetition_interval.empty? ? "" : "repeatedly"
+      if mod
+        reminder_type_msg = if repetition_interval.blank?
+                              "reminder `<ID #{@id}>` "
+                            else
+                              "repeating reminder `<ID #{@id}>` #{repetition_interval} starting "
+                            end
+
+        return "<@#{@discord_uid.to_i}>, modified #{reminder_type_msg}at `#{@datetime}` (#{relative_time}) "\
+               "in <##{@channel_id}> with #{@msg.strip.hide_link_preview}"
+      end
+
+      reminder_type_msg = repetition_interval.empty? ? "" : "#{repetition_interval} starting "
 
       if @msg.blank?
-        "#{msg_beginning} #{repeated_msg}remind <@#{@discord_uid.to_i}> "\
-        "at `#{@datetime}` `<ID #{@id}>`#{repetition_interval}."
+        "`ID #{@id}` I shall remind <@#{@discord_uid.to_i}> #{reminder_type_msg}at `#{@datetime}` #{relative_time}"
       else
-        "#{msg_beginning} #{repeated_msg}remind <@#{@discord_uid.to_i}> with #{@msg.strip.hide_link_preview} "\
-        "at `#{@datetime}` `<ID #{@id}>`#{repetition_interval}#{msg_ending}"
+        "`ID #{@id}` I shall remind <@#{@discord_uid.to_i}> #{reminder_type_msg}at `#{@datetime}` #{relative_time}"\
+        " with #{@msg.strip.hide_link_preview}"
       end
     end
 

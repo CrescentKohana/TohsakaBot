@@ -6,6 +6,9 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Squads Renew: an ability to renew expired Squad invites
 
+### Changed
+- Reminder response formatting
+
 ## [1.0.0] - 2021/09/17
 ### Added
 - Polls

@@ -416,7 +416,7 @@ en:
         errors:
           all_blank: "If specifying other options (--m, --r), --d cannot be blank."
         repeat_msg: "repeatedly "
-        repeat_interval: " `<Interval %{interval}>`"
+        repeat_interval: "`every %{interval}>`"
       del:
         aliases: "delreminder dontremindme remrem remdel delrem remremind delremind"
         description: "Deletes specified reminders."
