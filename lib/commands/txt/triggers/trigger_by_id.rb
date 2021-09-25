@@ -12,7 +12,7 @@ module TohsakaBot
               require_register: true,
               enabled_in_pm: false) do |event, id|
 
-        if Integer(id, exception: false)
+        if Integer(id, exception: false).nil?
           event.respond(I18n.t(:'errors.nan'))
           break
         end
