@@ -71,7 +71,7 @@ module TohsakaBot
           picked = pickup.pick(1)
         end
 
-        # Doesn't send reply if the probability wasn't hit.
+        # No reply is sent if there was no hit.
         next unless picked
 
         file = chosen_trigger[:file]

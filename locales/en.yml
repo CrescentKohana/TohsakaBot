@@ -9,6 +9,7 @@ en:
   errors:
     not_registered: "You aren't registered yet! Please do so by entering the command `?register`."
     unexpected: "An unexpected error occurred."
+    nan: "Not a number."
 
   first_time_setup:
     required_hint: "* means required field!"
@@ -497,6 +498,12 @@ en:
       search:
       details:
       list:
+      by_id:
+        aliases: "triggerbyid tbi ti"
+        description: "Trigger a trigger by its ID."
+        usage: "triggerbyid <id>"
+        errors:
+          not_found: "Trigger not found."
 
     japanese:
       description: "Japanese・日本語"

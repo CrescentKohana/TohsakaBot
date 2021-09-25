@@ -12,6 +12,7 @@ module TohsakaBot
               require_register: true,
               enabled_in_pm: false) do |event, id, verbose|
         verbose = verbose.nil? ? false : true
+
         if Integer(id, exception: false)
           trigger = TohsakaBot.db[:triggers].where(id: id.to_i).single_record!
           unless trigger.nil?
