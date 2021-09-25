@@ -59,13 +59,21 @@ module TohsakaBot
         event.respond(command.run[:content], false, nil, nil, false)
       end
 
+      command(:roll,
+              description: 'Roll ID.',
+              usage: '') do |event|
+        command = CommandLogic::Roll.new(event, id_roll: true)
+        response = command.run
+        event.message.reply!(response[:content], allowed_mentions: false, components: response[:components])
+      end
+
       command(:doubles,
               aliases: %i[tuplat tuplilla tuplil dips dubs duoil duoilla duuoil duuoilla],
               description: 'Doubles.',
               usage: '',
               bucket: :cf,
               rate_limit_message: 'Calm down! You are ratelimited for %time%s.') do |event|
-        command = CommandLogic::Roll.new(event, 2)
+        command = CommandLogic::Roll.new(event, roll_size: 2)
         response = command.run
         event.message.reply!(response[:content], allowed_mentions: false, components: response[:components])
       end
@@ -75,7 +83,7 @@ module TohsakaBot
               description: 'Triples.',
               usage: '',
               bucket: :cf, rate_limit_message: 'Calm down! You are ratelimited for %time%s.') do |event|
-        command = CommandLogic::Roll.new(event, 3)
+        command = CommandLogic::Roll.new(event, roll_size: 3)
         response = command.run
         event.message.reply!(response[:content], allowed_mentions: false, components: response[:components])
       end
@@ -86,7 +94,7 @@ module TohsakaBot
               description: 'Quads.',
               usage: '',
               bucket: :cf, rate_limit_message: 'Calm down! You are ratelimited for %time%s.') do |event|
-        command = CommandLogic::Roll.new(event, 4)
+        command = CommandLogic::Roll.new(event, roll_size: 4)
         response = command.run
         event.message.reply!(response[:content], allowed_mentions: false, components: response[:components])
       end
@@ -97,7 +105,7 @@ module TohsakaBot
               description: 'Quints.',
               usage: '',
               bucket: :cf, rate_limit_message: 'Calm down! You are ratelimited for %time%s.') do |event|
-        command = CommandLogic::Roll.new(event, 5)
+        command = CommandLogic::Roll.new(event, roll_size: 5)
         response = command.run
         event.message.reply!(response[:content], allowed_mentions: false, components: response[:components])
       end
