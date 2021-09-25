@@ -8,14 +8,12 @@ module TohsakaBot
       command(:ping,
               description: I18n.t(:'commands.tool.ping.description'),
               usage: I18n.t(:'commands.tool.ping.usage')) do |event|
-        now = Time.now
-        event.respond(
-          I18n.t(
-            :'commands.tool.ping.response',
-            locale: TohsakaBot.get_locale(event.user.id),
-            time: ((now - event.timestamp) * 1000).truncate
-          )
-        )
+        m = event.respond(I18n.t(:'commands.tool.ping.response'))
+        m.edit(I18n.t(
+          :'commands.tool.ping.edited_response',
+          locale: TohsakaBot.get_locale(event.user.id),
+          time: ((m.timestamp - event.timestamp) * 1000).truncate
+        ))
       end
 
       command(:info,

@@ -177,7 +177,8 @@ en:
       ping:
         description: "Pong!"
         usage: "ping"
-        response: "Pong! Respond latency of the bot: `%{time}ms`"
+        response: "Pong!"
+        edited_response: "Pong! Bot <-> API RTT: `%{time}ms`"
       feature:
         description: "Feature requests for the bot"
         request:
