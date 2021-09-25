@@ -10,6 +10,8 @@ All notable changes to this project will be documented in this file. Unreleased 
 
 ### Changed
 - Reminder response formatting
+- The way ping command calculates latency
+- Register command now gives the owner highest permissions (1000)
 
 ### Fixed
 - Lots of smaller bugs when it comes optional config options
