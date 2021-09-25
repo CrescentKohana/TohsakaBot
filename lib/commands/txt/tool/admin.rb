@@ -45,7 +45,7 @@ module TohsakaBot
               min_args: 2,
               permission_level: TohsakaBot.permissions.actions["permissions"]) do |event, user, level|
         command = CommandLogic::EditPermissions.new(event, user, level)
-        event.respond(command.run[:content])
+        event.respond(command.run[:content], false, nil, nil, false)
       end
 
 

@@ -134,7 +134,7 @@ module TohsakaBot
   # Terminal tool to send messages through the bot.
   Thread.new do
     channel = CFG.default_channel.to_i
-    puts I18n.t(:'bot.default_channel_notify') unless CFG.default_channel.match(/\d{18}/)
+    puts I18n.t(:'bot.default_channel_notify') unless CFG.default_channel.to_s.match(/\d{18}/)
 
     while (user_input = gets&.strip&.split(' '))
       next if user_input.blank?

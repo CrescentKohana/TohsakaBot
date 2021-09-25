@@ -38,7 +38,7 @@ module TohsakaBot
                 e.add_field(name: 'File', value: "[Link](https://rin.luukuton.fi/td/#{trigger[:file]})")
               end
               e.add_field(name: 'Mode / Chance', value: "#{mode} / #{chance} %")
-              e.add_field(name: 'Occurrences + Calls', value: "#{trigger[:occurences]} + #{trigger[:calls]}")
+              e.add_field(name: 'Occurrences + Calls', value: "#{trigger[:occurrences]} + #{trigger[:calls]}")
               e.add_field(name: 'Created At', value: trigger[:created_at].to_s) if verbose
               e.add_field(name: 'Updated At', value: trigger[:updated_at].to_s) if verbose
               e.footer = Discordrb::Webhooks::EmbedFooter.new(text: "Last triggered: #{last_triggered}")

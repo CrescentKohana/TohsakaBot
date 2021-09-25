@@ -6,7 +6,7 @@ module TohsakaBot
     attr_accessor :triggers, :trigger_phrases
 
     SORT = %i[descending ascending].freeze
-    APPEARANCE_TYPES = %i[calls occurences].freeze
+    APPEARANCE_TYPES = %i[calls occurrences].freeze
 
     # Loads active triggers to the memory.
     #
@@ -54,7 +54,7 @@ module TohsakaBot
     # Returns an array of best triggers
     #
     # @return [Array]
-    def statistics(sorting: :descending, mode: nil, proportional_chance: false, appearance_type: :occurences)
+    def statistics(sorting: :descending, mode: nil, proportional_chance: false, appearance_type: :occurrences)
       # Excluding triggers with 0 calls or occurrences with exclude.
       stats = if mode.nil?
                 TohsakaBot.db[:triggers].exclude(appearance_type => 0)

@@ -463,6 +463,12 @@ en:
         aliases: "addtrigger trigger"
         description: "Adds a trigger."
         usage: "triggeradd --help or -h for help."
+        help:
+          banner: "Usage: triggeradd [options]"
+          extra_help: "When a file is attached to the command, that will be used as the response.
+          If a phrase and no reply is given, the bot will ask for the reply (text|file) after the command.\n
+          Example: `triggeradd -p msg from which the bot triggers -m exact` with an image embedded as a reply.\n
+          Example regex matching multiple phrases: `hello world|some words|word`"
       del:
         aliases: "td deltrigger deletetrigger triggerdelete removetrigger
         triggerremove donttrigger remtrigger triggerrem"

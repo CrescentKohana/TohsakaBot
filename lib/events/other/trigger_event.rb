@@ -92,7 +92,7 @@ module TohsakaBot
         else
           TohsakaBot.db.transaction do
             TohsakaBot.db[:triggers].where(id: chosen_trigger[:id]).update(
-              occurences: chosen_trigger[:occurences] + 1,
+              occurrences: chosen_trigger[:occurrences] + 1,
               last_triggered: Time.now
             )
           end
