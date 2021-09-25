@@ -3,12 +3,25 @@
 module TohsakaBot
   module DiscordHelper
     # Discord file upload limits.
-    # TODO: Check if server is boosted for higher limits.
     UPLOAD_LIMIT = 8_388_119
-    UPLOAD_LIMIT_NITRO = 52_428_308
-    UPLOAD_LIMIT_BOOST = 104_856_616
+    UPLOAD_LIMIT_BOOST_L2 = 52_428_308
+    UPLOAD_LIMIT_BOOST_L3 = 104_856_616
 
     attr_accessor :typing_channels
+
+    def server_upload_limit(server_id)
+      server = BOT.server(server_id.to_i)
+      return UPLOAD_LIMIT if server.nil?
+
+      case server.boost_level
+      when 2
+        UPLOAD_LIMIT_BOOST_L2
+      when 3
+        UPLOAD_LIMIT_BOOST_L3
+      else
+        UPLOAD_LIMIT
+      end
+    end
 
     def manage_typing(channel, duration)
       @typing_channels = {} if @typing_channels.nil?

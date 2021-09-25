@@ -67,7 +67,7 @@ module TohsakaBot
       end
     end
 
-    def send_highlight
+    def send_highlight(server_id)
       # If user is deleted: it's Discordrb::User, not Discordrb::Member
       author_name = if @message.author.is_a?(Discordrb::User)
                       @message.author.username
@@ -87,7 +87,7 @@ module TohsakaBot
         is_video = %w[.mp4 .webm .mov].include?(File.extname(main_attachment.filename))
         is_audio = %w[.wav .flac .ogg .mp3].include?(File.extname(main_attachment.filename))
 
-        if main_attachment.size < TohsakaBot::DiscordHelper::UPLOAD_LIMIT && (is_video || is_audio)
+        if main_attachment.size < TohsakaBot.server_upload_limit(server_id) && (is_video || is_audio)
           filename = temp_download_file(main_attachment)
           @highlight_channel.send_file(File.open("tmp/#{filename}"), spoiler: main_attachment.spoiler?)
           File.delete("tmp/#{filename}")

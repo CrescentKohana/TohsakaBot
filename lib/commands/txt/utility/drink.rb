@@ -22,6 +22,8 @@ module TohsakaBot
           matched = []
           csv_text = File.read("data/alko.csv")
           csv = CSV.parse(csv_text, headers: true)
+          break if csv.nil?
+
           csv.map do |h|
             next if h["Nimi"].nil?
             next unless h["Tyyppi"].is_a?(String)

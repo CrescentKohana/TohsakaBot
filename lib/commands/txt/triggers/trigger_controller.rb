@@ -82,7 +82,7 @@ module TohsakaBot
 
       IO.copy_stream(URI.open(file.url), "data/triggers/#{final_filename}")
 
-      return nil if File.size("data/triggers/#{final_filename}") > TohsakaBot::DiscordHelper::UPLOAD_LIMIT
+      return nil if File.size("data/triggers/#{final_filename}") > TohsakaBot.server_upload_limit(reply.server.id)
 
       final_filename
     end
