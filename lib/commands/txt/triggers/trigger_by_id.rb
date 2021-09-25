@@ -24,7 +24,19 @@ module TohsakaBot
           break
         end
 
-        event.respond(trigger[:reply])
+        if file.to_s.empty?
+          event.respond(trigger[:reply], false, nil, nil, false)
+        else
+          event.channel.send_file(File.open("data/triggers/#{file}"))
+        end
+
+        TohsakaBot.db.transaction do
+          TohsakaBot.db[:triggers].where(id: trigger[:id]).update(
+            calls: trigger[:calls] + 1,
+            last_triggered: Time.now
+          )
+        end
+        break
       end
     end
   end
