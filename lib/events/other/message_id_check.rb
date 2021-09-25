@@ -14,7 +14,7 @@ module TohsakaBot
         next unless @length > 1
 
         def self.check_pair(min_length, naming)
-          @length >= min_length && @msg.match(/^get.*|#{naming}.*/i)
+          @length >= min_length && @msg.match(/^#{naming}.*/i)
         end
 
         name = BOT.member(event.server, event.message.author.id).display_name.strip_mass_mentions.sanitize_string
