@@ -46,7 +46,7 @@ module TohsakaBot
               min_args: 1) do |event, *txt|
         command = CommandLogic::Chaos.new(event, txt)
         event.message.delete
-        event.respond(command.run[:content], false, nil,nil, false)
+        event.respond(command.run[:content], false, nil, nil, false)
       end
 
       command(:martus,

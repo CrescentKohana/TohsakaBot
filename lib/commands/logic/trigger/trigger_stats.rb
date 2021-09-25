@@ -7,7 +7,7 @@ module TohsakaBot
         @event = event
         @sort = sort ? :ascending : :descending
         @proportional_chance = proportional_chance
-        @appearance_type = appearance_type ? :calls : :occurences
+        @appearance_type = appearance_type ? :calls : :occurrences
         @mode = case mode
                 when /e.*/si
                   0

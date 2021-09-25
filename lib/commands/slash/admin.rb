@@ -19,7 +19,7 @@ module TohsakaBot
         group.subcommand('editpermissions') do |event|
           command = CommandLogic::EditPermissions.new(event, event.options['user'], event.options['level'])
           respond = command.run
-          event.respond(content: respond[:content]) unless respond.nil?
+          event.respond(content: respond[:content], allowed_mentions: false) unless respond.nil?
         end
       end
     end

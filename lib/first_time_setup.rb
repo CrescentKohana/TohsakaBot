@@ -109,6 +109,9 @@ class FirstTimeSetup
         "prefix: \"#{prefix.gsub("\n", '')}\"\n"\
         "locale: \"#{locale}\"\n"\
         "np: \"#{I18n.t(:'first_time_setup.default_now_playing')}\"\n"\
+        "status:\n"\
+        "- playing"\
+        "- Tsukihime"\
         "default_channel: #{default_channel}"\
         "highlight_channel: #{highlight_channel}"\
         "web_dir: \"#{web_dir.gsub("\n", '')}\"\n"\
@@ -140,6 +143,7 @@ class FirstTimeSetup
 
     File.open('data/temporary_roles.yml', 'w') { |f| f.write('--- {}') } unless File.exist?('data/temporary_roles.yml')
     File.open('data/squads_mute.yml', 'w') { |f| f.write('--- {}') } unless File.exist?('data/squads_mute.yml')
+    File.open('data/timed_roles.yml', 'w') { |f| f.write('--- {}') } unless File.exist?('data/timed_roles.yml')
 
     unless File.exist?('data/roles.json')
       roles_hash = {
