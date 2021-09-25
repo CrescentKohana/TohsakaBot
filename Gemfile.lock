@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/shardlab/discordrb.git
-  revision: 87ae658e54ddf03d918f0c5a05b7875f84791424
+  revision: d0fd65e9537cb926b145a79dd5e13b312153bcc9
   branch: main
   specs:
     discordrb (3.4.2)
@@ -91,7 +91,7 @@ GEM
     optimist (3.0.1)
     opus-ruby (1.0.1)
       ffi
-    parallel (1.20.1)
+    parallel (1.21.0)
     parser (3.0.2.0)
       ast (~> 2.4.1)
     pickup (0.0.11)
@@ -138,7 +138,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.10.0)
     rspec-support (3.10.2)
-    rubocop (1.20.0)
+    rubocop (1.21.0)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
       rainbow (>= 2.2.2, < 4.0)
@@ -149,9 +149,8 @@ GEM
       unicode-display_width (>= 1.4.0, < 3.0)
     rubocop-ast (1.11.0)
       parser (>= 3.0.1.1)
-    rubocop-rspec (2.4.0)
-      rubocop (~> 1.0)
-      rubocop-ast (>= 1.1.0)
+    rubocop-rspec (2.5.0)
+      rubocop (~> 1.19)
     rubocop-sequel (0.3.3)
       rubocop (~> 1.0)
     ruby-ole (1.2.12.2)
@@ -159,8 +158,9 @@ GEM
     rubyzip (2.3.2)
     sax-machine (1.3.2)
     sequel (5.48.0)
-    spreadsheet (1.2.9)
+    spreadsheet (1.3.0)
       ruby-ole
+    sqlite3 (1.4.2)
     terrapin (0.6.0)
       climate_control (>= 0.0.3, < 1.0)
     to_regexp (0.2.1)
@@ -168,8 +168,9 @@ GEM
       concurrent-ruby (~> 1.0)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.7.7)
-    unicode-display_width (2.0.0)
+    unf_ext (0.0.8)
+    unf_ext (0.0.8-x64-mingw32)
+    unicode-display_width (2.1.0)
     websocket (1.2.9)
     websocket-client-simple (0.3.0)
       event_emitter
@@ -212,6 +213,7 @@ DEPENDENCIES
   rubocop-rspec
   rubocop-sequel
   sequel
+  sqlite3
   terrapin
   to_regexp
   yard

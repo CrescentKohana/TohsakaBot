@@ -30,6 +30,7 @@ gem 'rubocop-rspec'
 gem 'rubocop-sequel'
 # gem "rubocop-performance"
 gem 'sequel'
+gem 'sqlite3'
 gem 'terrapin'
 gem 'to_regexp'
 gem 'yard'

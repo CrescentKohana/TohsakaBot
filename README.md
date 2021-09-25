@@ -14,19 +14,25 @@ Rails web interface for the bot here: [TohsakaWeb](https://github.com/Luukuton/T
 
 ## Installation & running
 - Enable Privileged Gateway Intents here: `https://discord.com/developers/applications/<id>/bot`
-- Install Ruby ([rbenv](https://github.com/rbenv/rbenv) recommended for Linux) and MariaDB
-- Use these SQL commands to create user and database for the bot. Remember to change USERNAMEs and PASSWORD. 
+- Install Ruby ([rbenv](https://github.com/rbenv/rbenv) recommended for Linux), and MariaDB/MySQL **or** SQLite3
+
+
+- **If MariaDB/MySQL**: 
+  - Use these SQL commands to create user and database for the bot. Remember to change USERNAMEs and PASSWORD.
     ```
     CREATE USER 'USERNAME'@'localhost' IDENTIFIED BY 'PASSWORD';
     CREATE DATABASE IF NOT EXISTS tohsaka CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
     GRANT ALL PRIVILEGES on tohsaka.* to 'USERNAME'@'localhost';
     FLUSH privileges;
     ```
-- Switch to the root folder of the bot and run the following command to populate the database with tables:
-   `mysql -u USERNAME -p tohsaka < structure.sql`
+  - Run the following command in the root dir of the bot to populate the database with tables: `mysql -u USERNAME -p tohsaka < mysql_schema.sql`
+- **If SQLite3**:
+  - Run the following command in the root dir of the bot to populate the database with tables: `sqlite3 data/tohsaka.db < sqlite_schema.sql`. The commands found inside `sqlite_schema.sql` can also be executed through SQLite Browser.
+
+
 - Install bundler: `gem install bundler`
 - Run `bundle install` to install required gems.
-- _On Windows, if installing the mysql2 gem fails, install it separetely with:_
+- _On Windows, if installing the mysql2 gem fails, install it separately with:_
    `gem install mysql2 -- '--with-mysql-lib="C:\devkit\MariaDB 10.5\lib" --with-mysql-include="C:\devkit\MariaDB 10.5\include"'`
 - Start the bot by running `bundle exec ruby run.rb`.
 - Bot can be invited to a server with the following URL (**remember to change the CLIENT_ID**): 
@@ -42,6 +48,6 @@ Tests can be performed with `rspec` command.
 
 ## Dependencies
 * Ruby >= 2.7 supported
-* MariaDB / MySQL 
+* MariaDB / MySQL or SQLite3
 * Gems specified in Gemfile (installed by `bundle install`)
   * Using [discordrb](https://github.com/shardlab/discordrb) @ master branch
