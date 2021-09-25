@@ -14,6 +14,9 @@ All notable changes to this project will be documented in this file. Unreleased 
 - The way ping command calculates latency
 - Register command now gives the owner highest permissions (1000)
 
+### Removed
+- "get" keyword from message ID check event
+
 ### Fixed
 - Lots of smaller bugs when it comes optional config options
 
