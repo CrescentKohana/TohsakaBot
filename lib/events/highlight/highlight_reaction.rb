@@ -9,7 +9,7 @@ module TohsakaBot
         highlight_core = HighlightCore.new(event.message, event.server.id, event.channel.id)
         return unless highlight_core.requirements_for_pin_met?
 
-        highlight_core.store_highlight(highlight_core.send_highlight)
+        highlight_core.store_highlight(highlight_core.send_highlight(event.server.id))
       end
 
       extend Discordrb::EventContainer

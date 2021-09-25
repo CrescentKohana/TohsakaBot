@@ -114,7 +114,7 @@ module TohsakaBot
           next unless TohsakaBot.db[:highlights].where(msg_id: m.id.to_i).empty?
 
           highlight_core = HighlightCore.new(m, channel.server.id.to_i, channel.id.to_i)
-          highlight_core.store_highlight(highlight_core.send_highlight)
+          highlight_core.store_highlight(highlight_core.send_highlight(channel.server.id))
           sleep(2)
         end
 

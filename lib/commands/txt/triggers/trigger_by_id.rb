@@ -24,10 +24,10 @@ module TohsakaBot
           break
         end
 
-        if file.to_s.empty?
+        if trigger[:file].blank?
           event.respond(trigger[:reply], false, nil, nil, false)
         else
-          event.channel.send_file(File.open("data/triggers/#{file}"))
+          event.channel.send_file(File.open("data/triggers/#{trigger[:file]}"))
         end
 
         TohsakaBot.db.transaction do

@@ -26,7 +26,7 @@ module TohsakaBot
 
           if @length >= 6
             highlight_core = HighlightCore.new(event.message, event.server.id, event.channel.id)
-            highlight_core.store_highlight(highlight_core.send_highlight)
+            highlight_core.store_highlight(highlight_core.send_highlight(event.server.id))
           end
           i18n_code = "events.message_id_check.#{@length}".to_sym
           reply = "#{I18n.t(i18n_code, locale: TohsakaBot.get_locale(event.user.id))} 🆔 **…#{capture}**"
