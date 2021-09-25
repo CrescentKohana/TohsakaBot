@@ -9,7 +9,9 @@ module TohsakaBot
 
       def run
         user = TohsakaBot.command_event_user_id(@event, return_id: false)
-        return if user.nil? || user.bot_account?
+        return { content: I18n.t(:'errors.unexpected') } if user.nil? || user.bot_account?
+
+        permissions = user.id == AUTH.owner_id.to_i ? 1000 : 0
 
         users = TohsakaBot.db[:users]
         auths = TohsakaBot.db[:authorizations]
@@ -20,6 +22,7 @@ module TohsakaBot
                                  discriminator: user.discriminator,
                                  avatar: user.avatar_id,
                                  locale: '',
+                                 permissions: permissions,
                                  created_at: Time.now,
                                  updated_at: Time.now)
 

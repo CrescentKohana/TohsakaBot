@@ -8,6 +8,7 @@ en:
 
   errors:
     not_registered: "You aren't registered yet! Please do so by entering the command `?register`."
+    unexpected: "An unexpected error occurred."
 
   first_time_setup:
     required_hint: "* means required field!"
