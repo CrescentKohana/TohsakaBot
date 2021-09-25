@@ -43,8 +43,23 @@ class FirstTimeSetup
       bot_token = required_input(green + I18n.t(:'first_time_setup.bot_token'), false, pwd: true)
       print("\n\n")
 
-      db_user = required_input(green + I18n.t(:'first_time_setup.db_user'), false)
-      db_password = required_input(green + I18n.t(:'first_time_setup.db_password'), false, pwd: true)
+      database_type = required_input(green + I18n.t(:'first_time_setup.db_type'), true)
+      print("\n\n")
+
+      case database_type
+      when 2
+        database_type = 'mysql'
+        db_user = required_input(green + I18n.t(:'first_time_setup.db_user'), false)
+        db_password = required_input(green + I18n.t(:'first_time_setup.db_password'), false, pwd: true)
+        sqlite_db = ''
+      else
+        database_type = 'sqlite'
+        print green + I18n.t(:'first_time_setup.sqlite')
+        sqlite_db = gets
+        sqlite_db = sqlite_db.blank? ? 'tohsaka.db' : sqlite_db
+        db_user = ''
+        db_password = ''
+      end
       print("\n\n")
 
       print green + I18n.t(:'first_time_setup.yt_apikey')
@@ -63,10 +78,12 @@ class FirstTimeSetup
         "yt_apikey: #{yt_apikey}\n"\
         "saucenao_apikey: #{saucenao_apikey}\n\n"\
         "#{I18n.t(:'first_time_setup.auth_cfg_notice2')}\n"\
-        "db_user: #{db_user}"\
+        "db_type: #{database_type}\n"\
+        "db_user: #{db_user}\n"\
         "db_password: #{db_password}\n"\
         "db_name: tohsaka\n"\
         "db_url: localhost\n"\
+        "sqlite_db: #{sqlite_db}\n"\
         "#{I18n.t(:'first_time_setup.auth_cfg_notice3')}\n"
       )
     end

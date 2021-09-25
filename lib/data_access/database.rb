@@ -6,16 +6,21 @@ module TohsakaBot
     # Connection to the database.
     #
     # @return [void]
-    def db
-      @db ||= Sequel.connect(
-        adapter: 'mysql2',
-        charset: 'utf8mb4',
-        collate: 'utf8mb4_unicode_ci',
-        host: AUTH.db_url,
-        database: AUTH.db_name,
-        user: AUTH.db_user,
-        password: AUTH.db_password
-      )
+    def db(type: AUTH.db_type, sqlite: AUTH.sqlite_db)
+      @db ||= case type.to_sym
+              when :mysql
+                Sequel.connect(
+                  adapter: 'mysql2',
+                  charset: 'utf8mb4',
+                  collate: 'utf8mb4_unicode_ci',
+                  host: AUTH.db_url,
+                  database: AUTH.db_name,
+                  user: AUTH.db_user,
+                  password: AUTH.db_password
+                )
+              else
+                Sequel.connect("sqlite://data/#{sqlite}")
+              end
     end
 
     # Returns true if user is registered (present in the database), false if not.
