@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 ### Added
 - Squads Renew: an ability to renew expired Squad invites
+- Roll command with button interaction: parses the message (or button interaction) ID for repeating last digits (e.g. 881101126133399**000** )
 
 ### Changed
 - Reminder response formatting
