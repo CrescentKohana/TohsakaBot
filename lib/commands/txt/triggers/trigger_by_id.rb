@@ -8,16 +8,13 @@ module TohsakaBot
               aliases:  TohsakaBot.get_command_aliases('commands.trigger.by_id.aliases'),
               description: I18n.t(:'commands.trigger.by_id.description'),
               usage: I18n.t(:'commands.trigger.by_id.usage'),
-              min_args: 1,
               require_register: true,
               enabled_in_pm: false) do |event, id|
-
-        if Integer(id, exception: false).nil?
-          event.respond(I18n.t(:'errors.nan'))
-          break
-        end
-
-        trigger = TohsakaBot.db[:triggers].where(id: id.to_i).single_record!
+        trigger = if Integer(id, exception: false).nil?
+                    TohsakaBot.db[:triggers].to_a.sample
+                  else
+                    TohsakaBot.db[:triggers].where(id: id.to_i).single_record!
+                  end
 
         if trigger.nil?
           event.respond(I18n.t(:'commands.trigger.by_id.errors.not_found'))
