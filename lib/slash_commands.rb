@@ -187,6 +187,7 @@ module TohsakaBot
     end
 
     # Utility #
+    # noinspection NonAsciiCharacters
     def utility
       BOT.register_application_command(:utility, I18n.t(:'commands.utility.description')) do |cmd|
         cmd.subcommand(:poll, I18n.t(:'commands.utility.poll.description')) do |sub|

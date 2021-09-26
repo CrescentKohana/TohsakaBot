@@ -499,8 +499,8 @@ en:
       details:
       list:
       by_id:
-        aliases: "triggerbyid tbi ti"
-        description: "Trigger a trigger by its ID."
+        aliases: "triggerbyid tbi ti trandom randomtrigger"
+        description: "Trigger a trigger by its ID. Random if none specified."
         usage: "triggerbyid <id>"
         errors:
           not_found: "Trigger not found."

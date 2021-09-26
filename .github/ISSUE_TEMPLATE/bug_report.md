@@ -22,7 +22,7 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Environment (please complete the following information):**
- - OS: [e.g. GNU/Linxu Debian 10 or Windows 10 20H2]
+ - OS: [e.g. GNU/Linux Debian 10 or Windows 10 20H2]
  - Ruby version [e.g. 3.0.0]
 
 **Additional context**
