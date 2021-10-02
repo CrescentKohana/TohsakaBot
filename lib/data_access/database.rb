@@ -133,6 +133,15 @@ module TohsakaBot
     end
   end
 
+  # Rock Paper Scissors cache.
+  #
+  # @return [Hash] RPS games
+  module PersistentRPSCache
+    def rps_cache
+      @rps_cache ||= RPSCache.new
+    end
+  end
+
   # Role cache.
   #
   # @return [Hash] polls with votes
@@ -148,6 +157,7 @@ module TohsakaBot
     PersistentPermissionsData,
     PersistentMsgQueueCache,
     PersistentPollCache,
+    PersistentRPSCache,
     PersistentRoleCache
   )
 end

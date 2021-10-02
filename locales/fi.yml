@@ -46,6 +46,8 @@ fi:
         aliases: ""
       chaos:
         aliases: ""
+      rockpaperscissors:
+        aliases: "kps"
 
     reminders:
       reminder_add:

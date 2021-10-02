@@ -342,6 +342,21 @@ en:
         usage: "martus <msg>"
         param:
           txt: "Text to convert"
+      rockpaperscissors:
+        aliases: "rockpaperscissors"
+        description: "Rock paper scissors. Without tag the first one to click to button will be the challenged."
+        usage: "rps <user tag>"
+        response:
+          pick: "Picked %{choice}."
+          already_picked: "You have already picked %{choice}."
+          in_progress: "Game already in progress."
+        choice:
+          c0: "Rock"
+          c1: "Paper"
+          c2: "Scissors"
+        outcome:
+          win: "<@!%{winner}> (%{win_choice}) wins against <@!%{loser}> (%{lose_choice})!"
+          tie: "Tie between <@!%{p1}> & <@!%{p2}> (%{choice})!"
 
     other:
       help:

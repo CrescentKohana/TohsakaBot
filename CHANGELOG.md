@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file. Unreleased 
 - Triggerbyid command
 - Support for higher upload limits (server boost levels 2 and 3)
 - Gem version restraints
+- Advanced Rock Paper Scissors command
 
 ### Changed
 - Reminder response formatting
