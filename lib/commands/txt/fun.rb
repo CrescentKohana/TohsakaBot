@@ -59,6 +59,15 @@ module TohsakaBot
         event.respond(command.run[:content], false, nil, nil, false)
       end
 
+      command(:rps,
+              aliases: TohsakaBot.get_command_aliases('commands.fun.rockpaperscissors.aliases'),
+              description: I18n.t(:'commands.fun.rockpaperscissors.description'),
+              usage: I18n.t(:'commands.fun.rockpaperscissors.usage'),) do |event|
+        command = CommandLogic::RockPaperScissors.new(event)
+        response = command.run
+        event.message.reply!(response[:content], allowed_mentions: false, components: response[:components])
+      end
+
       command(:roll,
               description: 'Roll ID.',
               usage: '') do |event|
@@ -220,8 +229,6 @@ module TohsakaBot
           event.respond "**img**```#{TohsakaBot.neko_types.join(' ')}```**txt**```#{TohsakaBot.neko_txt_types.join(' ')}```"
         end
       end
-
-
     end
   end
 end

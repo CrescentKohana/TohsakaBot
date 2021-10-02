@@ -8,7 +8,7 @@ module TohsakaBot
       @polls = {}
     end
 
-    # id: message_id
+    # @param id Discord message ID
     def create(id, channel_id, question, choices, duration, multi)
       # This poll already exists for some reason.
       return nil unless @polls[id].nil?

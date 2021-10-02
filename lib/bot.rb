@@ -89,6 +89,7 @@ module TohsakaBot
   require_relative 'data_access/permissions'
   require_relative 'data_access/msg_queue_cache'
   require_relative 'data_access/poll_cache'
+  require_relative 'data_access/rps_cache'
 
   # Custom command matcher. Currently only for case insensitive commands.
   prefix_proc = proc do |message|
