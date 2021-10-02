@@ -58,6 +58,7 @@ require 'redcarpet/render_strip'
 # Overrides for discordrb gem
 require_relative 'gem_overrides/discordrb_command_override'
 require_relative 'gem_overrides/cache_override'
+require_relative 'gem_overrides/interaction_override'
 
 # Main module of the bot
 module TohsakaBot
