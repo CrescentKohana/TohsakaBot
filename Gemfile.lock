@@ -85,9 +85,9 @@ GEM
     nekos (1.0.1)
       rest-client
     netrc (0.11.0)
-    nokogiri (1.12.4-x64-mingw32)
+    nokogiri (1.12.5-x64-mingw32)
       racc (~> 1.4)
-    nokogiri (1.12.4-x86_64-linux)
+    nokogiri (1.12.5-x86_64-linux)
       racc (~> 1.4)
     numerizer (0.2.0)
     optimist (3.0.1)
