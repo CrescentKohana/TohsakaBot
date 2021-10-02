@@ -14,7 +14,24 @@ module TohsakaBot
         choice[0].slice!('choice')
 
         response = TohsakaBot.poll_cache.vote(poll_id, user_id, choice[0])
-        event.respond(content: response, ephemeral: true)
+
+        if response[:votes]
+          original_msg_content = event.message.content.gsub(/ `Votes: \d+`$/, "") + " `Votes: #{response[:votes]}`"
+          Discordrb::API::Channel.edit_message(
+            "Bot #{AUTH.bot_token}",
+            event.channel.id,
+            event.message.id,
+            original_msg_content,
+            false,
+            nil,
+            event.message.components
+          )
+        end
+
+        event.respond(
+          content: response[:content],
+          ephemeral: true
+        )
       end
     end
   end

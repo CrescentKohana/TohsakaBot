@@ -16,6 +16,9 @@ All notable changes to this project will be documented in this file. Unreleased 
 - Reminder response formatting
 - The way ping command calculates latency
 - Register command now gives the owner highest permissions (1000)
+- The amount of votes is shown to everyone in Polls
+- 0 duration enables manual mode in Polls
+
 
 ### Removed
 - "get" keyword from message ID check event

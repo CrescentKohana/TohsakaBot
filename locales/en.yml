@@ -80,7 +80,7 @@ en:
         success: "Successfully voted %{choice}! Total votes: %{votes}."
         already_voted_single: "You have already voted. Total votes: %{votes}."
         already_voted_multi: "You have already voted this choice. Total votes: %{votes}."
-        expiry: "This vote has expired."
+        expiry: "This poll has expired."
         failure: "Vote failed."
         permission_error: "No permissions to end this poll."
     other:
@@ -216,12 +216,12 @@ en:
         aliases: "vote"
         description: "Creates polls. If only question is specified, 1 minute poll with ✅ and ❌ options will be created."
         usage: "poll -h or --help for help."
-        default_question: "Y/N"
+        default_question: "Pick your poison"
         help:
           banner: "Usage: poll [options]"
           question: "Question for the poll."
           choices: "Poll choices. Separated by semicolon: `;`. Maximum amount of choices: 24."
-          duration: "After how long (10s-24h) the poll will expire automatically. Manual end is disabled. s or nothing: seconds, m: minutes, h: hours"
+          duration: "After how long (10s-24h) the poll will expire automatically. Manual end is disabled. s or nothing: seconds, m: minutes, h: hours, 0 for manual"
           multi: "If present, users are allowed to vote on more than one choice."
           template: "Poll template. If specified, choices will be ignored."
           type: "Poll type: button (default), emoji or dropdown"
