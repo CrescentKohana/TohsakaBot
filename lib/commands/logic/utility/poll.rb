@@ -28,7 +28,7 @@ module TohsakaBot
         buttons = @type == :button ? create_buttons(@event.user.id) : nil
 
         {
-          content: @question,
+          content: "#{@question} `Votes: 0`",
           components: buttons,
           poll_data: {
             question: @question,
@@ -59,7 +59,9 @@ module TohsakaBot
       end
 
       def parse_duration(input)
-        return input.to_i.clamp(10, 60 * 60 * 24) unless Integer(input, exception: false).nil?
+        is_integer = !Integer(input, exception: false).nil?
+        return nil if is_integer && input.to_i.zero?
+        return input.to_i.clamp(10, 60 * 60 * 24) if is_integer
 
         seconds = TohsakaBot.match_time(input, /([0-9]*)(sec|sek|[sS])/) || 0
         minutes = TohsakaBot.match_time(input, /([0-9]*)(min|[mM])/) || 0

@@ -55,7 +55,7 @@ module TohsakaBot
         TohsakaBot.poll_cache.create(
           message.id,
           message.channel.id,
-          response[:content],
+          response[:poll_data][:question],
           response[:poll_data][:choices],
           response[:poll_data][:duration],
           response[:poll_data][:multi]

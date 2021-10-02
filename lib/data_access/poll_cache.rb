@@ -27,15 +27,19 @@ module TohsakaBot
       choice_id = choice_id.to_i
       user_id = user_id.to_i
 
-      return I18n.t("events.poll.vote.expiry") if @polls[id].nil? || @polls[id][:choices][choice_id].nil?
+      return { content: I18n.t("events.poll.vote.expiry") } if @polls[id].nil? || @polls[id][:choices][choice_id].nil?
 
       votes = total_votes(@polls[id])
 
       if @polls[id][:multi]
-        return I18n.t("events.poll.vote.already_voted_multi", votes: votes) if @polls[id][:choices][choice_id][:votes].include?(user_id)
+        if @polls[id][:choices][choice_id][:votes].include?(user_id)
+          return { content: I18n.t("events.poll.vote.already_voted_multi", votes: votes) }
+        end
       else
         @polls[id][:choices].each do |choice|
-          return I18n.t("events.poll.vote.already_voted_single", votes: votes) if choice[:votes].include?(user_id)
+          if choice[:votes].include?(user_id)
+            return { content: I18n.t("events.poll.vote.already_voted_single", votes: votes) }
+          end
         end
       end
 
@@ -50,7 +54,12 @@ module TohsakaBot
       # )
 
       @polls[id][:choices][choice_id][:votes].add(user_id)
-      I18n.t("events.poll.vote.success", choice: @polls[id][:choices][choice_id][:content], votes: votes + 1)
+      votes += 1
+
+      {
+        content: I18n.t("events.poll.vote.success", choice: @polls[id][:choices][choice_id][:content], votes: votes),
+        votes: votes
+      }
     end
 
     def total_votes(poll)

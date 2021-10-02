@@ -18,6 +18,18 @@ module TohsakaBot
         end
 
         response = TohsakaBot.poll_cache.stop(event.message.id)
+
+        # Remove buttons after the game has ended.
+        Discordrb::API::Channel.edit_message(
+          "Bot #{AUTH.bot_token}",
+          event.channel.id,
+          event.message.id,
+          event.message.content,
+          false,
+          nil,
+          nil
+        )
+
         event.respond(content: "", ephemeral: false, embeds: response.embeds.map(&:to_hash))
       end
     end
