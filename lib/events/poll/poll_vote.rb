@@ -28,7 +28,11 @@ module TohsakaBot
           )
         end
 
-        event.respond(content: response[:content], ephemeral: true) unless response[:content].nil?
+        if response[:content].nil?
+          event.defer_update
+        else
+          event.respond(content: response[:content], ephemeral: true) unless response[:content].nil?
+        end
       end
     end
   end
