@@ -57,7 +57,7 @@ module TohsakaBot
       votes += 1
 
       {
-        content: I18n.t("events.poll.vote.success", choice: @polls[id][:choices][choice_id][:content], votes: votes),
+        content: nil,
         votes: votes
       }
     end
