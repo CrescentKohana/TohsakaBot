@@ -28,10 +28,7 @@ module TohsakaBot
           )
         end
 
-        event.respond(
-          content: response[:content],
-          ephemeral: true
-        )
+        event.respond(content: response[:content], ephemeral: true) unless response[:content].nil?
       end
     end
   end

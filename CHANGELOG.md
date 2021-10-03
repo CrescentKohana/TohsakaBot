@@ -21,10 +21,11 @@ All notable changes to this project will be documented in this file. Unreleased 
 
 
 ### Removed
-- "get" keyword from message ID check event
+- Remove "get" keyword from message ID check event
+- Polls: remove vote success message
 
 ### Fixed
-- Lots of smaller bugs when it comes optional config options
+- Fix lots of smaller bugs when it comes optional config options
 
 ## [1.0.0] - 2021/09/17
 ### Added

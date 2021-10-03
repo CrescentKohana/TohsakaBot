@@ -77,7 +77,6 @@ en:
        Roles: %{roles}"
     poll:
       vote:
-        success: "Successfully voted %{choice}! Total votes: %{votes}."
         already_voted_single: "You have already voted. Total votes: %{votes}."
         already_voted_multi: "You have already voted this choice. Total votes: %{votes}."
         expiry: "This poll has expired."
