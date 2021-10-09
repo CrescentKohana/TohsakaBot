@@ -7,6 +7,7 @@ gem 'bigdecimal', "~>3.0.2"
 # Helper functions from Rails
 gem 'actionview', "~>6.1.4"
 gem 'activesupport', "~>6.1.4"
+gem 'tzinfo-data'
 
 # Config management
 gem 'configatron', "~>4.5.1"

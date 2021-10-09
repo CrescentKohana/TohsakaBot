@@ -169,6 +169,8 @@ GEM
     to_regexp (0.2.1)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
+    tzinfo-data (1.2021.1)
+      tzinfo (>= 1.0.0)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.8)
@@ -215,6 +217,7 @@ DEPENDENCIES
   sequel (~> 5.48.0)
   sqlite3 (~> 1.4.2)
   to_regexp (~> 0.2.1)
+  tzinfo-data
   yard (~> 0.9.26)
 
 BUNDLED WITH
