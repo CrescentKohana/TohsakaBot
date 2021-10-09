@@ -30,16 +30,7 @@ module TohsakaBot
 
         author_id = event.message.author.id.to_i
         custom_group_size = event.message.content.split(/<@&\d*>/)[0].to_i
-        members = JSON.parse(
-          Discordrb::API::Channel.get_reactions(
-            "Bot #{AUTH.bot_token}",
-            event.channel.id,
-            event.message.id,
-            "✅",
-            nil,
-            nil
-          )
-        ).reject { |m| m["bot"] }.map { |m| "<@!#{m['id']}>" } # Reject the bot.
+        members = event.message.all_reaction_users['✅'].reject(&:bot_account).map { |u| "<@!#{u.id}>" }
 
         # Members size has to be saved before removing the possible appearance of the message author.
         reaction_count = members.size
