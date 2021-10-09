@@ -18,7 +18,7 @@ All notable changes to this project will be documented in this file. Unreleased 
 - Register command now gives the owner highest permissions (1000)
 - The amount of votes is shown to everyone in Polls
 - 0 duration enables manual mode in Polls
-- Changed the way how users who reacted to the call get parsed in Squads. A request to Discord API is no longer needed.
+- Change the way how users who reacted to the call get parsed in Squads. A request to Discord API is no longer needed.
 
 ### Removed
 - Remove "get" keyword from message ID check event
@@ -26,6 +26,7 @@ All notable changes to this project will be documented in this file. Unreleased 
 
 ### Fixed
 - Fix lots of smaller bugs when it comes optional config options
+- Fix the offset of the timestamp in repost notifications
 
 ## [1.0.0] - 2021/09/17
 ### Added

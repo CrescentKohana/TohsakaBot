@@ -5,16 +5,17 @@ module TohsakaBot
     module RepostOverseer
       def self.notify(event, linked)
         user_obj = BOT.member(event.server, linked[:author_id])
-        username = user_obj.nil? ? "Deleted user" : user_obj.username
+        username = user_obj.nil? ? "Deleted user" : user_obj.display_name
+        time = Time.use_zone('UTC') { Time.zone.local(*linked[:timestamp]) }
 
         event.channel.send_embed do |embed|
           embed.colour = 0x36393F
           embed.add_field(
-            name: '**WANHA**',
-            value: "[#{username}](https://discord.com/channels/"\
-                     "#{linked[:server_id]}/#{linked[:channel_id]}/#{linked[:msg_id]})"
+            name: "**WANHA** #{Discordrb.timestamp(time, :relative)}",
+            value: "By [#{username}](https://discord.com/channels/"\
+                   "#{linked[:server_id]}/#{linked[:channel_id]}/#{linked[:msg_id]})"
           )
-          embed.timestamp = linked[:timestamp]
+          embed.timestamp = time
         end
       end
 
@@ -85,7 +86,7 @@ module TohsakaBot
 
         cleaned_msg = TohsakaBot.strip_markdown(event.message.content)
         urls = URI.extract(cleaned_msg)
-        time = Time.parse(event.message.timestamp.to_s)
+        time = event.message.timestamp
 
         repost_overseer(urls, time, event)
       end
