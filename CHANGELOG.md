@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file. Unreleased 
 - Support for higher upload limits (server boost levels 2 and 3)
 - Gem version restraints
 - Advanced Rock Paper Scissors command
+- Support for message edit events in ASS
 
 ### Changed
 - Reminder response formatting
