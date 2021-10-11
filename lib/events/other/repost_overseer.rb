@@ -19,7 +19,7 @@ module TohsakaBot
         end
       end
 
-      def self.repost_overseer(urls, time, event)
+      def self.repost_overseer(urls, time, event, edit: false)
         db = TohsakaBot.db[:linkeds]
 
         urls.each do |url|
@@ -32,6 +32,7 @@ module TohsakaBot
             next
           end
           # next unless db.where(url: url_result).single_record.nil?
+          next if edit
 
           TohsakaBot.db.transaction do
             db.insert(
@@ -48,6 +49,7 @@ module TohsakaBot
             )
           end
         end
+        return if edit
 
         event.message.attachments.each do |file|
           file_name = file.filename.dup.add_identifier
@@ -89,6 +91,16 @@ module TohsakaBot
         time = event.message.timestamp
 
         repost_overseer(urls, time, event)
+      end
+
+      message_edit do |event|
+        next unless TohsakaBot.url_regex.match?(event.message.content) || !event.message.attachments.empty?
+
+        cleaned_msg = TohsakaBot.strip_markdown(event.message.content)
+        urls = URI.extract(cleaned_msg)
+        time = event.message.timestamp
+
+        repost_overseer(urls, time, event, edit: true)
       end
     end
   end
