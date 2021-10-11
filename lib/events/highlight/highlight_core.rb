@@ -15,7 +15,7 @@ module TohsakaBot
 
     def requirements_for_pin_met?
       # Users with permission 250 or above can pin messages immediately
-      authorized_users = TohsakaBot.db[:users].where(Sequel[:permissions] >= 250).map do |u|
+      authorized_users = TohsakaBot.db[:users].where(Sequel[:permissions] >= 1000).map do |u|
         TohsakaBot.get_discord_id(u[:id])
       end
 
