@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file. Unreleased 
 - Gem version restraints
 - Advanced Rock Paper Scissors command
 - Support for message edit events in ASS
+- Sextuples roll
 
 ### Changed
 - Reminder response formatting

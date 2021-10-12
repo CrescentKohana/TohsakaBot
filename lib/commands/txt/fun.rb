@@ -119,6 +119,16 @@ module TohsakaBot
         event.message.reply!(response[:content], allowed_mentions: false, components: response[:components])
       end
 
+      command(:sexts,
+              aliases: %i[sextas sextuples hexas hexs hex hextuples kuutosilla kutoset kutosilla kutonen kuusi],
+              description: 'Sexts.',
+              usage: '',
+              bucket: :cf, rate_limit_message: 'Calm down! You are ratelimited for %time%s.') do |event|
+        command = CommandLogic::Roll.new(event, roll_size: 6)
+        response = command.run
+        event.message.reply!(response[:content], allowed_mentions: false, components: response[:components])
+      end
+
       command(:icecubes,
               aliases: %i[🧊 icecubemachine icecubes icecube ic jääpalakone jääpala jääpalat],
               description: 'Timer by simulating melting icecubes.',
