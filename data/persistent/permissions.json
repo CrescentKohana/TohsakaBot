@@ -17,6 +17,7 @@
     "trophy_roles": "moderator",
     "set_status": "data_moderator",
     "trigger_management": "data_moderator",
+    "force_highlight": "data_moderator",
     "regex_triggers": "trusted"
   }
 }
