@@ -14,8 +14,11 @@ module TohsakaBot
     end
 
     def requirements_for_pin_met?
-      # Users with permission 250 or above can pin messages immediately
-      authorized_users = TohsakaBot.db[:users].where(Sequel[:permissions] >= 1000).map do |u|
+      # If message is already highlighted
+      return false unless @db.where(msg_id: @message.id, deleted: false).empty?
+
+      # Users with force_highlight permission can highlight messages immediately
+      authorized_users = TohsakaBot.db[:users].where(Sequel[:permissions] >= TohsakaBot.permissions.actions["force_highlight"]).map do |u|
         TohsakaBot.get_discord_id(u[:id])
       end
 
@@ -25,10 +28,9 @@ module TohsakaBot
       # true if authorized
       is_authorized = reacted_users.intersect?(authorized_users.to_set)
 
-      return false unless @db.where(msg_id: @message.id, deleted: false).empty?
       return false if !@db.where(msg_id: @message.id, deleted: true).empty? && !is_authorized
 
-      reacted_users.size >= 3 || is_authorized
+      reacted_users.size == 3 || is_authorized
     end
 
     def serialize_attachments(attachments)
