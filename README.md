@@ -12,12 +12,18 @@ Rails web interface for the bot here: [TohsakaWeb](https://github.com/Luukuton/T
 
 ### [Functionality](documentation/functionality.md) (WIP)
 
-## Installation & running
+## Docker
+- Copy [docker-compose.example.yml](docker-compose.example.yml) as `docker-compose.yml`
+- Edit environmentals **TOHSAKABOT_MODE** (`dev`, `test` or `prod`) and **TOHSAKABOT_DATABASE_TYPE** (`sqlite`, `mariadb` or `pgsql`)
+- 
+
+## Local installation & running
 - Enable Privileged Gateway Intents here: `https://discord.com/developers/applications/<id>/bot`
 - Install Ruby ([rbenv](https://github.com/rbenv/rbenv) recommended for Linux), and MariaDB/MySQL **or** SQLite3
 
 
 - **If MariaDB/MySQL**: 
+  - Change **TOHSAKABOT_DATABASE_TYPE** in [.env](.env) to `mariadb`.
   - Use these SQL commands to create user and database for the bot. Remember to change USERNAMEs and PASSWORD.
     ```
     CREATE USER 'USERNAME'@'localhost' IDENTIFIED BY 'PASSWORD';
@@ -27,6 +33,7 @@ Rails web interface for the bot here: [TohsakaWeb](https://github.com/Luukuton/T
     ```
   - Run the following command in the root dir of the bot to populate the database with tables: `mysql -u USERNAME -p tohsaka < mysql_schema.sql`
 - **If SQLite3**:
+  - Change **TOHSAKABOT_DATABASE_TYPE** in [.env](.env) to `sqlite`.
   - Run the following command in the root dir of the bot to populate the database with tables: `sqlite3 data/tohsaka.db < sqlite_schema.sql`. The commands found inside `sqlite_schema.sql` can also be executed through SQLite Browser.
 
 
