@@ -18,7 +18,7 @@ module TohsakaBot
         ids.map!(&:to_i)
         triggers = TohsakaBot.db[:triggers]
 
-        if TohsakaBot.permissions.permission?(discord_uid, TohsakaBot.permissions.actions["trigger_management"])
+        if TohsakaBot.permissions.able?(discord_uid, "trigger_management", :perm)
           TohsakaBot.db.transaction do
             ids.each do |id|
               file = triggers.where(id: id.to_i).single_record!

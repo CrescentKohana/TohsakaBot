@@ -12,10 +12,7 @@ module TohsakaBot
               require_register: true,
               enabled_in_pm: false) do |event, *msg|
         discord_uid = event.author.id.to_i
-        trigger_control_permisson = TohsakaBot.permissions.permission?(
-          discord_uid,
-          TohsakaBot.permissions.actions["trigger_management"]
-        )
+        trigger_control_permisson = TohsakaBot.permissions.able?(discord_uid, "trigger_management", :perm)
 
         extra_help = 'Example: `triggermod -i 420 -p new trigger -r new response -c 100`'
 

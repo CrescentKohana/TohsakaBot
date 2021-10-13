@@ -12,7 +12,7 @@ module TohsakaBot
 
       def run
         user_id = TohsakaBot.command_event_user_id(@event)
-        return unless TohsakaBot.permissions.permission?(user_id, TohsakaBot.permissions.roles["owner"])
+        return unless TohsakaBot.permissions.able?(user_id, "owner", :role)
 
         slash = SlashCommands.new
         registered_commands = Set.new
