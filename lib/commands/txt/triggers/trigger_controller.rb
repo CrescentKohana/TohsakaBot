@@ -96,7 +96,7 @@ module TohsakaBot
       when /e.*/si
         0
       when /r.*/si
-        return nil unless TohsakaBot.permissions.permission?(discord_uid, TohsakaBot.permissions.actions["regex_triggers"])
+        return nil unless TohsakaBot.permissions.able?(discord_uid, "regex_triggers", :perm)
 
         2
       else

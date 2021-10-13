@@ -11,7 +11,6 @@ module TohsakaBot
 
       def run
         # TODO: More encoding methods.
-        puts @algorithm
         encoded_msg =  case @algorithm
                        when "base64"
                          Base64.encode64(@msg).gsub("\n", "") + "\u2063" * 2

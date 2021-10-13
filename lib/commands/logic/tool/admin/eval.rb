@@ -12,7 +12,7 @@ module TohsakaBot
         # Hard coded to allow ONLY the owner to have access.
         user_id = TohsakaBot.command_event_user_id(@event)
         return unless user_id == AUTH.owner_id.to_i
-        return unless TohsakaBot.permissions.permission?(user_id, TohsakaBot.permissions.roles["owner"])
+        return unless TohsakaBot.permissions.able?(user_id, "owner", :role)
 
         begin
           response = eval @code

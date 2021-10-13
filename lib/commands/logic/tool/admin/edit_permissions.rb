@@ -11,7 +11,7 @@ module TohsakaBot
 
       def run
         user_id = TohsakaBot.command_event_user_id(@event)
-        return unless TohsakaBot.permissions.permission?(user_id, TohsakaBot.permissions.actions["permissions"])
+        return unless TohsakaBot.permissions.able?(user_id, "permissions", :perm)
         return { content: I18n.t(:'commands.tool.admin.edit_permissions.error.user_not_found') } if @discord_user.nil?
 
         if @level.nil? || !(0..999).include?(@level)

@@ -60,12 +60,23 @@ module TohsakaBot
       nil
     end
 
-    # Returns true if user is at the level of permissions specified or higher
+    # Returns true if user is at the level of permissions specified or higher.
     #
     # @param discord_id [Integer] discord user id
-    # @param level [Integer] permission level
+    # @param permission [Integer, String] permission level or type as string, determined by type
+    # @param type [Symbol] :role (string), :perm (string), :level (integer)
     # @return [Boolean] permission or not
-    def permission?(discord_id, level)
+    def able?(discord_id, permission, type)
+      level = case type
+              when :level
+                permission.to_i
+              when :perm
+                @actions[permission]
+              when :role
+                @roles[permission]
+              end
+      level = Integer(level, exception: false).nil? ? 0 : level.clamp(0, 1000)
+
       users_with_permissions = TohsakaBot.permissions.users_at_level(level)
       return false if users_with_permissions.nil?
 
@@ -76,12 +87,11 @@ module TohsakaBot
       return nil if role.nil?
 
       roles = TohsakaBot.role_cache[server_id][:roles]
-      return id if !Integer(role, exception: false).nil? && (roles[role.to_i][:permissions].zero? || permission?(discord_id, roles[role.to_i][:permissions]))
+      return id if !Integer(role, exception: false).nil? && (roles[role.to_i][:permissions].zero? || able?(discord_id, roles[role.to_i][:permissions], :level))
 
       role = role.downcase
       roles.each do |role_id, role_data|
-        puts role_data
-        return role_id if role_data[:name].downcase == role && (role_data[:permissions].zero? || permission?(discord_id, role_data[:permissions]))
+        return role_id if role_data[:name].downcase == role && (role_data[:permissions].zero? || able?(discord_id, role_data[:permissions], :level))
       end
 
       nil

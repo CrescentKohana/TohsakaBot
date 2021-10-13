@@ -32,7 +32,7 @@ module TohsakaBot
     end
 
     def self.regex_permissions?(discord_uid)
-      return unless TohsakaBot.permissions.permission?(discord_uid, TohsakaBot.permissions.actions["regex_triggers"])
+      return unless TohsakaBot.permissions.able?(discord_uid, "regex_triggers", :perm)
 
       raise NoRegexPermissions
     end
