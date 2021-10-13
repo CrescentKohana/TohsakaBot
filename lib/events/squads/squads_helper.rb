@@ -7,7 +7,9 @@ module TohsakaBot
 
       roles_regex = []
       TohsakaBot.role_cache.each do |_sid, server|
-        server[:roles].each do |rid, _role|
+        server[:roles].each do |rid, role|
+          next if role['group_size'].zero?
+
           roles_regex << /.*<@&#{rid}>.*/
         end
       end
