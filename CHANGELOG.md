@@ -27,10 +27,13 @@ All notable changes to this project will be documented in this file. Unreleased 
 ### Removed
 - Remove "get" keyword from message ID check event
 - Polls: remove vote success message
+- Remove time and author validations from Squads Mute
+
 
 ### Fixed
 - Fix lots of smaller bugs when it comes optional config options
 - Fix the offset of the timestamp in repost notifications
+- Ignore roles with group_size 0 in Squads
 
 ## [1.0.0] - 2021/09/17
 ### Added
