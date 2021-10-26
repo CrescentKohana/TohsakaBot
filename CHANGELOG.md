@@ -34,6 +34,7 @@ All notable changes to this project will be documented in this file. Unreleased 
 - Fix lots of smaller bugs when it comes optional config options
 - Fix the offset of the timestamp in repost notifications
 - Ignore roles with group_size 0 in Squads
+- Author not being correct in renewed Squad calls
 
 ## [1.0.0] - 2021/09/17
 ### Added

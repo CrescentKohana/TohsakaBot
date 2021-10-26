@@ -15,7 +15,7 @@ module TohsakaBot
           next
         end
 
-        if event.user.id == event.message.author.id
+        if event.user.id == event.message.author.id || (!event.message.mentions.blank? && event.message.mentions.first.id == event.user.id)
           Discordrb::API::Channel.delete_user_reaction(
             "Bot #{AUTH.bot_token}", event.channel.id, event.message.id, "✅", event.message.author.id
           )
@@ -24,11 +24,16 @@ module TohsakaBot
 
         roles = TohsakaBot.role_cache[event.server.id][:roles]
         role_mentions = Set.new
-        event.message.role_mentions.each do | rm|
+        event.message.role_mentions.each do |rm|
           role_mentions.add(rm.id)
         end
 
-        author_id = event.message.author.id.to_i
+        author_id = if !event.message.author.bot_account
+                      event.message.author.id.to_i
+                    else
+                      event.message.mentions.blank? ? 0 : event.message.mentions.first.id
+                    end
+
         custom_group_size = event.message.content.split(/<@&\d*>/)[0].to_i
         members = event.message.all_reaction_users['✅'].reject(&:bot_account).map { |u| "<@!#{u.id}>" }
 
