@@ -9,7 +9,7 @@ module TohsakaBot
         next if Time.now.to_i < event.message.timestamp.to_i + 3600
 
         msg = event.respond(
-          "#{event.message.content} `by #{event.user.display_name}`",
+          "#{event.message.content} by <@!#{event.user.id}>",
           false,
           nil,
           nil,
