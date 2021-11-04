@@ -23,12 +23,12 @@ All notable changes to this project will be documented in this file. Unreleased 
 - Change the way how users who reacted to the call get parsed in Squads. A request to Discord API is no longer needed.
 - Refactor and rename permission? method to able?
 - Decrease Highlight check overhead
+- Refactor feature requests to use SQL
 
 ### Removed
 - Remove "get" keyword from message ID check event
 - Polls: remove vote success message
 - Remove time and author validations from Squads Mute
-
 
 ### Fixed
 - Fix lots of smaller bugs when it comes optional config options
