@@ -23,7 +23,7 @@ module TohsakaBot
         TohsakaBot.db.transaction do
           @id = issues.insert(
             content: content,
-            type: 0,
+            category: 0,
             status: 'new',
             user_id: TohsakaBot.get_user_id(event.message.user.id),
             created_at: Time.now,
