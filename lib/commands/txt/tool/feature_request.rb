@@ -56,7 +56,7 @@ module TohsakaBot
                     " #{format('%-32s', username)} | #{issue[:status]}`\n`\t\tREQ:` #{issue[:content]}\n"
         end
 
-        where = issues.size > 5 ? event.author.pm : event.channel
+        where = issues.count > 5 ? event.author.pm : event.channel
         msgs = []
         if result_amount.positive?
           header << output
