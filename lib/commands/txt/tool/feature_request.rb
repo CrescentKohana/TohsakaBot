@@ -40,7 +40,6 @@ module TohsakaBot
               usage: "ffr <status (new, indev, done, wontdo, all)>",
               min_args: 1,
               require_register: true) do |event, status|
-        result_amount = 0
         header = "`  ID | CREATED    | BY                               | TAGS `\n".dup
         output = ''.dup
         issues = if status == "all"
@@ -58,7 +57,7 @@ module TohsakaBot
 
         where = issues.count > 5 ? event.author.pm : event.channel
         msgs = []
-        if result_amount.positive?
+        if issues.count.positive?
           header << output
           msgs = TohsakaBot.send_multiple_msgs(Discordrb.split_message(header), where)
         else
