@@ -51,7 +51,7 @@ module TohsakaBot
 
         issues.each do |issue|
           datetime = Time.at(issue[:created_at]).to_s.split(' ')[0]
-          username = BOT.user(issue[:user_id]).username
+          username = BOT.user(TohsakaBot.get_discord_id(issue[:user_id])).username
           output << "`#{format('%4s', issue[:id])} | #{datetime} |"\
                     " #{format('%-32s', username)} | #{issue[:status]}`\n`\t\tREQ:` #{issue[:content]}\n"
         end
