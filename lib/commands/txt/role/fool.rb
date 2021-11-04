@@ -11,7 +11,7 @@ module TohsakaBot
               permission_level: TohsakaBot.permissions.actions["trophy_roles"]) do |event, _user, days, *reason|
         user_id = event.message.mentions[0].id.to_i
 
-        TohsakaBot.give_temporary_role(event, CFG.fool_role, user_id, days, reason)
+        TohsakaBot.give_trophy(event, CFG.fool_role, user_id, days, reason)
         event.respond(
           "#{event.message.mentions[0].username} has been given the rank of Fool for #{days} day#{'s' if days.to_i > 1}."
         )

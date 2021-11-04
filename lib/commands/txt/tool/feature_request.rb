@@ -18,7 +18,6 @@ module TohsakaBot
         # end
 
         content = msg.join(' ').strip
-
         issues = TohsakaBot.db[:issues]
         TohsakaBot.db.transaction do
           @id = issues.insert(

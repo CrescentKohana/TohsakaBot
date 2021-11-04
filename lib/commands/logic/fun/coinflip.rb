@@ -38,7 +38,7 @@ module TohsakaBot
           picked = coin_toss.pick(1)
 
           if picked == I18n.t(:'commands.fun.coinflip.outcome.edge')
-            TohsakaBot.give_temporary_role(@event, CFG.mvp_role.to_i, user_id, 1, 'Flipped a coin on its edge')
+            TohsakaBot.give_trophy(@event, CFG.mvp_role.to_i, user_id, 1, 'Flipped a coin on its edge')
           end
 
           case picked

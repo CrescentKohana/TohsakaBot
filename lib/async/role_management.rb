@@ -5,28 +5,24 @@ module TohsakaBot
     module RoleManagement
       Thread.new do
         loop do
-          role_db = YAML.load_file('data/temporary_roles.yml')
-          mute_db = YAML.load_file('data/squads_mute.yml')
-          timed_role_db = YAML.load_file('data/timed_roles.yml')
           now = Time.now
 
-          unless role_db.nil? || !role_db
-            role_db.each do |k, v|
-              user_id = v['user'].to_i
-              role_id = v['role'].to_i
+          mute_db = YAML.load_file('data/squads_mute.yml')
+          timed_role_db = YAML.load_file('data/timed_roles.yml')
 
-              next if v.nil? || !v["duration"]
-              next unless now.to_i >= v['time'].to_i + (v['duration'] * 24 * 60 * 60)
+          trophies = TohsakaBot.db[:trophies]
+          trophies_to_expire = trophies.where(
+            Sequel[:expired] == false, (Sequel[:created_at].to_i + (Sequel[:duration] * 24 * 60 * 60)) <= now.to_i
+          )
 
-              Discordrb::API::Server.remove_member_role(
-                "Bot #{AUTH.bot_token}", v['server'].to_i, user_id, role_id
-              )
+          trophies_to_expire.each do |trophy|
+            Discordrb::API::Server.remove_member_role(
+              "Bot #{AUTH.bot_token}", trophy[:server_id], trophy[:discord_uid], trophy[:role_id]
+            )
 
-              db = YAML::Store.new('data/temporary_roles.yml')
-              db.transaction do
-                db[k]["duration"] = false
-                db.commit
-              end
+            trophy[:expired] = true
+            TohsakaBot.db.transaction do
+              trophies.where(id: trophy.id).update(trophy)
             end
           end
 
