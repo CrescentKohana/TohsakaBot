@@ -52,7 +52,7 @@ module TohsakaBot
         issues.each do |issue|
           datetime = Time.at(issue[:created_at]).to_s.split(' ')[0]
           username = BOT.user(issue[:user_id]).username
-          output << "`#{format('%4s', id)} | #{datetime} |"\
+          output << "`#{format('%4s', issue[:id])} | #{datetime} |"\
                     " #{format('%-32s', username)} | #{issue[:status]}`\n`\t\tREQ:` #{issue[:content]}\n"
         end
 
@@ -82,7 +82,7 @@ module TohsakaBot
         if issue.nil?
           event.<< "No feature request with an ID of `#{id}` found."
         else
-          msg = case tag
+          msg = case status
                 when "done"
                   "is done!\n`#{issue[:content]}`"
                 when "indev"
