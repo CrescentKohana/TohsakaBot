@@ -11,11 +11,11 @@ module TohsakaBot
           timed_role_db = YAML.load_file('data/timed_roles.yml')
 
           trophies = TohsakaBot.db[:trophies]
-          trophies_to_expire = trophies.where(
-            Sequel[:expired] == false, (Sequel[:created_at].to_i + (Sequel[:duration] * 24 * 60 * 60)) <= now.to_i
-          )
+          trophies_to_expire = trophies.where(expired: false)
 
           trophies_to_expire.each do |trophy|
+            next if trophy[:duration] * 24 * 60 * 60 + trophy[:created_at].to_i > now.to_i
+
             Discordrb::API::Server.remove_member_role(
               "Bot #{AUTH.bot_token}", trophy[:server_id], trophy[:discord_uid], trophy[:role_id]
             )
