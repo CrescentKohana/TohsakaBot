@@ -23,7 +23,8 @@ All notable changes to this project will be documented in this file. Unreleased 
 - Change the way how users who reacted to the call get parsed in Squads. A request to Discord API is no longer needed.
 - Refactor and rename permission? method to able?
 - Decrease Highlight check overhead
-- Refactor feature requests to use SQL
+- Refactor Feature requests (Issues) to use SQL
+- Refactor Trophy roles to use SQL
 
 ### Removed
 - Remove "get" keyword from message ID check event
