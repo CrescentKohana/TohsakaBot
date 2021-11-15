@@ -22,7 +22,7 @@ module TohsakaBot
 
             trophy[:expired] = true
             TohsakaBot.db.transaction do
-              trophies.where(id: trophy.id).update(trophy)
+              trophies.where(id: trophy[:id]).update(trophy)
             end
           end
 
