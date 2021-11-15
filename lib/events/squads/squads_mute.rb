@@ -15,7 +15,18 @@ module TohsakaBot
           end
         end
         next if role_id.nil?
-        next unless BOT.member(event.server.id, event.user.id)&.role?(role_id)
+
+        mute_db = YAML.load_file('data/squads_mute.yml')
+        mute_db.each do |k, v|
+          next if v.nil?
+          next if v['role'].to_i != role_id || v['user'].to_i != event.user.id
+
+          db = YAML::Store.new('data/squads_mute.yml')
+          db.transaction do
+            db.delete(k)
+            db.commit
+          end
+        end
 
         durations = { "❌" => 1, "🚫" => 6, "🔕" => 24 }
         db = YAML::Store.new("data/squads_mute.yml")
@@ -31,6 +42,8 @@ module TohsakaBot
           }
           db.commit
         end
+
+        next unless BOT.member(event.server.id, event.user.id)&.role?(role_id)
 
         Discordrb::API::Server.remove_member_role(
           "Bot #{AUTH.bot_token}",
