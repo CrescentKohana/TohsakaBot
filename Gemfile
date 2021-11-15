@@ -47,18 +47,20 @@ gem 'pickup', "~>0.0.11"
 # Command line colors
 gem 'rainbow', "~>3.0.0"
 
-# Testing and style checks
+gem 'dotenv', '~>2.7.6'
+
+# Development, testing and style checks
 group :development do
-  gem 'memory_profiler', "~>1.0.0"
-  gem 'rspec', "~>3.10.0"
-  gem 'rubocop', "~>1.21.0"
-  gem 'rubocop-rspec', "~>2.5.0"
-  gem 'rubocop-sequel', "~>0.3.3"
-  gem "rubocop-performance", "~>1.11.5"
-  gem 'yard', "~>0.9.26"
+  gem 'memory_profiler', '~>1.0.0'
+  gem 'rspec', '~>3.10.0'
+  gem 'rubocop', '~>1.21.0'
+  gem 'rubocop-rspec', '~>2.5.0'
+  gem 'rubocop-sequel', '~>0.3.3'
+  gem 'rubocop-performance', '~>1.11.5'
+  gem 'yard', '~>0.9.26'
 end
 
-# TODO: Change this to something else soon
+# TODO: Change this to something else
 gem 'to_regexp', "~>0.2.1"
 
 # Latest release of chronic (natural time parsing)
