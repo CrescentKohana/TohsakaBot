@@ -12,11 +12,6 @@ Rails web interface for the bot here: [TohsakaWeb](https://github.com/Luukuton/T
 
 ### [Functionality](documentation/functionality.md) (WIP)
 
-## Docker
-- Copy [docker-compose.example.yml](docker-compose.example.yml) as `docker-compose.yml`
-- Edit environmentals **TOHSAKABOT_MODE** (`dev`, `test` or `prod`) and **TOHSAKABOT_DATABASE_TYPE** (`sqlite`, `mariadb` or `pgsql`)
-- 
-
 ## Local installation & running
 - Enable Privileged Gateway Intents here: `https://discord.com/developers/applications/<id>/bot`
 - Install Ruby ([rbenv](https://github.com/rbenv/rbenv) recommended for Linux), and MariaDB/MySQL **or** SQLite3
@@ -44,6 +39,11 @@ Rails web interface for the bot here: [TohsakaWeb](https://github.com/Luukuton/T
 - Start the bot by running `bundle exec ruby run.rb`.
 - Bot can be invited to a server with the following URL (**remember to change the CLIENT_ID**): 
    `https://discordapp.com/oauth2/authorize?client_id=CLIENT_ID&scope=bot&permissions=335924288`
+
+## Docker
+- WIP
+- Copy [docker-compose.example.yml](docker-compose.example.yml) as `docker-compose.yml`
+- Edit environmentals **TOHSAKABOT_MODE** (`dev`, `test` or `prod`) and **TOHSAKABOT_DATABASE_TYPE** (`sqlite`, `mariadb` or `pgsql`)
 
 ## Documentation with YARD
 YARD files can be generated with: `yard` command.
