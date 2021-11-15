@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: https://github.com/shardlab/discordrb.git
-  revision: d0fd65e9537cb926b145a79dd5e13b312153bcc9
+  revision: 79b717099cf7ad2746be757e3a6a4bb32886ee4b
   branch: main
   specs:
     discordrb (3.4.2)
@@ -46,6 +46,7 @@ GEM
     diff-lcs (1.4.4)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
+    dotenv (2.7.6)
     erubi (1.10.0)
     event_emitter (0.2.6)
     feedjira (3.2.0)
@@ -56,7 +57,7 @@ GEM
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
-    http (5.0.2)
+    http (5.0.4)
       addressable (~> 2.8)
       http-cookie (~> 1.0)
       http-form_data (~> 2.2)
@@ -67,7 +68,7 @@ GEM
     http-form_data (2.3.0)
     http-parser (1.2.3)
       ffi-compiler (>= 1.0, < 2.0)
-    i18n (1.8.10)
+    i18n (1.8.11)
       concurrent-ruby (~> 1.0)
     json (2.5.1)
     llhttp-ffi (0.4.0)
@@ -98,7 +99,7 @@ GEM
       ast (~> 2.4.1)
     pickup (0.0.11)
     public_suffix (4.0.6)
-    racc (1.5.2)
+    racc (1.6.0)
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
@@ -139,7 +140,7 @@ GEM
     rspec-mocks (3.10.2)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.10.0)
-    rspec-support (3.10.2)
+    rspec-support (3.10.3)
     rubocop (1.21.0)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
@@ -149,7 +150,7 @@ GEM
       rubocop-ast (>= 1.9.1, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.11.0)
+    rubocop-ast (1.13.0)
       parser (>= 3.0.1.1)
     rubocop-performance (1.11.5)
       rubocop (>= 1.7.0, < 2.0)
@@ -169,7 +170,7 @@ GEM
     to_regexp (0.2.1)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
-    tzinfo-data (1.2021.1)
+    tzinfo-data (1.2021.5)
       tzinfo (>= 1.0.0)
     unf (0.1.4)
       unf_ext
@@ -181,7 +182,7 @@ GEM
       event_emitter
       websocket
     yard (0.9.26)
-    zeitwerk (2.4.2)
+    zeitwerk (2.5.1)
 
 PLATFORMS
   x64-mingw32
@@ -194,6 +195,7 @@ DEPENDENCIES
   chronic!
   configatron (~> 4.5.1)
   discordrb!
+  dotenv (~> 2.7.6)
   feedjira (~> 3.2.0)
   http (~> 5.0.2)
   http-parser (~> 1.2.3)

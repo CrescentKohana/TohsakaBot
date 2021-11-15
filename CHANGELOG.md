@@ -25,6 +25,7 @@ All notable changes to this project will be documented in this file. Unreleased 
 - Decrease Highlight check overhead
 - Refactor Feature requests (Issues) to use SQL
 - Refactor Trophy roles to use SQL
+- Squad Mute now overwrites previous mutes for that role
 
 ### Removed
 - Remove "get" keyword from message ID check event
