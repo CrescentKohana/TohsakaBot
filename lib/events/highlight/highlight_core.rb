@@ -17,8 +17,9 @@ module TohsakaBot
       # If message is already highlighted
       return false unless @db.where(msg_id: @message.id, deleted: false).empty?
 
+      # TOOD: Separate reaction for force highlights
       # Users with force_highlight permission can highlight messages immediately
-      authorized_users = TohsakaBot.db[:users].where(Sequel[:permissions] >= TohsakaBot.permissions.actions["force_highlight"]).map do |u|
+      authorized_users = TohsakaBot.db[:users].where(Sequel[:permissions] >= TohsakaBot.permissions.roles["admin"]).map do |u|
         TohsakaBot.get_discord_id(u[:id])
       end
 
