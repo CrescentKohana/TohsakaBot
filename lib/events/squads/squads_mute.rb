@@ -30,7 +30,9 @@ module TohsakaBot
           end
         end
 
-        if previous_mute || BOT.member(event.server.id, event.user.id)&.role?(role_id)
+        current_role = BOT.member(event.server.id, event.user.id)&.role?(role_id)
+
+        if previous_mute || current_role
           durations = { "❌" => 1, "🚫" => 6, "🔕" => 24 }
           db = YAML::Store.new("data/squads_mute.yml")
           i = 1
@@ -47,7 +49,7 @@ module TohsakaBot
           end
         end
 
-        if BOT.member(event.server.id, event.user.id)&.role?(role_id)
+        if current_role
           Discordrb::API::Server.remove_member_role(
             "Bot #{AUTH.bot_token}",
             event.channel.server.id,
