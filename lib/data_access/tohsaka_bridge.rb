@@ -61,6 +61,10 @@ module TohsakaBot
       TohsakaBot.server_cache[server_id]
     end
 
+    def channel_permission?(server_id, channel_id, action)
+      BOT.member(server_id, discord_uid).permission?(action, BOT.channel(channel_id))
+    end
+
     # Checks that the member is in same server as the bot.
     # Used to prevent any outsiders creating accounts.
     def share_server_with_bot?(id)
