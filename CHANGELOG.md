@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file. Unreleased 
 - Advanced Rock Paper Scissors command
 - Support for message edit events in ASS
 - Sextuples roll
+- Better multi-server support
 
 ### Changed
 - Reminder response formatting

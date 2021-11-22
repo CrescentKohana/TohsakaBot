@@ -50,15 +50,15 @@ module TohsakaBot
     end
 
     def highlight_channel(server_id)
-      BOT.server_cache[server_id].highlight_channel
+      TohsakaBot.server_cache[server_id].highlight_channel
     end
 
     def default_channel(server_id)
-      BOT.server_cache[server_id].default_channel
+      TohsakaBot.server_cache[server_id].default_channel
     end
 
     def server(server_id)
-      BOT.server_cache[server_id]
+      TohsakaBot.server_cache[server_id]
     end
 
     # Checks that the member is in same server as the bot.
