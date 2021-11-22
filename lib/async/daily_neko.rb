@@ -41,10 +41,10 @@ module TohsakaBot
                        end
 
               TohsakaBot.server_cache.each do |server|
-                next unless server.daily_neko
+                next unless server[:daily_neko]
 
                 BOT.send_message(
-                  server.default_channel,
+                  server[:default_channel],
                   '',
                   false,
                   builder.embeds.map(&:to_hash).first,
