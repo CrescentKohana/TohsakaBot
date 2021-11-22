@@ -25,6 +25,7 @@ module TohsakaBot
             category: 0,
             status: 'new',
             user_id: TohsakaBot.get_user_id(event.message.user.id),
+            server_id: event.server.id,
             created_at: Time.now,
             updated_at: Time.now
           )
