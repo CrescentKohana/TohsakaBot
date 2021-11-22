@@ -57,14 +57,16 @@ module TohsakaBot
       TohsakaBot.server_cache[server_id][:default_channel]
     end
 
-    def server(server_id)
+    def get_server_config(server_id = nil)
+      return TohsakaBot.server_cache if server_id.nil?
+
       TohsakaBot.server_cache[server_id]
     end
 
     def channel_permission?(server_id, channel_id, discord_uid, action)
       begin
         member = BOT.member(server_id, discord_uid)
-      rescue Discordrb::Errors::UnknownMember
+      rescue
         return false
       end
       return false if member.nil?
