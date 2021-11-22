@@ -62,7 +62,14 @@ module TohsakaBot
     end
 
     def channel_permission?(server_id, channel_id, discord_uid, action)
-      BOT.member(server_id, discord_uid)&.permission?(action, BOT.channel(channel_id))
+      begin
+        member = BOT.member(server_id, discord_uid)
+      rescue Discordrb::Errors::UnknownMember
+        return false
+      end
+      return false if member.nil?
+
+      member.permission?(action, BOT.channel(channel_id))
     end
 
     # Checks that the member is in same server as the bot.
