@@ -4,7 +4,7 @@ module TohsakaBot
   module Events
     module HighlightDelete
       extend Discordrb::EventContainer
-      highlight_channels = TohsakaBot.server_cache.values.map(&:highlight_channel)
+      highlight_channels = TohsakaBot.server_cache.values.map { |server| server[:highlight_channel] }
       unless highlight_channels.empty?
         message_delete(in: highlight_channels) do |event|
           HighlightCore.delete_highlight(event.id.to_i)

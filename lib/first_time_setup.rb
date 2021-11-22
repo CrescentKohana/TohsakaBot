@@ -162,7 +162,7 @@ class FirstTimeSetup
     File.open('data/timed_roles.yml', 'w') { |f| f.write('--- {}') } unless File.exist?('data/timed_roles.yml')
 
     unless File.exist?('data/servers.json')
-      roles_hash = {
+      servers_hash = {
         "servers": [
           {
             "id": 1,
@@ -189,7 +189,7 @@ class FirstTimeSetup
           }
         ]
       }.freeze
-      File.open('data/roles.json', 'w') { |f| f.write(JSON.pretty_generate(roles_hash)) }
+      File.open('data/servers.json', 'w') { |f| f.write(JSON.pretty_generate(servers_hash)) }
     end
 
     Dir.mkdir('data/triggers') unless File.directory?('data/triggers')
