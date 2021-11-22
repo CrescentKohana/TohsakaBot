@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module TohsakaBot
-  # Database access and methods which are utilizing it.
+  # Database access
   module DatabaseAccess
     # Connection to the database.
     #
@@ -144,10 +144,10 @@ module TohsakaBot
 
   # Role cache.
   #
-  # @return [Hash] polls with votes
-  module PersistentRoleCache
-    def role_cache
-      @role_cache ||= TohsakaBot.read_server_roles
+  # @return [Hash] servers
+  module PersistentServerCache
+    def server_cache
+      @server_cache ||= TohsakaBot.read_servers
     end
   end
 
@@ -158,6 +158,6 @@ module TohsakaBot
     PersistentMsgQueueCache,
     PersistentPollCache,
     PersistentRPSCache,
-    PersistentRoleCache
+    PersistentServerCache
   )
 end

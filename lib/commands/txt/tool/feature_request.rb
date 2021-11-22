@@ -98,9 +98,11 @@ module TohsakaBot
             issues.where(id: id.to_i).update(issue)
           end
 
+          # TODO: cross-server support
           event.<< "Feature request `#{id}` updated!" unless event.channel.id.to_i == CFG.default_channel.to_i
 
           username = "by <@!#{TohsakaBot.get_discord_id(issue[:user_id])}>"
+          # TODO: cross-server support
           BOT.channel(CFG.default_channel.to_i).send_message("Feature request `#{id}` #{username} #{msg}")
         end
       end

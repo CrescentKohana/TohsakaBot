@@ -24,7 +24,7 @@ module TohsakaBot
             event.message.user.id,
             role_id
           )
-          deleted_roles.add(TohsakaBot.role_cache[event.server.id][:roles][role_id][:name])
+          deleted_roles.add(TohsakaBot.server_cache[event.server.id][:roles][role_id][:name])
         end
         if deleted_roles.empty?
           event.respond(I18n.t(:'commands.roles.errors.role_not_found'))

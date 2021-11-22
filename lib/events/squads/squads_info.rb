@@ -7,7 +7,7 @@ module TohsakaBot
       reaction_add(emoji: '❓') do |event|
         next if event.channel.pm? || event.user.bot_account
 
-        roles = TohsakaBot.role_cache[event.server.id][:roles]
+        roles = TohsakaBot.server_cache[event.server.id][:roles]
         parsed_roles = ''.dup
         roles.each do |_id, role|
           next if role[:group_size].zero?

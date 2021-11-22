@@ -28,16 +28,16 @@ module TohsakaBot
     def filter_modules
       modules = JSON.parse(File.read('data/persistent/bot_state.json')).transform_keys(&:to_sym)
       modules[:Commands].delete("GetSauce") if AUTH.saucenao_apikey.blank?
-      modules[:Commands].delete("MVP") if CFG.mvp_role.blank?
-      modules[:Commands].delete("Fool") if CFG.fool_role.blank?
+      # modules[:Commands].delete("MVP") if CFG.mvp_role.blank?
+      # modules[:Commands].delete("Fool") if CFG.fool_role.blank?
       modules[:Commands].delete("GetPitch") if CFG.nhk_api.blank?
 
       modules[:Async].delete("DailyNeko") if CFG.daily_neko.blank? || !CFG.daily_neko
 
-      if CFG.highlight_channel.blank?
-        modules[:Events].delete("HighlightReaction")
-        modules[:Events].delete("HighlightDelete")
-      end
+      # if CFG.highlight_channel.blank?
+      #   modules[:Events].delete("HighlightReaction")
+      #   modules[:Events].delete("HighlightDelete")
+      # end
 
       modules
     end

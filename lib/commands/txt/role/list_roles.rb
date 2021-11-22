@@ -12,7 +12,7 @@ module TohsakaBot
         if %w[server all].include?(filter)
           event.<< "Roles of **#{event.server.name}**: \n`#{event.server.roles.map(&:name).join(', ')}`"
         else
-          roles = TohsakaBot.role_cache[event.server.id][:roles]
+          roles = TohsakaBot.server_cache[event.server.id][:roles]
           response = "Allowed roles: \n".dup
           roles.each do |_id, role|
             response << "`#{role[:name]}` "

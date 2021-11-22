@@ -38,7 +38,7 @@ module TohsakaBot
         role_id = TohsakaBot.permissions.allowed_role(event.author.id, event.server.id, role)
         next if role_id.nil?
 
-        added_roles.add(TohsakaBot.role_cache[event.server.id][:roles][role_id][:name])
+        added_roles.add(TohsakaBot.server_cache[event.server.id][:roles][role_id][:name])
       end
 
       raise RoleHandler::RoleNotFound if added_roles.empty?
