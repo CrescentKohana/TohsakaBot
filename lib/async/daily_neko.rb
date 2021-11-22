@@ -40,7 +40,7 @@ module TohsakaBot
                          end
                        end
 
-              BOT.server_cache.each do |server|
+              TohsakaBot.server_cache.each do |server|
                 next unless server.daily_neko
 
                 BOT.send_message(

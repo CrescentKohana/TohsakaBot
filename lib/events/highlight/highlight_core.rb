@@ -3,7 +3,7 @@
 module TohsakaBot
   class HighlightCore
     def initialize(message, server_id, channel_id)
-      @highlight_channel = BOT.server_cache[server_id].highlight_channel
+      @highlight_channel = TohsakaBot.server_cache[server_id].highlight_channel
       @db = TohsakaBot.db[:highlights]
 
       @message = message
