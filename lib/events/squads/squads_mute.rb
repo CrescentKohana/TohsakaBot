@@ -9,7 +9,7 @@ module TohsakaBot
 
         role_id = nil
         event.message.role_mentions.each do |rm|
-          if TohsakaBot.role_cache[event.server.id][:roles].keys.include? rm.id.to_i
+          if TohsakaBot.server_cache[event.server.id][:roles].keys.include? rm.id.to_i
             role_id = rm.id.to_i
             break
           end

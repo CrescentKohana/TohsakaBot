@@ -158,16 +158,20 @@ class FirstTimeSetup
       end
     end
 
-    File.open('data/temporary_roles.yml', 'w') { |f| f.write('--- {}') } unless File.exist?('data/temporary_roles.yml')
     File.open('data/squads_mute.yml', 'w') { |f| f.write('--- {}') } unless File.exist?('data/squads_mute.yml')
     File.open('data/timed_roles.yml', 'w') { |f| f.write('--- {}') } unless File.exist?('data/timed_roles.yml')
 
-    unless File.exist?('data/roles.json')
+    unless File.exist?('data/servers.json')
       roles_hash = {
         "servers": [
           {
             "id": 1,
             "name": "Discord Example Server",
+            "default_channel": 0,
+            "highlight_channel": 0,
+            "mvp_role": 0,
+            "fool_role": 0,
+            "daily_neko": false,
             "roles": [
               {
                 "id": 1,

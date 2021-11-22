@@ -86,7 +86,7 @@ module TohsakaBot
     def allowed_role(discord_id, server_id, role)
       return nil if role.nil?
 
-      roles = TohsakaBot.role_cache[server_id][:roles]
+      roles = TohsakaBot.server_cache[server_id][:roles]
       return id if !Integer(role, exception: false).nil? && (roles[role.to_i][:permissions].zero? || able?(discord_id, roles[role.to_i][:permissions], :level))
 
       role = role.downcase

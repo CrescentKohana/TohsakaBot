@@ -22,7 +22,7 @@ module TohsakaBot
           next
         end
 
-        roles = TohsakaBot.role_cache[event.server.id][:roles]
+        roles = TohsakaBot.server_cache[event.server.id][:roles]
         role_mentions = Set.new
         event.message.role_mentions.each do |rm|
           role_mentions.add(rm.id)

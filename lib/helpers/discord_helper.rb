@@ -171,8 +171,8 @@ module TohsakaBot
       content.slice(0, max_content_length)
     end
 
-    def read_server_roles
-      servers = JSON.parse(File.read("data/roles.json"))["servers"]
+    def read_servers
+      servers = JSON.parse(File.read("data/servers.json"))["servers"]
 
       servers_hash = {}
       servers.each do |server|
@@ -193,6 +193,11 @@ module TohsakaBot
 
         servers_hash[server["id"]] = {
           name: server["name"],
+          default_channel: server["default_channel"],
+          highlight_channel: server["highlight_channel"],
+          mvp_role: server["mvp_role"],
+          fool_role: server["fool_role"],
+          daily_neko: server["daily_neko"],
           roles: roles_hash
         }
       end

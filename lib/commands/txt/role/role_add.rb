@@ -23,7 +23,7 @@ module TohsakaBot
             event.message.user.id,
             role_id
           )
-          added_roles.add(TohsakaBot.role_cache[event.server.id][:roles][role_id][:name])
+          added_roles.add(TohsakaBot.server_cache[event.server.id][:roles][role_id][:name])
         end
 
         if added_roles.empty?

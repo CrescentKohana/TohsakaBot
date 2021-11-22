@@ -6,7 +6,7 @@ module TohsakaBot
       extend Discordrb::EventContainer
 
       roles_regex = []
-      TohsakaBot.role_cache.each do |_sid, server|
+      TohsakaBot.server_cache.each do |_sid, server|
         server[:roles].each do |rid, role|
           next if role[:group_size].zero?
 

@@ -40,16 +40,20 @@ module TohsakaBot
                          end
                        end
 
-              BOT.send_message(
-                CFG.default_channel.to_i,
-                '',
-                false,
-                builder.embeds.map(&:to_hash).first,
-                nil,
-                false,
-                nil,
-                button
-              )
+              BOT.server_cache.each do |server|
+                next unless server.daily_neko
+
+                BOT.send_message(
+                  server.default_channel,
+                  '',
+                  false,
+                  builder.embeds.map(&:to_hash).first,
+                  nil,
+                  false,
+                  nil,
+                  button
+                )
+              end
             end
             sleep(10)
           end
