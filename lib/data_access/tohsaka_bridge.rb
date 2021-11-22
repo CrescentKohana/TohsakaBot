@@ -49,6 +49,16 @@ module TohsakaBot
       TohsakaBot.trigger_data.parse_chance(chance, mode)
     end
 
+    def highlight_channel
+      # TODO: Implement highlight channels for multiple servers
+      CFG.highlight_channel.to_i
+    end
+
+    def default_channel
+      # TODO: Implement default channels for multiple servers
+      CFG.default_channel.to_i
+    end
+
     # Checks that the member is in same server as the bot.
     # Used to prevent any outsiders creating accounts.
     def share_server_with_bot?(id)
