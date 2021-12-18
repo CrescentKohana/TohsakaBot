@@ -30,7 +30,7 @@ module TohsakaBot
         server_triggers.each do |t|
           phrase = t[:phrase]
           mode = t[:mode].to_i
-          msg = content.gsub("<@!#{AUTH.cli_id}>", '').strip
+          msg = content.gsub(/<@!?#{AUTH.cli_id}>/, '').strip
 
           if mode.zero?
             phrase = /^#{Regexp.quote(phrase)}$/i
