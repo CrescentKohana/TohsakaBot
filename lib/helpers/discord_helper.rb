@@ -80,13 +80,16 @@ module TohsakaBot
       # Makes a new entry to the database for the user so that the role can be deleted after a set time.
       trophies = TohsakaBot.db[:trophies]
       TohsakaBot.db.transaction do
+        now = Time.now
         @id = trophies.insert(
           reason: reason,
           duration: days,
           category: 0,
           discord_uid: user_id,
           server_id: server_id,
-          role_id: role_id
+          role_id: role_id,
+          created_at: now,
+          updated_at: now
         )
       end
     end
