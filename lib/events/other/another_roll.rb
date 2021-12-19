@@ -28,11 +28,11 @@ module TohsakaBot
 
         if /(\d)\1{3}/.match?(number) && i == 4
           name = BOT.member(event.server, event.author.id).display_name
-          TohsakaBot.give_trophy(event, CFG.mvp_role.to_i, user_id, 7, "Quads")
+          TohsakaBot.give_trophy(event, true, user_id, 7, "Quads")
           event.respond("🎉 @here #{name} HAS GOT QUADS! 🎉")
         elsif /(\d)\1{4}/.match?(number) && i == 5
           name = BOT.member(event.server, event.author.id).display_name
-          TohsakaBot.give_trophy(event, CFG.mvp_role.to_i, user_id, 7, "Quints")
+          TohsakaBot.give_trophy(event, true, user_id, 7, "Quints")
           event.respond("🎉 @here #{name} HAS GOT QUINTS! 🎉")
         end
       end

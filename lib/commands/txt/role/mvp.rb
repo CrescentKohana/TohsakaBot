@@ -16,7 +16,7 @@ module TohsakaBot
         end
 
         user_id = event.message.mentions[0].id
-        TohsakaBot.give_trophy(event, CFG.mvp_role, user_id, days, reason)
+        TohsakaBot.give_trophy(event, true, user_id, days, reason)
         event.respond(
           "#{event.message.mentions[0].username} has been rewarded the rank of MVP for #{days} day#{'s' if days.to_i > 1}."
         )

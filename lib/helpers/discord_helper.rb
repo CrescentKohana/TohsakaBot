@@ -64,9 +64,9 @@ module TohsakaBot
       user_msg&.delete
     end
 
-    def give_trophy(event, role_id, user_id, days, reason)
+    def give_trophy(event, winner, user_id, days, reason)
       server_id = event.channel.server.id
-      role_id = role_id.to_i
+      role_id = winner ? CFG.mvp_role.to_i : CFG.fool_role.to_i
 
       # Gives the role to the user unless they already have it.
       unless TohsakaBot::BOT.member(event.server, user_id)&.role?(role_id)
@@ -84,7 +84,7 @@ module TohsakaBot
         @id = trophies.insert(
           reason: reason,
           duration: days,
-          category: 0,
+          category: winner ? 1 : 2,
           discord_uid: user_id,
           server_id: server_id,
           role_id: role_id,
