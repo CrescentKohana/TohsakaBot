@@ -21,12 +21,8 @@ module TohsakaBot
         break if options.nil?
 
         triggers = TohsakaBot.db[:triggers]
-        result = triggers.where(server_id: event.server.id.to_i).order(:id).map(&:values).select do |t|
-          id = t[0].to_i
-          phrase = t[1].to_s
-          reply = t[2].to_s
-          file = t[3].to_s
-          discord_uid = TohsakaBot.get_discord_id(t[4]).to_i
+        results = triggers.where(server_id: event.server.id.to_i).order(:id).all.select do |t|
+          discord_uid = TohsakaBot.get_discord_id(t[:user_id]).to_i
 
           if options.id.nil?
             # If no author specified, it's ignored.
@@ -45,43 +41,37 @@ module TohsakaBot
 
               # if User matches OR Phrase is included OR Reply OR File is included
               discord_uid == opt_author &&
-                (phrase.include?(opt_phrase) || reply.include?(opt_reply) || file.include?(opt_reply))
+                (t[:phrase].include?(opt_phrase) || t[:reply].include?(opt_reply) || t[:file].include?(opt_reply))
             else
               opt_phrase = options.phrase.nil? ? nil : options.phrase.join(' ')
               opt_reply = options.reply.nil? ? nil : options.reply.join(' ')
-              opt_phrase ||= phrase
-              opt_reply ||= reply
+              opt_phrase ||= t[:phrase]
+              opt_reply ||= t[:reply]
 
               # if User matches AND Phrase is included AND (Reply OR File is included)
               discord_uid == opt_author &&
-                phrase.include?(opt_phrase) && (reply.include?(opt_reply) || file.include?(opt_reply))
+                t[:phrase].include?(opt_phrase) && (t[:reply].include?(opt_reply) || t[:file].include?(opt_reply))
             end
           else
-            options.id == id
+            options.id == t[:id]
           end
         end
 
         result_amount = 0
         header = '`Modes: exact (0), any (1) and regex (2). '.dup
         output = "`  ID | M & % | TRIGGER                           | MSG/FILE`\n".dup
-        result.each do |t|
-          id = t[0]
-          phrase = t[1]
-          reply = t[2]
-          file = t[3]
-          mode = t[7].to_i
-          chance = TohsakaBot.trigger_data.parse_chance(t[8], mode)
-
-          output << if reply.nil? || reply.empty?
-                      "`#{format('%4s', id)} |"\
-                      " #{format('%-5s', "#{mode} & #{chance}")} |"\
-                      " #{format('%-33s', phrase.to_s.gsub("\n", '')[0..30])} |"\
-                      " #{format('%-21s', file[0..20])}`\n"
+        results.each do |t|
+          chance = TohsakaBot.trigger_data.parse_chance(t[:chance], t[:mode])
+          output << if t[:reply].blank?
+                      "`#{format('%4s', t[:id])} |"\
+                      " #{format('%-5s', "#{t[:mode]} & #{chance}")} |"\
+                      " #{format('%-33s', t[:phrase].to_s.gsub("\n", '')[0..30])} |"\
+                      " #{format('%-21s', t[:file][0..20])}`\n"
                     else
-                      "`#{format('%4s', id)} |"\
-                      " #{format('%-5s', "#{mode} & #{chance}")} |"\
-                      " #{format('%-33s', phrase.to_s.gsub("\n", '')[0..30])} |"\
-                      " #{format('%-21s', reply.gsub("\n", '')[0..20])}`\n"
+                      "`#{format('%4s', t[:id])} |"\
+                      " #{format('%-5s', "#{t[:mode]} & #{chance}")} |"\
+                      " #{format('%-33s', t[:phrase].to_s.gsub("\n", '')[0..30])} |"\
+                      " #{format('%-21s', t[:reply].gsub("\n", '')[0..20])}`\n"
                     end
           result_amount += 1
         end
@@ -89,7 +79,7 @@ module TohsakaBot
         where = result_amount > 5 ? event.author.pm : event.channel
 
         if result_amount.positive?
-          header << "#{result_amount} trigger#{'s' if result.length > 1} found.`\n"
+          header << "#{result_amount} trigger#{'s' if results.length > 1} found.`\n"
           header << output
           where.split_send header.to_s
         else
