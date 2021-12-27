@@ -1,0 +1,29 @@
+<%= simple_form_for @issue do |f| %>
+
+  <% if @issue.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@issue.errors.count, "error") %> prohibited
+        this issue from being saved:
+      </h2>
+      <ul>
+        <% @issue.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.input :content %>
+  <%= f.input :category,
+              :label => "Category",
+              collection: %w[feature bug] %>
+  <%= f.input :server_id,
+              :label => "Server",
+              collection: choosable_servers(discord_id),
+              :label_method => :second,
+              :value_method => :first %>
+
+
+  <%= f.button :submit %>
+<% end %>

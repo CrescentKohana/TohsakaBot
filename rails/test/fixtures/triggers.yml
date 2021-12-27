@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  phrase: MyText
+  reply: MyText
+  file: MyText
+  user: 1
+  chance: 1
+  mode: 1
+
+two:
+  phrase: MyText
+  reply: MyText
+  file: MyText
+  user: 1
+  chance: 1
+  mode: 1

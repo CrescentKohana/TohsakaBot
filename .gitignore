@@ -1,8 +1,8 @@
 # Development
 .idea
-.yardoc
-doc
-deprecated
+/bot/.yardoc
+/bot/doc
+/bot/deprecated
 
 # Bot specific
 cfg/

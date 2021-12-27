@@ -1,0 +1,45 @@
+<%= link_to 'Back', highlights_path %>
+
+<br>
+
+<p>
+  <b>ID:</b>
+  <%= @highlight.id %>
+</p>
+
+<p>
+  <b>Author:</b>
+  <%= tohsaka_bridge.get_user(@highlight.author_id).username %>
+</p>
+
+<p>
+  <b>Server / Channel:</b>
+  <%= tohsaka_bridge.get_server(@highlight.server_id).name + " / \n" %>
+  <%= tohsaka_bridge.get_channel(@highlight.channel_id).name %>
+</p>
+
+
+<p>
+  <b>Timestamp:</b>
+  <%= @highlight.timestamp %>
+</p>
+
+<% unless @highlight.content.blank? %>
+  <p>
+    <b>Message:</b>
+    <%= @highlight.content %>
+  </p>
+<% end %>
+
+
+<% unless @highlight.attachments.blank? %>
+  <p>
+    <b>Attachments:</b>
+    <%= @highlight.attachments %>
+  </p>
+
+  <p>
+    <b>Preview:</b><br>
+    <%= attachment_preview(@highlight.attachments) %>
+  </p>
+<% end %>

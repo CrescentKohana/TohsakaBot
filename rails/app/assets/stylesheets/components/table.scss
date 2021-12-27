@@ -1,0 +1,57 @@
+// Tables
+.label {
+  text-align: left;
+  color: $primary-red;
+  border-bottom: 1px solid $primary-red;
+}
+
+.item {
+  padding: 5px 15px 5px 0;
+  word-break: break-word;
+}
+
+.edit-element {
+  display: inline-block;
+  margin: 5px 10px 0 0;
+}
+
+.rTable {
+  width: 100%;
+  display: table;
+  word-break: keep-all;
+  border-collapse: collapse;
+}
+
+.rTableRow {
+  display: table-row;
+}
+
+.rTableHead {
+  font-size: 1.2em;
+  display: table-cell;
+  padding: 0 10px 10px 0;
+}
+
+.rTableCell {
+  display: table-cell;
+  border: none;
+}
+
+.rTableCell:nth-child(1) {
+  padding-left: 10px;
+}
+.rTableCell:nth-child(4) {
+  padding-right: 10px;
+}
+
+.rTableRow:nth-child(even) {
+  background-color: $table-alternate;
+}
+
+.rTableHeading, .rTableFoot, .rTableHeading {
+  display: table-header-group;
+}
+
+.rTableBody {
+  display: table-row-group;
+}
