@@ -35,8 +35,7 @@ module TohsakaBot
     #
     # @return [Integer] chance as percentage
     def parse_chance(chance, mode)
-      chance = chance.to_i
-      chance = chance.zero? ? CFG.default_trigger_chance : chance
+      chance = chance.to_i.zero? ? CFG.default_trigger_chance : chance.to_i
       chance = case mode.to_i
                when 2
                  chance
