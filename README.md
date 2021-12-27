@@ -27,7 +27,7 @@ A Discord bot written in Ruby, originally made for a private Discord community. 
     ```
     EDITOR="nano" rails credentials:edit
     ```
-    or **or Windows**:
+    or **on Windows**:
     ```
     $env:EDITOR="notepad"
     rails credentials:edit
