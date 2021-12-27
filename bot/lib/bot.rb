@@ -64,7 +64,7 @@ require_relative 'gem_overrides/interaction_override'
 module TohsakaBot
   # Localization with fallbacks
   I18n::Backend::Simple.include I18n::Backend::Fallbacks
-  I18n.load_path << Dir["#{File.expand_path('locales')}/*.yml"]
+  I18n.load_path << Dir['bot/locales/*.yml']
   I18n.fallbacks.map(fi: :en, ja: :en)
 
   # Configuration & settings #

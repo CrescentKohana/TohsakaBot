@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-if !File.exist?('cfg/auth.yml') || !File.exist?('cfg/config.yml') || ARGV.include?("reset")
+if !File.exist?('cfg/auth.yml') || !File.exist?('cfg/config.yml') || ARGV.include?('reset')
   require 'i18n'
-  require "i18n/backend/fallbacks"
+  require 'i18n/backend/fallbacks'
 
   I18n::Backend::Simple.include I18n::Backend::Fallbacks
-  I18n.load_path << Dir["#{File.expand_path('locales')}/*.yml"]
+  I18n.load_path << Dir['bot/locales/*.yml']
   I18n.fallbacks.map(fi: :en, ja: :en)
 
   require_relative 'bot/lib/first_time_setup'
-  locale = ARGV[0].nil? || ARGV[0] == "reset" ? "en" : ARGV[0]
+  locale = ARGV[0].nil? || ARGV[0] == 'reset' ? 'en' : ARGV[0]
   unless %w[en ja fi].include?(locale)
     puts "#{locale} is not a valid locale."
     exit

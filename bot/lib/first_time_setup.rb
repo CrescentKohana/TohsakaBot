@@ -56,7 +56,7 @@ class FirstTimeSetup
         database_type = 'sqlite'
         print green + I18n.t(:'first_time_setup.sqlite')
         sqlite_db = gets
-        sqlite_db = sqlite_db.blank? ? 'tohsaka.db' : sqlite_db
+        sqlite_db = sqlite_db.blank? ? 'production.sqlite3' : sqlite_db
         db_user = ''
         db_password = ''
       end
