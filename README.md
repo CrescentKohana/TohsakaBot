@@ -15,6 +15,7 @@ A Discord bot written in Ruby, originally made for a private Discord community. 
 - Enable Privileged Gateway Intents here: `https://discord.com/developers/applications/<id>/bot`
 - Install Ruby ([rbenv](https://github.com/rbenv/rbenv) recommended for Linux), and MariaDB/MySQL **or** SQLite3
 - Install bundler: `gem install bundler`
+- Run the following commands: `cd rails` && `bundle install`
 - **If MariaDB/MySQL**:
   - Use these SQL commands to create user and database for the bot. Remember to change USERNAMEs and PASSWORD.
     ```
@@ -32,9 +33,9 @@ A Discord bot written in Ruby, originally made for a private Discord community. 
     $env:EDITOR="notepad"
     rails credentials:edit
     ```
-  - Run the following commands: `rails db:migrate`
+  - Run the following commands: `rails db:migrate RAILS_ENV=production`
 - **If SQLite3**:
-  - Run the following commands: `cd rails` && `bundle install` && `rails db:migrate`
+  - Run the following command: `rails db:migrate RAILS_ENV=productionlite`
 - Go back to the root folder: `cd ..`
 - Run `bundle install` to install required gems.
   - _On Windows, if installing the mysql2 gem fails, install it separately with:_
