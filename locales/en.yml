@@ -416,7 +416,11 @@ en:
           response: ""
       fool:
       mvp:
-      trophy_roles:
+      reason:
+        error:
+          no_user: "No user given."
+          no_trophies_found: "No given trophies found."
+
 
     reminder:
       add:
