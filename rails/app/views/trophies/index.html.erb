@@ -1,0 +1,27 @@
+<h1>Trophies</h1>
+
+<div class="rTable">
+  <div class="rTableBody">
+    <div class="rTableRow label">
+      <div class="rTableHead">Category</div>
+      <div class="rTableHead">Content</div>
+      <div class="rTableHead">Days</div>
+      <div class="rTableHead">User</div>
+    </div>
+
+
+    <% @trophies.order(:created_at).each do |trophy| %>
+      <% cat = category(trophy.category) %>
+      <div class="rTableRow">
+        <div style="color: <%= cat[:color] %>;" class="rTableCell item"><%= cat[:role] %></div>
+        <div class="rTableCell item"><%= trophy.reason %></div>
+        <div class="rTableCell item"><%= trophy.duration  %></div>
+        <div class="rTableCell item"><%= tohsaka_bridge.get_user(trophy.discord_uid).username  %></div>
+        <div style="width: 30px; text-align: center;" class="rTableCell item">
+          <%= link_to '👀', trophy_path(trophy) %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+<br>

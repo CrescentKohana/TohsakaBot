@@ -1,0 +1,31 @@
+<p>
+  <b>ID:</b>
+  <%= @trophy.id %>
+</p>
+
+<p>
+  <b>Category:</b>
+  <%= @trophy.category %>
+</p>
+
+<p>
+  <b>Reason:</b>
+  <%= @trophy.reason %>
+</p>
+
+<p>
+  <b>Duration:</b>
+  <%= @trophy.duration %> days starting at <%= @trophy.created_at %>
+  <span style="color: red;"><%= @trophy.expired ? " (Expired)" : "" %></span>
+</p>
+
+<p>
+  <b>User:</b>
+  <%= tohsaka_bridge.get_user(@trophy.discord_uid).username %>
+</p>
+
+<p>
+  On <b>server</b> <%= tohsaka_bridge.get_server(@trophy.server_id).name %> with <b>role</b> <%= @trophy.role_id %>
+</p>
+
+<%= link_to 'Back', trophies_path %>

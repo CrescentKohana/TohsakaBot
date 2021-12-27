@@ -1,0 +1,29 @@
+<p>
+  <b>ID:</b>
+  <%= @reminder.id %>
+</p>
+
+<p>
+  <b>Datetime:</b>
+  <%= @reminder.datetime %>
+  <%= ("(every " + distance_of_time_in_words(@reminder.repeat) + ")") if @reminder.repeat > 0 %>
+</p>
+
+<p>
+  <b>Message:</b>
+  <%= @reminder.message %>
+</p>
+
+<p>
+  <b>Channel:</b>
+  <%= tohsaka_bridge.get_channel(@reminder.channel_id).name %>
+</p>
+
+<% if @reminder.repeat > 0 %>
+<p>
+  <b>Repeat:</b>
+  <%= distance_of_time_in_words(@reminder.repeat) %>
+</p>
+<% end %>
+
+<%= link_to 'Back', reminders_path %>

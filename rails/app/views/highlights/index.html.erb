@@ -1,0 +1,28 @@
+<h1>Highlights</h1>
+
+<div class="rTable">
+  <div class="rTableBody">
+    <div class="rTableRow label">
+      <div class="rTableHead">User</div>
+      <div class="rTableHead">Message</div>
+      <div class="rTableHead">Attachments</div>
+      <div class="rTableHead">Timestamp</div>
+      <div class="rTableHead">Server / Channel</div>
+    </div>
+
+    <% @highlights.where.not(deleted: true).order(:timestamp).each do |highlight| %>
+      <div class="rTableRow">
+        <div style="width: 90px;" class="rTableCell item"><%= tohsaka_bridge.get_user(highlight.author_id).username  %></div>
+        <div class="rTableCell item"><%= highlight.content %></div>
+        <div class="rTableCell item"><%= highlight.attachments %></div>
+        <div class="rTableCell item"><%= link_to highlight.timestamp, highlight_path(highlight) %></div>
+
+        <div style="width: 180px;" class="rTableCell item">
+          <%= tohsaka_bridge.get_server(highlight.server_id).name + " / \n" %>
+          <%= tohsaka_bridge.get_channel(highlight.channel_id).name %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+<br>

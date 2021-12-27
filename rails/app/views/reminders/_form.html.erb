@@ -1,0 +1,31 @@
+<%= simple_form_for @reminder do |f| %>
+
+  <% if @reminder.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@reminder.errors.count, "error") %> prohibited
+        this reminder from being saved:
+      </h2>
+      <ul>
+        <% @reminder.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <b>Basic options </b> (format for desktop Firefox users: dd/mm/yyyy --.--)
+  <%= f.input :datetime, html5: true %>
+  <%= f.input :message %>
+  <%= f.input :channel_id,
+              :label => "Channel",
+              collection: choosable_channels(discord_id),
+              :label_method => :second,
+              :value_method => :first %>
+  <b>Repeat interval </b>
+  <%= f.input :repeat_day, as: :integer, :label => 'Days', input_html: { min: '0' } %>
+  <%= f.input :repeat_hour, as: :integer, :label => 'Hours', input_html: { min: '0' }%>
+  <%= f.input :repeat_min, as: :integer, :label => 'Minutes', input_html: { min: '0' }%>
+
+  <%= f.button :submit %>
+<% end %>

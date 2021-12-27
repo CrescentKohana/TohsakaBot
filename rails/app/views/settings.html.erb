@@ -1,0 +1,26 @@
+<h1>Settings</h1>
+
+<h3>Update settings</h3>
+
+<%= simple_form_for @user do |f| %>
+
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@user.errors.count, "error") %> prohibited
+        this reminder from being saved:
+      </h2>
+      <ul>
+        <% @user.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.input :locale, collection: %w[en ja fi] %>
+  <%= f.button :submit %>
+<% end %>
+
+<h3>API key (JWT)</h3>
+<code><%= encode_token({user_id: @user.id}) %></code>

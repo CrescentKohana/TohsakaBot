@@ -1,0 +1,145 @@
+// Light theme colors
+$primary-background: #aaaaaa;
+$secondary-background: #efefef;
+
+$primary-red: #8e0a2d;
+$secondary-red: #bd1041;
+
+$title: #e91e53;
+$warning: $primary-red;
+$notice: #0d3f7d;
+
+$table-alternate: #e3e3e3;
+
+
+html {
+    min-height: 100%;
+    min-width: 360px;
+}
+
+body {
+    margin: 0 auto;
+    padding: 0;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 16px;
+    background-color: $primary-background;
+}
+
+b {
+    font-weight: bold;
+}
+
+.warning {
+    color: $warning;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.notice {
+    color: $notice;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Header */
+#title {
+    float: left;
+    width: 10em;
+    height: 54px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+#title a:visited, #title a:hover, #title a:active, #title a:link {
+    color: $title;
+    text-decoration: none;
+    font-size: 24px;
+}
+
+#auth {
+    width: 30%;
+    height: 64px;
+    float: right;
+}
+
+#auth_inner {
+    overflow: hidden;
+    height: 64px;
+    width: 100%;
+}
+
+#auth_avatar {
+    float: right;
+    width: 64px;
+    height: 64px;
+}
+
+.auth_child {
+    float: right;
+    width: calc(100% - 74px);
+    margin: 5px 10px 0 0;
+    height: 59px;
+    text-align: right;
+}
+
+.auth_child p {
+    margin-top: 5px;
+}
+
+/* Main styling */
+#header {
+    width: 100%;
+    height: 64px;
+    padding: 0;
+    background-color: $secondary-background;
+}
+
+#main {
+    margin: 50px 10% 0 10%;
+    min-height: 50vh;
+    position: relative;
+    background-color: $secondary-background;
+    padding: 20px;
+}
+
+#footer {
+    position: relative;
+    height: 32px;
+    margin: 50px 10% 0 10%;
+    left: 0;
+    bottom: 0;
+}
+
+/* Links */
+a:visited, a:active, a:link {
+    color: $primary-red;
+    text-decoration: none;
+}
+
+a:hover {
+    color: $secondary-red;
+    text-decoration: underline;
+}
+
+/* Hiding text */
+.text_hide {
+    display: none;
+}
+
+.text_hide_parent:hover .text_hide {
+    display: inline;
+}
+
+/* Responsive */
+@media (max-width: 850px) {
+}
+
+
+code {
+  display: block;
+  word-wrap: break-word;
+}
+
+@import 'components/nav';
+@import 'components/table';
+@import 'components/form';

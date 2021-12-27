@@ -1,0 +1,32 @@
+<h1>Issues</h1>
+<h3><%= link_to 'Create a new issue', new_issue_path %></h3>
+
+<div class="rTable">
+  <div class="rTableBody">
+    <div class="rTableRow label">
+      <div class="rTableHead">Status</div>
+      <div class="rTableHead">Content</div>
+      <div class="rTableHead">User</div>
+    </div>
+
+    <% @issues.order(:created_at).each do |issue| %>
+      <div class="rTableRow">
+        <div style="width: 75px; color: <%= status_color(issue.status) %>;" class="rTableCell item">
+          <%= issue.status %>
+        </div>
+        <div class="rTableCell item"><%= issue.content %></div>
+        <div style="width: 100px;" class="rTableCell item">
+          <%= issue.user.name %>
+        </div>
+        <div style="width: 75px; text-align: center;" class="rTableCell item">
+          <%= link_to '👀', issue_path(issue) %>
+          <% if own?(issue.id) && issue.status == "new" %>
+            <%= link_to '📝', edit_issue_path(issue) %>
+            <%= link_to '🗑️', issue_path(issue), method: :delete, data: { confirm: 'Are you sure?' } %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+<br>

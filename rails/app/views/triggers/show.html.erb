@@ -1,0 +1,40 @@
+<p>
+  <b>ID:</b>
+  <%= @trigger.id %>
+</p>
+
+<p>
+  <b>Options:</b>
+  <%= tohsaka_bridge.parse_chance(@trigger.chance, @trigger.mode).to_s + " %" %>
+  <%= mode_in_words(@trigger.mode) %>
+</p>
+
+<p>
+  <b>Server (ID):</b>
+  <%= "#{tohsaka_bridge.get_server(@trigger.server_id).name} (#{@trigger.server_id})"  %>
+</p>
+
+
+
+<p>
+  <b>Phrase:</b>
+  <%= @trigger.phrase %>
+</p>
+
+<b>Reply / Filename:</b>
+<span style="white-space:pre-line">
+  <%= file = File.basename(@trigger.file.to_s)
+      if @trigger.reply.blank?
+        "<a
+            target='_blank'
+            rel='noopener noreferrer'
+            href='https://rin.luukuton.fi/td/#{file}'>
+            #{file}
+        </a>".html_safe
+      else
+        @trigger.reply
+      end %>
+</span>
+<br>
+
+<%= link_to 'Back', triggers_path %>

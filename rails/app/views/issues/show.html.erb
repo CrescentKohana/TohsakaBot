@@ -1,0 +1,28 @@
+
+
+<p>
+  <b>ID:</b>
+  <%= @issue.id %>
+</p>
+
+<p>
+  <b>Created by</b>
+  <%= @issue.user.name %>
+</p>
+
+<p>
+  <b>Category:</b>
+  <%= category(@issue.category) %>
+</p>
+
+<p>
+  <b>Status:</b>
+  <span style="color: <%= status_color(@issue.status) %>;"><%= @issue.status %></span>
+</p>
+
+<p>
+  <b>Content:</b>
+  <%= @issue.content %>
+</p>
+
+<%= link_to 'Back', issues_path %>

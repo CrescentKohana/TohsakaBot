@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  reason: MyText
+  duration: 1
+  type: 1
+  discord_user_id: 
+  server_id: 
+  role_id: 
+
+two:
+  reason: MyText
+  duration: 1
+  type: 1
+  discord_user_id: 
+  server_id: 
+  role_id: 

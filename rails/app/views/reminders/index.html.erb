@@ -1,0 +1,27 @@
+<h1>Reminders</h1>
+<h3><%= link_to 'Create a new reminder', new_reminder_path %></h3>
+
+<div class="rTable">
+  <div class="rTableBody">
+    <div class="rTableRow label">
+      <div class="rTableHead">Datetime</div>
+      <div class="rTableHead">Message</div>
+      <div class="rTableHead">Channel</div>
+      <div class="rTableHead">Actions</div>
+    </div>
+
+    <% @reminders.order(:datetime).each do |reminder| %>
+      <div class="rTableRow">
+        <div style="white-space:pre-line" class="rTableCell item"><%= reminder.datetime.to_s + (reminder.repeat != 0 ? "\nevery #{distance_of_time_in_words(reminder.repeat)}".html_safe : "") %></div>
+        <div class="rTableCell item"><%= reminder.message %></div>
+        <div class="rTableCell item"><%= channel_name(reminder)  %></div>
+        <div style="width: 75px; text-align: center;" class="rTableCell item">
+          <%= link_to '👀', reminder_path(reminder) %>
+          <%= link_to '📝', edit_reminder_path(reminder) %>
+          <%= link_to '🗑️', reminder_path(reminder), method: :delete,confirm: 'Are you sure?' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+<br>
