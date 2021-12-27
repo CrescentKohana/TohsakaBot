@@ -41,7 +41,7 @@ module TohsakaBot
 
               # if User matches OR Phrase is included OR Reply OR File is included
               discord_uid == opt_author &&
-                (t[:phrase].include?(opt_phrase) || t[:reply].include?(opt_reply) || t[:file].include?(opt_reply))
+                (t[:phrase]&.include?(opt_phrase) || t[:reply]&.include?(opt_reply) || t[:file]&.include?(opt_reply))
             else
               opt_phrase = options.phrase.nil? ? nil : options.phrase.join(' ')
               opt_reply = options.reply.nil? ? nil : options.reply.join(' ')
@@ -50,7 +50,7 @@ module TohsakaBot
 
               # if User matches AND Phrase is included AND (Reply OR File is included)
               discord_uid == opt_author &&
-                t[:phrase].include?(opt_phrase) && (t[:reply].include?(opt_reply) || t[:file].include?(opt_reply))
+                t[:phrase]&.include?(opt_phrase) && (t[:reply]&.include?(opt_reply) || t[:file]&.include?(opt_reply))
             end
           else
             options.id == t[:id]
