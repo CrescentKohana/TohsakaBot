@@ -8,7 +8,7 @@ if !File.exist?('cfg/auth.yml') || !File.exist?('cfg/config.yml') || ARGV.includ
   I18n.load_path << Dir["#{File.expand_path('locales')}/*.yml"]
   I18n.fallbacks.map(fi: :en, ja: :en)
 
-  require_relative 'lib/first_time_setup'
+  require_relative 'bot/lib/first_time_setup'
   locale = ARGV[0].nil? || ARGV[0] == "reset" ? "en" : ARGV[0]
   unless %w[en ja fi].include?(locale)
     puts "#{locale} is not a valid locale."
@@ -20,4 +20,4 @@ if !File.exist?('cfg/auth.yml') || !File.exist?('cfg/config.yml') || ARGV.includ
   exit
 end
 
-require_relative 'lib/bot'
+require_relative 'bot/lib/bot'
