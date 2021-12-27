@@ -35,8 +35,8 @@ module TohsakaBot
               unless trigger[:reply].nil? || trigger[:reply].empty?
                 e.add_field(name: 'Reply', value: trigger[:reply].to_s)
               end
-              unless trigger[:file].nil? || trigger[:file].empty?
-                e.add_field(name: 'File', value: "[Link](https://rin.luukuton.fi/td/#{trigger[:file]})")
+              unless CFG.web_url.length == 0 || trigger[:file].nil? || trigger[:file].empty?
+                e.add_field(name: 'File', value: "[Link](#{CFG.web_url}/td/#{trigger[:file]})")
               end
               e.add_field(name: 'Mode / Chance', value: "#{mode} / #{chance} %")
               e.add_field(name: 'Occurrences + Calls', value: "#{trigger[:occurrences]} + #{trigger[:calls]}")
