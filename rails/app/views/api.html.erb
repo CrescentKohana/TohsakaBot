@@ -1,0 +1,11 @@
+<h3>API</h3>
+<p><%= Rails.configuration.hosts[3] %>/api/v1/:model</p>
+<p><%= Rails.configuration.hosts[3] %>/api/v1/:model/:id</p>
+<p><%= Rails.configuration.hosts[3] %>/api/v1/linkeds/?q=searchterm</p>
+
+<h3>Models</h3>
+<p>reminders, triggers, highlights, linkeds</p>
+
+<h3>Examples</h3>
+<p>HTTP HEADER: { Authorization: Bearer TOKEN }</p>
+<p>Test with CURL: <b>curl -i -X GET -H 'Authorization: Bearer TOKEN' <%= Rails.configuration.hosts[3] %>/api/v1/linkeds</b></p>

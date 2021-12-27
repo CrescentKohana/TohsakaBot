@@ -1,0 +1,30 @@
+<p>0% sets the chance to the default value.</p>
+<%= simple_form_for @trigger, html: {multipart: true} do |f| %>
+
+  <% if @trigger.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@trigger.errors.count, "error") %> prohibited
+        this trigger from being saved:
+      </h2>
+      <ul>
+        <% @trigger.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.input :phrase %>
+  <%= f.input :reply %>
+  <%= f.input :file, as: :file %>
+  <%= f.collection_radio_buttons :mode, [[0, 'Exact'], [1, 'Any'], [2, 'Regex']], :first, :last %>
+  <%= f.input :chance, as: :integer, input_html: { min: '0', max: '100' }, disabled: !permissions?(100) %>
+  <%= f.input :server_id,
+              :label => "Server",
+              collection: choosable_servers(discord_id),
+              :label_method => :second,
+              :value_method => :first %>
+
+  <%= f.button :submit %>
+<% end %>

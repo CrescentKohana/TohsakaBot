@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  message: MyText
+  attachments: MyText
+  user_id: 
+  timestamp: 2020-12-25 18:24:38
+  message_id: 
+  channel_id: 
+  server_id: 
+
+two:
+  message: MyText
+  attachments: MyText
+  user_id: 
+  timestamp: 2020-12-25 18:24:38
+  message_id: 
+  channel_id: 
+  server_id: 

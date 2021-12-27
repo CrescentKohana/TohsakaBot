@@ -1,4 +1,4 @@
-# Changelog
+# Changelog (bot)
 
 All notable changes to this project will be documented in this file. Unreleased changes are in the master branch, not just labeled as a true release.
 

@@ -1,0 +1,44 @@
+// Navigation
+#nav {
+  float: left;
+  width: calc(70% - 10em);
+  height: 64px;
+  font-size: 18px;
+}
+
+#nav ul {
+  list-style: none;
+  float: left;
+  height: 49px;
+  margin: 15px 0 0 0;
+  padding: 0;
+  z-index: 10;
+}
+
+#nav ul a {
+  display: block;
+  margin: 0 15px 0 15px;
+
+  text-align: left;
+}
+
+#nav ul li {
+  position: relative;
+  float: left;
+}
+
+#nav ul ul {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  display: none;
+}
+
+#nav ul ul a {
+  margin: 0 15px 0 15px;
+  height: 100%;
+}
+
+#nav ul li:hover > ul {
+  display: block;
+}
