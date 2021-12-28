@@ -36,7 +36,7 @@ gem 'file_validators', '~> 3.0.0'
 gem 'responders', '~> 3.0.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.1.4'
+gem 'rails', '~> 7.0.0'
 # Ruby >=3.0 required rexml
 gem 'rexml', '~> 3.2.5'
 # Use SCSS for stylesheets
@@ -46,8 +46,6 @@ gem 'sassc-rails', '~> 2.1.2'
 gem 'sqlite3', '~> 1.4.2'
 # Use Puma as the app server
 gem 'puma', '~> 5.5.2'
-# Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem 'webpacker', '~> 5.4.3'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5.2.1'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
