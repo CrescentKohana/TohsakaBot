@@ -5,15 +5,18 @@ module TohsakaBot
     class SetBirthday
       def initialize(event, raw_date)
         @event = event
+
         date_parts = raw_date.split('/')&.map(&:to_i)
+        @now = Time.now
         @date = Time.new(
-          date_parts[0].clamp(1900, Time.now.year),
+          date_parts[0].clamp(1900, @now.year),
           date_parts[1].clamp(1, 12),
           date_parts[2].clamp(1, 31),
           '00',
           '00',
           '01'
         )
+        @next_year = Time.at(@date).change(year: @now.year) < @now
       end
 
       def run
@@ -23,11 +26,11 @@ module TohsakaBot
         TohsakaBot.db.transaction do
           TohsakaBot.db[:users].where(id: TohsakaBot.get_user_id(user_id)).update(
             birthday: @date,
-            last_congratulation: 0
+            last_congratulation: @next_year ? @now.year : 0
           )
         end
 
-        { content: I18n.t(:'commands.tool.user.set_birthday.response', date: @date) }
+        { content: I18n.t(:'commands.tool.user.set_birthday.response', date: @date.strftime("%Y/%d/%m")) }
       end
     end
   end
