@@ -7,15 +7,19 @@ module TohsakaBot
         @event = event
 
         date_parts = raw_date.split('/')&.map(&:to_i)
+        date_parts = raw_date.split('-')&.map(&:to_i) if date_parts.nil? || date_parts.length < 3
+        date_parts = raw_date.split('.')&.map(&:to_i) if date_parts.nil? || date_parts.length < 3
         @now = Time.now
-        @date = if date_parts.length == 3
-                  Time.new(date_parts[0].clamp(1900, @now.year),
-                           date_parts[1].clamp(1, 12),
-                           date_parts[2].clamp(1, 31),
-                           '00',
-                           '00',
-                           '01')
-                end
+        return unless date_parts.length == 3
+
+        date_parts.reverse! if date_parts[2] >= 1900 # Reverses for DD/MM/YYYY
+        @date = Time.new(date_parts[0].clamp(1900, @now.year),
+                         date_parts[1].clamp(1, 12),
+                         date_parts[2].clamp(1, 31),
+                         '00',
+                         '00',
+                         '01')
+
         @next_year = Time.at(@date).change(year: @now.year) < @now unless @date.nil?
       end
 
