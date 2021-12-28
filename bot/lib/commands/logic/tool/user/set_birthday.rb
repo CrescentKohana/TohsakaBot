@@ -30,7 +30,7 @@ module TohsakaBot
           )
         end
 
-        { content: I18n.t(:'commands.tool.user.set_birthday.response', date: @date.strftime("%Y/%d/%m")) }
+        { content: I18n.t(:'commands.tool.user.set_birthday.response', date: @date.strftime("%Y/%m/%d")) }
       end
     end
   end
