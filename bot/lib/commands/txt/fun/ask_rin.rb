@@ -15,7 +15,7 @@ module TohsakaBot
           answer = csv.read.sample[0]
         end
 
-        event.message.reply!(answer.to_s)
+        event.message.reply!(answer.to_s, allowed_mentions: false)
       end
     end
   end
