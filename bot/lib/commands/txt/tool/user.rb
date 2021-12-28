@@ -32,7 +32,7 @@ module TohsakaBot
       end
 
       command(:userinfo,
-              aliases: TohsakaBot.get_command_aliases('commands.tool.user.user_info.aliases'),
+              aliases: TohsakaBot.get_command_aliases('commands.tool.user.info.aliases'),
               description: I18n.t(:'commands.tool.user.info.description'),
               usage: I18n.t(:'commands.tool.user.info.usage')) do |event, user|
         command = CommandLogic::UserInfo.new(event, user)
