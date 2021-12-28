@@ -14,6 +14,8 @@ All notable changes to this project will be documented in this file. Unreleased 
 - Support for message edit events in ASS
 - Sextuples roll
 - Better multi-server support
+- TohsakaWeb, Rails frontend to this main repository
+- Birthdays
 
 ### Changed
 - Reminder response formatting
@@ -27,6 +29,7 @@ All notable changes to this project will be documented in this file. Unreleased 
 - Refactor Feature requests (Issues) to use SQL
 - Refactor Trophy roles to use SQL
 - Squad Mute now overwrites previous mutes for that role
+- Restructure the project
 
 ### Removed
 - Remove "get" keyword from message ID check event
@@ -38,6 +41,7 @@ All notable changes to this project will be documented in this file. Unreleased 
 - Fix the offset of the timestamp in repost notifications
 - Ignore roles with group_size 0 in Squads
 - Author not being correct in renewed Squad calls
+- Fix triggersearch listing
 
 ## [1.0.0] - 2021/09/17
 ### Added
