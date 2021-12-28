@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_23_193727) do
+ActiveRecord::Schema.define(version: 2021_12_28_001244) do
 
   create_table "authorizations", force: :cascade do |t|
     t.string "provider", null: false
@@ -106,6 +106,7 @@ ActiveRecord::Schema.define(version: 2020_05_23_193727) do
     t.integer "permissions"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "last_congratulation", default: 0, null: false
     t.index ["name"], name: "index_users_on_name"
   end
 
