@@ -152,7 +152,7 @@ en:
         set_birthday:
           aliases: "birthdayset birthday setbd bdset"
           description: "Sets user's birthday for the bot to congratulate them."
-          usage: "setbirthday <date (e.g. 1998/01/01)>"
+          usage: "setbirthday <date (e.g. YYYY-MM-DD or DD-MM-YYYY, separators include -/.)>"
           response: "Birthday set to %{date}."
           param:
             lang: "Date"
