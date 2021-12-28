@@ -8,7 +8,7 @@ module TohsakaBot
       command(:register,
               description: I18n.t(:'commands.tool.user.register.description')) do |event|
         command = CommandLogic::Register.new(event)
-        event.respond(command.run[:content])
+        event.message.reply!(command.run[:content])
       end
 
       command(:setlang,
@@ -18,7 +18,7 @@ module TohsakaBot
               min_args: 1,
               require_register: true) do |event, locale|
         command = CommandLogic::SetLang.new(event, locale)
-        event.respond(command.run[:content])
+        event.message.reply!(command.run[:content])
       end
 
       command(:setbirthday,
@@ -28,7 +28,7 @@ module TohsakaBot
               min_args: 1,
               require_register: true) do |event, date|
         command = CommandLogic::SetBirthday.new(event, date)
-        event.respond(command.run[:content])
+        event.message.reply!(command.run[:content])
       end
 
       command(:userinfo,
