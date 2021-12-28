@@ -8,15 +8,15 @@ module TohsakaBot
 
         date_parts = raw_date.split('/')&.map(&:to_i)
         @now = Time.now
-        @date = Time.new(
-          date_parts[0].clamp(1900, @now.year),
-          date_parts[1].clamp(1, 12),
-          date_parts[2].clamp(1, 31),
-          '00',
-          '00',
-          '01'
-        )
-        @next_year = Time.at(@date).change(year: @now.year) < @now
+        @date = if date_parts.length == 3
+                  Time.new(date_parts[0].clamp(1900, @now.year),
+                           date_parts[1].clamp(1, 12),
+                           date_parts[2].clamp(1, 31),
+                           '00',
+                           '00',
+                           '01')
+                end
+        @next_year = Time.at(@date).change(year: @now.year) < @now unless @date.nil?
       end
 
       def run
