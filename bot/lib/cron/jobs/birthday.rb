@@ -5,7 +5,11 @@ module TohsakaBot
       users_with_birthdays = users.where(Sequel[:last_congratulation] < now.year).all
       return if users_with_birthdays.empty?
 
-      users_with_birthdays = users_with_birthdays.filter { |u| Time.at(u[:birthday]).change(year: now.year) < now }
+      users_with_birthdays = users_with_birthdays.filter do |u|
+        next if u[:birthday].nil?
+
+        Time.at(u[:birthday]).change(year: now.year) < now
+      end
       return if users_with_birthdays.empty?
 
       message = '🎉 Happy birthday 🎉 to '.dup
