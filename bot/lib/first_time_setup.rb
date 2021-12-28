@@ -149,12 +149,10 @@ class FirstTimeSetup
     end
 
     unless File.exist?('data/ask_rin_answers.csv')
-      File.open('data/ask_rin_answers.csv', 'w') do |f|
-        f.write(
-          "Yes.\t0\n"\
-          "No.\t0\n"\
-          "I don't know.\t0\n"
-        )
+      CSV.open('data/ask_rin_answers.csv', 'w', col_sep: "\t") do |csv|
+        csv << ['Yes', 0]
+        csv << ['No', 0]
+        csv << ["I don't know", 0]
       end
     end
 
