@@ -144,11 +144,20 @@ en:
           aliases: "langset setlanguage languageset setlocale localeset"
           description: "Sets the language used in the bot for the user."
           usage: "setlang <fi, en, ja>"
-          response: "Language set to English!"
+          response: "Language set to English."
           param:
             lang: "Language"
           error:
             locale_not_found: "Specified language not found."
+        set_birthday:
+          aliases: "birthdayset birthday setbd bdset"
+          description: "Sets user's birthday for the bot to congratulate them."
+          usage: "setbirthday <date (e.g. 1998-01-01)>"
+          response: "Birthday set to %{date}."
+          param:
+            lang: "Date"
+          error:
+            invalid_date: "Parsing date failed."
         register:
           description: "Register yourself."
           response: "You've been successfully registered!"

@@ -21,6 +21,16 @@ module TohsakaBot
         event.respond(command.run[:content])
       end
 
+      command(:setbirthday,
+              aliases: TohsakaBot.get_command_aliases('commands.tool.user.set_birthday.aliases'),
+              description: I18n.t(:'commands.tool.user.set_birthday.description'),
+              usage: I18n.t(:'commands.tool.user.set_birthday.usage'),
+              min_args: 1,
+              require_register: true) do |event, date|
+        command = CommandLogic::SetBirthday.new(event, date)
+        event.respond(command.run[:content])
+      end
+
       command(:userinfo,
               aliases: TohsakaBot.get_command_aliases('commands.tool.user.user_info.aliases'),
               description: I18n.t(:'commands.tool.user.info.description'),
