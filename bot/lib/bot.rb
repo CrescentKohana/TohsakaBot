@@ -121,9 +121,9 @@ module TohsakaBot
   # Asynchronous threads running in cycles #
   BOT.run(true)
 
-  # TODO: Load async threads dynamically
-  # load_modules(:Async, 'async/*', false)
-  require_relative 'async'
+  # Cronjob
+  TohsakaBot.load_modules(:Jobs, %w[cron/jobs/*], discord: false)
+  require_relative 'cron/cron'
 
   # Cleans trigger files not present in the database.
   TohsakaBot.trigger_data.clean_trigger_files

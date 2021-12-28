@@ -1,15 +1,4 @@
 {
-  "Async":[
-    "RefreshStatus",
-    "RemindOnTime",
-    "RepostCleaner",
-    "RoleManagement",
-    "LoadAlko",
-    "TypingChannels",
-    "MsgQueue",
-    "DailyNeko",
-    "PollExpirer"
-  ],
   "Commands":[
     "Reminder",
     "Trigger",
