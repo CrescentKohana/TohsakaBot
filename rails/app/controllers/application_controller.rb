@@ -81,7 +81,7 @@ class ApplicationController < ActionController::Base
   end
 
   def owner?
-    Rails.configuration.owner_id == discord_id
+    Rails.configuration.user_config.owner_id == discord_id
   end
 
   def permissions?(level)

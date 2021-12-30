@@ -7,7 +7,7 @@ Rails.application.config.middleware.use OmniAuth::Builder do
            Rails.application.credentials.dig(:discord, :client_id),
            Rails.application.credentials.dig(:discord, :secret),
            scope: 'identify',
-           callback_url: "#{Rails.configuration.hosts[3]}/auth/discord/callback"
+           callback_url: "#{Rails.configuration.user_config.web_host}/auth/discord/callback"
 end
 
 # Force redirection when failed OAuth. https://stackoverflow.com/a/11028187
