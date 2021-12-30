@@ -19,12 +19,7 @@ module TohsakaWeb
     # the framework and any gems in your application.
     config.autoload_paths << Rails.root.join('lib')
 
-    path = File.join(Rails.root, "config", "user_config.yml")
-    if File.exist?(path)
-      cfg = YAML.load_file(File.join(path))
-      config.hosts << cfg['web_host']
-      config.data_dir = cfg['data_dir'] || '../data'
-      config.owner_id = cfg['owner_id'].to_i
-    end
+    config.user_config = config_for(:user_config)
+    config.hosts << config.user_config.web_host
   end
 end

@@ -1,6 +1,16 @@
-# Domain where the site exists. For example: rin.domain.com
-web_host: ''
-# Owner Discord ID
-owner_id: ''
-# TohsakaBot's root folder. For example: '/home/rin/TohsakaBot/data'. Default: '../data'
-# data_dir: '../data'
+# Fill these:
+production:
+  # Domain where the site exists. For example: rin.domain.com
+  web_host: ''
+  # Owner Discord ID
+  owner_id: ''
+  # TohsakaBot's root folder. For example: '/home/rin/TohsakaBot/data'. Default: '../data'
+  data_dir: '../data'
+# For developers:
+development:
+  # Domain where the site exists. For example: rin.domain.com
+  web_host: 'http://localhost:3333'
+  # Owner Discord ID
+  owner_id: ''
+  # TohsakaBot's root folder. For example: '/home/rin/TohsakaBot/data'. Default: '../data'
+  data_dir: '../data'
