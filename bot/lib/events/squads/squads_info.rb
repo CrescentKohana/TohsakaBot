@@ -6,6 +6,8 @@ module TohsakaBot
       extend Discordrb::EventContainer
       reaction_add(emoji: '❓') do |event|
         next if event.channel.pm? || event.user.bot_account
+        next if event.message.content&.first == '#'
+        next if event.message.role_mentions.empty?
 
         roles = TohsakaBot.server_cache[event.server.id][:roles]
         parsed_roles = ''.dup
