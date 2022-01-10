@@ -6,6 +6,8 @@ module TohsakaBot
       extend Discordrb::EventContainer
       reaction_add(emoji: %w[❌ 🚫 🔕]) do |event|
         next if event.channel.pm? || event.user.bot_account
+        next if event.message.content&.first == '#'
+        next if event.message.role_mentions.empty?
 
         role_id = nil
         event.message.role_mentions.each do |rm|
