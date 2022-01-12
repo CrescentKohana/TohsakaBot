@@ -12,7 +12,7 @@ module TohsakaBot
         @now = Time.now
         return unless date_parts.length == 3
 
-        time_parts = %(08 00)
+        time_parts = %w[08 00]
         unless raw_time.nil?
           tmp_time = raw_time.split(':')
           time_parts = tmp_time if tmp_time.length == 2
