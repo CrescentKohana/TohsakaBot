@@ -41,7 +41,7 @@ module TohsakaBot
         user_id = TohsakaBot.command_event_user_id(@event)
         TohsakaBot.db.transaction do
           TohsakaBot.db[:users].where(id: TohsakaBot.get_user_id(user_id)).update(
-            birthday: @date,
+            birthday: @date.zero? ? nil : @date.to_s,
             last_congratulation: @next_year ? @now.year : 0
           )
         end

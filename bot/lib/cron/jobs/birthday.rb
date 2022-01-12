@@ -8,7 +8,7 @@ module TohsakaBot
                              .all
       return if users_with_birthdays.empty?
 
-      users_with_birthdays = users_with_birthdays.filter { |u| Time.at(u[:birthday]).change(year: now.year) < now }
+      users_with_birthdays = users_with_birthdays.filter { |u| Time.parse(u[:birthday]).change(year: now.year) < now }
       return if users_with_birthdays.empty?
 
       message = '🎉 Happy birthday 🎉 to '.dup
