@@ -6,6 +6,12 @@ module TohsakaBot
       def initialize(event, raw_date, raw_time)
         @event = event
 
+        if !Integer(raw_date, exception: false).nil? && raw_date.to_i.zero?
+          @date = 0
+          @next_year = false
+          return
+        end
+
         date_parts = raw_date.split('/')&.map(&:to_i)
         date_parts = raw_date.split('-')&.map(&:to_i) if date_parts.nil? || date_parts.length < 3
         date_parts = raw_date.split('.')&.map(&:to_i) if date_parts.nil? || date_parts.length < 3
@@ -39,6 +45,8 @@ module TohsakaBot
             last_congratulation: @next_year ? @now.year : 0
           )
         end
+
+        return { content: I18n.t(:'commands.tool.user.set_birthday.clear') } if @date.zero?
 
         { content: I18n.t(:'commands.tool.user.set_birthday.response', date: @date.strftime("%Y/%m/%d %H:%M")) }
       end
