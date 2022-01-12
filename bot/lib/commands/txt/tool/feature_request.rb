@@ -6,7 +6,7 @@ module TohsakaBot
       extend Discordrb::Commands::CommandContainer
 
       command(:featurerequest,
-              aliases: %i[requestfeature fr request],
+              aliases: TohsakaBot.get_command_aliases('commands.feature.request.aliases'),
               description: 'Takes an idea and saves it.',
               usage: "Use 'fr <feature or idea>'",
               min_args: 1,
@@ -35,7 +35,7 @@ module TohsakaBot
       end
 
       command(:findfeaturerequests,
-              aliases: %i[findfrs findfr findfeaturerequest ffr requests frs],
+              aliases: TohsakaBot.get_command_aliases('commands.feature.find.aliases'),
               description: 'Finds and lists feature requests based on given status.',
               usage: "ffr <status (new, indev, done, wontdo, all)>",
               min_args: 1,
@@ -69,7 +69,7 @@ module TohsakaBot
       end
 
       command(:tagfeaturerequest,
-              aliases: %i[tagfr],
+              aliases: TohsakaBot.get_command_aliases('commands.feature.tag.aliases'),
               description: 'Tags a feature request. Currently all tags (new, indev, done, wontdo) are exclusive from each other.',
               usage: "tag <id> <tag (new, indev, done, wontdo)>",
               min_args: 2,
