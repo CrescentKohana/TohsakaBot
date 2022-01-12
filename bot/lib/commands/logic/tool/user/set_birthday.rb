@@ -5,9 +5,10 @@ module TohsakaBot
     class SetBirthday
       def initialize(event, raw_date, raw_time)
         @event = event
+        @error = false
 
         if !Integer(raw_date, exception: false).nil? && raw_date.to_i.zero?
-          @date = 0
+          @date = nil
           @next_year = false
           return
         end
@@ -33,20 +34,21 @@ module TohsakaBot
                          '00')
 
         @next_year = Time.at(@date).change(year: @now.year) < @now unless @date.nil?
+        @error = @date.nil?
       end
 
       def run
-        return { content: I18n.t(:'commands.tool.user.set_birthday.error.invalid_date') } if @date.nil?
+        return { content: I18n.t(:'commands.tool.user.set_birthday.error.invalid_date') } if @error
 
         user_id = TohsakaBot.command_event_user_id(@event)
         TohsakaBot.db.transaction do
           TohsakaBot.db[:users].where(id: TohsakaBot.get_user_id(user_id)).update(
-            birthday: @date.zero? ? nil : @date.to_s,
+            birthday: @date.nil? ? nil : @date.to_s,
             last_congratulation: @next_year ? @now.year : 0
           )
         end
 
-        return { content: I18n.t(:'commands.tool.user.set_birthday.clear') } if @date.zero?
+        return { content: I18n.t(:'commands.tool.user.set_birthday.clear') } if @date.nil?
 
         { content: I18n.t(:'commands.tool.user.set_birthday.response', date: @date.strftime("%Y/%m/%d %H:%M")) }
       end
