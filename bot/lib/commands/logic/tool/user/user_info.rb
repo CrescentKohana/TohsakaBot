@@ -24,10 +24,16 @@ module TohsakaBot
           groups = (server_member.roles.map { |r| "`#{r.name}`" } - ['`@everyone`']).sort.join(' ')
         end
 
-        internal_user = TohsakaBot.db[:users].where(id: TohsakaBot.get_user_id(@user.id)).single_record!
-        locale = internal_user.nil? ? "" : "     Locale: #{internal_user[:locale]}\n"
-        permissions = TohsakaBot.registered?(@user.id) ? "Permissions: #{internal_user[:permissions]}\n" : ""
-        birthday = TohsakaBot.registered?(@user.id) ? "   Birthday: #{Time.at(internal_user[:birthday]).strftime('%Y/%m/%d')}\n" : ""
+        locale = nil
+        permissions = nil
+        birthday = nil
+        internal_id = TohsakaBot.get_user_id(@user.id)
+        unless internal_id.nil?
+          internal_user = TohsakaBot.db[:users].where(id: TohsakaBot.get_user_id(@user.id)).single_record!
+          locale = internal_user.nil? ? "" : "     Locale: #{internal_user[:locale]}\n"
+          permissions = internal_user[:permissions].nil? ? "Permissions: #{internal_user[:permissions]}\n" : ""
+          birthday = internal_user[:permissions].nil? ? nil : "   Birthday: #{Time.at(internal_user[:birthday]).strftime('%Y/%m/%d')}\n"
+        end
 
         builder = Discordrb::Webhooks::Builder.new
         builder.add_embed do |e|
@@ -37,8 +43,8 @@ module TohsakaBot
                           "#{nickname}"\
                           "         ID: #{@user.id}\n"\
                           "    Created: #{TohsakaBot.account_created_date(@user.id)}\n"\
-                          "#{permissions}"\
-                          "#{birthday}"\
+                          "#{permissions unless permissions.nil?}"\
+                          "#{birthday unless birthday.nil?}"\
                           "#{locale}"\
                           "```"
           e.add_field(name: 'Roles', value: groups) unless @event.channel.pm?
