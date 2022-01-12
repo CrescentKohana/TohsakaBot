@@ -26,8 +26,8 @@ module TohsakaBot
               description: I18n.t(:'commands.tool.user.set_birthday.description'),
               usage: I18n.t(:'commands.tool.user.set_birthday.usage'),
               min_args: 1,
-              require_register: true) do |event, date|
-        command = CommandLogic::SetBirthday.new(event, date)
+              require_register: true) do |event, date, time|
+        command = CommandLogic::SetBirthday.new(event, date, time)
         event.message.reply!(command.run[:content])
       end
 
