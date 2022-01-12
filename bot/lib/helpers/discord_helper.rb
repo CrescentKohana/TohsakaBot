@@ -144,6 +144,8 @@ module TohsakaBot
     #
     # @return [Time] timestamp
     def account_created_date(discord_uid)
+      return nil if discord_uid.nil?
+
       Time.at((discord_uid.to_s(2)[0..34].to_i(2) + 1_420_070_400_000) / 1000)
     end
 
