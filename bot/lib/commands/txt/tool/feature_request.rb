@@ -6,9 +6,9 @@ module TohsakaBot
       extend Discordrb::Commands::CommandContainer
 
       command(:featurerequest,
-              aliases: TohsakaBot.get_command_aliases('commands.feature.request.aliases'),
-              description: 'Takes an idea and saves it.',
-              usage: "Use 'fr <feature or idea>'",
+              aliases: TohsakaBot.get_command_aliases('commands.tool.feature.request.aliases'),
+              description: I18n.t(:'commands.tool.feature.request.description'),
+              usage: I18n.t(:'commands.tool.feature.request.usage'),
               min_args: 1,
               require_register: true,
               enabled_in_pm: false) do |event, *msg|
@@ -35,9 +35,9 @@ module TohsakaBot
       end
 
       command(:findfeaturerequests,
-              aliases: TohsakaBot.get_command_aliases('commands.feature.find.aliases'),
-              description: 'Finds and lists feature requests based on given status.',
-              usage: "ffr <status (new, indev, done, wontdo, all)>",
+              aliases: TohsakaBot.get_command_aliases('commands.tool.feature.find.aliases'),
+              description: I18n.t(:'commands.tool.feature.find.description'),
+              usage: I18n.t(:'commands.tool.feature.find.usage'),
               min_args: 1,
               require_register: true) do |event, status|
         header = "`  ID | CREATED    | BY                               | TAGS `\n".dup
@@ -69,9 +69,9 @@ module TohsakaBot
       end
 
       command(:tagfeaturerequest,
-              aliases: TohsakaBot.get_command_aliases('commands.feature.tag.aliases'),
-              description: 'Tags a feature request. Currently all tags (new, indev, done, wontdo) are exclusive from each other.',
-              usage: "tag <id> <tag (new, indev, done, wontdo)>",
+              aliases: TohsakaBot.get_command_aliases('commands.tool.feature.tag.aliases'),
+              description: I18n.t(:'commands.tool.feature.tag.description'),
+              usage: I18n.t(:'commands.tool.feature.tag.usage'),
               min_args: 2,
               require_register: true,
               permission_level: TohsakaBot.permissions.actions["feature_requests"]) do |event, id, status|
