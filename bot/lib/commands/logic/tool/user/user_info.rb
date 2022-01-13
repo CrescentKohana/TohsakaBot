@@ -30,9 +30,13 @@ module TohsakaBot
         internal_id = TohsakaBot.get_user_id(@user.id)
         unless internal_id.nil?
           internal_user = TohsakaBot.db[:users].where(id: TohsakaBot.get_user_id(@user.id)).single_record!
+          permissions = internal_user[:permissions].nil? ? "" : "Permissions: #{internal_user[:permissions]}\n"
+          birthday = if internal_user[:permissions].nil?
+                       ""
+                     else
+                       "   Birthday: #{Time.parse(internal_user[:birthday]).strftime('%Y/%m/%d')}\n"
+                     end
           locale = internal_user.nil? ? "" : "     Locale: #{internal_user[:locale]}\n"
-          permissions = internal_user[:permissions].nil? ? "Permissions: #{internal_user[:permissions]}\n" : ""
-          birthday = internal_user[:permissions].nil? ? nil : "   Birthday: #{Time.at(internal_user[:birthday]).strftime('%Y/%m/%d')}\n"
         end
 
         builder = Discordrb::Webhooks::Builder.new
@@ -43,8 +47,8 @@ module TohsakaBot
                           "#{nickname}"\
                           "         ID: #{@user.id}\n"\
                           "    Created: #{TohsakaBot.account_created_date(@user.id)}\n"\
-                          "#{permissions unless permissions.nil?}"\
-                          "#{birthday unless birthday.nil?}"\
+                          "#{permissions}"\
+                          "#{birthday}"\
                           "#{locale}"\
                           "```"
           e.add_field(name: 'Roles', value: groups) unless @event.channel.pm?
