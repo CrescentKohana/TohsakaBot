@@ -207,6 +207,7 @@ en:
           param:
             tag: "Tag (default all)"
         tag:
+          aliases: "tagfr"
           description: "Tags a feature request. Currently all tags are exclusive from each other."
           usage: "tag <id> <tag (new, indev, done, wontdo)>"
           param:

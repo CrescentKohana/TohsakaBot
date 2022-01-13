@@ -17,7 +17,10 @@ module TohsakaBot
         date_parts = raw_date.split('-')&.map(&:to_i) if date_parts.nil? || date_parts.length < 3
         date_parts = raw_date.split('.')&.map(&:to_i) if date_parts.nil? || date_parts.length < 3
         @now = Time.now
-        return unless date_parts.length == 3
+        if date_parts.length != 3
+          @error = true
+          return
+        end
 
         time_parts = %w[08 00]
         unless raw_time.nil?
