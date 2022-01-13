@@ -35,7 +35,13 @@ module TohsakaBot
               aliases: TohsakaBot.get_command_aliases('commands.tool.user.info.aliases'),
               description: I18n.t(:'commands.tool.user.info.description'),
               usage: I18n.t(:'commands.tool.user.info.usage')) do |event, user|
-        command = CommandLogic::UserInfo.new(event, user)
+        id = if event.message.mentions.length > 0
+               event.message.mentions[0].id
+             elsif !Integer(user, exception: false).nil? && user.to_i.positive?
+               user
+             end
+
+        command = CommandLogic::UserInfo.new(event, id)
         response = command.run
         event.respond(response[:content], nil, response[:embeds].first)
       end
