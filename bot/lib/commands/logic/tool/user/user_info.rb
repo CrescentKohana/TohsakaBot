@@ -36,7 +36,7 @@ module TohsakaBot
                      else
                        "   Birthday: #{internal_user[:birthday]}\n"
                      end
-          locale = internal_user.nil? ? "" : "     Locale: #{internal_user[:locale]}\n"
+          locale = internal_user[:locale].nil? ? "" : "     Locale: #{internal_user[:locale]}\n"
         end
 
         builder = Discordrb::Webhooks::Builder.new
