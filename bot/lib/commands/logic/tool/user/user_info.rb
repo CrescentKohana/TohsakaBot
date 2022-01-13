@@ -31,7 +31,7 @@ module TohsakaBot
         unless internal_id.nil?
           internal_user = TohsakaBot.db[:users].where(id: TohsakaBot.get_user_id(@user.id)).single_record!
           permissions = internal_user[:permissions].nil? ? "" : "Permissions: #{internal_user[:permissions]}\n"
-          birthday = if internal_user[:permissions].nil?
+          birthday = if internal_user[:birthday].nil?
                        ""
                      else
                        "   Birthday: #{Time.parse(internal_user[:birthday]).strftime('%Y/%m/%d')}\n"
