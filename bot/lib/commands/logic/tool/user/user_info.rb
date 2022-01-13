@@ -3,12 +3,12 @@
 module TohsakaBot
   module CommandLogic
     class UserInfo
-      def initialize(event, user)
+      def initialize(event, user_id)
         @event = event
-        @user = if user.nil?
+        @user = if user_id.nil?
                   TohsakaBot.command_event_user_id(@event, return_id: false)
                 else
-                  BOT.user(user.to_i)
+                  BOT.user(user_id)
                 end
       end
 
@@ -34,7 +34,7 @@ module TohsakaBot
           birthday = if internal_user[:birthday].nil?
                        ""
                      else
-                       "   Birthday: #{Time.parse(internal_user[:birthday]).strftime('%Y/%m/%d')}\n"
+                       "   Birthday: #{internal_user[:birthday]}\n"
                      end
           locale = internal_user.nil? ? "" : "     Locale: #{internal_user[:locale]}\n"
         end
