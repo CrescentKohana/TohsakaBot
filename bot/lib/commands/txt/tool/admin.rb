@@ -148,7 +148,8 @@ module TohsakaBot
               aliases: TohsakaBot.get_command_aliases('commands.tool.admin.timeout.aliases'),
               description: I18n.t(:'commands.tool.admin.timeout.description'),
               usage: I18n.t(:'commands.tool.admin.timeout.usage'),
-              min_args: 1) do |event, _user, duration|
+              min_args: 1,
+              permission_level: 100) do |event, _user, duration|
         command = CommandLogic::Timeout.new(
           event,
           event.message.mentions.blank? ? nil : event.message.mentions[0],

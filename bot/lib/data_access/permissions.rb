@@ -87,11 +87,17 @@ module TohsakaBot
       return nil if role.nil?
 
       roles = TohsakaBot.server_cache[server_id][:roles]
-      return id if !Integer(role, exception: false).nil? && (roles[role.to_i][:permissions].zero? || able?(discord_id, roles[role.to_i][:permissions], :level))
+      if !Integer(role, exception: false).nil? && (roles[role.to_i][:permissions].zero? ||
+        able?(discord_id, roles[role.to_i][:permissions], :level))
+        return id
+      end
 
       role = role.downcase
       roles.each do |role_id, role_data|
-        return role_id if role_data[:name].downcase == role && (role_data[:permissions].zero? || able?(discord_id, role_data[:permissions], :level))
+        if role_data[:name].downcase == role && (role_data[:permissions].zero? ||
+          able?(discord_id, role_data[:permissions], :level))
+          return role_id
+        end
       end
 
       nil
