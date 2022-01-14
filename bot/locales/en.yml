@@ -153,6 +153,7 @@ en:
           usage: "timeout <user mention> <seconds (10-3600, default 30)>"
           message: "Timeout <@!%{member_id}> for %{duration}s? `Votes: %{votes}`"
           invalid_member: "Unexpected error. The user might not be on the server anymore."
+          in_progress: "A vote for this user is already in progress."
           param:
             user: "A user in this server (mention if txt command)."
             duration: "10 to 3600 seconds."
