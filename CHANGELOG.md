@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file. Unreleased 
 - Better multi-server support
 - TohsakaWeb, Rails frontend to this main repository
 - Birthdays
+- Timeout command
 
 ### Changed
 - Reminder response formatting

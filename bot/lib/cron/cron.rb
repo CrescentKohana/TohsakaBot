@@ -13,6 +13,7 @@ module TohsakaBot
         # Every 1 second:
         Jobs.remind_on_time(now)
         Jobs.expire_polls(now)
+        Jobs.expire_timeouts(now)
 
         TohsakaBot.queue_cache.list.each do |k, v|
           TohsakaBot.queue_cache.send_msgs(k) if v[:time] <= Time.now.to_i || (v[:embed] && v[:msgs].size == 25)

@@ -16,7 +16,6 @@ module TohsakaBot
         event.respond(command.run[:content])
       end
 
-
       command(:eval,
               description: I18n.t(:'commands.tool.admin.eval.description'),
               usage: I18n.t(:'commands.tool.admin.eval.usage'),
@@ -29,7 +28,6 @@ module TohsakaBot
         event.respond(command.run[:content])
       end
 
-
       command(:tester,
               aliases: %i[test t],
               description: 'Command for testing stuff',
@@ -37,17 +35,15 @@ module TohsakaBot
         event.<< event.message.content
       end
 
-
       command(:editpermissions,
               aliases: TohsakaBot.get_command_aliases('commands.tool.admin.edit_permissions.aliases'),
-              description:  I18n.t(:'commands.tool.admin.edit_permissions.description'),
-              usage:  I18n.t(:'commands.tool.admin.edit_permissions.usage'),
+              description: I18n.t(:'commands.tool.admin.edit_permissions.description'),
+              usage: I18n.t(:'commands.tool.admin.edit_permissions.usage'),
               min_args: 2,
               permission_level: TohsakaBot.permissions.actions["permissions"]) do |event, user, level|
         command = CommandLogic::EditPermissions.new(event, user, level)
         event.respond(command.run[:content], false, nil, nil, false)
       end
-
 
       command(:setstatus,
               aliases: %i[np],
@@ -66,7 +62,6 @@ module TohsakaBot
         event.respond("Status changed to `#{msg.strip_mass_mentions}` as `#{type}`.")
       end
 
-
       command(:prune,
               description: 'Prunes between 2 and 100 messages in the current channel.',
               usage: 'prune <amount (2-100)>',
@@ -78,7 +73,6 @@ module TohsakaBot
           event.respond('The amount of messages has to be between 2 and 100.')
         end
       end
-
 
       command(:typing,
               aliases: %i[type],
@@ -93,7 +87,6 @@ module TohsakaBot
         TohsakaBot.manage_typing(event.channel, duration)
         break
       end
-
 
       command(:convertpins,
               description: 'Copies all pinned messages on the specified channel to database and posts them to the highlight channel',
@@ -122,7 +115,6 @@ module TohsakaBot
         break
       end
 
-
       command(:emojilist,
               aliases: %i[emoji le],
               description: 'List all the 絵文字 bot has at its disposal.',
@@ -142,7 +134,6 @@ module TohsakaBot
         event.<< "```#{emoji_names.join(' ')}```"
       end
 
-
       command(:slowmode,
               aliases: TohsakaBot.get_command_aliases('commands.tool.admin.slow_mode.aliases'),
               description: I18n.t(:'commands.tool.admin.slow_mode.description'),
@@ -151,6 +142,24 @@ module TohsakaBot
               min_args: 1) do |event, rate, *channels|
         command = CommandLogic::SlowMode.new(event, rate, channels)
         event.respond(command.run[:content])
+      end
+
+      command(:timeout,
+              aliases: TohsakaBot.get_command_aliases('commands.tool.admin.timeout.aliases'),
+              description: I18n.t(:'commands.tool.admin.timeout.description'),
+              usage: I18n.t(:'commands.tool.admin.timeout.usage'),
+              min_args: 1) do |event, _user, duration|
+        command = CommandLogic::Timeout.new(
+          event,
+          event.message.mentions.blank? ? nil : event.message.mentions[0],
+          duration
+        )
+
+        response = command.run
+
+        message = event.respond(response[:content], false, nil, nil, false, nil, response[:components])
+        TohsakaBot.timeouts_cache.create(response[:user], message.server.id, message.channel.id, response[:duration])
+        break
       end
     end
   end

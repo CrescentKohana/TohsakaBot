@@ -82,6 +82,15 @@ en:
         expiry: "This poll has expired."
         failure: "Vote failed."
         permission_error: "No permissions to end this poll."
+    timeout:
+      vote:
+        already_voted: "You have already voted. Total votes: %{votes}."
+        expiry: "This timeout vote has expired."
+        failure: "Vote failed."
+        permission_error: "No permissions to vote on this poll."
+        successful: "%{name} has been timed out for %{duration} seconds.  Votes: `%{yes}Y to %{no}N`"
+        unsuccessful: "No timeout for %{name}. Votes: `%{no}N to %{yes}Y`"
+
     other:
       another_roll:
       also_remindme:
@@ -138,6 +147,15 @@ en:
             clear: "Slow mode cleared for %{channels} channels."
           error:
             channel_not_found: "Specified channels not found."
+        timeout:
+          aliases: "complain mute votemute mutevote timeoutvote votetimeout"
+          description: "Creates a vote to mute (timeout) a member."
+          usage: "timeout <user mention> <seconds (10-3600, default 30)>"
+          message: "Timeout <@!%{member_id}> for %{duration}s? `Votes: %{votes}`"
+          invalid_member: "Unexpected error. The user might not be on the server anymore."
+          param:
+            user: "A user in this server (mention if txt command)."
+            duration: "10 to 3600 seconds."
       user:
         description: "User tools"
         set_lang:
