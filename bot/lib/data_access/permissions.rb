@@ -14,11 +14,6 @@ module TohsakaBot
         @actions[action] = permissions["roles"][role]
       end
 
-      TohsakaBot.db[:users].where(!Sequel[:permissions].nil?).each do |u|
-        discord_uid = TohsakaBot.get_discord_id(u[:id])
-        BOT.set_user_permission(discord_uid, u[:permissions]) unless u[:permissions].blank? || discord_uid.nil?
-      end
-
       set_all
     end
 
@@ -107,10 +102,10 @@ module TohsakaBot
 
     # Sets permissions to all users using the data from the database.
     def set_all
-      users = TohsakaBot.db[:users].where(!Sequel[:permission].nil?)
+      users = TohsakaBot.db[:users].where(!Sequel[:permissions].nil?)
       users.each do |u|
         discord_uid = TohsakaBot.get_discord_id(u[:id])
-        BOT.set_user_permission(discord_uid, u[:permission]) unless u[:permissions].blank? || discord_uid.nil?
+        BOT.set_user_permission(discord_uid, u[:permissions]) unless u[:permissions].blank? || discord_uid.nil?
       end
 
       # Owner's permission level is always 1000.
