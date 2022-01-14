@@ -74,7 +74,7 @@ module TohsakaBot
       member = BOT.member(results[:server_id], member_id)
       return nil if member.nil?
 
-      if [:votes][:yes].size > 6 && [:votes][:yes].size - results[:votes][:no].size > 1
+      if ([:votes][:yes].size - results[:votes][:no].size) > 2
         member.timeout = Time.at(results[:created_at].to_i + results[:duration])
         return { judgement: true, member: member }
       end
