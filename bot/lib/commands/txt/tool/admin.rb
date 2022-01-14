@@ -158,7 +158,7 @@ module TohsakaBot
 
         response = command.run
 
-        message = event.respond(response[:content], false, nil, nil, false, nil, response[:components])
+        message = event.message.reply!(response[:content], allowed_mentions: false, components: response[:components])
         TohsakaBot.timeouts_cache.create(response[:user], message.server.id, message.channel.id, response[:duration])
         break
       end

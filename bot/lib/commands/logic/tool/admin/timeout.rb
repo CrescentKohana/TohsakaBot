@@ -13,6 +13,9 @@ module TohsakaBot
 
       def run
         return { content: I18n.t(:'commands.tool.admin.timeout.invalid_member') } if @member.nil?
+        unless TohsakaBot.timeouts_cache.timeouts[@member.id].nil?
+          return { content: I18n.t(:'commands.tool.admin.timeout.in_progress') }
+        end
 
         {
           content: I18n.t(:'commands.tool.admin.timeout.message',
