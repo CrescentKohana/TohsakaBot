@@ -2,18 +2,18 @@
 
 module TohsakaBot
   module Events
-    module PollVote
+    module TimeoutVote
       extend Discordrb::EventContainer
 
-      BOT.button(custom_id: /^choice\d{1,2}:.*/) do |event|
+      BOT.button(custom_id: /^timeout:(?:yes|no)/) do |event|
         next if event.user.bot_account
 
-        poll_id = event.message.id
-        user_id = event.user.id
-        choice = event.custom_id.split(":", 2)
-        choice[0].slice!('choice')
+        member_id = event.message.content.match(/<@!(\d+)>/).captures[0]
+        voter_id = event.user.id
+        choice = event.custom_id.split(":", 2)[1]
 
-        response = TohsakaBot.poll_cache.vote(poll_id, user_id, choice[0])
+        puts member_id
+        response = TohsakaBot.timeouts_cache.vote(member_id, voter_id, choice.to_sym)
 
         if response[:votes]
           original_msg_content = event.message.content.gsub(/ `Votes: \d+`$/, "") + " `Votes: #{response[:votes]}`"

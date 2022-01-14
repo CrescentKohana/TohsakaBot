@@ -133,6 +133,15 @@ module TohsakaBot
     end
   end
 
+  # Timeouts cache.
+  #
+  # @return [Hash] possible timeouts with votes
+  module PersistentTimeoutCache
+    def timeouts_cache
+      @timeouts_cache ||= TimeoutCache.new
+    end
+  end
+
   # Rock Paper Scissors cache.
   #
   # @return [Hash] RPS games
@@ -157,6 +166,7 @@ module TohsakaBot
     PersistentPermissionsData,
     PersistentMsgQueueCache,
     PersistentPollCache,
+    PersistentTimeoutCache,
     PersistentRPSCache,
     PersistentServerCache
   )
