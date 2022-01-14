@@ -10,7 +10,7 @@ module TohsakaBot
         next if event.message.channel.pm?
 
         voter_id = event.user.id
-        next unless TohsakaBot.permissions.able?(voter_id, 'trusted', :role)
+        next unless TohsakaBot.permissions.able?(voter_id, 'timeout', :perm)
 
         member_id = event.message.content.match(/<@!(\d+)>/).captures[0]
         choice = event.custom_id.split(":", 2)[1]

@@ -149,7 +149,7 @@ module TohsakaBot
               description: I18n.t(:'commands.tool.admin.timeout.description'),
               usage: I18n.t(:'commands.tool.admin.timeout.usage'),
               min_args: 1,
-              permission_level: 100) do |event, _user, duration|
+              permission_level: TohsakaBot.permissions.actions["timeout"]) do |event, _user, duration|
         command = CommandLogic::Timeout.new(
           event,
           event.message.mentions.blank? ? nil : event.message.mentions[0],
