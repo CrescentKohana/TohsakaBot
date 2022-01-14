@@ -7,12 +7,13 @@ module TohsakaBot
 
       BOT.button(custom_id: /^timeout:(?:yes|no)/) do |event|
         next if event.user.bot_account
+        next if event.message.channel.pm?
+
+        voter_id = event.user.id
+        next unless TohsakaBot.permissions.able?(voter_id, 'trusted', :role)
 
         member_id = event.message.content.match(/<@!(\d+)>/).captures[0]
-        voter_id = event.user.id
         choice = event.custom_id.split(":", 2)[1]
-
-        puts member_id
         response = TohsakaBot.timeouts_cache.vote(member_id, voter_id, choice.to_sym)
 
         if response[:votes]

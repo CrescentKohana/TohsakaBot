@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_28_001244) do
+ActiveRecord::Schema.define(version: 2022_01_12_223110) do
 
   create_table "authorizations", force: :cascade do |t|
     t.string "provider", null: false
@@ -102,7 +102,7 @@ ActiveRecord::Schema.define(version: 2021_12_28_001244) do
     t.integer "discriminator"
     t.string "avatar"
     t.string "locale"
-    t.datetime "birthday"
+    t.text "birthday"
     t.integer "permissions"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
