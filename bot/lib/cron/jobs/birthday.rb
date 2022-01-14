@@ -14,7 +14,7 @@ module TohsakaBot
       message = '🎉 Happy birthday 🎉 to '.dup
       users_with_birthdays.each do |user|
         discord_uid = TohsakaBot.get_discord_id(user[:id])
-        message << "(#{now.year - Time.at(user[:birthday]).year}) <@#{discord_uid}> "
+        message << "(#{now.year - Time.parse(user[:birthday]).year}) <@#{discord_uid}> "
       end
 
       # Looping users for second time as we want to make sure that the message was sent
