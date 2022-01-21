@@ -5,13 +5,20 @@ module TohsakaBot
   module Cron
     include Jobs
 
+    # Reminders (separate thread from other cron jobs for time accuracy)
+    Thread.new do
+      loop do
+        Jobs.remind_on_time(Time.now)
+        sleep(1)
+      end
+    end
+
     Thread.new do
       timer = 0
       loop do
         now = Time.now
 
         # Every 1 second:
-        Jobs.remind_on_time(now)
         Jobs.expire_polls(now)
         Jobs.expire_timeouts(now)
 
