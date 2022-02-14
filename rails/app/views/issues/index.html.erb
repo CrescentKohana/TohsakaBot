@@ -22,7 +22,7 @@
           <%= link_to '👀', issue_path(issue) %>
           <% if own?(issue.id) && issue.status == "new" %>
             <%= link_to '📝', edit_issue_path(issue) %>
-            <%= link_to '🗑️', issue_path(issue), method: :delete, data: { confirm: 'Are you sure?' } %>
+            <%= button_to '🗑', issue_path(issue), method: :delete, data: { confirm: 'Are you sure?' } %>
           <% end %>
         </div>
       </div>
