@@ -4,6 +4,8 @@ module TohsakaBot
   module Events
     module RepostOverseer
       def self.notify(event, linked)
+        return if event.server.id != linked[:server_id]
+
         user_obj = BOT.member(event.server, linked[:author_id])
         username = user_obj.nil? ? "Deleted user" : user_obj.display_name
         time = Time.use_zone('UTC') { Time.zone.local(*linked[:timestamp]) }
