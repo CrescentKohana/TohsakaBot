@@ -164,6 +164,8 @@ module TohsakaBot
       else
         BOT.game = text
       end
+    rescue RuntimeError
+      puts "Failed to set #{type} status"
     end
 
     # Trim Discord message's length. Default max length is 2000.
