@@ -39,7 +39,7 @@ A Discord bot written in Ruby, originally made for a private Discord community. 
 - Go back to the root folder: `cd ..`
 - Run `bundle install` to install required gems.
   - _On Windows, if installing the mysql2 gem fails, install it separately with:_
-     `gem install mysql2 -- '--with-mysql-lib="C:\devkit\MariaDB 10.5\lib" --with-mysql-include="C:\devkit\MariaDB 10.5\include"'`
+     `gem install mysql2 -- '--with-mysql-lib="C:\pathto\MariaDB 10.5\lib" --with-mysql-include="C:\pathto\MariaDB 10.5\include"'`
 - Start the bot by running `bundle exec ruby run.rb`.
 - Bot can be invited to a server with the following URL (**remember to change the CLIENT_ID**): 
    `https://discordapp.com/oauth2/authorize?client_id=CLIENT_ID&scope=bot&permissions=335924288`
