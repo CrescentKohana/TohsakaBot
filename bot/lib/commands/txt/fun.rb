@@ -27,7 +27,7 @@ module TohsakaBot
               rate_limit_message: 'Calm down! You are ratelimited for %time%s.') do |event, times|
         command = CommandLogic::Coinflip.new(event, times)
         response = command.run
-        event.respond(response[:content], nil, response[:embeds].first)
+        event.respond(response[:content], nil, response[:embeds].nil? ? nil : response[:embeds].first)
       end
 
       command(:fgo,
@@ -36,7 +36,7 @@ module TohsakaBot
               usage: I18n.t(:'commands.fun.fgo.usage')) do |event, amount, currency, verbose|
         command = CommandLogic::FGO.new(event, amount, currency, verbose)
         response = command.run
-        event.respond(response[:content], nil, response[:embeds].first)
+        event.respond(response[:content], nil, response[:embeds].nil? ? nil : response[:embeds].first)
       end
 
       command(:chaos,
@@ -120,7 +120,7 @@ module TohsakaBot
       end
 
       command(:sexts,
-              aliases: %i[sextas sextuples hexas hexs hex hextuples kuutosilla kutoset kutosilla kutonen kuusi],
+              aliases: %i[sextas sextuples hexas hexs hex hextuples sextoilla sextoil kuutosilla kutoset kutosilla kutonen kuusi],
               description: 'Sexts.',
               usage: '',
               bucket: :cf, rate_limit_message: 'Calm down! You are ratelimited for %time%s.') do |event|
