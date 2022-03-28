@@ -2,11 +2,11 @@
 
 source 'https://rubygems.org'
 
-gem 'bigdecimal', "~>3.0.2"
+gem 'bigdecimal', "~>3.1.2"
 
 # Helper functions from Rails
-gem 'actionview', "~>6.1.4"
-gem 'activesupport', "~>6.1.4"
+gem 'actionview', "~>7.0.2.3"
+gem 'activesupport', "~>7.0.2.3"
 gem 'tzinfo-data'
 
 # Config management
@@ -20,19 +20,19 @@ gem 'public_suffix', "~>4.0.6"
 gem 'nekos', "~>1.0.1"
 
 # Translations
-gem 'i18n', "~>1.8.10"
+gem 'i18n', "~>1.10.0"
 
 # File parsing
 ## JSON parsing
-gem 'json', "~>2.5.1"
+gem 'json', "~>2.6.1"
 ## Markdown parsing
 gem 'redcarpet', "~>3.5.1"
 ## Spreadsheet parsing
-gem 'roo', "~>2.8.3"
+gem 'roo', "~>2.9.0"
 gem 'roo-xls', "~>1.2.0"
 
 # Database
-gem 'sequel', "~>5.48.0"
+gem 'sequel', "~>5.54.0"
 gem 'sqlite3', "~>1.4.2", :group => :sqlite
 gem 'mysql2', "~>0.5.3", :group => :mysql
 # TODO: Switch to GitHub branch as it's more up to date?
@@ -44,8 +44,11 @@ gem 'optimist', "~>3.0.1"
 # Probabilities
 gem 'pickup', "~>0.0.11"
 
+# Image fingerprinting and similarity
+gem 'dhash-vips'
+
 # Command line colors
-gem 'rainbow', "~>3.0.0"
+gem 'rainbow', "~>3.1.1"
 
 gem 'dotenv', '~>2.7.6'
 
