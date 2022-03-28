@@ -50,13 +50,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_28_152443) do
     t.text "url"
     t.datetime "timestamp", precision: nil
     t.text "file_hash"
-    t.bigint "author_id"
-    t.bigint "server_id"
-    t.bigint "channel_id"
-    t.bigint "msg_id"
+    t.integer "author_id"
+    t.integer "server_id"
+    t.integer "channel_id"
+    t.integer "msg_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "idhash"
+    t.text "idhash"
   end
 
   create_table "reminders", force: :cascade do |t|
