@@ -138,6 +138,7 @@ class FirstTimeSetup
         "trigger_limit: 10\n"\
         "temp_folder: \"tmp\"\n"\
         "default_trigger_chance: 5\n"\
+        "idhash_threshold: 10\n"\
         "del_trigger:\n"\
         "- not now rin\n"\
         "- no\n"\
