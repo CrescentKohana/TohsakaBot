@@ -112,9 +112,25 @@ module TohsakaBot
 
     def file_hash_match(file_hash, author_id)
       db = TohsakaBot.db[:linkeds]
-      return unless !file_hash.nil? && db
+      return if file_hash.nil? || !db
 
       db.where(category: 'file', file_hash: file_hash).exclude(author_id: author_id).single_record
+    end
+
+    def idhash_match(idhash, author_id)
+      db = TohsakaBot.db[:linkeds]
+      return if idhash.nil? || !db
+
+      linkeds = db.where(category: 'image').exclude(idhash: nil).exclude(author_id: author_id)
+      linkeds.each do |linked|
+        begin
+          distance = DHashVips::IDHash.distance linked[:idhash].to_i, idhash
+          return linked if distance < 30
+        rescue Vips::Error => e
+          puts "Vips Error: #{e}"
+        end
+      end
+     nil
     end
   end
 
