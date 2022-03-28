@@ -34,7 +34,7 @@ class HighlightsController < ApplicationController
   end
 
   def attachment_preview(attachment)
-    html = if %w[.jpg .png .jpeg .JPG .PNG .JPEG .gif].include?(File.extname(attachment))
+    html = if %w[.jpg .png .jpeg .gif .webp].include?(File.extname(attachment).downcase)
              %(<img src="#{attachment}" alt="image attachment" width=400>)
            elsif %w[.mp4 .webm .mov].include?(File.extname(attachment))
              '<video controls width="400">'\
