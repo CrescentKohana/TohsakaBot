@@ -17,7 +17,12 @@ module TohsakaBot
         File.delete(new_file)
         puts I18n.t(:'async.load_alko.no_update_needed')
       else
-        File.rename(new_file, TEMP_FILE)
+        begin
+          File.rename(new_file, TEMP_FILE)
+        rescue
+          puts "Could not rename #{new_file} to #{TEMP_FILE}. Possibly permission error."
+          return
+        end
 
         sheet = Roo::Spreadsheet.open(TEMP_FILE)
         sheet.to_csv('tmp/alko_temp.csv')
