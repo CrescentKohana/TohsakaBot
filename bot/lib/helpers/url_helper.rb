@@ -125,7 +125,7 @@ module TohsakaBot
       linkeds.each do |linked|
         begin
           distance = DHashVips::IDHash.distance linked[:idhash].to_i, idhash
-          return linked if distance < CFG.idhash_threshold.nil? ? 10 : CFG.idhash_threshold
+          return linked if distance < CFG.idhash_threshold ? CFG.idhash_threshold  : 10
         rescue Vips::Error => e
           puts "Vips Error: #{e}"
         end
