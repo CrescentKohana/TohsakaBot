@@ -3,6 +3,8 @@
 module TohsakaBot
   module Events
     module RepostOverseer
+      IMAGE_EXTENSIONS = %w[.jpg .jpeg .png .gif .webp .bmp .apng].freeze
+
       def self.notify(event, linked)
         return if event.server.id != linked[:server_id]
 
@@ -40,7 +42,8 @@ module TohsakaBot
             db.insert(
               category: category,
               url: url_result,
-              file_hash: '',
+              file_hash: nil,
+              idhash: nil,
               timestamp: time,
               author_id: event.message.user.id,
               msg_id: event.message.id,
@@ -56,22 +59,40 @@ module TohsakaBot
         event.message.attachments.each do |file|
           file_name = file.filename.dup.add_identifier
           IO.copy_stream(URI.parse(file.url).open, "tmp/#{file_name}")
-          file_hash = Digest::SHA2.file("tmp/#{file_name}").to_s
+          next unless File.exist?("tmp/#{file_name}")
 
-          match = TohsakaBot.file_hash_match(file_hash, event.message.user.id)
-          unless match.nil?
-            notify(event, match)
+          file_hash = Digest::SHA2.file("tmp/#{file_name}").to_s
+          idhash = nil
+          begin
+            if IMAGE_EXTENSIONS.include?(File.extname(file.filename).downcase)
+              idhash = DHashVips::IDHash.fingerprint("tmp/#{file_name}")
+            end
+          rescue Vips::Error
+            # ignore, not an image
+          end
+
+          File.delete("tmp/#{file_name}") if File.exist?("tmp/#{file_name}")
+
+          file_hash_match = TohsakaBot.file_hash_match(file_hash, event.message.user.id)
+          unless file_hash_match.nil?
+            notify(event, file_hash_match)
             next
           end
 
-          File.delete("tmp/#{file_name}")
-          # next unless db.where(file_hash: file_hash).single_record.nil?
+          unless idhash.nil?
+            idhash_match = TohsakaBot.idhash_match(idhash, event.message.user.id)
+            unless idhash_match.nil?
+              notify(event, idhash_match)
+              next
+            end
+          end
 
           TohsakaBot.db.transaction do
             db.insert(
-              category: 'file',
+              category: idhash.nil? ? 'file' : 'image',
               url: '',
               file_hash: file_hash,
+              idhash: idhash.to_s,
               timestamp: time,
               author_id: event.message.user.id,
               msg_id: event.message.id,

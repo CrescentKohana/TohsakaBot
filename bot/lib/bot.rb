@@ -51,6 +51,8 @@ require 'optimist'
 require 'shellwords'
 ## Custom probability for modules like Trigger ##
 require 'pickup'
+## Image fingerprinting ##
+require 'dhash-vips'
 ## Stripping markdown from strings ##
 require 'redcarpet'
 require 'redcarpet/render_strip'
