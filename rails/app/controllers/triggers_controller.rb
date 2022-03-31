@@ -84,6 +84,7 @@ class TriggersController < ApplicationController
       tohsaka_bridge.save_trigger_file(@trigger.file.current_path, @trigger.file.filename) if new_file
       # If there is (a new file OR a reply) AND there is a previous file, remove the previous file.
       if (new_file || new_reply) && !file.blank?
+        file = ActiveStorage::Filename.new(file).sanitized
         File.delete(Rails.configuration.user_config.data_dir + "/triggers/#{file}")
       end
 
@@ -99,8 +100,10 @@ class TriggersController < ApplicationController
     return unless permission?(params[:id])
 
     @trigger = Trigger.find(params[:id])
-    file = @trigger[:file]
-    File.delete(Rails.configuration.user_config.data_dir + "/triggers/#{file}") if @trigger.destroy && !file.blank?
+    if @trigger.destroy && !file.blank?
+      file = ActiveStorage::Filename.new(@trigger[:file]).sanitized
+      File.delete(Rails.configuration.user_config.data_dir + "/triggers/#{file}")
+    end
 
     tohsaka_bridge.reload_triggers
     redirect_to triggers_path
