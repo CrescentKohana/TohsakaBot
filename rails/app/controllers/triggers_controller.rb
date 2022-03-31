@@ -100,6 +100,7 @@ class TriggersController < ApplicationController
     return unless permission?(params[:id])
 
     @trigger = Trigger.find(params[:id])
+    file = @trigger[:file]
     if @trigger.destroy && !file.blank?
       file = ActiveStorage::Filename.new(@trigger[:file]).sanitized
       File.delete(Rails.configuration.user_config.data_dir + "/triggers/#{file}")
