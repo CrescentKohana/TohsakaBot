@@ -54,8 +54,8 @@ GEM
       loofah (>= 2.3.1)
       sax-machine (>= 1.0)
     ffi (1.15.5)
-    ffi (1.15.5-x64-mingw-ucrt)
     ffi (1.15.5-x64-mingw32)
+    ffi (1.15.5-x64-unknown)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
@@ -89,7 +89,7 @@ GEM
     nekos (1.0.1)
       rest-client
     netrc (0.11.0)
-    nokogiri (1.13.3)
+    nokogiri (1.13.4)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     numerizer (0.2.0)
@@ -179,6 +179,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.8)
+    unf_ext (0.0.8-x64-mingw32)
     unicode-display_width (2.1.0)
     webrick (1.7.0)
     websocket (1.2.9)
@@ -189,8 +190,8 @@ GEM
       webrick (~> 1.7.0)
 
 PLATFORMS
-  x64-mingw-ucrt
   x64-mingw32
+  x64-unknown
   x86_64-linux
 
 DEPENDENCIES
