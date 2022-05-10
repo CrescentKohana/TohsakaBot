@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: https://github.com/shardlab/discordrb.git
-  revision: fc9874319798e6b317c58ccdc7bd91e62fafecf2
+  revision: e384e4a68e93981b3394844614e27972f22ba706
   branch: main
   specs:
     discordrb (3.4.2)
@@ -55,7 +55,6 @@ GEM
       sax-machine (>= 1.0)
     ffi (1.15.5)
     ffi (1.15.5-x64-mingw32)
-    ffi (1.15.5-x64-unknown)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
@@ -76,7 +75,7 @@ GEM
     llhttp-ffi (0.4.0)
       ffi-compiler (~> 1.0)
       rake (~> 13.0)
-    loofah (2.16.0)
+    loofah (2.17.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     memory_profiler (1.0.0)
@@ -85,22 +84,22 @@ GEM
     mime-types-data (3.2022.0105)
     mini_portile2 (2.8.0)
     minitest (5.15.0)
-    mysql2 (0.5.3)
+    mysql2 (0.5.4)
     nekos (1.0.1)
       rest-client
     netrc (0.11.0)
-    nokogiri (1.13.4)
+    nokogiri (1.13.6)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     numerizer (0.2.0)
     optimist (3.0.1)
     opus-ruby (1.0.1)
       ffi
-    parallel (1.21.0)
-    parser (3.1.1.0)
+    parallel (1.22.1)
+    parser (3.1.2.0)
       ast (~> 2.4.1)
     pickup (0.0.11)
-    public_suffix (4.0.6)
+    public_suffix (4.0.7)
     racc (1.6.0)
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
@@ -110,7 +109,7 @@ GEM
     rainbow (3.1.1)
     rake (13.0.6)
     redcarpet (3.5.1)
-    regexp_parser (2.2.1)
+    regexp_parser (2.4.0)
     rest-client (2.1.0)
       http-accept (>= 1.7.0, < 2.0)
       http-cookie (>= 1.0.2, < 2.0)
@@ -152,7 +151,7 @@ GEM
       rubocop-ast (>= 1.9.1, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.16.0)
+    rubocop-ast (1.17.0)
       parser (>= 3.1.1.0)
     rubocop-performance (1.11.5)
       rubocop (>= 1.7.0, < 2.0)
@@ -174,12 +173,11 @@ GEM
     to_regexp (0.2.1)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
-    tzinfo-data (1.2021.5)
+    tzinfo-data (1.2022.1)
       tzinfo (>= 1.0.0)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.8)
-    unf_ext (0.0.8-x64-mingw32)
+    unf_ext (0.0.8.1)
     unicode-display_width (2.1.0)
     webrick (1.7.0)
     websocket (1.2.9)
@@ -196,7 +194,7 @@ PLATFORMS
 
 DEPENDENCIES
   actionview (~> 7.0.2.4)
-  activesupport (= 7.0.2.4)
+  activesupport (~> 7.0.2.4)
   bigdecimal (~> 3.1.2)
   chronic!
   configatron (~> 4.5.1)
@@ -230,4 +228,4 @@ DEPENDENCIES
   yard (~> 0.9.26)
 
 BUNDLED WITH
-   2.3.10
+   2.3.7
