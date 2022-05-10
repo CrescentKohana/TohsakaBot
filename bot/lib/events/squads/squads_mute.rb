@@ -19,7 +19,7 @@ module TohsakaBot
         next if role_id.nil?
 
         previous_mute = false
-        mute_db = YAML.load_file('data/squads_mute.yml')
+        mute_db = YAML.load_file('data/squads_mute.yml', permitted_classes: [Time])
         mute_db.each do |k, v|
           next if v.nil?
           next if v['role'].to_i != role_id || v['user'].to_i != event.user.id

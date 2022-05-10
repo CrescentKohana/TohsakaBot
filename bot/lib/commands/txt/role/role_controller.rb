@@ -44,7 +44,7 @@ module TohsakaBot
       raise RoleHandler::RoleNotFound if added_roles.empty?
 
       roles_with_rules = Set.new
-      timed_roles = YAML.load_file('data/timed_roles.yml')
+      timed_roles = YAML.load_file('data/timed_roles.yml', permitted_classes: [Time])
       timed_roles.each_value do |timed_role|
         timed_role[:roles].each { |role| roles_with_rules.add(role) }
       end

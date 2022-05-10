@@ -3,8 +3,8 @@
 module TohsakaBot
   module Jobs
     def self.manage_roles(now)
-      mute_db = YAML.load_file('data/squads_mute.yml')
-      timed_role_db = YAML.load_file('data/timed_roles.yml')
+      mute_db = YAML.load_file('data/squads_mute.yml', permitted_classes: [Time])
+      timed_role_db = YAML.load_file('data/timed_roles.yml', permitted_classes: [Time])
 
       trophies = TohsakaBot.db[:trophies]
       trophies_to_expire = trophies.where(expired: false)
