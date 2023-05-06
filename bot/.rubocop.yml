@@ -1,11 +1,11 @@
 # require: rubocop-performance
 
 AllCops:
-  TargetRubyVersion: 3.0.0
+  TargetRubyVersion: 3.1
   SuggestExtensions: false
   Exclude:
-    - 'bot/lib/gem_overrides/*.rb'
-    - 'bot/lib/deprecated/**/*'
+    - 'lib/gem_overrides/*.rb'
+    - 'lib/deprecated/**/*'
     - 'rails/db/schema.rb'
     - 'rails/db/migrate/*.rb'
 
