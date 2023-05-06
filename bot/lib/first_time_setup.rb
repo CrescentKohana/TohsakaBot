@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'csv'
 require 'io/console'
 require 'rainbow'
 require 'active_support/core_ext/string'
@@ -100,19 +101,6 @@ class FirstTimeSetup
       print("\n")
       locale = %w[en ja fi].include?(locale) ? locale : @locale
 
-      default_channel = required_input(green + I18n.t(:'first_time_setup.default_channel'), true)
-
-      print green + I18n.t(:'first_time_setup.highlight_channel')
-      highlight_channel = gets
-      print("\n")
-
-      print green + I18n.t(:'first_time_setup.mvp_role')
-      mvp_role = gets
-
-      print green + I18n.t(:'first_time_setup.fool_role')
-      fool_role = gets
-      print("\n")
-
       print green + I18n.t(:'first_time_setup.web_dir')
       web_dir = gets
       print("\n")
@@ -125,12 +113,9 @@ class FirstTimeSetup
         "---\n"\
         "prefix: \"#{prefix.gsub("\n", '')}\"\n"\
         "locale: \"#{locale}\"\n"\
-        "np: \"#{I18n.t(:'first_time_setup.default_now_playing')}\"\n"\
         "status:\n"\
-        "- playing"\
-        "- Tsukihime"\
-        "default_channel: #{default_channel}"\
-        "highlight_channel: #{highlight_channel}"\
+        "- playing\n"\
+        "- Tsukihime\n"\
         "web_dir: \"#{web_dir.gsub("\n", '')}\"\n"\
         "web_url: \"#{web_url.gsub("\n", '')}\"\n"\
         "nhk_api: \"https://rin.kohana.fi/nhk/\"\n"\
@@ -143,55 +128,61 @@ class FirstTimeSetup
         "- not now rin\n"\
         "- no\n"\
         "- del\n"\
-        "mvp_role: #{mvp_role}"\
-        "fool_role: #{fool_role}"\
-        "daily_neko: false\n"
       )
     end
 
-    unless File.exist?('data/ask_rin_answers.csv')
-      CSV.open('data/ask_rin_answers.csv', 'w', col_sep: "\t") do |csv|
+    servers = []
+    puts Rainbow("\n#{I18n.t(:'first_time_setup.servers_file')}").green
+    loop do
+      server_id = required_input(green + I18n.t(:'first_time_setup.server_id'), true)
+      server_name = required_input(green + I18n.t(:'first_time_setup.server_name'), false)
+      default_channel = required_input(green + I18n.t(:'first_time_setup.default_channel'), true)
+
+      print green + I18n.t(:'first_time_setup.highlight_channel')
+      highlight_channel = gets
+
+      print green + I18n.t(:'first_time_setup.mvp_role')
+      mvp_role = gets
+
+      print green + I18n.t(:'first_time_setup.fool_role')
+      fool_role = gets
+      print("\n")
+
+      servers << {
+        "id": server_id.chomp.to_i,
+        "name": server_name.chomp,
+        "default_channel": default_channel.chomp.to_i,
+        "highlight_channel": highlight_channel.chomp.to_i,
+        "mvp_role": mvp_role.chomp.to_i,
+        "fool_role": fool_role.chomp.to_i,
+        "roles": [],
+        "daily_neko": false,
+      }
+
+      Rainbow("#{I18n.t(:'first_time_setup.files_created')}\n").red
+      puts(I18n.t(:'first_time_setup.server_added', name: server_name, id: server_id))
+      print green + I18n.t(:'first_time_setup.servers_more')
+      add_more_servers = gets
+      print("\n")
+      break unless add_more_servers == 'y'
+    end
+
+    unless File.exist?('../data/servers.json')
+      File.open('../data/servers.json', 'w') { |f| f.write(JSON.pretty_generate({ "servers": servers })) }
+    end
+
+    unless File.exist?('../data/ask_rin_answers.csv')
+      CSV.open('../data/ask_rin_answers.csv', 'w', col_sep: "\t") do |csv|
         csv << ['Yes', 0]
         csv << ['No', 0]
         csv << ["I don't know", 0]
       end
     end
 
-    File.open('data/squads_mute.yml', 'w') { |f| f.write('--- {}') } unless File.exist?('data/squads_mute.yml')
-    File.open('data/timed_roles.yml', 'w') { |f| f.write('--- {}') } unless File.exist?('data/timed_roles.yml')
+    File.open('../data/squads_mute.yml', 'w') { |f| f.write('--- {}') } unless File.exist?('../data/squads_mute.yml')
+    File.open('../data/timed_roles.yml', 'w') { |f| f.write('--- {}') } unless File.exist?('../data/timed_roles.yml')
 
-    unless File.exist?('data/servers.json')
-      servers_hash = {
-        "servers": [
-          {
-            "id": 1,
-            "name": "Discord Example Server",
-            "default_channel": 0,
-            "highlight_channel": 0,
-            "mvp_role": 0,
-            "fool_role": 0,
-            "daily_neko": false,
-            "roles": [
-              {
-                "id": 1,
-                "name": "Game",
-                "group_size": 5,
-                "permissions": 0
-              },
-              {
-                "id": 2,
-                "name": "Game 2",
-                "group_size": 3,
-                "permissions": 100
-              }
-            ]
-          }
-        ]
-      }.freeze
-      File.open('data/servers.json', 'w') { |f| f.write(JSON.pretty_generate(servers_hash)) }
-    end
-
-    Dir.mkdir('data/triggers') unless File.directory?('data/triggers')
+    Dir.mkdir('../data/triggers') unless File.directory?('../data/triggers')
 
     puts Rainbow("#{I18n.t(:'first_time_setup.files_created')}\n").red
   end
