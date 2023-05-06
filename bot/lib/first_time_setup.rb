@@ -30,13 +30,13 @@ class FirstTimeSetup
   end
 
   def create_data_files_and_configs
-    Dir.mkdir('cfg') unless File.directory?('cfg')
+    Dir.mkdir('../cfg') unless File.directory?('../cfg')
 
     green = Rainbow("| ").green
 
     puts Rainbow("\n#{I18n.t(:'first_time_setup.required_hint')}\n").red
     puts Rainbow(I18n.t(:'first_time_setup.auth_file').to_s).green
-    File.open('cfg/auth.yml', 'w') do |f|
+    File.open('../cfg/auth.yml', 'w') do |f|
       owner_id = required_input(green + I18n.t(:'first_time_setup.owner_id'), true)
 
       cli_id = required_input(green + I18n.t(:'first_time_setup.cli_id'), true)
@@ -90,7 +90,7 @@ class FirstTimeSetup
     end
 
     puts Rainbow("\n#{I18n.t(:'first_time_setup.config_file')}").green
-    File.open('cfg/config.yml', 'w') do |f|
+    File.open('../cfg/config.yml', 'w') do |f|
       print green + I18n.t(:'first_time_setup.prefix')
       prefix = gets
       print("\n")

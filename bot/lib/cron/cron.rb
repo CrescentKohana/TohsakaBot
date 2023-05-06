@@ -40,7 +40,7 @@ module TohsakaBot
 
         # Every 30 minutes:
         if (timer % 1800).zero?
-          cfg = YAML.load_file('cfg/config.yml')
+          cfg = YAML.load_file('../cfg/config.yml')
           TohsakaBot.status(cfg["status"][0], cfg["status"][1])
         end
 

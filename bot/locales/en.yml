@@ -2,7 +2,7 @@ en:
   welcome: "EN: TohsakaBot launched successfully!"
 
   bot:
-    default_channel_notify: "No default channel set in 'cfg/config.yml'.
+    default_channel_notify: "No default channel set in 'config.yml'.
     Before sending messages through the terminal, set the channel with 'set_ch <id>'"
     channel_set: "Channel set to %{name} "
 

@@ -69,8 +69,8 @@ module TohsakaBot
   I18n.fallbacks.map(fi: :en, ja: :en)
 
   # Configuration & settings #
-  AUTH = OpenStruct.new YAML.load_file('cfg/auth.yml')
-  CFG = OpenStruct.new YAML.load_file('cfg/config.yml')
+  AUTH = OpenStruct.new YAML.load_file('../cfg/auth.yml')
+  CFG = OpenStruct.new YAML.load_file('../cfg/config.yml')
 
   I18n.available_locales = [:en, :ja, :fi]
   I18n.default_locale = CFG.locale.to_sym unless CFG.locale.blank?

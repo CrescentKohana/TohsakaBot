@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-if !File.exist?('cfg/auth.yml') || !File.exist?('cfg/config.yml') || ARGV.include?('reset')
+if !File.exist?('../cfg/auth.yml') || !File.exist?('../cfg/config.yml') || ARGV.include?('reset')
   require 'i18n'
   require 'i18n/backend/fallbacks'
 
