@@ -74,7 +74,7 @@ module TohsakaBot
         next if %w[. .. .keep].include?(filename)
         next if triggers_files.include? filename
 
-        FileUtils.mv(CFG.data_dir + "/triggers/#{filename}", "tmp/deleted_triggers/#{filename}")
+        FileUtils.mv(CFG.data_dir + "/triggers/#{filename}", "../tmp/deleted_triggers/#{filename}")
       end
       puts 'Done cleaning trigger files.'
     end

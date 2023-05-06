@@ -92,8 +92,8 @@ module TohsakaBot
 
         if main_attachment.size < TohsakaBot.server_upload_limit(server_id) && (is_video || is_audio)
           filename = temp_download_file(main_attachment)
-          @highlight_channel.send_file(File.open("tmp/#{filename}"), spoiler: main_attachment.spoiler?)
-          File.delete("tmp/#{filename}")
+          @highlight_channel.send_file(File.open("../tmp/#{filename}"), spoiler: main_attachment.spoiler?)
+          File.delete("../tmp/#{filename}")
         end
       end
 
@@ -126,7 +126,7 @@ module TohsakaBot
       return unless %r{https://cdn.discordapp.com.*}.match?(attachment.url)
 
       filename = attachment.filename
-      IO.copy_stream(URI.open(attachment.url), "tmp/#{filename}")
+      IO.copy_stream(URI.open(attachment.url), "../tmp/#{filename}")
       filename
     end
   end

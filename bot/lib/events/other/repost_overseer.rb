@@ -58,20 +58,20 @@ module TohsakaBot
 
         event.message.attachments.each do |file|
           file_name = file.filename.dup.add_identifier
-          IO.copy_stream(URI.parse(file.url).open, "tmp/#{file_name}")
-          next unless File.exist?("tmp/#{file_name}")
+          IO.copy_stream(URI.parse(file.url).open, "../tmp/#{file_name}")
+          next unless File.exist?("../tmp/#{file_name}")
 
-          file_hash = Digest::SHA2.file("tmp/#{file_name}").to_s
+          file_hash = Digest::SHA2.file("../tmp/#{file_name}").to_s
           idhash = nil
           begin
             if IMAGE_EXTENSIONS.include?(File.extname(file.filename).downcase)
-              idhash = DHashVips::IDHash.fingerprint("tmp/#{file_name}")
+              idhash = DHashVips::IDHash.fingerprint("../tmp/#{file_name}")
             end
           rescue Vips::Error
             # ignore, not an image
           end
 
-          File.delete("tmp/#{file_name}") if File.exist?("tmp/#{file_name}")
+          File.delete("../tmp/#{file_name}") if File.exist?("tmp/#{file_name}")
 
           file_hash_match = TohsakaBot.file_hash_match(file_hash, event.message.user.id)
           unless file_hash_match.nil?
