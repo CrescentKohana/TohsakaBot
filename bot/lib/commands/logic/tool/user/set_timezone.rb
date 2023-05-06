@@ -7,7 +7,7 @@ module TohsakaBot
     class SetTimezone
       def initialize(event, timezone)
         @event = event
-        @timezone = timezone.is_a? String ? timezone.downcase : timezone.key.downcase
+        @timezone = timezone.is_a?(String) ? timezone.downcase : timezone.key.downcase
       end
 
       def run
