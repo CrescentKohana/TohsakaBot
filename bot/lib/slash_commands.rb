@@ -145,7 +145,7 @@ module TohsakaBot
               'tz',
               I18n.t(:'commands.tool.user.set_timezone.param.tz'),
               required: true,
-              choices: ActiveSupport::TimeZone::MAPPING
+              choices: CFG.timezones
             )
           end
 
