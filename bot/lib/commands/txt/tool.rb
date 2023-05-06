@@ -31,8 +31,8 @@ module TohsakaBot
           embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'Rin', icon_url: 'https://cdn.discordapp.com/attachments/351170098754486289/648936891890008120/22_1615-a1fef0.png')
           embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'Made with Ruby', icon_url: 'https://cdn.discordapp.com/emojis/232899886419410945.png')
 
-          embed.add_field(name: 'Created by', value: 'Luukuton#3717')
-          embed.add_field(name: 'Source code', value: '[GitHub](https://github.com/Luukuton/TohsakaBot)')
+          embed.add_field(name: 'Created by', value: 'Kohana#3717')
+          embed.add_field(name: 'Source code', value: '[GitHub](https://github.com/CrescentKohana/TohsakaBot)')
         end
       end
 

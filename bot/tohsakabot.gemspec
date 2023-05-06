@@ -9,10 +9,10 @@ Gem::Specification.new do |spec|
   spec.authors     = ['Marko Leinikka']
   spec.summary     = 'A multipurpose Discord bot.'
   spec.description = 'A multipurpose Discord bot made with Ruby with a Rails web component: TohsakaWeb. Also called as Rin.'
-  spec.homepage    = 'https://rin.luukuton.fi'
+  spec.homepage    = 'https://rin.kohana.fi'
   spec.license     = 'Zlib'
 
-  spec.required_ruby_version = '>= 2.7.0'
+  spec.required_ruby_version = '>= 3.0.0'
   spec.files         = ['lib/bot.rb']
   spec.require_paths = ['lib']
 end

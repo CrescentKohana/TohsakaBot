@@ -133,7 +133,7 @@ class FirstTimeSetup
         "highlight_channel: #{highlight_channel}"\
         "web_dir: \"#{web_dir.gsub("\n", '')}\"\n"\
         "web_url: \"#{web_url.gsub("\n", '')}\"\n"\
-        "nhk_api: \"https://rin.luukuton.fi/nhk/\"\n"\
+        "nhk_api: \"https://rin.kohana.fi/nhk/\"\n"\
         "reminder_limit: 100\n"\
         "trigger_limit: 10\n"\
         "temp_folder: \"tmp\"\n"\
