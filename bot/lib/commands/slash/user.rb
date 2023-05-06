@@ -14,6 +14,11 @@ module TohsakaBot
           event.respond(content: command.run[:content])
         end
 
+        group.subcommand('set_timezone') do |event|
+          command = CommandLogic::SetTimezone.new(event, event.options['tz'])
+          event.respond(content: command.run[:content])
+        end
+
         group.subcommand('info') do |event|
           command = CommandLogic::UserInfo.new(event, event.options['user'])
           respond = command.run

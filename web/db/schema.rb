@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_03_28_152443) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_06_142106) do
   create_table "authorizations", force: :cascade do |t|
     t.string "provider", null: false
     t.bigint "uid", null: false
@@ -50,10 +50,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_28_152443) do
     t.text "url"
     t.datetime "timestamp", precision: nil
     t.text "file_hash"
-    t.integer "author_id"
-    t.integer "server_id"
-    t.integer "channel_id"
-    t.integer "msg_id"
+    t.bigint "author_id"
+    t.bigint "server_id"
+    t.bigint "channel_id"
+    t.bigint "msg_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "idhash"
@@ -107,6 +107,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_28_152443) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "last_congratulation", default: 0, null: false
+    t.string "timezone"
     t.index ["name"], name: "index_users_on_name"
   end
 

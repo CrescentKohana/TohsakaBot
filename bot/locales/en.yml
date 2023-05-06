@@ -182,6 +182,15 @@ en:
             lang: "Date"
           error:
             invalid_date: "Parsing date failed."
+        set_timezone:
+          aliases: "settz timezone tz"
+          description: "Sets the timezone for the user used in various funtions such as reminders."
+          usage: "settimezone <area (Helsinki, Tokyo, New York etc>"
+          response: "Timezone set to {timezone}."
+          param:
+            tz: "Timezone"
+          error:
+            tz_not_found: "Specified timezone identifier not found. See the column TZ identifier for all acceptable options: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List"
         register:
           description: "Register yourself."
           response: "You've been successfully registered!"

@@ -140,6 +140,15 @@ module TohsakaBot
             )
           end
 
+          group.subcommand('set_timezone', I18n.t(:'commands.tool.user.set_timezone.description')) do |sub|
+            sub.string(
+              'tz',
+              I18n.t(:'commands.tool.user.set_timezone.param.tz'),
+              required: true,
+              choices: ActiveSupport::TimeZone::MAPPING
+            )
+          end
+
           group.subcommand('info', I18n.t(:'commands.tool.user.info.description')) do |sub|
             sub.user('user', I18n.t(:'commands.tool.user.info.param.user'), required: false)
             sub.boolean('ephemeral', I18n.t(:'commands.general_param.ephemeral_false'), required: false)

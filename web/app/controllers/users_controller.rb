@@ -7,6 +7,7 @@ class UsersController < ApplicationController
     @user = User.find(session[:user_id])
     @user[:locale] = user_params[:locale]
     @user[:birthday] = user_params[:birthday]
+    @user[:timezone] = user_params[:timezone]
 
     flash[:notice] = if @user.update(user_params)
                        "Settings updated!"
@@ -19,6 +20,6 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:locale, :birthday)
+    params.require(:user).permit(:locale, :birthday, :timezone)
   end
 end
