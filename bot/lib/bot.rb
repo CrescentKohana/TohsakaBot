@@ -97,7 +97,8 @@ module TohsakaBot
 
   # Custom command matcher. Currently only for case insensitive commands.
   prefix_proc = proc do |message|
-    match = /^(?:#{Regexp.escape(CFG.prefix).split(' ').join('|')})(\w+)(.*)/.match(message.content)
+    prefixes = CFG.prefix.split(' ').map { |prefix| Regexp.escape(prefix) }.join('|')
+    match = /^(?:#{prefixes})(\w+)(.*)/.match(message.content)
     if match
       command_name = match[1]
       rest = match[2]
