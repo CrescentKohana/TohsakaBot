@@ -12,7 +12,7 @@ gem 'omniauth-discord', '~> 1.0.2'
 gem 'omniauth-rails_csrf_protection', '~> 1.0.1'
 
 gem 'jwt', '~> 2.3.0'
-gem 'rack-cors', '~> 1.1.1'
+gem 'rack-cors', '~> 2.0.1'
 
 # Faraday HTTP
 gem 'faraday', '~> 2.2.0'
@@ -21,7 +21,7 @@ gem 'faraday', '~> 2.2.0'
 gem 'simple_form', '~> 5.1.0'
 
 # MariaDB
-gem 'mysql2', '~> 0.5.3'
+gem 'mysql2', '~> 0.5.5', :group => :mysql
 
 # Simple search for SQL
 gem 'minidusen', '~> 0.10.1'
@@ -36,16 +36,16 @@ gem 'file_validators', '~> 3.0.0'
 gem 'responders', '~> 3.0.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 7.0.2'
+gem 'rails', '~> 7.0.4.3'
 # Ruby >=3.0 required rexml
 gem 'rexml', '~> 3.2.5'
 # Use SCSS for stylesheets
 gem 'sassc-rails', '~> 2.1.2'
 # gem 'sassc'
 # Use sqlite3 as the database for Active Record
-gem 'sqlite3', '~> 1.4.2'
+gem 'sqlite3', '~> 1.6.2', :group => :sqlite
 # Use Puma as the app server
-gem 'puma', '~> 5.6.4'
+gem 'puma', '~> 6.2.2'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5.2.1'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
