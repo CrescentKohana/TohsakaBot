@@ -40,9 +40,9 @@ module TohsakaBot
             regex = Regexp.new phrase
           else
             regex = if phrase.match(%r{/.*/.*})
-                      phrase.to_regexp
+                      Regexp.new phrase
                     else
-                      "/#{phrase}/".to_regexp
+                      Regexp.new "/#{phrase}/"
                     end
           end
 

@@ -61,9 +61,6 @@ group :development do
   gem 'yard', '~>0.9.26'
 end
 
-# TODO: Change this to something else
-gem 'to_regexp', "~>0.2.1"
-
 # Latest release of chronic (natural time parsing)
 gem 'chronic', github: 'mojombo/chronic', branch: 'master'
 # gem 'chronic', "~>0.10.2"
