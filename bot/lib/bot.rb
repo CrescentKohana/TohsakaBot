@@ -112,7 +112,8 @@ module TohsakaBot
                                             prefix: prefix_proc,
                                             advanced_functionality: false,
                                             fancy_log: true,
-                                            log_mode: :normal)
+                                            log_mode: :normal,
+                                            ignore_bots: true)
 
   # Command logic classes #
   Dir[File.join(__dir__, 'commands/logic/*/', '*.rb')].sort.each { |file| require file }
