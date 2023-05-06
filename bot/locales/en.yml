@@ -187,7 +187,7 @@ en:
           aliases: "settz timezone tz"
           description: "Sets the timezone for the user used in various funtions such as reminders."
           usage: "settimezone <area (Helsinki, Tokyo, New York etc>"
-          response: "Timezone set to {timezone}."
+          response: "Timezone set to %{timezone}."
           param:
             tz: "Timezone"
           error:
