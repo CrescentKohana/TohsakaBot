@@ -14,10 +14,24 @@ An optional Ruby on Rails web frontend for TohsakaBot.
     $env:EDITOR="notepad"
     rails credentials:edit
     ```
+
+  Contents:
+  ```
+  secret_key_base: xxxxx
+  jwt_secret: JWTSECRET
+  discord:
+    client_id: '000000000000000000'
+    secret: 'BOTSECRET'
+  mysql:
+    username: 'USERNAME'
+    password: 'PASSWORD'
+  ```
 - **Production**
   - [Recommended] Setup NGINX. Example config with SSL for TohsakaWeb [here](../documentation/tohsakaweb_nginx.conf).
   - Precompile assets with `rails assets:precompile`
-  - Start the app `bundle exec puma -b unix://tmp/server.sock`
+  - Start the app
+    - SQLite3: `RAILS_ENV=prodsqlite bundle exec puma -b unix://tmp/server.sock`
+    - MySQL/MariaDB: `RAILS_ENV=prodmysql bundle exec puma -b unix://tmp/server.sock`
 - **Development**
   - Start the app `RAILS_ENV=development bundle exec puma -b unix://tmp/server.sock`
 

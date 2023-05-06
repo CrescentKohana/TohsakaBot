@@ -4,7 +4,12 @@ development:
 test:
   adapter: test
 
-production:
+prodsqlite:
+  adapter: redis
+  url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
+  channel_prefix: TohsakaWeb_production
+
+prodmysql:
   adapter: redis
   url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
   channel_prefix: TohsakaWeb_production

@@ -16,7 +16,7 @@ port        ENV.fetch("PORT", 3000)
 
 # Specifies the `environment` that Puma will run in.
 #
-environment ENV.fetch("RAILS_ENV", "production")
+environment ENV.fetch("RAILS_ENV", "prodsqlite")
 
 # Specifies the `pidfile` that Puma will use.
 pidfile ENV.fetch("PIDFILE", "tmp/server.pid")
