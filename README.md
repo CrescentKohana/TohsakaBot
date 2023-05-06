@@ -15,33 +15,43 @@ A Discord bot written in Ruby, originally made for a private Discord community. 
 - Enable Privileged Gateway Intents here: `https://discord.com/developers/applications/<id>/bot`
 - Install Ruby ([rbenv](https://github.com/rbenv/rbenv) recommended for Linux), and MariaDB/MySQL **or** SQLite3
 - Install bundler: `gem install bundler`
-- Run the following commands: `cd rails` && `bundle install`
-- **If MariaDB/MySQL**:
-  - Use these SQL commands to create user and database for the bot. Remember to change USERNAMEs and PASSWORD.
-    ```
-    CREATE USER 'USERNAME'@'localhost' IDENTIFIED BY 'PASSWORD';
-    CREATE DATABASE IF NOT EXISTS tohsaka CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-    GRANT ALL PRIVILEGES on tohsaka.* to 'USERNAME'@'localhost';
-    FLUSH privileges;
-    ```
-  - Enter Discord (if one wants to run the web frontend) and database (required) credentials to config/credentials.ymc.enc with the following command **on Linux**:
-    ```
-    EDITOR="nano" rails credentials:edit
-    ```
-    or **on Windows**:
-    ```
-    $env:EDITOR="notepad"
-    rails credentials:edit
-    ```
-  - Run the following commands: `rails db:migrate RAILS_ENV=production`
-- **If SQLite3**:
-  - Run the following command: `rails db:migrate RAILS_ENV=productionlite`
-- Go back to the root folder: `cd ..`
-- Run `bundle install` to install required gems.
+- Run `cd web && bundle install` and `cd ../bot && bundle install` to install required gems.
   - _On Windows, if installing the mysql2 gem fails, install it separately with:_
-     `gem install mysql2 -- '--with-mysql-lib="C:\pathto\MariaDB 10.5\lib" --with-mysql-include="C:\pathto\MariaDB 10.5\include"'`
-- Start the bot by running `bundle exec ruby run.rb`.
-- Bot can be invited to a server with the following URL (**remember to change the CLIENT_ID**): 
+    `gem install mysql2 -- '--with-mysql-lib="C:\pathto\MariaDB 10.5\lib" --with-mysql-include="C:\pathto\MariaDB 10.5\include"'`
+- Enter Discord and database credentials to config/credentials.ymc.enc with the following command **on Linux**:
+  ```
+  EDITOR="nano" rails credentials:edit
+  ```
+  or **on Windows**:
+  ```
+  $env:EDITOR="notepad"
+  rails credentials:edit
+  ```
+  Contents example:
+  ```
+  secret_key_base: xxxxx
+  jwt_secret: JWTSECRET
+  discord:
+    client_id: '000000000000000000'
+    secret: 'BOTSECRET'
+  mysql:
+    username: 'USERNAME'
+    password: 'PASSWORD'
+  ```
+- Database setup
+  - **MariaDB/MySQL**
+    - Use these SQL commands to create user and database for the bot. Remember to change USERNAMEs and PASSWORD.
+      ```
+      CREATE USER 'USERNAME'@'localhost' IDENTIFIED BY 'PASSWORD';
+      CREATE DATABASE IF NOT EXISTS tohsaka CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+      GRANT ALL PRIVILEGES on tohsaka.* to 'USERNAME'@'localhost';
+      FLUSH privileges;
+      ```
+    - Run `rails db:migrate RAILS_ENV=prodmysql`
+  - **SQLite3**
+    - Run `rails db:migrate RAILS_ENV=prodsqlite`
+- Start the bot with `bundle exec ruby run.rb`.
+- Bot can be invited to a server with the following URL (change the CLIENT_ID): 
    `https://discordapp.com/oauth2/authorize?client_id=CLIENT_ID&scope=bot&permissions=335924288`
 
 ## Docker (WIP)
@@ -59,5 +69,5 @@ Tests can be performed with `rspec` command.
 ## Dependencies
 * Ruby >= 3.0 supported
 * MariaDB / MySQL or SQLite3
-* Gems specified in Gemfile (installed by `bundle install`)
-  * Using [discordrb](https://github.com/shardlab/discordrb) @ master branch
+* Gems specified in Gemfile
+  * Using [discordrb](https://github.com/shardlab/discordrb) @ main branch
