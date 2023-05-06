@@ -12,7 +12,9 @@ module TohsakaBot
 
       def run
         user_id = TohsakaBot.command_event_user_id(@event)
-        return unless TohsakaBot.permissions.able?(user_id, "owner", :role)
+        unless TohsakaBot.permissions.able?(user_id, "owner", :role)
+          return  { content: I18n.t(:'commands.tool.admin.register_slash.error.permission') }
+        end
 
         slash = SlashCommands.new
         registered_commands = Set.new
@@ -28,7 +30,7 @@ module TohsakaBot
           registered_commands.add(type)
         end
 
-        { content: "Registered top-level commands: `#{registered_commands.join('` `')}`" }
+        { content: "#{I18n.t(:'commands.tool.admin.register_slash.response')}`#{registered_commands.join('` `')}`" }
       end
     end
   end

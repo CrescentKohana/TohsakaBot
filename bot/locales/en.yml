@@ -120,6 +120,7 @@ en:
             types: "Top-level commands separated by space"
           error:
             not_found: "Given top-level commands weren't found."
+            permission: "No permissions to register commands."
         eval:
           description: "Run Ruby code. Only for the owner."
           usage: "eval <code (multiline allowed)>"
