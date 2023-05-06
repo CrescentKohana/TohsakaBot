@@ -3,7 +3,7 @@ A Discord bot written in Ruby, originally made for a private Discord community. 
 
 ## Documentation
 
-### [Rails Web](rails) (optional)
+### [Rails Web](web) (optional)
 
 ### [Changelog](CHANGELOG.md)
 
@@ -38,6 +38,7 @@ A Discord bot written in Ruby, originally made for a private Discord community. 
     username: 'USERNAME'
     password: 'PASSWORD'
   ```
+- Copy `web/config/user_config.example.yml` as `web/config/user_config.yml` and change the contents
 - Database setup
   - **MariaDB/MySQL**
     - Use these SQL commands to create user and database for the bot. Remember to change USERNAMEs and PASSWORD.
