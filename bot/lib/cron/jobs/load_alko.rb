@@ -29,7 +29,7 @@ module TohsakaBot
         sheet.close
 
         # Remove unnecessary lines from the CSV
-        dest = File.open('data/alko.csv', 'w')
+        dest = File.open(CFG.data_dir + '/alko.csv', 'w')
         origin = File.open('tmp/alko_temp.csv', 'r').each_with_index do |line, i|
           next if [0, 1, 2].include?(i.to_i)
 

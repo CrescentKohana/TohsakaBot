@@ -4,7 +4,7 @@ module TohsakaBot
   # Methods for Japanese language. Currently mostly pitch accent.
   module JapaneseHelper
     KATAKANA = %w[ァィゥェォヵㇰヶㇱㇲㇳㇴㇵㇶㇷㇷ゚ㇸㇹㇺャュョㇻㇼㇽㇾㇿヮ].freeze
-    NHK_JSON = JSON.parse(File.read('data/persistent/nhk_accents/nhk.json')).to_a.map do |a|
+    NHK_JSON = JSON.parse(File.read(CFG.data_dir + '/persistent/nhk_accents/nhk.json')).to_a.map do |a|
       {
         id: a["id"],
         kana: a["kana"],

@@ -71,11 +71,11 @@ module TohsakaBot
     def clean_trigger_files
       puts 'Cleaning files of deleted triggers..'
       triggers_files = TohsakaBot.db[:triggers].select(:phrase).select { :file }.map(&:values).flatten
-      Dir.foreach('data/triggers/') do |filename|
+      Dir.foreach(CFG.data_dir + '/triggers/') do |filename|
         next if %w[. .. .keep].include?(filename)
         next if triggers_files.include? filename
 
-        FileUtils.mv("data/triggers/#{filename}", "tmp/deleted_triggers/#{filename}")
+        FileUtils.mv(CFG.data_dir + "/triggers/#{filename}", "tmp/deleted_triggers/#{filename}")
       end
       puts 'Done cleaning trigger files.'
     end

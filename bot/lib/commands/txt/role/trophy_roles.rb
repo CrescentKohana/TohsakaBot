@@ -12,7 +12,7 @@ module TohsakaBot
         result_amount = 0
         header = "`  ID | EXPIRES    | ROLE: USER                                       `\n".dup
         output = ''.dup
-        roles = YAML.safe_load(File.read('data/temporary_roles.yml'))
+        roles = YAML.safe_load(File.read(CFG.data_dir + '/temporary_roles.yml'))
 
         time_now = Time.now.to_i
 

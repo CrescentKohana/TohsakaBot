@@ -19,7 +19,7 @@ module TohsakaBot
                   password: AUTH.db_password
                 )
               else
-                Sequel.connect("sqlite://data/#{sqlite}")
+                Sequel.connect("sqlite://#{CFG.data_dir}/#{sqlite}")
               end
     end
 

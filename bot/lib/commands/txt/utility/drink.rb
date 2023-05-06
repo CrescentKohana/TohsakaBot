@@ -12,7 +12,7 @@ module TohsakaBot
               min_args: 2) do |event, price, *type|
         m = event.respond('Parsing data...')
         if price.to_i <= MAX_BUDGET
-          aliases = YAML.safe_load(File.read("data/persistent/alko_aliases.yml"))
+          aliases = YAML.safe_load(File.read(CFG.data_dir + "/persistent/alko_aliases.yml"))
           aliases&.each_key do |k|
             aliases[k].each do |v|
               @output_type = k if v == type.join(" ").to_s.downcase
@@ -20,7 +20,7 @@ module TohsakaBot
           end
 
           matched = []
-          csv_text = File.read("data/alko.csv")
+          csv_text = File.read(CFG.data_dir + "/alko.csv")
           csv = CSV.parse(csv_text, headers: true)
           break if csv.nil?
 

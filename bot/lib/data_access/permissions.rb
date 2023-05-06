@@ -6,7 +6,7 @@ module TohsakaBot
     attr_accessor :roles, :actions
 
     def initialize
-      permissions = JSON.parse(File.read('data/persistent/permissions.json'))
+      permissions = JSON.parse(File.read(CFG.data_dir + '/persistent/permissions.json'))
       @roles = permissions["roles"]
       @actions = {}
 

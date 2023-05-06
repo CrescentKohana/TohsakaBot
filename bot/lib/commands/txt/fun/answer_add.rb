@@ -13,7 +13,7 @@ module TohsakaBot
         answer = msg.join(' ').delete("\t").sanitize_string
         exists = false
 
-        CSV.foreach('data/ask_rin_answers.csv', 'r', col_sep: "\t") do |row|
+        CSV.foreach(CFG.data_dir + '/ask_rin_answers.csv', 'r', col_sep: "\t") do |row|
           if answer == row[0]
             event.respond 'Answer already exists. Aborting.'
             exists = true
@@ -22,7 +22,7 @@ module TohsakaBot
         end
         break if exists
 
-        CSV.open('data/ask_rin_answers.csv', 'a', col_sep: "\t") do |csv|
+        CSV.open(CFG.data_dir + '/ask_rin_answers.csv', 'a', col_sep: "\t") do |csv|
           csv << [answer, event.user.id]
         end
         event.respond 'Answer added.'

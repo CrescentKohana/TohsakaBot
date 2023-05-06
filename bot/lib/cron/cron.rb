@@ -46,7 +46,7 @@ module TohsakaBot
 
         # Every hour:
         if (timer % 3600).zero?
-          # Cleans 3d old links and file hashes.
+          # Cleans 3 days old links and file hashes.
           TohsakaBot.db[:linkeds].where(Sequel[:timestamp] <= Time.now - (72 * 60 * 60)).delete
         end
 

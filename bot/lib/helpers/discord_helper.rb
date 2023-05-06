@@ -179,7 +179,7 @@ module TohsakaBot
     end
 
     def read_servers
-      servers = JSON.parse(File.read("data/servers.json"))["servers"]
+      servers = JSON.parse(File.read(CFG.data_dir + "/servers.json"))["servers"]
 
       servers_hash = {}
       servers.each do |server|

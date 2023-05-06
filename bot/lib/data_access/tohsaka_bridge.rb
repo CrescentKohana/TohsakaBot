@@ -7,11 +7,11 @@ module TohsakaBot
     end
 
     def get_now_playing
-      CFG.np
+      CFG.status
     end
 
     def save_trigger_file(path, filename)
-      FileUtils.mv path, "data/triggers/#{filename}"
+      FileUtils.mv path, CFG.data_dir + "/triggers/#{filename}"
     end
 
     def reload_triggers

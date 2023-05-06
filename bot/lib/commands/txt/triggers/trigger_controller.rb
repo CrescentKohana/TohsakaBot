@@ -80,9 +80,9 @@ module TohsakaBot
       final_filename = file.filename.gsub(File.extname(file.filename), '').to_s.add_identifier
       final_filename += File.extname(file.filename)
 
-      IO.copy_stream(URI.open(file.url), "data/triggers/#{final_filename}")
+      IO.copy_stream(URI.open(file.url), CFG.data_dir + "/triggers/#{final_filename}")
 
-      return nil if File.size("data/triggers/#{final_filename}") > TohsakaBot.server_upload_limit(reply.server.id)
+      return nil if File.size(CFG.data_dir + "/triggers/#{final_filename}") > TohsakaBot.server_upload_limit(reply.server.id)
 
       final_filename
     end
