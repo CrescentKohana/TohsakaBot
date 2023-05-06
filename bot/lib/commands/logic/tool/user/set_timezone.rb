@@ -1,16 +1,18 @@
 # frozen_string_literal: true
 
+@timezone_keys = ActiveSupport::TimeZone::MAPPING.keys.map(&:downcase).freeze
+
 module TohsakaBot
   module CommandLogic
     class SetTimezone
       def initialize(event, timezone)
         @event = event
-        @timezone = timezone
+        @timezone = timezone.is_a? String ? timezone.downcase : timezone.key.downcase
       end
 
       def run
         user_id = TohsakaBot.command_event_user_id(@event)
-        unless ActiveSupport::TimeZone::MAPPING.map(&:lowercase).include? @timezone.lowercase
+        unless @timezone_keys.include? @timezone
           return { content: I18n.t(:'commands.tool.user.set_timezone.error.tz_not_found',
                                    locale: TohsakaBot.get_locale(user_id)) }
         end
