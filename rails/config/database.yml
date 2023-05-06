@@ -13,13 +13,13 @@ default: &default
   username: <%= Rails.application.credentials.dig(:mysql, :username) %>
   password: <%= Rails.application.credentials.dig(:mysql, :password) %>
 
-production:
+prodmysql:
   <<: *default
   adapter: mysql2
   database: tohsaka
 # socket: /tmp/mysql.sock
 
-productionlite:
+prodsqlite:
   adapter: sqlite3
   database: ../data/production.sqlite3
 
