@@ -22,11 +22,10 @@ module TohsakaBot
     def reload_active
       @triggers = TohsakaBot.db[:triggers]
       @trigger_phrases = @triggers.select(:phrase).select { :phrase }.map(&:values).flatten.map do |p|
-        regex =  Regexp.new p
-        if regex.nil?
-          Regexp.new "/#{p}/"
-        else
+        if p.match(%r{/.*/.*})
           Regexp.new p
+        else
+          Regexp.new "/#{p}/"
         end
       end
     end
