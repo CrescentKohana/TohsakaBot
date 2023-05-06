@@ -4,10 +4,10 @@ AllCops:
   TargetRubyVersion: 3.1
   SuggestExtensions: false
   Exclude:
-    - 'lib/gem_overrides/*.rb'
-    - 'lib/deprecated/**/*'
-    - 'rails/db/schema.rb'
-    - 'rails/db/migrate/*.rb'
+    - 'bot/lib/gem_overrides/*.rb'
+    - 'bot/lib/deprecated/**/*'
+    - 'web/db/schema.rb'
+    - 'web/db/migrate/*.rb'
 
 # Commonly used screens these days easily fit more than 80 characters.
 Layout/LineLength:
