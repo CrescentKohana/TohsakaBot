@@ -89,7 +89,7 @@ module TohsakaBot
 
       # Natural language input
       else
-        @datetime = Chronic.parse(@datetime)
+        @datetime = Chronic.parse(@datetime, { now: time_now, hours24: true, endian_precedence: %i[little middle] })
       end
 
       raise ReminderHandler::DateTimeSyntaxError if !DATE_REGEX.match?(@datetime.to_s) || @datetime.nil?
