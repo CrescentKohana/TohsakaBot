@@ -175,7 +175,7 @@ en:
             locale_not_found: "Specified language not found."
         birthday:
           aliases: "setbirthday birthdayset setbd bdset setdob dobset"
-          description: "Sets user's birthday for the bot to congratulate them. By not setting time, they will be congratulated at 9:00 local time."
+          description: "Sets user's birthday. If the time isn't set, the congratulations will happen at 9:00 local time."
           usage: "birthday <date (e.g. YYYY-MM-DD or DD-MM-YYYY, 0 for clearing, separators include -/.)> <time (optional, hh:ss, default 09:00)>"
           response: "Birthday set to %{date}."
           clear: "Birthday cleared."
