@@ -18,11 +18,13 @@ module TohsakaBot
         discord_uid = TohsakaBot.get_discord_id(user_id)
 
         next if discord_uid.nil?
-        next if BOT.user(discord_uid).bot_account?
+
+        discord_user = BOT.user(discord_uid)
+        next if discord_user.nil? || discord_user.bot_account?
 
         repeat_time = r[:repeat].to_i
 
-        # TODO: copied reminders in the same message if possible
+        # TODO: put copied reminders in the same message if possible
         # if !parent.nil? && !reminders.where(:id => parent.to_i).nil?
         #
         # end
@@ -36,7 +38,8 @@ module TohsakaBot
           @where = BOT.channel(channel_id)
         else
           # If bot has permissions to send messages to this channel.
-          temp_server = BOT.server(BOT.channel(channel_id).server.id)
+          temp_channel = BOT.channel(channel_id)
+          temp_server = temp_channel&.server&.nil? ? nil : BOT.server(temp_channel.server.id)
           @where = if temp_server.nil?
                      BOT.pm_channel(discord_uid)
                    elsif BOT.profile.on(temp_server).permission?(:send_messages, BOT.channel(channel_id))
