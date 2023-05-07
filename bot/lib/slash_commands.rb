@@ -172,14 +172,14 @@ module TohsakaBot
               max_value: 31
             )
             sub.integer(
-              'day',
+              'hour',
               I18n.t(:'commands.tool.user.birthday.param.hour'),
               required: false,
               min_value: 0,
               max_value: 23
             )
             sub.integer(
-              'day',
+              'minute',
               I18n.t(:'commands.tool.user.birthday.param.minute'),
               required: false,
               min_value: 0,
