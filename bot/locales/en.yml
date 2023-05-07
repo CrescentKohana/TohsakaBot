@@ -185,13 +185,13 @@ en:
             invalid_date: "Parsing date failed."
         set_timezone:
           aliases: "settz timezone tz"
-          description: "Sets the timezone for the user used in various funtions such as reminders."
-          usage: "settimezone <area (Helsinki, Tokyo, New York etc>"
+          description: "Sets the timezone for the user used in various functions such as reminders."
+          usage: "settimezone <area (Helsinki, Tokyo, New York etc.)>"
           response: "Timezone set to %{timezone}."
           param:
             tz: "Timezone"
           error:
-            tz_not_found: "Specified timezone identifier not found. See the column TZ identifier for all acceptable options: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List"
+            tz_not_found: "Specified timezone identifier not found. See the column TZ identifier for all acceptable options: <https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List>"
         register:
           description: "Register yourself."
           response: "You've been successfully registered!"
@@ -473,7 +473,7 @@ en:
         usage: "remindme -h or --help for help."
         help:
           banner: "Usage: remindme [options]"
-          datetime: "When to remind. Format: yMwdhms OR yyyy/MM/dd hh.mm.ss OR natural language"
+          datetime: "When to remind. Format: yMwdhms OR yyyy-MM-dd hh.mm.ss OR natural language"
           msg: "Message of the reminder."
           repeat: "Interval duration for repeated reminders. Format: dhm (eg. 2d6h20m)"
           extra_help: "Alternatively, `remindme <time (if spaces put ; after this)> <msg>` also works.
@@ -499,7 +499,7 @@ en:
         help:
           banner: "Usage: remindermod [-i id] [-d datetime] [-m message] [-r repeat]"
           id: "ID of the reminder to edit."
-          datetime: "Edit the time when to remind. Format: yMwdhms OR yyyy/MM/dd hh.mm.ss OR natural language."
+          datetime: "Edit the time when to remind. Format: yMwdhms OR yyyy-MM-dd hh.mm.ss OR natural language."
           msg: "Edit the message."
           repeat: "Edit the interval duration for repeated reminders. Format: dhm (eg. 2d6h20m)"
           channel: "Edit the channel where you will be reminded. Format: channel id."
