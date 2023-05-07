@@ -41,9 +41,9 @@ module TohsakaBot
                      end
           locale = internal_user[:locale].nil? ? '' : "     Locale: #{internal_user[:locale]}\n"
           timezone = if internal_user[:timezone].nil?
-                       '     Timezone: UTC (+00:00)'
+                       '   Timezone: UTC (+00:00)'
                      else
-                       "     Timezone: #{internal_user[:timezone]} (#{ActiveSupport::TimeZone[internal_user[:timezone]].formatted_offset})\n"
+                       "   Timezone: #{internal_user[:timezone]} (#{ActiveSupport::TimeZone[internal_user[:timezone]].formatted_offset})\n"
                      end
         end
 
