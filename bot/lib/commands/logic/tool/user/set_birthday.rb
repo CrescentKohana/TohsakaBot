@@ -27,8 +27,7 @@ module TohsakaBot
           time_parts = tmp_time if tmp_time.length == 2
         end
 
-        @user_id = TohsakaBot.get_user_id(user_id)
-        @now = TohsakaBot.user_time_now(TohsakaBot.command_event_user_id(@event))
+        @now = TohsakaBot.user_time_now(TohsakaBot.command_event_user_id(@event), true)
 
         date_parts.reverse! if date_parts[2] >= 1900 # Reverses for DD/MM/YYYY
         @date = Time.new(date_parts[0].clamp(1900, @now.year),
