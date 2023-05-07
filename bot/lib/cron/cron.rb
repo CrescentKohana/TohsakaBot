@@ -30,10 +30,8 @@ module TohsakaBot
         Jobs.type_in_channels if (timer % 4).zero?
 
         # Every 10 seconds:
-        if (timer % 10).zero?
-          Jobs.birthday(now)
-          Jobs.daily_neko(now) unless CFG.daily_neko.blank? || !CFG.daily_neko
-        end
+        # if (timer % 10).zero?
+        # end
 
         # Every 60 seconds:
         Jobs.manage_roles(now) if (timer % 60).zero?

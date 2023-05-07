@@ -155,8 +155,7 @@ class FirstTimeSetup
         "highlight_channel": highlight_channel.chomp.to_i,
         "mvp_role": mvp_role.chomp.to_i,
         "fool_role": fool_role.chomp.to_i,
-        "roles": [],
-        "daily_neko": false,
+        "roles": []
       }
 
       Rainbow("#{I18n.t(:'first_time_setup.files_created')}\n").red
