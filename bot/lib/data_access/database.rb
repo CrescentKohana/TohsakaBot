@@ -26,10 +26,12 @@ module TohsakaBot
     # Returns true if user is registered (present in the database), false if not.
     # If event is given and the user is not registered, sends a message which tells to register first.
     #
-    # @param discord_uid [Integer]
+    # @param discord_uid [Integer, nil]
     # @param event [EventContainer, nil]
     # @return [Boolean] is user registered?
     def registered?(discord_uid, event = nil)
+      return false if discord_uid.nil?
+
       if TohsakaBot.get_user_id(discord_uid.to_i).to_i.positive?
         true
       else
@@ -43,9 +45,11 @@ module TohsakaBot
 
     # Returns bot's internal UID. Not the Discord User ID!
     #
-    # @param discord_uid [Integer] Discord UID
+    # @param discord_uid [Integer, nil] Discord UID
     # @return [Integer, nil] internal ID for the user
     def get_user_id(discord_uid)
+      return nil if discord_uid.nil?
+
       user = TohsakaBot.db[:authorizations][uid: discord_uid.to_i]
       return user[:user_id].to_i unless user.nil?
 
@@ -65,10 +69,12 @@ module TohsakaBot
 
     # Returns user's locale.
     #
-    # @param discord_uid [Integer] Discord User ID
+    # @param discord_uid [Integer, nil] Discord User ID
     # @param symbol [Boolean] As symbol? (default: true)
     # @return [String, Symbol] locale (default: "en")
     def get_locale(discord_uid, symbol: true)
+      return symbol ? :en : "en" if discord_uid.nil?
+
       user = TohsakaBot.db[:users][id: get_user_id(discord_uid)]
       locale = if user.nil? || user[:locale].blank? || !%w[en ja fi].include?(user[:locale])
                  "en"
@@ -79,6 +85,21 @@ module TohsakaBot
       return locale unless symbol
 
       locale.to_sym
+    end
+
+    # Returns user's timezone.
+    #
+    # @param user_id [Integer, nil] Internal user ID
+    # @return [String] timezone (default: "UTC")
+    def get_timezone(user_id)
+      return 'UTC' if user_id.nil?
+
+      user = TohsakaBot.db[:users][id: user_id]
+      if user.nil? || user[:timezone].blank?
+        'UTC'
+      else
+        user[:timezone]
+      end
     end
 
     # Checks if the user limit is reached for this datatype.

@@ -51,8 +51,8 @@ module TohsakaBot
                    highlight_msg_id: highlight_msg_id,
                    server_id: @server_id,
                    deleted: false,
-                   created_at: Time.now,
-                   updated_at: Time.now)
+                   created_at: TohsakaBot.time_now,
+                   updated_at: TohsakaBot.time_now)
       end
     end
 

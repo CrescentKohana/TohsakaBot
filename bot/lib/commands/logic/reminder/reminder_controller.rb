@@ -29,8 +29,10 @@ module TohsakaBot
       end
 
       @event = event
-      @discord_uid = TohsakaBot.command_event_user_id(event)
+      @discord_uid = event.nil? ? nil : TohsakaBot.command_event_user_id(event)
       @channel_id = channel_id.to_i
+      @user_id = @discord_uid.nil? ? nil : TohsakaBot.get_user_id(@discord_uid)
+      @time_now = TohsakaBot.user_time_now(@user_id)
 
       if !repeat.nil?
         minutes = TohsakaBot.match_time(repeat, /([0-9]*)(min|m)/) || 0
@@ -112,8 +114,8 @@ module TohsakaBot
           user_id: TohsakaBot.get_user_id(@discord_uid),
           channel_id: @channel_id,
           repeat: @repeat,
-          created_at: Time.now,
-          updated_at: Time.now
+          created_at: TohsakaBot.time_now,
+          updated_at: TohsakaBot.time_now
         )
       end
 
@@ -206,8 +208,8 @@ module TohsakaBot
                               channel_id: reminder[:channel_id],
                               repeat: reminder[:repeat],
                               parent: reminder_id,
-                              created_at: Time.now,
-                              updated_at: Time.now)
+                              created_at: TohsakaBot.time_now,
+                              updated_at: TohsakaBot.time_now)
       end
       id
     end

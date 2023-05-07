@@ -13,7 +13,7 @@ module TohsakaBot
       return nil unless @timeouts[member_id].nil?
 
       @timeouts[member_id] = {}
-      @timeouts[member_id][:created_at] = Time.now
+      @timeouts[member_id][:created_at] = TohsakaBot.time_now
       @timeouts[member_id][:server_id] = server_id
       @timeouts[member_id][:channel_id] = channel_id
       @timeouts[member_id][:votes] = { yes: Set.new, no: Set.new }

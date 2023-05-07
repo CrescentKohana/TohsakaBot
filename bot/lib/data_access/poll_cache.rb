@@ -17,7 +17,7 @@ module TohsakaBot
       @polls[id][:channel_id] = channel_id
       @polls[id][:question] = question
       @polls[id][:choices] = choices.map { |c| { content: c[:content], votes: Set.new } }
-      @polls[id][:time] = duration.nil? ? nil : Time.now.to_i + duration
+      @polls[id][:time] = duration.nil? ? nil : TohsakaBot.time_now.to_i + duration
       @polls[id][:multi] = multi.nil? ? false : multi
 
       id

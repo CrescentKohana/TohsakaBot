@@ -6,7 +6,7 @@ module TohsakaBot
       extend Discordrb::EventContainer
       reaction_add(emoji: '🔄') do |event|
         next if event.channel.pm? || event.user.bot_account
-        next if Time.now.to_i < event.message.timestamp.to_i + 3600
+        next if TohsakaBot.time_now.to_i < event.message.timestamp.to_i + 3600
 
         msg = event.respond(
           "#{event.message.content} by <@!#{event.user.id}>",

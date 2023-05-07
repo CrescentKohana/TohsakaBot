@@ -41,7 +41,7 @@ module TohsakaBot
           db.transaction do
             i += 1 while db.root?(i)
             db[i] = {
-              'time' => Time.now,
+              'time' => TohsakaBot.time_now,
               'hours' => durations[event.emoji.name],
               'user' => event.user.id,
               'server' => event.server.id,

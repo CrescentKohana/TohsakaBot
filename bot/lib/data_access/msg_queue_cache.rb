@@ -13,7 +13,7 @@ module TohsakaBot
       if @list[id].nil?
         @list[id] = {}
         @list[id][:msgs] = []
-        @list[id][:time] = Time.now.to_i + 2
+        @list[id][:time] = TohsakaBot.time_now.to_i + 2
         @list[id][:channel_id] = channel
         @list[id][:embed] = embed
       elsif embed && @list[id][:msgs].size == 25

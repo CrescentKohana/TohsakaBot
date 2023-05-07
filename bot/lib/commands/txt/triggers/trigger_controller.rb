@@ -42,8 +42,8 @@ module TohsakaBot
                               server_id: @server_id,
                               chance: @chance,
                               mode: @mode,
-                              created_at: Time.now,
-                              updated_at: Time.now)
+                              created_at: TohsakaBot.time_now,
+                              updated_at: TohsakaBot.time_now)
       end
 
       TohsakaBot.trigger_data.reload_active

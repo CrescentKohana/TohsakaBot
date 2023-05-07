@@ -51,8 +51,8 @@ module TohsakaBot
               msg_id: event.message.id,
               channel_id: event.channel.id,
               server_id: event.server.id,
-              created_at: Time.now,
-              updated_at: Time.now
+              created_at: TohsakaBot.time_now,
+              updated_at: TohsakaBot.time_now
             )
           end
         end
@@ -100,8 +100,8 @@ module TohsakaBot
               msg_id: event.message.id,
               channel_id: event.channel.id,
               server_id: event.server.id,
-              created_at: Time.now,
-              updated_at: Time.now
+              created_at: TohsakaBot.time_now,
+              updated_at: TohsakaBot.time_now
             )
           end
         end

@@ -23,7 +23,7 @@ module TohsakaBot
         e.image = Discordrb::Webhooks::EmbedImage.new(url: url)
         e.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'Daily 猫 (cat)')
         e.colour = 0x36393F
-        e.timestamp = Time.now
+        e.timestamp = TohsakaBot.time_now
       end
 
       button = if pixiv_id.nil?

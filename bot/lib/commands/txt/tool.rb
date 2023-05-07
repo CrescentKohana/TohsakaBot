@@ -25,7 +25,7 @@ module TohsakaBot
           embed.colour = 0xA82727
           embed.url = ''
           embed.description = ''
-          embed.timestamp = Time.now
+          embed.timestamp = TohsakaBot.time_now
 
           embed.image = Discordrb::Webhooks::EmbedImage.new(url: 'https://cdn.discordapp.com/attachments/351170098754486289/648936828212215812/22_1602-4fe170.gif')
           embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'Rin', icon_url: 'https://cdn.discordapp.com/attachments/351170098754486289/648936891890008120/22_1615-a1fef0.png')

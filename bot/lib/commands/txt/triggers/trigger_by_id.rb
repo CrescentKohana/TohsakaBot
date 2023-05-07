@@ -30,7 +30,7 @@ module TohsakaBot
         TohsakaBot.db.transaction do
           TohsakaBot.db[:triggers].where(id: trigger[:id]).update(
             calls: trigger[:calls] + 1,
-            last_triggered: Time.now
+            last_triggered: TohsakaBot.time_now
           )
         end
         break

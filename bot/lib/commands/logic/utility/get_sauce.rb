@@ -26,7 +26,7 @@ module TohsakaBot
         builder.add_embed do |e|
           e.title = 'Results:'
           e.colour = 0xA82727
-          e.timestamp = Time.now
+          e.timestamp = TohsakaBot.time_now
           e.image = Discordrb::Webhooks::EmbedImage.new(url: @url)
 
           e.add_field(name: '**Pixiv**', value: "https://www.pixiv.net/en/artworks/#{output}")

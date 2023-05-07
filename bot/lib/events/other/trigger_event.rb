@@ -88,14 +88,14 @@ module TohsakaBot
           TohsakaBot.db.transaction do
             TohsakaBot.db[:triggers].where(id: chosen_trigger[:id]).update(
               calls: chosen_trigger[:calls] + 1,
-              last_triggered: Time.now
+              last_triggered: TohsakaBot.time_now
             )
           end
         else
           TohsakaBot.db.transaction do
             TohsakaBot.db[:triggers].where(id: chosen_trigger[:id]).update(
               occurrences: chosen_trigger[:occurrences] + 1,
-              last_triggered: Time.now
+              last_triggered: TohsakaBot.time_now
             )
           end
         end

@@ -9,7 +9,7 @@ module TohsakaBot
         next if event.message.content&.first == '#'
         next if event.message.role_mentions.empty?
 
-        if Time.now.to_i >= event.message.timestamp.to_i + 3600
+        if TohsakaBot.time_now.to_i >= event.message.timestamp.to_i + 3600
           event.message.delete_all_reactions
           event.message.create_reaction('🔄')
           next
