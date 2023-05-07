@@ -19,6 +19,15 @@ module TohsakaBot
           event.respond(content: command.run[:content])
         end
 
+        group.subcommand('birthday') do |event|
+          command = CommandLogic::SetBirthday.new(
+            event,
+            "#{event.options['year']}-#{event.options['month']}-#{event.options['day']}",
+            "#{event.options['hour']}:#{event.options['minute']}:00"
+          )
+          event.respond(content: command.run[:content])
+        end
+
         group.subcommand('info') do |event|
           command = CommandLogic::UserInfo.new(event, event.options['user'])
           respond = command.run
