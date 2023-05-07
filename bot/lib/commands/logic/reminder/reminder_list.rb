@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'active_support/core_ext/time'
+
 module TohsakaBot
   module CommandLogic
     class ReminderList
@@ -24,7 +26,7 @@ module TohsakaBot
 
         parsed_reminders.each do |r|
           id = r[:id].to_i
-          datetime = r[:datetime]
+          datetime = r[:datetime].in_time_zone(r[:timezone])
           msg = r[:message]
           repeat_time = r[:repeat].to_i
 

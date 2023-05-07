@@ -32,7 +32,8 @@ module TohsakaBot
       @discord_uid = event.nil? ? nil : TohsakaBot.command_event_user_id(event)
       @channel_id = channel_id.to_i
       @user_id = @discord_uid.nil? ? nil : TohsakaBot.get_user_id(@discord_uid)
-      @time_now = TohsakaBot.user_time_now(@user_id)
+      @timezone = TohsakaBot.get_timezone(@user_id)
+      @time_now = TohsakaBot.time_now(@timezone)
 
       if !repeat.nil?
         minutes = TohsakaBot.match_time(repeat, /([0-9]*)(min|m)/) || 0
@@ -96,6 +97,7 @@ module TohsakaBot
       raise ReminderHandler::MaxTimeError if @datetime.year > 9999
       raise ReminderHandler::PastError if @datetime < time_now
 
+      @datetime = @datetime.utc
       @datetime
     end
 
@@ -110,6 +112,7 @@ module TohsakaBot
       TohsakaBot.db.transaction do
         @id = reminders.insert(
           datetime: @datetime,
+          timezone: @timezone,
           message: @msg,
           user_id: TohsakaBot.get_user_id(@discord_uid),
           channel_id: @channel_id,
@@ -168,7 +171,8 @@ module TohsakaBot
     def final_response(repetition_interval, mod)
       relative_time = Discordrb.timestamp(@datetime.to_i, :relative)
       # If the date was in the ISO 8601 format, convert it to text for the message.
-      @datetime = @datetime.is_a?(Integer) ? @datetime = Time.at(@datetime) : @datetime
+      datetime = @datetime.is_a?(Integer) ? @datetime = Time.at(@datetime) : @datetime
+      datetime = datetime.in_time_zone(@timezone)
 
       if mod
         reminder_type_msg = if repetition_interval.blank?
@@ -177,16 +181,16 @@ module TohsakaBot
                               "repeating reminder `<ID #{@id}>` #{repetition_interval} starting "
                             end
 
-        return "<@#{@discord_uid.to_i}>, modified #{reminder_type_msg}at `#{@datetime}` (#{relative_time}) "\
+        return "<@#{@discord_uid.to_i}>, modified #{reminder_type_msg}at `#{datetime}` (#{relative_time}) "\
                "in <##{@channel_id}> with #{@msg.strip.hide_link_preview}"
       end
 
       reminder_type_msg = repetition_interval.empty? ? "" : "#{repetition_interval} starting "
 
       if @msg.blank?
-        "`ID #{@id}` I shall remind <@#{@discord_uid.to_i}> #{reminder_type_msg}at `#{@datetime}` #{relative_time}"
+        "`ID #{@id}` I shall remind <@#{@discord_uid.to_i}> #{reminder_type_msg}at `#{datetime}` #{relative_time}"
       else
-        "`ID #{@id}` I shall remind <@#{@discord_uid.to_i}> #{reminder_type_msg}at `#{@datetime}` #{relative_time}"\
+        "`ID #{@id}` I shall remind <@#{@discord_uid.to_i}> #{reminder_type_msg}at `#{datetime}` #{relative_time}"\
         " with #{@msg.strip.hide_link_preview}"
       end
     end
@@ -203,6 +207,7 @@ module TohsakaBot
 
       TohsakaBot.db.transaction do
         id = reminders.insert(datetime: reminder[:datetime],
+                              timezone: reminder[:timezone],
                               message: reminder[:message],
                               user_id: TohsakaBot.get_user_id(discord_uid),
                               channel_id: reminder[:channel_id],
