@@ -43,7 +43,7 @@ module TohsakaBot
       end
 
       def run
-        return { content: I18n.t(:'commands.tool.user.set_birthday.error.invalid_date') } if @error
+        return { content: I18n.t(:'commands.tool.user.birthday.error.invalid_date') } if @error
 
         TohsakaBot.db.transaction do
           TohsakaBot.db[:users].where(id: TohsakaBot.get_user_id(@user_id)).update(
@@ -52,9 +52,9 @@ module TohsakaBot
           )
         end
 
-        return { content: I18n.t(:'commands.tool.user.set_birthday.clear') } if @date.nil?
+        return { content: I18n.t(:'commands.tool.user.birthday.clear') } if @date.nil?
 
-        { content: I18n.t(:'commands.tool.user.set_birthday.response', date: @date.strftime("%Y/%m/%d %H:%M")) }
+        { content: I18n.t(:'commands.tool.user.birthday.response', date: @date.strftime("%Y/%m/%d %H:%M")) }
       end
     end
   end

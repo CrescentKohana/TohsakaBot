@@ -17,7 +17,7 @@ ja:
   commands:
     tool:
       user:
-        set_lang:
+        language:
           aliases: ""
           description: "ユーザー固有言語を設定することができます。"
           usage: "setlang <fi, en, ja>"

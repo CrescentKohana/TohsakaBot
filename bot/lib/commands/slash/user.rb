@@ -9,12 +9,12 @@ module TohsakaBot
           event.respond(content: command.run[:content])
         end
 
-        group.subcommand('set_lang') do |event|
+        group.subcommand('language') do |event|
           command = CommandLogic::SetLang.new(event, event.options['lang'])
           event.respond(content: command.run[:content])
         end
 
-        group.subcommand('set_timezone') do |event|
+        group.subcommand('timezone') do |event|
           command = CommandLogic::SetTimezone.new(event, event.options['tz'])
           event.respond(content: command.run[:content])
         end

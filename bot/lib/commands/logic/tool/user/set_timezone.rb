@@ -13,14 +13,14 @@ module TohsakaBot
       def run
         user_id = TohsakaBot.command_event_user_id(@event)
         unless TimezoneKeys.include? @timezone.downcase
-          return { content: I18n.t(:'commands.tool.user.set_timezone.error.tz_not_found',
+          return { content: I18n.t(:'commands.tool.user.timezone.error.tz_not_found',
                                    locale: TohsakaBot.get_locale(user_id)) }
         end
 
         TohsakaBot.db.transaction do
           TohsakaBot.db[:users].where(id: TohsakaBot.get_user_id(user_id)).update(timezone: @timezone)
         end
-        { content: I18n.t(:'commands.tool.user.set_timezone.response', timezone: @timezone) }
+        { content: I18n.t(:'commands.tool.user.timezone.response', timezone: @timezone) }
       end
     end
   end

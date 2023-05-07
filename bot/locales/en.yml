@@ -164,8 +164,8 @@ en:
             duration: "10 to 3600 seconds."
       user:
         description: "User tools"
-        set_lang:
-          aliases: "langset setlanguage languageset setlocale localeset"
+        language:
+          aliases: "setlang langset setlanguage languageset setlocale localeset"
           description: "Sets the language used in the bot for the user."
           usage: "setlang <fi, en, ja>"
           response: "Language set to English."
@@ -173,18 +173,18 @@ en:
             lang: "Language"
           error:
             locale_not_found: "Specified language not found."
-        set_birthday:
-          aliases: "birthdayset birthday setbd bdset setdob dobset"
-          description: "Sets user's birthday for the bot to congratulate them."
-          usage: "setbirthday <date (e.g. YYYY-MM-DD or DD-MM-YYYY, 0 for clearing, separators include -/.)> <time (optional, hh:ss, default 09:00)>"
+        birthday:
+          aliases: "setbirthday birthdayset setbd bdset setdob dobset"
+          description: "Sets user's birthday for the bot to congratulate them. By not setting time, they will be congratulated at 9:00 local time."
+          usage: "birthday <date (e.g. YYYY-MM-DD or DD-MM-YYYY, 0 for clearing, separators include -/.)> <time (optional, hh:ss, default 09:00)>"
           response: "Birthday set to %{date}."
           clear: "Birthday cleared."
           param:
             lang: "Date"
           error:
             invalid_date: "Parsing date failed."
-        set_timezone:
-          aliases: "settz timezone tz"
+        timezone:
+          aliases: "settimezone settz tzset tz"
           description: "Sets the timezone for the user used in various functions such as reminders."
           usage: "settimezone <area (Helsinki, Tokyo, New York etc.)>"
           response: "Timezone set to %{timezone}."
