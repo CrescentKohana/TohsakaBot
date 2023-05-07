@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'benchmark'
+
 module TohsakaBot
   module CommandLogic
     class FGO
