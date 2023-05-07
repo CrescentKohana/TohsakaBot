@@ -182,9 +182,9 @@ en:
           param:
             year: "Year"
             month: "Month"
-            Day: "Day"
-            Hour: "Hour"
-            Minute: "Minute"
+            day: "Day"
+            hour: "Hour"
+            minute: "Minute"
           error:
             invalid_date: "Parsing date failed."
         timezone:
