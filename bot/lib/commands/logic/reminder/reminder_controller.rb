@@ -43,10 +43,10 @@ module TohsakaBot
       @id = id
     end
 
-    def convert_datetime
+    def convert_datetime(time_now = @time_now)
       return if @datetime.nil?
 
-      # The input is a duration (e.g. 5d4h30s)
+      # Duration input (e.g. 5d4h30s)
       if DURATION_REGEX.match?(@datetime.to_s)
         # Format P(n)Y(n)M(n)W(n)DT(n)H(n)M(n)S
         seconds = TohsakaBot.match_time(@datetime, /([0-9]*)(sec|sek|[sS])/) || 0
@@ -57,7 +57,7 @@ module TohsakaBot
         months  = TohsakaBot.match_time(@datetime, /([0-9]*)(M)/) || 0
         years   = TohsakaBot.match_time(@datetime, /([0-9]*)([yYa])/) || 0
 
-        # Because weeks cannot be used at the same time as years, months or days.
+        # Weeks cannot be used at the same time as years, months or days.
         if weeks.zero?
           iso8601_time = if "#{hours}#{minutes}#{seconds}".empty?
                            "P#{years}Y#{months}M#{days}D"
@@ -77,21 +77,25 @@ module TohsakaBot
         parsed_time = ActiveSupport::Duration.parse(iso8601_time)
         raise ReminderHandler::DateTimeSyntaxError if parsed_time.seconds <= 0
 
-        @datetime = parsed_time.from_now
+        @datetime = parsed_time.since(time_now)
 
-      # Direct ISO 8601 formatted input
+      # ISO8601-like input
       elsif DATE_REGEX.match?("#{@datetime.gsub('_', ' ')} #{@msg}")
-        @datetime = Time.parse(@datetime.gsub('_', ' ')).to_i
+        @datetime = Time.parse(@datetime.gsub('_', ' '))
 
-      # Input as a natural word (no spaces)
+      # Natural language input
       else
         @datetime = Chronic.parse(@datetime)
       end
 
       raise ReminderHandler::DateTimeSyntaxError if !DATE_REGEX.match?(@datetime.to_s) || @datetime.nil?
       raise ReminderHandler::MaxTimeError if @datetime.year > 9999
-      raise ReminderHandler::PastError if @datetime < Time.now
+      raise ReminderHandler::PastError if @datetime < time_now
 
+      @datetime
+    end
+
+    def enforce_repeat_limits
       ReminderHandler.handle_repeat_limit(@repeat, BOT.channel(@channel_id).pm?) if @repeat.positive?
     end
 
