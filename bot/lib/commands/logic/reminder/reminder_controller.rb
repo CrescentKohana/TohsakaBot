@@ -157,7 +157,7 @@ module TohsakaBot
                               I18n.t(:'commands.reminder.add.repeat_interval',
                                      interval: distance_of_time_in_words(@repeat))
                             else
-                              ""
+                              ''
                             end
 
       { id: @id, content: final_response(repetition_interval, true) }

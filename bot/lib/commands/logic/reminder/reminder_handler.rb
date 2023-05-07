@@ -6,7 +6,7 @@ module TohsakaBot
 
     class DateTimeSyntaxError < DatetimeError
       def message
-        'Incorrect datetime syntax. `yMwdhms (eg. 4M2d8h30s) OR yyyy/MM/dd hh.mm.ss OR natural language.`'
+        'Incorrect datetime syntax. `yMwdhms (eg. 4M2d8h30s) OR yyyy-MM-dd hh.mm.ss OR natural language.`'
       end
     end
 

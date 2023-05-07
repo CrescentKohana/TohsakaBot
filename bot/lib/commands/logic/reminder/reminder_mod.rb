@@ -40,6 +40,7 @@ module TohsakaBot
 
         begin
           rem.convert_datetime
+          rem.enforce_repeat_limits
         rescue ReminderHandler::DatetimeError, ReminderHandler::RepeatIntervalError => e
           return { content: e.message }
         end
