@@ -180,7 +180,11 @@ en:
           response: "Birthday set to %{date}."
           clear: "Birthday cleared."
           param:
-            lang: "Date"
+            year: "Year"
+            month: "Month"
+            Day: "Day"
+            Hour: "Hour"
+            Minute: "Minute"
           error:
             invalid_date: "Parsing date failed."
         timezone:
