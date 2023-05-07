@@ -13,8 +13,8 @@ module TohsakaBot
           return
         end
 
-        date_parts = raw_date.split('/')&.map(&:to_i)
-        date_parts = raw_date.split('-')&.map(&:to_i) if date_parts.nil? || date_parts.length < 3
+        date_parts = raw_date.split('-')&.map(&:to_i)
+        date_parts = raw_date.split('/')&.map(&:to_i) if date_parts.nil? || date_parts.length < 3
         date_parts = raw_date.split('.')&.map(&:to_i) if date_parts.nil? || date_parts.length < 3
         if date_parts.length != 3
           @error = true
