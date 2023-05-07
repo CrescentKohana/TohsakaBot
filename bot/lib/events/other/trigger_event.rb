@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'pickup'
+
 module TohsakaBot
   module Events
     module TriggerEvent

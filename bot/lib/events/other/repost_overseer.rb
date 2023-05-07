@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'dhash-vips'
+
 module TohsakaBot
   module Events
     module RepostOverseer

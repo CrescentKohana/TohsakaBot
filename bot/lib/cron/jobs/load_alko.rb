@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'roo'
+
 module TohsakaBot
   module Jobs
     ALKO_URL = 'https://www.alko.fi/INTERSHOP/static/WFS/Alko-OnlineShop-Site/-/Alko-OnlineShop/fi_FI/Alkon%20Hinnasto%20Tekstitiedostona/alkon-hinnasto-tekstitiedostona.xlsx'

@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+require 'cgi'
+require 'public_suffix'
+require 'dhash-vips'
+
 module TohsakaBot
   module URLHelper
     def url_regex(capture_group: false)

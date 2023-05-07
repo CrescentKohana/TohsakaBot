@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'chronic'
+
 module TohsakaBot
   class ReminderController
     include ActionView::Helpers::DateHelper

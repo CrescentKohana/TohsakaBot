@@ -11,26 +11,20 @@ require 'mysql2'
 require 'discordrb'
 require 'discordrb/webhooks'
 
-# File Management #
+# Files #
 require 'csv'
 require 'json'
-require 'roo'
 require 'yaml'
 require 'yaml/store'
 
 # Network #
-require 'cgi'
-require 'open-uri'
 require 'net/http'
-require 'public_suffix'
 require 'http'
-## Connection with TohsakaWeb ##
-require 'drb/drb'
+require 'drb/drb' # Connection with TohsakaWeb
 
 # Date & Time #
-require 'chronic'
 require 'date'
-require 'action_view' # helpers/date_helper
+require 'action_view/helpers/date_helper'
 require 'active_support/core_ext/numeric/time'
 require 'active_support/time_with_zone'
 
@@ -39,22 +33,9 @@ require 'i18n'
 require "i18n/backend/fallbacks"
 
 # Misc #
-require 'nekos'
 require 'digest'
-require "base64"
-require 'benchmark'
 require 'active_support/core_ext/string/filters'
 require 'active_support/core_ext/string'
-## Better command parsing ##
-require 'optimist'
-require 'shellwords'
-## Custom probability for modules like Trigger ##
-require 'pickup'
-## Image fingerprinting ##
-require 'dhash-vips'
-## Stripping markdown from strings ##
-require 'redcarpet'
-require 'redcarpet/render_strip'
 
 # Overrides for discordrb gem
 require_relative 'gem_overrides/discordrb_command_override'

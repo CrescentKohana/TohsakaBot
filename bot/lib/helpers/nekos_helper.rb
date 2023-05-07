@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'open-uri'
+require 'nekos'
+
 module TohsakaBot
   module NekosHelper
     def neko_types(nsfw: true)

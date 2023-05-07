@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+require 'optimist'
+require 'shellwords'
+require 'redcarpet'
+require 'redcarpet/render_strip'
+
 module TohsakaBot
   module CoreHelper
     def load_modules(klass, paths, discord: true, clear: false)
@@ -83,10 +88,10 @@ module TohsakaBot
     # @param input [String, Array] Text with markdown
     # @return [String, Array] Text without markdown
     def strip_markdown(input)
-      return Redcarpet::Markdown.new(Redcarpet::Render::StripDown).render(input).to_s if input.is_a?(String)
+      return Redcarpet::Markdown.new.render(input).to_s if input.is_a?(String)
 
       return_array = []
-      input.each { |s| return_array << Redcarpet::Markdown.new(Redcarpet::Render::StripDown).render(s).to_s }
+      input.each { |s| return_array << Redcarpet::Markdown.new.render(s).to_s }
       return_array
     end
 
