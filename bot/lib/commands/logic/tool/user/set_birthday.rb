@@ -34,9 +34,9 @@ module TohsakaBot
         @date = Time.new(date_parts[0].clamp(1900, @now.year),
                          date_parts[1].clamp(1, 12),
                          date_parts[2].clamp(1, 31),
-                         time_parts[0],
-                         time_parts[1],
-                         '00')
+                         time_parts[0].to_i.clamp(0, 23),
+                         time_parts[1].to_i,
+                         0)
 
         @next_year = Time.at(@date).change(year: @now.year) < @now unless @date.nil?
         @error = @date.nil?
