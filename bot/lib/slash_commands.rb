@@ -149,6 +149,44 @@ module TohsakaBot
             )
           end
 
+          group.subcommand(:birthday, I18n.t(:'commands.tool.user.birthday.description')) do |sub|
+            sub.integer(
+              'year',
+              I18n.t(:'commands.tool.user.birthday.param.year'),
+              required: true,
+              min_value: 1900,
+              max_value: Time.now.year
+            )
+            sub.integer(
+              'month',
+              I18n.t(:'commands.tool.user.birthday.param.month'),
+              required: true,
+              min_value: 1,
+              max_value: 12
+            )
+            sub.integer(
+              'day',
+              I18n.t(:'commands.tool.user.birthday.param.day'),
+              required: true,
+              min_value: 1,
+              max_value: 31
+            )
+            sub.integer(
+              'day',
+              I18n.t(:'commands.tool.user.birthday.param.hour'),
+              required: false,
+              min_value: 0,
+              max_value: 23
+            )
+            sub.integer(
+              'day',
+              I18n.t(:'commands.tool.user.birthday.param.minute'),
+              required: false,
+              min_value: 0,
+              max_value: 59
+            )
+          end
+
           group.subcommand(:info, I18n.t(:'commands.tool.user.info.description')) do |sub|
             sub.user('user', I18n.t(:'commands.tool.user.info.param.user'), required: false)
             sub.boolean('ephemeral', I18n.t(:'commands.general_param.ephemeral_false'), required: false)
