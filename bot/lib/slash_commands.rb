@@ -131,19 +131,19 @@ module TohsakaBot
         cmd.subcommand_group(:user, I18n.t(:'commands.tool.user.description')) do |group|
           group.subcommand(:register, I18n.t(:'commands.tool.user.register.description'))
 
-          group.subcommand(:language, I18n.t(:'commands.tool.user.set_lang.description')) do |sub|
+          group.subcommand(:language, I18n.t(:'commands.tool.user.language.description')) do |sub|
             sub.string(
               'lang',
-              I18n.t(:'commands.tool.user.set_lang.param.lang'),
+              I18n.t(:'commands.tool.user.language.param.lang'),
               required: true,
               choices: { english: 'en', japanese: 'ja', finnish: 'fi' }
             )
           end
 
-          group.subcommand(:timezone, I18n.t(:'commands.tool.user.set_timezone.description')) do |sub|
+          group.subcommand(:timezone, I18n.t(:'commands.tool.user.timezone.description')) do |sub|
             sub.string(
               'tz',
-              I18n.t(:'commands.tool.user.set_timezone.param.tz'),
+              I18n.t(:'commands.tool.user.timezone.param.tz'),
               required: true,
               choices: CFG.timezones
             )
