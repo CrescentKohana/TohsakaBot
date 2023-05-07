@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "active_support/time_with_zone"
+
 module TohsakaBot
   module CommandLogic
     class UserInfo
@@ -16,8 +18,8 @@ module TohsakaBot
         return { content: I18n.t(:'commands.tool.user.info.error.not_found') } if @user.nil?
 
         if @event.channel.pm?
-          nickname = ""
-          groups = ""
+          nickname = ''
+          groups = ''
         else
           server_member = BOT.member(@event.server.id, @user.id)
           nickname = "   Nickname: #{server_member.display_name}\n"
@@ -27,16 +29,22 @@ module TohsakaBot
         locale = nil
         permissions = nil
         birthday = nil
+        timezone = nil
         internal_id = TohsakaBot.get_user_id(@user.id)
         unless internal_id.nil?
           internal_user = TohsakaBot.db[:users].where(id: TohsakaBot.get_user_id(@user.id)).single_record!
           permissions = internal_user[:permissions].nil? ? "" : "Permissions: #{internal_user[:permissions]}\n"
           birthday = if internal_user[:birthday].nil?
-                       ""
+                       ''
                      else
                        "   Birthday: #{internal_user[:birthday]}\n"
                      end
-          locale = internal_user[:locale].nil? ? "" : "     Locale: #{internal_user[:locale]}\n"
+          locale = internal_user[:locale].nil? ? '' : "     Locale: #{internal_user[:locale]}\n"
+          timezone = if internal_user[:timezone].nil?
+                       '     Timezone: UTC (+00:00)'
+                     else
+                       "     Timezone: #{internal_user[:timezone]} (#{ActiveSupport::TimeZone[internal_user[:timezone]].formatted_offset})\n"
+                     end
         end
 
         builder = Discordrb::Webhooks::Builder.new
@@ -50,6 +58,7 @@ module TohsakaBot
                           "#{permissions}"\
                           "#{birthday}"\
                           "#{locale}"\
+                          "#{timezone}"\
                           "```"
           e.add_field(name: 'Roles', value: groups) unless @event.channel.pm?
           e.image = Discordrb::Webhooks::EmbedImage.new(url: @user.avatar_url)
