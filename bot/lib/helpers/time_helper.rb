@@ -22,10 +22,10 @@ module TohsakaBot
     #
     # @param id [Integer, nil] Internal user ID
     # @param discord [Boolean] is the provided ID Discord UID?
-    # @return [Time] User's time (default: 'UTC')
+    # @return [Time, ActiveSupport::TimeWithZone] User's time (default: 'UTC')
     def user_time_now(id, discord = false)
       id = TohsakaBot.get_user_id(id.to_i) if discord && !id.nil?
-      time_zone(TohsakaBot.get_timezone(id))
+      TohsakaBot.time_now(TohsakaBot.get_timezone(id))
     end
   end
 
