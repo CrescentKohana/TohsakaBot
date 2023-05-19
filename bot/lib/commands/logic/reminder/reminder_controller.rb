@@ -98,17 +98,12 @@ module TohsakaBot
 
       end
 
-      raise ReminderHandler::DateTimeSyntaxError if !DATE_REGEX.match?(@datetime.to_s) || @datetime.nil?
+      raise ReminderHandler::DateTimeSyntaxError if @datetime.nil? || !DATE_REGEX.match?(@datetime.to_s)
       raise ReminderHandler::MaxTimeError if @datetime.year > 9999
 
-      if is_utc
-        raise ReminderHandler::PastError if @datetime < time_now
-        @datetime = @datetime.utc
-      else
-        @datetime = @datetime.asctime.in_time_zone(@timezone)
-        raise ReminderHandler::PastError if @datetime < time_now
-        @datetime = @datetime.utc
-      end
+      @datetime = @datetime.asctime.in_time_zone(@timezone) if is_utc
+      raise ReminderHandler::PastError if @datetime < time_now
+      @datetime = @datetime.utc
 
       @datetime
     end
