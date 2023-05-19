@@ -51,6 +51,8 @@ module TohsakaBot
     def convert_datetime(time_now = @time_now)
       return if @datetime.nil?
 
+      is_utc = false
+
       # Duration input (e.g. 5d4h30s)
       if DURATION_REGEX.match?(@datetime.to_s)
         # Format P(n)Y(n)M(n)W(n)DT(n)H(n)M(n)S
@@ -87,17 +89,27 @@ module TohsakaBot
       # ISO8601-like input
       elsif DATE_REGEX.match?("#{@datetime.gsub('_', ' ')} #{@msg}")
         @datetime = Time.parse(@datetime.gsub('_', ' '))
+        is_utc = true
 
       # Natural language input
       else
         @datetime = Chronic.parse(@datetime, { now: time_now, hours24: true, endian_precedence: %i[little middle] })
+        is_utc = true
+
       end
 
       raise ReminderHandler::DateTimeSyntaxError if !DATE_REGEX.match?(@datetime.to_s) || @datetime.nil?
       raise ReminderHandler::MaxTimeError if @datetime.year > 9999
-      raise ReminderHandler::PastError if @datetime < time_now
 
-      @datetime = @datetime.utc
+      if is_utc
+        raise ReminderHandler::PastError if @datetime < time_now
+        @datetime = @datetime.utc
+      else
+        @datetime = @datetime.asctime.in_time_zone(@timezone)
+        raise ReminderHandler::PastError if @datetime < time_now
+        @datetime = @datetime.utc
+      end
+
       @datetime
     end
 
