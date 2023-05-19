@@ -12,16 +12,15 @@ module TohsakaBot
 
         user_obj = BOT.member(event.server, linked[:author_id])
         username = user_obj.nil? ? "Deleted user" : user_obj.display_name
-        time = Time.use_zone('UTC') { Time.zone.local(*linked[:timestamp]) }
 
         event.channel.send_embed do |embed|
           embed.colour = 0x36393F
           embed.add_field(
-            name: "**WANHA** #{Discordrb.timestamp(time, :relative)}",
+            name: "**WANHA** #{Discordrb.timestamp(linked[:timestamp], :relative)}",
             value: "By [#{username}](https://discord.com/channels/"\
                    "#{linked[:server_id]}/#{linked[:channel_id]}/#{linked[:msg_id]})"
           )
-          embed.timestamp = time
+          embed.timestamp = linked[:timestamp]
         end
       end
 
