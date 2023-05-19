@@ -21,7 +21,7 @@ module TohsakaBot
           # Ignored
         end
 
-        output = "```  ID | WHEN                      | MSG (Repeat)" \
+        output = '```  ID | WHEN                      | MSG (Repeat)' \
                  "\n===================================================\n".dup
 
         parsed_reminders.each do |r|
@@ -46,7 +46,7 @@ module TohsakaBot
         if parsed_reminders.any?
           { content: "#{output}```" }
         else
-          { content: "No reminders found." }
+          { content: 'No reminders found.' }
         end
       end
     end
