@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 # Nokogiri
-gem 'nokogiri', '~> 1.13.4'
+gem 'nokogiri', '~> 1.14.3'
 
 # Discord OAuth
 gem 'omniauth', '~> 2.0.4'
