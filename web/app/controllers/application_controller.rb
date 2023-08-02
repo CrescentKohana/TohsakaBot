@@ -60,10 +60,6 @@ class ApplicationController < ActionController::Base
     User.find_by(id: session[:user_id]).name
   end
 
-  def discriminator
-    User.find_by(id: session[:user_id]).discriminator
-  end
-
   def discord_id
     session[:uid]
   end
@@ -99,7 +95,6 @@ class ApplicationController < ActionController::Base
       session[:user_id] = authorization.user_id
       session[:uid] = authorization.uid
       session[:name] = authorization.user.name
-      session[:discriminator] = authorization.user.discriminator
       session[:avatar] = authorization.user.avatar
       session[:locale] = authorization.user.locale
       session[:permissions] = authorization.user.permissions
@@ -170,7 +165,6 @@ class ApplicationController < ActionController::Base
                 :tohsakabot_online,
                 :avatar_url,
                 :user_name,
-                :discriminator,
                 :avatar_hash,
                 :discord_id,
                 :user_id,

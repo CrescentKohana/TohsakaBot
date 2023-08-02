@@ -19,7 +19,6 @@ module TohsakaBot
 
         TohsakaBot.db.transaction do
           user_id = users.insert(name: user.name,
-                                 discriminator: user.discriminator,
                                  avatar: user.avatar_id,
                                  locale: '',
                                  permissions: permissions,

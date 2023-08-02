@@ -6,5 +6,5 @@ class User < ApplicationRecord
   has_many :triggers
   has_many :issues
 
-  validates :name, :discriminator, :avatar, :locale, presence: true
+  validates :name, :avatar, :locale, presence: true
 end

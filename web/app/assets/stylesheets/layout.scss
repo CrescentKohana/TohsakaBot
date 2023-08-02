@@ -121,15 +121,6 @@ a:hover {
     text-decoration: underline;
 }
 
-/* Hiding text */
-.text_hide {
-    display: none;
-}
-
-.text_hide_parent:hover .text_hide {
-    display: inline;
-}
-
 /* Responsive */
 @media (max-width: 850px) {
 }

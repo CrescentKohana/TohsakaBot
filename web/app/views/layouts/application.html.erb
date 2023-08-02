@@ -31,7 +31,7 @@
             <img src="<%= avatar_url(discord_id, avatar_hash) %>?size=128" alt="User avatar" width="64" height="64">
           </div>
           <div class="auth_child">
-            <%= link_to "<span class=\"text_hide_parent\">#{user_name}<span class=\"text_hide\">##{format('%04d', discriminator)}</span></span>".html_safe, "/settings" %>
+            <%= link_to "<span>#{user_name}</span>".html_safe, "/settings" %>
             <br>
             <%= link_to "Logout", "/logout" %>
           </div>
@@ -43,7 +43,7 @@
             <img src="<%= avatar_url(nil, nil) %>" alt="User avatar" width="64" height="64">
           </div>
           <div class="auth_child">
-            <span class="text_hide_parent">User<span class="text_hide">#0000</span></span><br>
+            <span>User</span><br>
             <%= button_to "Login with Discord", "/auth/discord", method: :post %>
           </div>
         </div>

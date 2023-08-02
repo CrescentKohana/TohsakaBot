@@ -12,14 +12,12 @@ class SessionsController < ApplicationController
         user = User.find(@authorization.user.id)
         user.update(
           name: auth_hash["extra"]["raw_info"]["username"],
-          discriminator: auth_hash["extra"]["raw_info"]["discriminator"],
           avatar: auth_hash["extra"]["raw_info"]["avatar"]
         )
 
         session[:user_id] = @authorization.user.id
         session[:uid] = @authorization.uid
         session[:name] = @authorization.user.name
-        session[:discriminator] = @authorization.user.discriminator
         session[:avatar] = @authorization.user.avatar
         session[:locale] = @authorization.user.locale
         session[:permissions] = @authorization.user.permissions
@@ -33,7 +31,6 @@ class SessionsController < ApplicationController
         end
 
         user = User.new name: auth_hash["extra"]["raw_info"]["username"],
-                        discriminator: auth_hash["extra"]["raw_info"]["discriminator"],
                         avatar: auth_hash["extra"]["raw_info"]["avatar"],
                         locale: auth_hash["extra"]["raw_info"]["locale"]
 
@@ -43,7 +40,6 @@ class SessionsController < ApplicationController
         session[:user_id] = user.id
         session[:uid] = auth_hash["uid"]
         session[:name] = user.name
-        session[:discriminator] = user.discriminator
         session[:avatar] = user.avatar
         session[:locale] = user.locale
         session[:permissions] = 0

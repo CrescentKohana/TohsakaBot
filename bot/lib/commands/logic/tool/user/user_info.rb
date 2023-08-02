@@ -49,7 +49,7 @@ module TohsakaBot
 
         builder = Discordrb::Webhooks::Builder.new
         builder.add_embed do |e|
-          e.title = "#{@user.username}##{@user.discriminator}"
+          e.title = "#{@user.username}"
           e.colour = 0xE91E53
           e.description = "```"\
                           "#{nickname}"\
