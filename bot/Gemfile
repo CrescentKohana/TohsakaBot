@@ -5,8 +5,8 @@ source 'https://rubygems.org'
 gem 'bigdecimal', "~>3.1.4"
 
 # Helper functions from Rails
-gem 'actionview', "~>7.0.4.3"
-gem 'activesupport', "~>7.0.4.3"
+gem 'actionview', "~>7.0.7.2"
+gem 'activesupport', "~>7.0.7.2"
 gem 'tzinfo-data'
 
 # Config management
