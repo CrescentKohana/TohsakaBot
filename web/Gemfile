@@ -30,7 +30,7 @@ gem 'minidusen', '~> 0.10.1'
 # gem 'hamburgers'
 
 # File handling
-gem 'carrierwave', '~> 2.2.2'
+gem 'carrierwave', '~> 2.2.5'
 gem 'file_validators', '~> 3.0.0'
 
 gem 'responders', '~> 3.0.1'
