@@ -32,9 +32,9 @@ gem 'roo', "~>2.9.0"
 gem 'roo-xls', "~>1.2.0"
 
 # Database
-gem 'sequel', "~>5.54.0"
-gem 'sqlite3', "~>1.4.2", :group => :sqlite
-gem 'mysql2', "~>0.5.3", :group => :mysql
+gem 'sequel', "~>5.97.0"
+gem 'sqlite3', "~>2.7.4", :group => :sqlite
+gem 'mysql2', "~>0.5.7", :group => :mysql
 # TODO: Switch to GitHub branch as it's more up to date?
 # gem 'mysql2', github: 'brianmario/mysql2', branch: 'master'
 
@@ -71,4 +71,5 @@ gem 'chronic', github: 'mojombo/chronic', branch: 'master'
 # gem 'chronic', "~>0.10.2"
 
 # Latest release of discordrb
-gem 'discordrb', github: 'shardlab/discordrb', branch: 'main'
+gem 'discordrb', '~>3.6.1'
+# gem 'discordrb', github: 'shardlab/discordrb', branch: 'main'
