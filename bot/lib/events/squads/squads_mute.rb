@@ -19,13 +19,13 @@ module TohsakaBot
         next if role_id.nil?
 
         previous_mute = false
-        mute_db = YAML.load_file('data/squads_mute.yml', permitted_classes: [Time])
+        mute_db = YAML.load_file(CFG.data_dir + '/squads_mute.yml', permitted_classes: [Time])
         mute_db.each do |k, v|
           next if v.nil?
           next if v['role'].to_i != role_id || v['user'].to_i != event.user.id
 
           previous_mute = true
-          db = YAML::Store.new('data/squads_mute.yml')
+          db = YAML::Store.new(CFG.data_dir + '/squads_mute.yml')
           db.transaction do
             db.delete(k)
             db.commit
@@ -36,12 +36,12 @@ module TohsakaBot
 
         if previous_mute || current_role
           durations = { "❌" => 1, "🚫" => 6, "🔕" => 24 }
-          db = YAML::Store.new("data/squads_mute.yml")
+          db = YAML::Store.new(CFG.data_dir + '/squads_mute.yml')
           i = 1
           db.transaction do
             i += 1 while db.root?(i)
             db[i] = {
-              'time' => Time.now,
+              'time' => TohsakaBot.time_now,
               'hours' => durations[event.emoji.name],
               'user' => event.user.id,
               'server' => event.server.id,

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'pickup'
+
 module TohsakaBot
   module Events
     module TriggerEvent
@@ -40,9 +42,9 @@ module TohsakaBot
             regex = Regexp.new phrase
           else
             regex = if phrase.match(%r{/.*/.*})
-                      phrase.to_regexp
+                      Regexp.new phrase
                     else
-                      "/#{phrase}/".to_regexp
+                      Regexp.new "/#{phrase}/"
                     end
           end
 
@@ -78,7 +80,7 @@ module TohsakaBot
         reply = if file.to_s.empty?
                   event.respond(chosen_trigger[:reply], false, nil, nil, false)
                 else
-                  event.channel.send_file(File.open("data/triggers/#{file}"))
+                  event.channel.send_file(File.open(CFG.data_dir + "/triggers/#{file}"))
                 end
 
         # Incrementing trigger stats
@@ -86,14 +88,14 @@ module TohsakaBot
           TohsakaBot.db.transaction do
             TohsakaBot.db[:triggers].where(id: chosen_trigger[:id]).update(
               calls: chosen_trigger[:calls] + 1,
-              last_triggered: Time.now
+              last_triggered: TohsakaBot.time_now
             )
           end
         else
           TohsakaBot.db.transaction do
             TohsakaBot.db[:triggers].where(id: chosen_trigger[:id]).update(
               occurrences: chosen_trigger[:occurrences] + 1,
-              last_triggered: Time.now
+              last_triggered: TohsakaBot.time_now
             )
           end
         end

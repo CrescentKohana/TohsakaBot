@@ -3,8 +3,8 @@
 module TohsakaBot
   module Jobs
     def self.manage_roles(now)
-      mute_db = YAML.load_file('data/squads_mute.yml', permitted_classes: [Time])
-      timed_role_db = YAML.load_file('data/timed_roles.yml', permitted_classes: [Time])
+      mute_db = YAML.load_file(CFG.data_dir + '/squads_mute.yml', permitted_classes: [Time])
+      timed_role_db = YAML.load_file(CFG.data_dir + '/timed_roles.yml', permitted_classes: [Time])
 
       trophies = TohsakaBot.db[:trophies]
       trophies_to_expire = trophies.where(expired: false)
@@ -34,7 +34,7 @@ module TohsakaBot
             "Bot #{AUTH.bot_token}", v['server'].to_i, user_id, role_id
           )
 
-          db = YAML::Store.new('data/squads_mute.yml')
+          db = YAML::Store.new(CFG.data_dir + '/squads_mute.yml')
           db.transaction do
             db.delete(k)
             db.commit
@@ -79,7 +79,7 @@ module TohsakaBot
 
             # puts "# add_roles: #{add_roles}"
 
-            db = YAML::Store.new('data/timed_roles.yml')
+            db = YAML::Store.new(CFG.data_dir + '/timed_roles.yml')
             db.transaction do
               db[k][:activate_on] = (start_time..end_time).cover?(now) ? end_time : start_time
               db.commit

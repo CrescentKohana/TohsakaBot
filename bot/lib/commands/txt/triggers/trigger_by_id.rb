@@ -24,13 +24,13 @@ module TohsakaBot
         if trigger[:file].blank?
           event.respond(trigger[:reply], false, nil, nil, false)
         else
-          event.channel.send_file(File.open("data/triggers/#{trigger[:file]}"))
+          event.channel.send_file(File.open(CFG.data_dir + "/triggers/#{trigger[:file]}"))
         end
 
         TohsakaBot.db.transaction do
           TohsakaBot.db[:triggers].where(id: trigger[:id]).update(
             calls: trigger[:calls] + 1,
-            last_triggered: Time.now
+            last_triggered: TohsakaBot.time_now
           )
         end
         break

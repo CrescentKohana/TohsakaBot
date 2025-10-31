@@ -19,18 +19,17 @@ module TohsakaBot
 
         TohsakaBot.db.transaction do
           user_id = users.insert(name: user.name,
-                                 discriminator: user.discriminator,
                                  avatar: user.avatar_id,
                                  locale: '',
                                  permissions: permissions,
-                                 created_at: Time.now,
-                                 updated_at: Time.now)
+                                 created_at: TohsakaBot.time_now,
+                                 updated_at: TohsakaBot.time_now)
 
           auths.insert(provider: 'discord',
                        uid: user.id,
                        user_id: user_id,
-                       created_at: Time.now,
-                       updated_at: Time.now)
+                       created_at: TohsakaBot.time_now,
+                       updated_at: TohsakaBot.time_now)
         end
         { content: I18n.t(:'commands.tool.user.register.response') }
       end

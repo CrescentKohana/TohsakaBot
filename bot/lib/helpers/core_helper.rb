@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+require 'optimist'
+require 'shellwords'
+require 'redcarpet'
+require 'redcarpet/render_strip'
+
 module TohsakaBot
   module CoreHelper
     def load_modules(klass, paths, discord: true, clear: false)
@@ -20,7 +25,7 @@ module TohsakaBot
     end
 
     def filter_modules
-      modules = JSON.parse(File.read('data/persistent/bot_state.json')).transform_keys(&:to_sym)
+      modules = JSON.parse(File.read(CFG.data_dir + '/persistent/bot_state.json')).transform_keys(&:to_sym)
       modules[:Commands].delete("GetSauce") if AUTH.saucenao_apikey.blank?
       modules[:Commands].delete("GetPitch") if CFG.nhk_api.blank?
 

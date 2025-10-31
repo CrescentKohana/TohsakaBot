@@ -70,7 +70,7 @@ module TohsakaBot
           reply = options.reply.join(' ')
           trigger[:reply] = reply
 
-          File.delete("data/triggers/#{trigger[:file]}") unless trigger[:file].blank?
+          File.delete(CFG.data_dir + "/triggers/#{trigger[:file]}") unless trigger[:file].blank?
           trigger[:file] = nil
         end
 
@@ -90,7 +90,7 @@ module TohsakaBot
             end
             trigger[:reply] = nil
             trigger[:file] = filename
-            File.delete("data/triggers/#{old_file}") unless old_file.blank?
+            File.delete(CFG.data_dir + "/triggers/#{old_file}") unless old_file.blank?
           else
             event.respond('Tell me the response (10s remaining).')
             response = event.message.await!(timeout: 10)
@@ -104,7 +104,7 @@ module TohsakaBot
                 end
                 trigger[:reply] = nil
                 trigger[:file] = filename
-                File.delete("data/triggers/#{old_file}") unless old_file.blank?
+                File.delete(CFG.data_dir + "/triggers/#{old_file}") unless old_file.blank?
               end
             else
               event.respond('You took too long!')

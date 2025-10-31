@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>TohsakaWeb</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag 'application', media: 'all' %>
+  </head>
+  <body>
+
+  <div id="header">
+    <div id="title"><%= link_to 'TohsakaWeb', "/" %></div>
+    <div id="nav">
+      <ul>
+        <% if logged_in? %>
+          <li><%= link_to 'Reminders', controller: 'reminders' %></li>
+          <li><%= link_to 'Triggers', controller: 'triggers' %></li>
+          <li><%= link_to 'Issues', controller: 'issues' %></li>
+          <li><%= link_to 'Highlights', controller: 'highlights' %></li>
+          <li><%= link_to 'Trophies', controller: 'trophies' %></li>
+          <li><%= link_to 'API', '/api' %></li>
+        <% end %>
+      </ul>
+    </div>
+    <div id="auth">
+      <% if logged_in? %>
+        <div id="auth_inner">
+          <div id="auth_avatar">
+            <img src="<%= avatar_url(discord_id, avatar_hash) %>?size=128" alt="User avatar" width="64" height="64">
+          </div>
+          <div class="auth_child">
+            <%= link_to "<span>#{user_name}</span>".html_safe, "/settings" %>
+            <br>
+            <%= link_to "Logout", "/logout" %>
+          </div>
+        </div>
+
+      <% else %>
+        <div id="auth_inner">
+          <div id="auth_avatar">
+            <img src="<%= avatar_url(nil, nil) %>" alt="User avatar" width="64" height="64">
+          </div>
+          <div class="auth_child">
+            <span>User</span><br>
+            <%= button_to "Login with Discord", "/auth/discord", method: :post %>
+          </div>
+        </div>
+
+      <% end %>
+    </div>
+  </div>
+
+  <div id="main">
+  <%= yield %>
+  </div>
+
+  <div id="footer">
+    Kohana 2023 ・ Powered by Ruby on Rails 7.0.0 ・ Bot is currently
+    <%= (tohsakabot_online(true) ? " <span style='color:darkgreen'>online</span>" : " <span style='color:darkred'>offline</span>").html_safe %>.
+  </div>
+  </body>
+</html>

@@ -3,7 +3,7 @@
 module TohsakaBot
   module Jobs
     def self.daily_neko(now)
-      cfg = YAML.load_file('cfg/config.yml')
+      cfg = YAML.load_file('../cfg/config.yml')
       last_time = cfg['daily_neko']
 
       is_in_range = (
@@ -13,7 +13,7 @@ module TohsakaBot
 
       last_time = now.to_i + 43_200 # 12h
       cfg['daily_neko'] = last_time
-      File.open('cfg/config.yml', 'w') { |f| f.write cfg.to_yaml }
+      File.open('../cfg/config.yml', 'w') { |f| f.write cfg.to_yaml }
 
       url = TohsakaBot.get_neko('neko')
       pixiv_id = TohsakaBot.saucenao(url)
@@ -23,7 +23,7 @@ module TohsakaBot
         e.image = Discordrb::Webhooks::EmbedImage.new(url: url)
         e.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'Daily 猫 (cat)')
         e.colour = 0x36393F
-        e.timestamp = Time.now
+        e.timestamp = TohsakaBot.time_now
       end
 
       button = if pixiv_id.nil?

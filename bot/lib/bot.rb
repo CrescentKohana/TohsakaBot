@@ -11,26 +11,20 @@ require 'mysql2'
 require 'discordrb'
 require 'discordrb/webhooks'
 
-# File Management #
+# Files #
 require 'csv'
 require 'json'
-require 'roo'
 require 'yaml'
 require 'yaml/store'
 
 # Network #
-require 'cgi'
-require 'open-uri'
 require 'net/http'
-require 'public_suffix'
 require 'http'
-## Connection with TohsakaWeb ##
-require 'drb/drb'
+require 'drb/drb' # Connection with TohsakaWeb
 
 # Date & Time #
-require 'chronic'
 require 'date'
-require 'action_view' # helpers/date_helper
+require 'action_view/helpers/date_helper'
 require 'active_support/core_ext/numeric/time'
 require 'active_support/time_with_zone'
 
@@ -39,40 +33,28 @@ require 'i18n'
 require "i18n/backend/fallbacks"
 
 # Misc #
-require 'nekos'
 require 'digest'
-require "base64"
-require 'benchmark'
-require 'to_regexp'
 require 'active_support/core_ext/string/filters'
 require 'active_support/core_ext/string'
-## Better command parsing ##
-require 'optimist'
-require 'shellwords'
-## Custom probability for modules like Trigger ##
-require 'pickup'
-## Image fingerprinting ##
-require 'dhash-vips'
-## Stripping markdown from strings ##
-require 'redcarpet'
-require 'redcarpet/render_strip'
 
 # Overrides for discordrb gem
 require_relative 'gem_overrides/discordrb_command_override'
 require_relative 'gem_overrides/cache_override'
 require_relative 'gem_overrides/interaction_override'
+require_relative 'gem_overrides/view_override'
 
 # Main module of the bot
 module TohsakaBot
   # Localization with fallbacks
   I18n::Backend::Simple.include I18n::Backend::Fallbacks
-  I18n.load_path << Dir['bot/locales/*.yml']
+  I18n.load_path << Dir['locales/*.yml']
   I18n.fallbacks.map(fi: :en, ja: :en)
 
   # Configuration & settings #
-  AUTH = OpenStruct.new YAML.load_file('cfg/auth.yml')
-  CFG = OpenStruct.new YAML.load_file('cfg/config.yml')
+  AUTH = OpenStruct.new YAML.load_file('../cfg/auth.yml')
+  CFG = OpenStruct.new YAML.load_file('../cfg/config.yml')
 
+  I18n.available_locales = [:en, :ja, :fi]
   I18n.default_locale = CFG.locale.to_sym unless CFG.locale.blank?
 
   # Helpers #
@@ -97,7 +79,8 @@ module TohsakaBot
 
   # Custom command matcher. Currently only for case insensitive commands.
   prefix_proc = proc do |message|
-    match = /^[#{CFG.prefix}](\w+)(.*)/.match(message.content)
+    prefixes = CFG.prefix.split(' ').map { |prefix| Regexp.escape(prefix) }.join('|')
+    match = /^(?:#{prefixes})(\w+)(.*)/.match(message.content)
     if match
       command_name = match[1]
       rest = match[2]
@@ -111,7 +94,8 @@ module TohsakaBot
                                             prefix: prefix_proc,
                                             advanced_functionality: false,
                                             fancy_log: true,
-                                            log_mode: :normal)
+                                            log_mode: :normal,
+                                            ignore_bots: true)
 
   # Command logic classes #
   Dir[File.join(__dir__, 'commands/logic/*/', '*.rb')].sort.each { |file| require file }

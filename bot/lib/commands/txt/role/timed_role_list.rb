@@ -12,7 +12,7 @@ module TohsakaBot
         header = "`  ID | MODE     | TIMES` **for** `ROLES                  `\n".dup
         output = ''.dup
 
-        timed_roles = YAML.load_file('data/timed_roles.yml', permitted_classes: [Time])
+        timed_roles = YAML.load_file(CFG.data_dir + '/timed_roles.yml', permitted_classes: [Time])
         timed_roles.each do |id, timed_role|
           result_amount += 1
           times = timed_role[:times].map { |time| "`#{time[:day]}-#{time[:start]}-#{time[:end]}`" }.join(' ')

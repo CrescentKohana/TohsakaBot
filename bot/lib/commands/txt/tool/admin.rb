@@ -55,10 +55,10 @@ module TohsakaBot
         type = "playing" unless %w[playing watching listening streaming competing].include?(type)
 
         TohsakaBot.status(type, msg)
-        cfg = YAML.load_file("cfg/config.yml")
+        cfg = YAML.load_file("../cfg/config.yml")
         cfg["status"] = [type, msg]
 
-        File.open('cfg/config.yml', 'w') { |f| f.write cfg.to_yaml }
+        File.open('../cfg/config.yml', 'w') { |f| f.write cfg.to_yaml }
         event.respond("Status changed to `#{msg.strip_mass_mentions}` as `#{type}`.")
       end
 

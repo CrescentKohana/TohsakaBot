@@ -80,7 +80,7 @@ module TohsakaBot
       # Makes a new entry to the database for the user so that the role can be deleted after a set time.
       trophies = TohsakaBot.db[:trophies]
       TohsakaBot.db.transaction do
-        now = Time.now
+        now = TohsakaBot.time_now
         @id = trophies.insert(
           reason: reason,
           duration: days,
@@ -179,7 +179,7 @@ module TohsakaBot
     end
 
     def read_servers
-      servers = JSON.parse(File.read("data/servers.json"))["servers"]
+      servers = JSON.parse(File.read(CFG.data_dir + "/servers.json"))["servers"]
 
       servers_hash = {}
       servers.each do |server|
@@ -204,7 +204,6 @@ module TohsakaBot
           highlight_channel: server["highlight_channel"],
           mvp_role: server["mvp_role"],
           fool_role: server["fool_role"],
-          daily_neko: server["daily_neko"],
           roles: roles_hash
         }
       end

@@ -13,10 +13,9 @@ module TohsakaBot
           return
         end
 
-        date_parts = raw_date.split('/')&.map(&:to_i)
-        date_parts = raw_date.split('-')&.map(&:to_i) if date_parts.nil? || date_parts.length < 3
+        date_parts = raw_date.split('-')&.map(&:to_i)
+        date_parts = raw_date.split('/')&.map(&:to_i) if date_parts.nil? || date_parts.length < 3
         date_parts = raw_date.split('.')&.map(&:to_i) if date_parts.nil? || date_parts.length < 3
-        @now = Time.now
         if date_parts.length != 3
           @error = true
           return
@@ -28,32 +27,33 @@ module TohsakaBot
           time_parts = tmp_time if tmp_time.length == 2
         end
 
+        @now = TohsakaBot.user_time_now(TohsakaBot.command_event_user_id(@event), true)
+
         date_parts.reverse! if date_parts[2] >= 1900 # Reverses for DD/MM/YYYY
         @date = Time.new(date_parts[0].clamp(1900, @now.year),
                          date_parts[1].clamp(1, 12),
                          date_parts[2].clamp(1, 31),
-                         time_parts[0],
-                         time_parts[1],
-                         '00')
+                         time_parts[0].to_i.clamp(0, 23),
+                         time_parts[1].to_i,
+                         0)
 
         @next_year = Time.at(@date).change(year: @now.year) < @now unless @date.nil?
         @error = @date.nil?
       end
 
       def run
-        return { content: I18n.t(:'commands.tool.user.set_birthday.error.invalid_date') } if @error
+        return { content: I18n.t(:'commands.tool.user.birthday.error.invalid_date') } if @error
 
-        user_id = TohsakaBot.command_event_user_id(@event)
         TohsakaBot.db.transaction do
-          TohsakaBot.db[:users].where(id: TohsakaBot.get_user_id(user_id)).update(
+          TohsakaBot.db[:users].where(id: TohsakaBot.get_user_id(@user_id)).update(
             birthday: @date.nil? ? nil : @date.to_s,
             last_congratulation: @next_year ? @now.year : 0
           )
         end
 
-        return { content: I18n.t(:'commands.tool.user.set_birthday.clear') } if @date.nil?
+        return { content: I18n.t(:'commands.tool.user.birthday.clear') } if @date.nil?
 
-        { content: I18n.t(:'commands.tool.user.set_birthday.response', date: @date.strftime("%Y/%m/%d %H:%M")) }
+        { content: I18n.t(:'commands.tool.user.birthday.response', date: @date.strftime("%Y/%m/%d %H:%M")) }
       end
     end
   end

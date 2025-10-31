@@ -4,6 +4,177 @@ module Discordrb
   # Objects specific to Interactions.
   module Interactions
 
+    # A builder for defining slash commands options.
+    class OptionBuilder
+      # @!visibility private
+      TYPES = {
+        subcommand: 1,
+        subcommand_group: 2,
+        string: 3,
+        integer: 4,
+        boolean: 5,
+        user: 6,
+        channel: 7,
+        role: 8,
+        mentionable: 9,
+        number: 10
+      }.freeze
+
+      # Channel types that can be provided to #channel
+      CHANNEL_TYPES = {
+        text: 0,
+        dm: 1,
+        voice: 2,
+        group_dm: 3,
+        category: 4,
+        news: 5,
+        store: 6,
+        news_thread: 10,
+        public_thread: 11,
+        private_thread: 12,
+        stage: 13
+      }.freeze
+
+      # @return [Array<Hash>]
+      attr_reader :options
+
+      # @!visibility private
+      def initialize
+        @options = []
+      end
+
+      # @param name [String, Symbol] The name of the subcommand.
+      # @param description [String] A description of the subcommand.
+      # @yieldparam [OptionBuilder]
+      # @return (see #option)
+      # @example
+      #   bot.register_application_command(:test, 'Test command') do |cmd|
+      #     cmd.subcommand(:echo) do |sub|
+      #       sub.string('message', 'What to echo back', required: true)
+      #     end
+      #   end
+      def subcommand(name, description)
+        builder = OptionBuilder.new
+        yield builder if block_given?
+
+        option(TYPES[:subcommand], name, description, options: builder.to_a)
+      end
+
+      # @param name [String, Symbol] The name of the subcommand group.
+      # @param description [String] A description of the subcommand group.
+      # @yieldparam [OptionBuilder]
+      # @return (see #option)
+      # @example
+      #   bot.register_application_command(:test, 'Test command') do |cmd|
+      #     cmd.subcommand_group(:fun) do |group|
+      #       group.subcommand(:8ball) do |sub|
+      #         sub.string(:question, 'What do you ask the mighty 8ball?')
+      #       end
+      #     end
+      #   end
+      def subcommand_group(name, description)
+        builder = OptionBuilder.new
+        yield builder
+
+        option(TYPES[:subcommand_group], name, description, options: builder.to_a)
+      end
+
+      # @param name [String, Symbol] The name of the argument.
+      # @param description [String] A description of the argument.
+      # @param required [true, false] Whether this option must be provided.
+      # @param choices [Hash, nil] Available choices, mapped as `Name => Value`.
+      # @return (see #option)
+      def string(name, description, required: nil, choices: nil)
+        option(TYPES[:string], name, description, required: required, choices: choices)
+      end
+
+      # @param name [String, Symbol] The name of the argument.
+      # @param description [String] A description of the argument.
+      # @param required [true, false] Whether this option must be provided.
+      # @param choices [Hash, nil] Available choices, mapped as `Name => Value`.
+      # @return (see #option)
+      def integer(name, description, required: nil, min_value: nil, max_value: nil, choices: nil)
+        option(TYPES[:integer], name, description, required: required, min_value: min_value, max_value: max_value, choices: choices)
+      end
+
+      # @param name [String, Symbol] The name of the argument.
+      # @param description [String] A description of the argument.
+      # @param required [true, false] Whether this option must be provided.
+      # @return (see #option)
+      def boolean(name, description, required: nil)
+        option(TYPES[:boolean], name, description, required: required)
+      end
+
+      # @param name [String, Symbol] The name of the argument.
+      # @param description [String] A description of the argument.
+      # @param required [true, false] Whether this option must be provided.
+      # @return (see #option)
+      def user(name, description, required: nil)
+        option(TYPES[:user], name, description, required: required)
+      end
+
+      # @param name [String, Symbol] The name of the argument.
+      # @param description [String] A description of the argument.
+      # @param required [true, false] Whether this option must be provided.
+      # @param types [Array<Symbol, Integer>] See {CHANNEL_TYPES}
+      # @return (see #option)
+      def channel(name, description, required: nil, types: nil)
+        types = types&.collect { |type| type.is_a?(Numeric) ? type : CHANNEL_TYPES[type] }
+        option(TYPES[:channel], name, description, required: required, channel_types: types)
+      end
+
+      # @param name [String, Symbol] The name of the argument.
+      # @param description [String] A description of the argument.
+      # @param required [true, false] Whether this option must be provided.
+      # @return (see #option)
+      def role(name, description, required: nil)
+        option(TYPES[:role], name, description, required: required)
+      end
+
+      # @param name [String, Symbol] The name of the argument.
+      # @param description [String] A description of the argument.
+      # @param required [true, false] Whether this option must be provided.
+      # @return (see #option)
+      def mentionable(name, description, required: nil)
+        option(TYPES[:mentionable], name, description, required: required)
+      end
+
+      # @param name [String, Symbol] The name of the argument.
+      # @param description [String] A description of the argument.
+      # @param required [true, false] Whether this option must be provided.
+      # @return (see #option)
+      def number(name, description, required: nil, min_value: nil, max_value: nil, choices: nil)
+        option(TYPES[:number], name, description,
+               required: required, min_value: min_value, max_value: max_value, choices: choices)
+      end
+
+      # @!visibility private
+      # @param type [Integer] The argument type.
+      # @param name [String, Symbol] The name of the argument.
+      # @param description [String] A description of the argument.
+      # @param required [true, false] Whether this option must be provided.
+      # @param min_value [Integer, Float] A minimum value for integer and number options.
+      # @param max_value [Integer, Float] A maximum value for integer and number options.
+      # @param channel_types [Array<Integer>] Channel types that can be provides for channel options.
+      # @return Hash
+      def option(type, name, description, required: nil, choices: nil, options: nil, min_value: nil, max_value: nil,
+                 channel_types: nil)
+        opt = { type: type, name: name, description: description }
+        choices = choices.map { |option_name, value| { name: option_name, value: value } } if choices
+
+        opt.merge!({ required: required, choices: choices, options: options, min_value: min_value,
+                     max_value: max_value, channel_types: channel_types }.compact)
+
+        @options << opt
+        opt
+      end
+
+      # @return [Array<Hash>]
+      def to_a
+        @options
+      end
+    end
+
     # A message partial for interactions.
     class Message
       include IDObject
@@ -53,11 +224,12 @@ module Discordrb
       # @return [Hash, nil]
       attr_reader :message_reference
 
-      # @return [Hash, nil]
+      # @return [Array<Component>]
       attr_reader :components
 
       # @!visibility private
       def initialize(data, bot, interaction)
+        @data = data
         @bot = bot
         @interaction = interaction
         @content = data['content']
@@ -66,9 +238,6 @@ module Discordrb
         @tts = data['tts']
 
         @message_reference = data['message_reference']
-
-        # Added components
-        @components = data['components']
 
         @server_id = data['guild_id']&.to_i
 
@@ -96,6 +265,7 @@ module Discordrb
         @mention_everyone = data['mention_everyone']
         @flags = data['flags']
         @pinned = data['pinned']
+        @components = data['components'].map { |component_data| Components.from_data(component_data, @bot) } if data['components']
       end
     end
   end

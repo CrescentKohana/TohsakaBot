@@ -8,7 +8,7 @@ module TohsakaBot
     # Reminders (separate thread from other cron jobs for time accuracy)
     Thread.new do
       loop do
-        Jobs.remind_on_time(Time.now)
+        Jobs.remind_on_time(TohsakaBot.time_now)
         sleep(1)
       end
     end
@@ -16,38 +16,36 @@ module TohsakaBot
     Thread.new do
       timer = 0
       loop do
-        now = Time.now
+        now = TohsakaBot.time_now
 
         # Every 1 second:
         Jobs.expire_polls(now)
         Jobs.expire_timeouts(now)
 
         TohsakaBot.queue_cache.list.each do |k, v|
-          TohsakaBot.queue_cache.send_msgs(k) if v[:time] <= Time.now.to_i || (v[:embed] && v[:msgs].size == 25)
+          TohsakaBot.queue_cache.send_msgs(k) if v[:time] <= TohsakaBot.time_now.to_i || (v[:embed] && v[:msgs].size == 25)
         end
 
         # Every 4 seconds:
         Jobs.type_in_channels if (timer % 4).zero?
 
         # Every 10 seconds:
-        if (timer % 10).zero?
-          Jobs.birthday(now)
-          Jobs.daily_neko(now) unless CFG.daily_neko.blank? || !CFG.daily_neko
-        end
+        # if (timer % 10).zero?
+        # end
 
         # Every 60 seconds:
         Jobs.manage_roles(now) if (timer % 60).zero?
 
         # Every 30 minutes:
         if (timer % 1800).zero?
-          cfg = YAML.load_file('cfg/config.yml')
+          cfg = YAML.load_file('../cfg/config.yml')
           TohsakaBot.status(cfg["status"][0], cfg["status"][1])
         end
 
         # Every hour:
         if (timer % 3600).zero?
-          # Cleans 3d old links and file hashes.
-          TohsakaBot.db[:linkeds].where(Sequel[:timestamp] <= Time.now - (72 * 60 * 60)).delete
+          # Cleans 3 days old links and file hashes.
+          TohsakaBot.db[:linkeds].where(Sequel[:timestamp] <= TohsakaBot.time_now - (72 * 60 * 60)).delete
         end
 
         # Every 24 hours:

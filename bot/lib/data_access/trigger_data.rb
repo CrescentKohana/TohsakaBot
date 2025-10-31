@@ -22,11 +22,10 @@ module TohsakaBot
     def reload_active
       @triggers = TohsakaBot.db[:triggers]
       @trigger_phrases = @triggers.select(:phrase).select { :phrase }.map(&:values).flatten.map do |p|
-        regex = p.to_regexp
-        if regex.nil?
-          "/#{p}/".to_regexp
+        if p.match(%r{/.*/.*})
+          Regexp.new p
         else
-          p.to_regexp
+          Regexp.new "/#{p}/"
         end
       end
     end
@@ -71,11 +70,11 @@ module TohsakaBot
     def clean_trigger_files
       puts 'Cleaning files of deleted triggers..'
       triggers_files = TohsakaBot.db[:triggers].select(:phrase).select { :file }.map(&:values).flatten
-      Dir.foreach('data/triggers/') do |filename|
+      Dir.foreach(CFG.data_dir + '/triggers/') do |filename|
         next if %w[. .. .keep].include?(filename)
         next if triggers_files.include? filename
 
-        FileUtils.mv("data/triggers/#{filename}", "tmp/deleted_triggers/#{filename}")
+        FileUtils.mv(CFG.data_dir + "/triggers/#{filename}", "../tmp/deleted_triggers/#{filename}")
       end
       puts 'Done cleaning trigger files.'
     end

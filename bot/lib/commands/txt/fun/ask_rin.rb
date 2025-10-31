@@ -11,7 +11,7 @@ module TohsakaBot
               min_args: 1) do |event|
         answer = ''
 
-        CSV.open('data/ask_rin_answers.csv', 'r', col_sep: "\t") do |csv|
+        CSV.open(CFG.data_dir + '/ask_rin_answers.csv', 'r', col_sep: "\t") do |csv|
           answer = csv.read.sample[0]
         end
 

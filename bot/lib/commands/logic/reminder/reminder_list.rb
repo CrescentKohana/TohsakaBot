@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'active_support/core_ext/time'
+
 module TohsakaBot
   module CommandLogic
     class ReminderList
@@ -19,12 +21,12 @@ module TohsakaBot
           # Ignored
         end
 
-        output = "```  ID | WHEN                      | MSG (Repeat)" \
+        output = '```  ID | WHEN                      | MSG (Repeat)' \
                  "\n===================================================\n".dup
 
         parsed_reminders.each do |r|
           id = r[:id].to_i
-          datetime = r[:datetime]
+          datetime = r[:datetime].in_time_zone(r[:timezone])
           msg = r[:message]
           repeat_time = r[:repeat].to_i
 
@@ -44,7 +46,7 @@ module TohsakaBot
         if parsed_reminders.any?
           { content: "#{output}```" }
         else
-          { content: "No reminders found." }
+          { content: 'No reminders found.' }
         end
       end
     end

@@ -1,0 +1,15 @@
+development:
+  adapter: async
+
+test:
+  adapter: test
+
+prodsqlite:
+  adapter: redis
+  url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
+  channel_prefix: TohsakaWeb_production
+
+prodmysql:
+  adapter: redis
+  url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
+  channel_prefix: TohsakaWeb_production

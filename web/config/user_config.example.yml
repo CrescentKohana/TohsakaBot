@@ -1,0 +1,34 @@
+# For SQLite3 installations
+prodmsqlite:
+  # Domain where the site resides. For example: rin.domain.com. Remember to also set this as Redirect on Discord API:
+  # https://discord.com/developers/applications/APPLICATION_ID/oauth2/general
+  web_host: ''
+  # Discord ID of the owner
+  owner_id: ''
+  # TohsakaBot's root folder
+  data_dir: '../data'
+  # SSL / HTTPS
+  ssl: 'true'
+
+# For MySQL/MariaDB installations
+prodmysql:
+  # Domain where the site resides. For example: rin.domain.com. Remember to also set this as Redirect on Discord API:
+  # https://discord.com/developers/applications/APPLICATION_ID/oauth2/general
+  web_host: ''
+  # Discord ID of the owner
+  owner_id: ''
+  # TohsakaBot's root folder
+  data_dir: '../data'
+  # SSL / HTTPS
+  ssl: 'true'
+
+# For developers
+development:
+  # Domain where the site resides. For example: rin.domain.com
+  web_host: 'localhost:3333'
+  # Discord ID of the owner
+  owner_id: ''
+  # TohsakaBot's root folder
+  data_dir: '../data'
+  # SSL / HTTPS
+  ssl: 'false'

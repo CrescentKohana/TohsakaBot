@@ -16,7 +16,7 @@ module TohsakaBot
           id = k.to_i
           next if deleted_ids.include? id
 
-          db = YAML::Store.new('data/timed_roles.yml')
+          db = YAML::Store.new(CFG.data_dir + '/timed_roles.yml')
           db.transaction do
             next if db[id].nil?
             next unless db[id][:user].to_i == event.author.id.to_i

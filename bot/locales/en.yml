@@ -2,7 +2,7 @@ en:
   welcome: "EN: TohsakaBot launched successfully!"
 
   bot:
-    default_channel_notify: "No default channel set in 'cfg/config.yml'.
+    default_channel_notify: "No default channel set in 'config.yml'.
     Before sending messages through the terminal, set the channel with 'set_ch <id>'"
     channel_set: "Channel set to %{name} "
 
@@ -18,8 +18,8 @@ en:
     cli_id: "*Client ID
     (found here https://discord.com/developers/applications in the General Information tab of the app): "
     bot_token: "*Bot token (found on the same page in the Bot tab of the app): "
-    db_type: "*Specify database type (1 [SQLite3], 2 [MariaDB/MySQL]): "
-    sqlite: "*SQLite3 database (default: tohsaka.db): "
+    db_type: "*Specify database type (1 [SQLite3] (default), 2 [MariaDB/MySQL]): "
+    sqlite: "*SQLite3 database (default: production.sqlite3): "
     db_user: "*MariaDB/MySQL username: "
     db_password: "*MariaDB/MySQL password: "
     yt_apikey: "YouTube API key: "
@@ -28,22 +28,26 @@ en:
     auth_cfg_notice2: "# Database"
     auth_cfg_notice3: "# DO NOT SHARE THIS FILE OR ITS CONTENTS WITH ANYONE"
     config_file: "Creating config.yml"
-    default_now_playing: "Magic"
     prefix: "Preferred command prefixes separated by whitespace (default: ?): "
     locale: "Preferred language / locale of the bot (current: %{lang}, [en, jp, fi]): "
-    default_channel: "*Default channel ID (notices): "
-    highlight_channel: "Highlight channel ID (advanced pin system): "
     web_dir: "Directory path of TohsakaWeb like /home/rin/www/TohsakaWeb
     (optional, note for no trailing slash!): "
     web_url: "URL of TohsakaWeb like https://rin.example.com (optional): "
-    mvp_role: "ID of the MVP role (optional, given to a user as a reward when they win in something): "
-    fool_role: "ID of the fool role (optional, given to a user as a reward when they lose in something): "
     files_created: "Necessary directories and files created! Bot can now be started with:\nbundle exec ruby run.rb"
+    servers_file: "Creating servers.json. Add at least one server."
+    server_added: "Added server called '%{name}' with an ID of %{id}.\n"
+    servers_more: "Add more servers? (y/N)"
+    server_id: "*Server ID: "
+    server_name: "*Server nickname: "
+    default_channel: "*Default channel ID (notices): "
+    highlight_channel: "Highlight channel ID (advanced pin system): "
+    mvp_role: "ID of the MVP role (optional, given to a user as a reward when they win): "
+    fool_role: "ID of the fool role (optional, given to a user as a reward when they lose): "
 
   async:
     load_alko:
-      no_update_needed: "No update needed for data/alko.csv."
-      ready: "Alko's alcohol database loaded into data/alko.csv."
+      no_update_needed: "No update needed for alko.csv."
+      ready: "Alko's alcohol database loaded into alko.csv."
     reminder:
       normal: "Reminder for %{mention}"
       repeated: "Repeated reminder for %{mention}"
@@ -116,6 +120,7 @@ en:
             types: "Top-level commands separated by space"
           error:
             not_found: "Given top-level commands weren't found."
+            permission: "No permissions to register commands."
         eval:
           description: "Run Ruby code. Only for the owner."
           usage: "eval <code (multiline allowed)>"
@@ -159,8 +164,8 @@ en:
             duration: "10 to 3600 seconds."
       user:
         description: "User tools"
-        set_lang:
-          aliases: "langset setlanguage languageset setlocale localeset"
+        language:
+          aliases: "setlang langset setlanguage languageset setlocale localeset"
           description: "Sets the language used in the bot for the user."
           usage: "setlang <fi, en, ja>"
           response: "Language set to English."
@@ -168,16 +173,29 @@ en:
             lang: "Language"
           error:
             locale_not_found: "Specified language not found."
-        set_birthday:
-          aliases: "birthdayset birthday setbd bdset setdob dobset"
-          description: "Sets user's birthday for the bot to congratulate them."
-          usage: "setbirthday <date (e.g. YYYY-MM-DD or DD-MM-YYYY, 0 for clearing, separators include -/.)> <time (optional, hh:ss, default 09:00)>"
+        birthday:
+          aliases: "setbirthday birthdayset setbd bdset setdob dobset"
+          description: "Sets user's birthday. If the time isn't set, the congratulations will happen at 9:00 local time."
+          usage: "birthday <date (e.g. YYYY-MM-DD or DD-MM-YYYY, 0 for clearing, separators include -/.)> <time (optional, hh:ss, default 09:00)>"
           response: "Birthday set to %{date}."
           clear: "Birthday cleared."
           param:
-            lang: "Date"
+            year: "Year"
+            month: "Month"
+            day: "Day"
+            hour: "Hour"
+            minute: "Minute"
           error:
             invalid_date: "Parsing date failed."
+        timezone:
+          aliases: "settimezone settz tzset tz"
+          description: "Sets the timezone for the user used in various functions such as reminders."
+          usage: "settimezone <area (Helsinki, Tokyo, New York etc.)>"
+          response: "Timezone set to %{timezone}."
+          param:
+            tz: "Timezone"
+          error:
+            tz_not_found: "Specified timezone identifier not found. See the column TZ identifier for all acceptable options: <https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List>"
         register:
           description: "Register yourself."
           response: "You've been successfully registered!"
@@ -459,7 +477,7 @@ en:
         usage: "remindme -h or --help for help."
         help:
           banner: "Usage: remindme [options]"
-          datetime: "When to remind. Format: yMwdhms OR yyyy/MM/dd hh.mm.ss OR natural language"
+          datetime: "When to remind. Format: yMwdhms OR yyyy-MM-dd hh.mm.ss OR natural language"
           msg: "Message of the reminder."
           repeat: "Interval duration for repeated reminders. Format: dhm (eg. 2d6h20m)"
           extra_help: "Alternatively, `remindme <time (if spaces put ; after this)> <msg>` also works.
@@ -485,7 +503,7 @@ en:
         help:
           banner: "Usage: remindermod [-i id] [-d datetime] [-m message] [-r repeat]"
           id: "ID of the reminder to edit."
-          datetime: "Edit the time when to remind. Format: yMwdhms OR yyyy/MM/dd hh.mm.ss OR natural language."
+          datetime: "Edit the time when to remind. Format: yMwdhms OR yyyy-MM-dd hh.mm.ss OR natural language."
           msg: "Edit the message."
           repeat: "Edit the interval duration for repeated reminders. Format: dhm (eg. 2d6h20m)"
           channel: "Edit the channel where you will be reminded. Format: channel id."

@@ -12,7 +12,7 @@ module TohsakaBot
               min_args: 2) do |event, price, *type|
         m = event.respond('Parsing data...')
         if price.to_i <= MAX_BUDGET
-          aliases = YAML.safe_load(File.read("data/persistent/alko_aliases.yml"))
+          aliases = YAML.safe_load(File.read(CFG.data_dir + "/persistent/alko_aliases.yml"))
           aliases&.each_key do |k|
             aliases[k].each do |v|
               @output_type = k if v == type.join(" ").to_s.downcase
@@ -20,7 +20,7 @@ module TohsakaBot
           end
 
           matched = []
-          csv_text = File.read("data/alko.csv")
+          csv_text = File.read(CFG.data_dir + "/alko.csv")
           csv = CSV.parse(csv_text, headers: true)
           break if csv.nil?
 
@@ -49,7 +49,7 @@ module TohsakaBot
           event.channel.send_embed do |embed|
             embed.title = "Here's something for you to ~~get drunk~~ enjoy"
             embed.colour = 0xA82727
-            embed.timestamp = Time.now
+            embed.timestamp = TohsakaBot.time_now
             embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "Sorted by the amount of alcohol per €")
 
             embed.add_field(name: ":black_small_square: #{sorted[0][1]}",
@@ -63,7 +63,7 @@ module TohsakaBot
             embed.add_field(name: ":black_small_square: #{sorted[4][1]}",
                             value: "[#{sorted[4][3]}・#{sorted[4][21]}%・#{sorted[4][4]}€](#{alko_url}#{sorted[4][0]})")
           end
-          m.edit "Data parsed in #{(Time.now - event.timestamp).truncate(2)}s"
+          m.edit "Data parsed in #{(TohsakaBot.time_now - event.timestamp).truncate(2)}s"
         else
           m.delete
           event.respond("The maximum budget is #{MAX_BUDGET} euros.")
@@ -77,7 +77,7 @@ module TohsakaBot
         event.channel.send_embed do |e|
           e.title = 'TYPES'
           e.colour = 0xA82727
-          e.timestamp = Time.now
+          e.timestamp = TohsakaBot.time_now
           e.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'alko <max price in euros (integer)> <type>')
 
           e.add_field(

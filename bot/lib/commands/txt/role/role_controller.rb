@@ -44,7 +44,7 @@ module TohsakaBot
       raise RoleHandler::RoleNotFound if added_roles.empty?
 
       roles_with_rules = Set.new
-      timed_roles = YAML.load_file('data/timed_roles.yml', permitted_classes: [Time])
+      timed_roles = YAML.load_file(CFG.data_dir + '/timed_roles.yml', permitted_classes: [Time])
       timed_roles.each_value do |timed_role|
         timed_role[:roles].each { |role| roles_with_rules.add(role) }
       end
@@ -74,11 +74,11 @@ module TohsakaBot
         roles: added_roles.to_a,
         times: parsed_times.to_a,
         mode: active,
-        activate_on: Time.now }
+        activate_on: TohsakaBot.time_now }
     end
 
     def self.store_timed_role(entry)
-      db = YAML::Store.new("data/timed_roles.yml")
+      db = YAML::Store.new(CFG.data_dir + '/timed_roles.yml')
       id = 1
       db.transaction do
         id += 1 while db.root?(id)

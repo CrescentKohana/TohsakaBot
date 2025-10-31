@@ -2,7 +2,7 @@
 
 module TohsakaBot
   module MathHelper
-    # Source for the binomial coefficent "n choose k" below
+    # Source for the binomial coefficient "n choose k" below
     # https://creativecommons.org/licenses/by-sa/3.0/ "Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)"
     # https://www.programming-idioms.org/idiom/67/binomial-coefficient-n-choose-k/1656/ruby (2020/06/03)
     def ncr(n, k)

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'chronic'
+
 module TohsakaBot
   class ReminderController
     include ActionView::Helpers::DateHelper
@@ -27,8 +29,11 @@ module TohsakaBot
       end
 
       @event = event
-      @discord_uid = TohsakaBot.command_event_user_id(event)
+      @discord_uid = event.nil? ? nil : TohsakaBot.command_event_user_id(event)
       @channel_id = channel_id.to_i
+      @user_id = @discord_uid.nil? ? nil : TohsakaBot.get_user_id(@discord_uid)
+      @timezone = TohsakaBot.get_timezone(@user_id)
+      @time_now = TohsakaBot.time_now(@timezone)
 
       if !repeat.nil?
         minutes = TohsakaBot.match_time(repeat, /([0-9]*)(min|m)/) || 0
@@ -43,10 +48,12 @@ module TohsakaBot
       @id = id
     end
 
-    def convert_datetime
+    def convert_datetime(time_now = @time_now)
       return if @datetime.nil?
 
-      # The input is a duration (e.g. 5d4h30s)
+      is_utc = false
+
+      # Duration input (e.g. 5d4h30s)
       if DURATION_REGEX.match?(@datetime.to_s)
         # Format P(n)Y(n)M(n)W(n)DT(n)H(n)M(n)S
         seconds = TohsakaBot.match_time(@datetime, /([0-9]*)(sec|sek|[sS])/) || 0
@@ -57,7 +64,7 @@ module TohsakaBot
         months  = TohsakaBot.match_time(@datetime, /([0-9]*)(M)/) || 0
         years   = TohsakaBot.match_time(@datetime, /([0-9]*)([yYa])/) || 0
 
-        # Because weeks cannot be used at the same time as years, months or days.
+        # Weeks cannot be used at the same time as years, months or days.
         if weeks.zero?
           iso8601_time = if "#{hours}#{minutes}#{seconds}".empty?
                            "P#{years}Y#{months}M#{days}D"
@@ -77,21 +84,31 @@ module TohsakaBot
         parsed_time = ActiveSupport::Duration.parse(iso8601_time)
         raise ReminderHandler::DateTimeSyntaxError if parsed_time.seconds <= 0
 
-        @datetime = parsed_time.from_now
+        @datetime = parsed_time.since(time_now)
 
-      # Direct ISO 8601 formatted input
+      # ISO8601-like input
       elsif DATE_REGEX.match?("#{@datetime.gsub('_', ' ')} #{@msg}")
-        @datetime = Time.parse(@datetime.gsub('_', ' ')).to_i
+        @datetime = Time.parse(@datetime.gsub('_', ' '))
+        is_utc = true
 
-      # Input as a natural word (no spaces)
+      # Natural language input
       else
-        @datetime = Chronic.parse(@datetime)
+        @datetime = Chronic.parse(@datetime, { now: time_now, hours24: true, endian_precedence: %i[little middle] })
+        is_utc = true
+
       end
 
-      raise ReminderHandler::DateTimeSyntaxError if !DATE_REGEX.match?(@datetime.to_s) || @datetime.nil?
+      raise ReminderHandler::DateTimeSyntaxError if @datetime.nil? || !DATE_REGEX.match?(@datetime.to_s)
       raise ReminderHandler::MaxTimeError if @datetime.year > 9999
-      raise ReminderHandler::PastError if @datetime < Time.now
 
+      @datetime = @datetime.asctime.in_time_zone(@timezone) if is_utc
+      raise ReminderHandler::PastError if @datetime < time_now
+      @datetime = @datetime.utc
+
+      @datetime
+    end
+
+    def enforce_repeat_limits
       ReminderHandler.handle_repeat_limit(@repeat, BOT.channel(@channel_id).pm?) if @repeat.positive?
     end
 
@@ -102,12 +119,13 @@ module TohsakaBot
       TohsakaBot.db.transaction do
         @id = reminders.insert(
           datetime: @datetime,
+          timezone: @timezone,
           message: @msg,
           user_id: TohsakaBot.get_user_id(@discord_uid),
           channel_id: @channel_id,
           repeat: @repeat,
-          created_at: Time.now,
-          updated_at: Time.now
+          created_at: TohsakaBot.time_now,
+          updated_at: TohsakaBot.time_now
         )
       end
 
@@ -151,7 +169,7 @@ module TohsakaBot
                               I18n.t(:'commands.reminder.add.repeat_interval',
                                      interval: distance_of_time_in_words(@repeat))
                             else
-                              ""
+                              ''
                             end
 
       { id: @id, content: final_response(repetition_interval, true) }
@@ -160,7 +178,8 @@ module TohsakaBot
     def final_response(repetition_interval, mod)
       relative_time = Discordrb.timestamp(@datetime.to_i, :relative)
       # If the date was in the ISO 8601 format, convert it to text for the message.
-      @datetime = @datetime.is_a?(Integer) ? @datetime = Time.at(@datetime) : @datetime
+      datetime = @datetime.is_a?(Integer) ? @datetime = Time.at(@datetime) : @datetime
+      datetime = datetime.in_time_zone(@timezone)
 
       if mod
         reminder_type_msg = if repetition_interval.blank?
@@ -169,16 +188,16 @@ module TohsakaBot
                               "repeating reminder `<ID #{@id}>` #{repetition_interval} starting "
                             end
 
-        return "<@#{@discord_uid.to_i}>, modified #{reminder_type_msg}at `#{@datetime}` (#{relative_time}) "\
+        return "<@#{@discord_uid.to_i}>, modified #{reminder_type_msg}at `#{datetime}` (#{relative_time}) "\
                "in <##{@channel_id}> with #{@msg.strip.hide_link_preview}"
       end
 
       reminder_type_msg = repetition_interval.empty? ? "" : "#{repetition_interval} starting "
 
       if @msg.blank?
-        "`ID #{@id}` I shall remind <@#{@discord_uid.to_i}> #{reminder_type_msg}at `#{@datetime}` #{relative_time}"
+        "`ID #{@id}` I shall remind <@#{@discord_uid.to_i}> #{reminder_type_msg}at `#{datetime}` #{relative_time}"
       else
-        "`ID #{@id}` I shall remind <@#{@discord_uid.to_i}> #{reminder_type_msg}at `#{@datetime}` #{relative_time}"\
+        "`ID #{@id}` I shall remind <@#{@discord_uid.to_i}> #{reminder_type_msg}at `#{datetime}` #{relative_time}"\
         " with #{@msg.strip.hide_link_preview}"
       end
     end
@@ -195,13 +214,14 @@ module TohsakaBot
 
       TohsakaBot.db.transaction do
         id = reminders.insert(datetime: reminder[:datetime],
+                              timezone: reminder[:timezone],
                               message: reminder[:message],
                               user_id: TohsakaBot.get_user_id(discord_uid),
                               channel_id: reminder[:channel_id],
                               repeat: reminder[:repeat],
                               parent: reminder_id,
-                              created_at: Time.now,
-                              updated_at: Time.now)
+                              created_at: TohsakaBot.time_now,
+                              updated_at: TohsakaBot.time_now)
       end
       id
     end

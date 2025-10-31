@@ -12,9 +12,9 @@ module TohsakaBot
       def run
         buttons = Discordrb::Components::View.new do |v|
           v.row do |r|
-            r.button(style: :primary, label: '⛰️', custom_id: "rps:0")
-            r.button(style: :primary, label: '🧻', custom_id: "rps:1")
-            r.button(style: :primary, label: '✂', custom_id: "rps:2")
+            r.button(style: :primary, label: '🪨', custom_id: 'rps:0')
+            r.button(style: :primary, label: '📃', custom_id: 'rps:1')
+            r.button(style: :primary, label: '✂', custom_id: 'rps:2')
           end
         end
 

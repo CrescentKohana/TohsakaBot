@@ -45,7 +45,7 @@ module TohsakaBot
         end
 
         file_to_be_deleted.each do |f|
-          File.delete("data/triggers/#{f}") unless f.blank?
+          File.delete(CFG.data_dir + "/triggers/#{f}") unless f.blank?
         end
 
         # unless no_permission.empty?

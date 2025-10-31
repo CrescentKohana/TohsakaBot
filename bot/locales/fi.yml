@@ -8,7 +8,7 @@ fi:
   commands:
     tool:
       user:
-        set_lang:
+        language:
           aliases: ""
           description: "Asettaa botissa käytetyn kielen käyttäjälle."
           usage: "setlang <fi, en, ja>"

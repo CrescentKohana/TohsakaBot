@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'dhash-vips'
+
 module TohsakaBot
   module Events
     module RepostOverseer
@@ -10,16 +12,15 @@ module TohsakaBot
 
         user_obj = BOT.member(event.server, linked[:author_id])
         username = user_obj.nil? ? "Deleted user" : user_obj.display_name
-        time = Time.use_zone('UTC') { Time.zone.local(*linked[:timestamp]) }
 
         event.channel.send_embed do |embed|
           embed.colour = 0x36393F
           embed.add_field(
-            name: "**WANHA** #{Discordrb.timestamp(time, :relative)}",
+            name: "**WANHA** #{Discordrb.timestamp(linked[:timestamp], :relative)}",
             value: "By [#{username}](https://discord.com/channels/"\
                    "#{linked[:server_id]}/#{linked[:channel_id]}/#{linked[:msg_id]})"
           )
-          embed.timestamp = time
+          embed.timestamp = linked[:timestamp]
         end
       end
 
@@ -49,8 +50,8 @@ module TohsakaBot
               msg_id: event.message.id,
               channel_id: event.channel.id,
               server_id: event.server.id,
-              created_at: Time.now,
-              updated_at: Time.now
+              created_at: TohsakaBot.time_now,
+              updated_at: TohsakaBot.time_now
             )
           end
         end
@@ -58,20 +59,20 @@ module TohsakaBot
 
         event.message.attachments.each do |file|
           file_name = file.filename.dup.add_identifier
-          IO.copy_stream(URI.parse(file.url).open, "tmp/#{file_name}")
-          next unless File.exist?("tmp/#{file_name}")
+          IO.copy_stream(URI.parse(file.url).open, "../tmp/#{file_name}")
+          next unless File.exist?("../tmp/#{file_name}")
 
-          file_hash = Digest::SHA2.file("tmp/#{file_name}").to_s
+          file_hash = Digest::SHA2.file("../tmp/#{file_name}").to_s
           idhash = nil
           begin
             if IMAGE_EXTENSIONS.include?(File.extname(file.filename).downcase)
-              idhash = DHashVips::IDHash.fingerprint("tmp/#{file_name}")
+              idhash = DHashVips::IDHash.fingerprint("../tmp/#{file_name}")
             end
           rescue Vips::Error
             # ignore, not an image
           end
 
-          File.delete("tmp/#{file_name}") if File.exist?("tmp/#{file_name}")
+          File.delete("../tmp/#{file_name}") if File.exist?("tmp/#{file_name}")
 
           file_hash_match = TohsakaBot.file_hash_match(file_hash, event.message.user.id)
           unless file_hash_match.nil?
@@ -98,8 +99,8 @@ module TohsakaBot
               msg_id: event.message.id,
               channel_id: event.channel.id,
               server_id: event.server.id,
-              created_at: Time.now,
-              updated_at: Time.now
+              created_at: TohsakaBot.time_now,
+              updated_at: TohsakaBot.time_now
             )
           end
         end

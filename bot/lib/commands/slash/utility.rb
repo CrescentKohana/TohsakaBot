@@ -6,9 +6,9 @@ module TohsakaBot
       BOT.application_command(:utility).subcommand('roll_probability') do |event|
         command = CommandLogic::RollProbability.new(
           event,
-          event.options["chance"],
-          event.options["rolls"],
-          event.options["hits"]
+          event.options['chance'],
+          event.options['rolls'],
+          event.options['hits']
         )
         event.respond(content: command.run[:content])
       end
@@ -20,7 +20,7 @@ module TohsakaBot
       end
 
       BOT.application_command(:utility).subcommand('quickie') do |event|
-        event.respond(content: "Slash command version currently not supported. Use ?quickie")
+        event.respond(content: 'Slash command version currently not supported. Use ?quickie')
         # reply = event.respond(content: event.options['message'], wait: true)
         # sleep(CommandLogic::Quickie.duration(event.options['duration']))
         # reply.delete
