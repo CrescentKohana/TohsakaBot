@@ -3,6 +3,7 @@
 source 'https://rubygems.org'
 
 gem 'bigdecimal', "~>3.1.4"
+gem 'drb', "~>2.2.3"
 
 # Helper functions from Rails
 gem 'actionview', "~>7.0.7.2"
@@ -30,6 +31,8 @@ gem 'redcarpet', "~>3.6.0"
 ## Spreadsheet parsing
 gem 'roo', "~>2.10.0"
 gem 'roo-xls', "~>1.2.0"
+## CSV parsing
+gem 'csv', "~>3.3.5"
 
 # Database
 gem 'sequel', "~>5.97.0"
