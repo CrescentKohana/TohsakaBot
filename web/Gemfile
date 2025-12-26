@@ -45,7 +45,7 @@ gem 'sassc-rails', '~> 2.1.2'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3', '~> 1.6.2', :group => :sqlite
 # Use Puma as the app server
-gem 'puma', '~> 6.3.1'
+gem 'puma', '~> 6.4.2'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5.2.1'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
